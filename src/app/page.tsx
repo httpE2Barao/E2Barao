@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/Switchers";
 import { Header } from "@/components/header/header";
 import Backgrounds from "./trajetoria/page";
 import Link from "next/link";
-// import Link from "next/link";
+import Home from "./home/page";
 
 export default function Root() {
   
@@ -18,8 +18,7 @@ export default function Root() {
   return (
     <ThemeProvider>
         <Header togglePage={togglePage} />
-        <Link href={'/trajetoria'}>Tragerória</Link>
-        <Backgrounds></Backgrounds>
+      <Home />
     </ThemeProvider>
   );
 }

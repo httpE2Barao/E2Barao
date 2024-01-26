@@ -30,11 +30,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Lógica para obter e definir o tema inicial
   const savedTheme = localStorage.getItem('theme') ?? null;
   const initialTheme = typeof savedTheme === 'string' ? savedTheme : 'dark';
-  const savedLanguage = localStorage.getItem('laguage') ?? null;
+  const [theme, setTheme] = useState(initialTheme);
+  const savedLanguage = localStorage.getItem('language') ?? null;
   const initialLanguage = typeof savedLanguage === 'string' ? savedLanguage : 'pt-BR';
   
   // Estados do tema e idioma
-  const [theme, setTheme] = useState(initialTheme);
+ 
   const [language, setLanguage] = useState(initialLanguage);
   
   // Efeito para atualizar o localStorage e o estilo do corpo da página
@@ -43,7 +44,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem('language', language)
     const body = document.querySelector('body');
     body && (body.style.backgroundColor = theme === 'light' ? '#ffffff' : '#000000');
-  })
+  }), [ theme, language ]
 
   // Função para alternar entre os temas
   const toggleTheme = () => {
@@ -58,6 +59,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const changeLanguage = ( event:SelectChangeEvent<string>)  => {
     if (event.target != null) {
       const language = event.target.value as string 
+      localStorage.setItem('language', language);
       setLanguage( language );
     }
   };

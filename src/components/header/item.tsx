@@ -17,7 +17,7 @@ export const ItemNav = ( props:ItemProps ) => {
         props.togglePage(props.index)
         setAtive(!active)
       }}
-      className={`${props.theme === 'dark' ? 'hover:bg-white hover:text-black' : 'hover:bg-black hover:text-white'} 
+      className={`${props.theme === 'dark' ? 'hover:bg-azul-pastel hover:text-black' : 'hover:bg-azul-claro hover:text-white'} 
       px-5 py-3 rounded-lg hover:cursor-pointer`}
     >
       {props.item}
