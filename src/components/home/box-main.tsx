@@ -9,14 +9,14 @@ export default function BoxMain() {
     {
       ptBR: [
         [
-          'Me chamo Elias Barão,',
+          'Me chamo Elias Barão.',
           'Eu projeto e desenvolvo aplicações web.',
           'Cientista da Computação'
         ],
       ],
       enUS: [
         [
-          'My name is Elias Barão,',
+          'My name is Elias Barão',
           'I design and develop web applications.',
           'Computer Scientist'
         ]
@@ -32,8 +32,9 @@ export default function BoxMain() {
   const languageData = language === 'pt-BR' ? list[0].ptBR : list[0].enUS;
 
   return (
-    <div className={`${theme==='dark'? 'bg-azul-pastel': 'bg-azul-claro'} py-7 px-14 col-span-4 h-[55vh] flex flex-col rounded-2xl `}>
-      <h1 className="text-[#00000090] ml-auto text-7xl pt-[10vh] tracking-wider font-extrabold text-right max-w-[1350px]">
+    <div className={`${theme==='dark'? 'bg-azul-pastel': 'bg-azul-claro'} 
+    row-start-1 row-span-2 col-span-4 2xl:col-span-3 h-[57vh] py-7 px-14 flex flex-col rounded-2xl `}>
+      <h1 className="text-[#00000090] ml-auto text-7xl pt-[5vh] tracking-wider leading-normal font-extrabold text-right max-w-[1350px]">
         {language === 'pt-BR' ? PhraseMain[0] : PhraseMain[1]}
       </h1>
       <div className="flex flex-row justify-between mt-auto">

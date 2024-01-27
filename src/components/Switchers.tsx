@@ -44,7 +44,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem('language', language)
     const body = document.querySelector('body');
     body && (body.style.backgroundColor = theme === 'light' ? '#ffffff' : '#000000');
-  }), [ theme, language ]
+  }, [ theme, language ]);
 
   // Função para alternar entre os temas
   const toggleTheme = () => {

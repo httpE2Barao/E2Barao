@@ -5,9 +5,13 @@
 :root {
   list-style-type: none;
 }
-
 body {
   background: #000;
+}
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 .textShadow-xl {
@@ -27,8 +31,4 @@ body {
   text-transform: uppercase;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
+
