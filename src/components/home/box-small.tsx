@@ -11,7 +11,7 @@ interface BoxProps {
 }
 
 export default function BoxSmall(props: BoxProps) {
-  const tecs = ['link', 'typescript', 'react', 'tailwind', 'figma', 'tailwind', 'react','typescript', 'react', 'tailwind', 'figma', 'tailwind', 'react', 'typescript', 'react', 'tailwind', 'figma', 'tailwind', 'react','typescript', 'react',];
+  const tecs = ['link', 'typescript', 'react', 'tailwind', 'figma', 'tailwind', 'react',];
   const { theme } = useTheme();
 
   return (

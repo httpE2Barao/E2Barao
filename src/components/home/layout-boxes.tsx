@@ -26,7 +26,7 @@ export function BoxesSmall() {
       <BoxSmall
         name={'dev'}
         alt={'Developer | Desenvolvedor'}
-        key={'img-dev'}
+        key={'img-dev'+ 1}
         bgNone={true}
       />
       {languageData.map((subArray, index) => (
