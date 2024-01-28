@@ -28,14 +28,13 @@ export const useTheme = () => {
 // Componente Provedor de Tema
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Lógica para obter e definir o tema inicial
-  const savedTheme = localStorage.getItem('theme') ?? null;
+  const savedTheme = localStorage.getItem('theme');
   const initialTheme = typeof savedTheme === 'string' ? savedTheme : 'dark';
   const [theme, setTheme] = useState(initialTheme);
   const savedLanguage = localStorage.getItem('language') ?? null;
   const initialLanguage = typeof savedLanguage === 'string' ? savedLanguage : 'pt-BR';
   
   // Estados do tema e idioma
- 
   const [language, setLanguage] = useState(initialLanguage);
   
   // Efeito para atualizar o localStorage e o estilo do corpo da página
