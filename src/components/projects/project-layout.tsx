@@ -6,7 +6,7 @@ export const ProjectLayout = ({ list }: { list: projectInterface[] }) => {
         <section className="grid grid-cols-4 gap-4 px-4">
 
             { list.map((project, index) => (
-                <div key={index} className={`col-span-${index < 2 ? '2' : '1'}`}>
+                <div key={index} className={`${index < 2 ? 'col-span-2' : 'col-span-1'}`}>
                     <Image src={`/images/project_${project.name}.png`} alt={`${project.alt}`} width={650} height={550} />
                 </div>
             ))}
