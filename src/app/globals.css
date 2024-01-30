@@ -31,4 +31,36 @@ body {
   text-transform: uppercase;
 }
 
-
+.figure {
+  overflow: hidden;
+  transform: scale(1);
+}
+.figure img {
+  transition: transform .35s;
+}
+.figure:hover img {
+  transform: scale(1.1);
+  transition: transform .35s;
+}
+.figcaption::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(77, 77, 77, 0) 0%, rgb(0, 0, 0) 100%);
+  opacity: 0;
+  transition: opacity .35s ease-in-out;
+}
+.figure:hover .figcaption::before {
+  opacity: 1;
+}
+.figcaption {
+  opacity: 0;
+  transition: opacity .5s;
+}
+.figure:hover .figcaption {
+  opacity: 1;
+  transition: opacity .5s;
+}
+.figcaption span button {
+  transition: background .35s ease-in-out;
+}
