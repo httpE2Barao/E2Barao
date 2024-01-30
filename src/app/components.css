@@ -1,0 +1,50 @@
+.textShadow-xl {
+  text-shadow: 0px 4px 5px rgba(0, 0, 0, 0.412);
+}
+
+.home-abt-0, .home-abt-1 {
+  font-size: 2.5rem;
+  line-height: 1.3em;
+  font-weight: 500;
+}
+.home-abt-2 {
+  margin: 15px 0 10px;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.50);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.figure {
+  overflow: hidden;
+  transform: scale(1);
+}
+.figure img {
+  transition: transform .35s;
+}
+.figure:hover img {
+  transform: scale(1.1);
+  transition: transform .35s;
+}
+.figcaption::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(77, 77, 77, 0) 0%, rgb(0, 0, 0) 100%);
+  opacity: 0;
+  transition: opacity .35s ease-in-out;
+}
+.figure:hover .figcaption::before {
+  opacity: 1;
+}
+.figcaption {
+  opacity: 0;
+  transition: opacity .5s;
+}
+.figure:hover .figcaption {
+  opacity: 1;
+  transition: opacity .5s;
+}
+.figcaption span button {
+  transition: background .3s ease-in-out;
+}
