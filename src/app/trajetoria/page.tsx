@@ -1,4 +1,4 @@
-import { useTheme } from "@/components/Switchers"
+import { useTheme } from "@/components/switchers/switchers"
 import { Button } from "@/components/backgrounds/bgs-button";
 import { PhraseSection } from "@/components/backgrounds/bgs-phrase";
 

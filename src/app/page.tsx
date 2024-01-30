@@ -1,21 +1,33 @@
 "use client"
-import React, { useState } from "react";
-import { ThemeProvider } from "@/components/Switchers";
+import React, { useEffect } from "react";
+import Home from "./home/page";
+import Projetos from "./Projetos/page";
+import Backgrounds from "./trajetoria/page";
+import { usePage } from "@/components/switchers/pages";
 import { Header } from "@/components/header/header";
-import Projetos from "./projetos/page";
 
-export default function Root() {
-  
-  const [atualPage, setAtualPage] = useState('');
+export default function Page() {
+  const { page } = usePage();
+  console.log('Current 1',page)
 
-  const togglePage = (newPage: string) => {
-    setAtualPage(newPage)
-    console.log(atualPage)
-  }
+  // Render the content based on the current page
+  const renderContent = () => {
+    switch (page) {
+      case "home":
+        return <Home />;
+      case "Projetos":
+        return <Projetos />;
+      case "backgrounds":
+        return <Backgrounds />;
+      default:
+        return null; 
+    }
+  };
 
   return (
-    <ThemeProvider>
-      <Header togglePage={togglePage} />
-    </ThemeProvider>
+    <main>
+      <Header />
+      {renderContent()}
+    </main>
   );
 }

@@ -1,4 +1,4 @@
-import { useTheme } from "../Switchers";
+import { useTheme } from "../switchers/switchers";
 import SelectDemo from "./language";
 
 interface UtilsProps {

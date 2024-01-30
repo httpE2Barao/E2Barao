@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { useTheme } from '../Switchers';
+import { useTheme } from '../switchers/switchers';
 
 export default function BasicSelect() {
   const { theme, language, changeLanguage } = useTheme();

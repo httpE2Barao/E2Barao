@@ -2,7 +2,9 @@ import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Root from "./page";
+import Page from "./page";
+import { Header } from "@/components/header/header";
+import ThemeProvider from "@/components/switchers/switchers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,10 +20,12 @@ export default function RootLayout({
 }>) {
 
   return (
-      <html lang='pt-BR'>
-        <body className={inter.className}>
-          <Root />
-        </body>
-      </html>
+    <html lang={'pt-BR'}>
+      <body className={inter.className}>
+        <ThemeProvider>
+          <Page />
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

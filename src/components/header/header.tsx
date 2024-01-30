@@ -1,15 +1,17 @@
-import Link from "next/link";
+"use client"
+import React from "react";
 import { Logo } from "./logo";
 import { Nav } from "./nav";
+import { usePage } from "@/components/switchers/pages";
 
-export const Header = ({ togglePage }: any) => {
+export const Header = (  ) => {
 
   return (
     <header className={`px-10 py-10 flex items-center justify-between`}>
-      <Link href={'/home'}>
+      <a>
         <Logo />
-      </Link>
-      <Nav togglePage={togglePage} />
-    </header >
+      </a>
+      <Nav />
+    </header>
   );
 };

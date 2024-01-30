@@ -1,4 +1,4 @@
-import { useTheme } from "../Switchers";
+import { useTheme } from "../switchers/switchers";
 import BoxSmall from "./box-small";
 
 export function BoxesSmall() {

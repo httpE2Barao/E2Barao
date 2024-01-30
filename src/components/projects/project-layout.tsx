@@ -1,4 +1,4 @@
-import { projectInterface } from "@/app/projetos/page";
+import { projectInterface } from "@/app/Projetos/page";
 import Image from "next/image";
 
 export const ProjectLayout = ({ list }: { list: projectInterface[] }) => {

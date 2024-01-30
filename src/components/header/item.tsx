@@ -1,20 +1,21 @@
-import Link from "next/link";
 import { useState } from "react";
+import { usePage } from "../switchers/pages";
 
 interface ItemProps {
   item: string,
   index: number,
   theme: string,
-  togglePage: any
+  changePage: any
 }
 
 export const ItemNav = ( props:ItemProps ) => {
   const [ active, setAtive ] = useState(false)
+
   return (
     <li
       key={props.index}
       onClick={() => {
-        props.togglePage(props.index)
+        props.changePage(props.item)
         setAtive(!active)
       }}
       className={`${props.theme === 'dark' ? 'hover:bg-azul-pastel hover:text-black' : 'hover:bg-azul-claro hover:text-white'} 

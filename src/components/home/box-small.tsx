@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useTheme } from "../Switchers";
+import { useTheme } from "../switchers/switchers";
 import React from "react";
 
 interface BoxProps {
