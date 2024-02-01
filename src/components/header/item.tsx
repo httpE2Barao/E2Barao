@@ -15,7 +15,7 @@ export const ItemNav = ( props:ItemProps ) => {
     <li
       key={props.index}
       onClick={() => {
-        props.changePage(props.item)
+        props.changePage(props.index + 1)
         setAtive(!active)
       }}
       className={`${props.theme === 'dark' ? 'hover:bg-azul-pastel hover:text-black' : 'hover:bg-azul-claro hover:text-white'} 

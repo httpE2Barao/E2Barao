@@ -4,10 +4,10 @@ import { Logo } from "./logo";
 import { Nav } from "./nav";
 import { usePage } from "@/components/switchers/pages";
 
-export const Header = (  ) => {
+export const Header = () => {
 
   return (
-    <header className={`px-10 py-10 flex items-center justify-between`}>
+    <header className={`px-10 py-10 z-50 flex items-center justify-between`}>
       <a>
         <Logo />
       </a>

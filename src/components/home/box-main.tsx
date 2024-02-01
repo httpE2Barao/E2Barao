@@ -33,7 +33,7 @@ export default function BoxMain() {
 
   return (
     <div className={`${theme==='dark'? 'bg-azul-pastel': 'bg-azul-claro'} 
-    row-start-1 row-span-2 col-span-4 2xl:col-span-3 h-[57vh] py-7 px-14 flex flex-col rounded-2xl `}>
+    row-start-1 row-span-2 col-span-4 2xl:col-span-3 py-7 px-14 flex flex-col rounded-2xl `}>
       <h1 className="text-[#00000090] ml-auto text-7xl pt-[5vh] tracking-wider leading-normal font-extrabold text-right max-w-[1350px]">
         {language === 'pt-BR' ? PhraseMain[0] : PhraseMain[1]}
       </h1>
@@ -57,22 +57,26 @@ export default function BoxMain() {
           ))}
         </span>
         <span className="flex flex-row gap-5 hover:cursor-pointer mt-auto">
-          <div className="bg-white rounded-full w-[70px] max-h-[70px] flex items-center">
+          <div 
+          className="icon-animation bg-white rounded-full w-[100px] h-[100px] flex items-center"
+          onClick={() => window.open('https://www.linkedin.com/in/e2barao/', '_blank')}>
             <Image
-              className="mx-auto"
+              className="content-animation mx-auto"
               src='/images/icon-linkedin.svg'
-              alt='Ir para meu Linkedin'
+              alt='Ver meu Linkedin'
               width={45}
               height={45}
             />
           </div>
-          <div className="bg-white rounded-full w-[70px] max-h-[70px]">
+          <div 
+          onClick={() => window.open('https://github.com/httpE2Barao', '_blank')}
+          className="icon-animation bg-white rounded-full w-[100px] h-[100px]">
             <Image
-              className="rounded-full p-2"
+              className="content-animation m-auto pt-4 rounded-full p-2"
               src='/images/icon-github.svg'
-              alt='Ir para meu Github'
-              width={70}
-              height={70}
+              alt='Ver meu Github'
+              width={80}
+              height={80}
             />
           </div>
         </span>

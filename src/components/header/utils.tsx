@@ -1,3 +1,4 @@
+import { useColors } from "../switchers/colors";
 import { useTheme } from "../switchers/switchers";
 import SelectDemo from "./language";
 

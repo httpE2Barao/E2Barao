@@ -1,7 +1,7 @@
 import { useTheme } from "../switchers/switchers";
 import BoxSmall from "./box-small";
 
-export function BoxesSmall() {
+export default function BoxesSmall() {
   const { language } = useTheme();
 
   const languageList = [

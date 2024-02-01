@@ -1,24 +1,44 @@
+"use client"
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const getInitialPage = () => {
-  const savedPage = localStorage.getItem('page');
-  return typeof savedPage === 'string' ? savedPage : 'home';
+  if (typeof window !== 'undefined') {
+    const savedPage = localStorage.getItem('page');
+    return typeof savedPage === 'string' ? savedPage : 'home';
+  }
+  return 'home';
 }
 
 export const usePage = () => {
   const [page, setPage] = useState(getInitialPage);
+  const router = useRouter();
 
   useEffect(() => {
     const savedPage = localStorage.getItem('page');
-    setPage(savedPage || 'home');
+    setPage(savedPage || 'Home');
   }, []);
 
   useEffect(() => {
     localStorage.setItem('page', page);
   }, [page])
 
-  const changePage = (newPage:string) => {
-    setPage(newPage);
+  const changePage = (newPage:number) => {
+    var newPageString = '';
+
+    if (newPage === 0) {
+      newPageString = 'Home'
+    } if (newPage == 1) {
+      newPageString = 'Backgrounds'
+    } if (newPage == 2){
+      newPageString = 'Projects'
+    } if (newPage == 3){
+      newPageString = 'Tecnologies'
+    }
+
+    router.push(newPageString);
+    setPage(newPageString);
+    localStorage.setItem('page', page);
   };
 
   return { page, changePage };

@@ -1,5 +1,5 @@
 "use client"
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext } from "react";
 import { SelectChangeEvent } from "@mui/material";
 import { useLanguage } from "./language";
 import { useColors } from "./colors";
@@ -12,7 +12,7 @@ interface ThemeContextProps {
   altTheme: string;
   language: string;
   toggleTheme: () => void;
-  changePage: ( page:string ) => void;
+  changePage: ( page:number ) => void;
   changeLanguage: (event: SelectChangeEvent<string>) => void;
 }
 

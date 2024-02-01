@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 
 const getInitialTheme = () => {
-  const savedTheme = localStorage.getItem('theme');
-  return typeof savedTheme === 'string' ? savedTheme : 'dark';
+  if (typeof window !== 'undefined') {
+    const savedTheme = localStorage.getItem('theme');
+    return typeof savedTheme === 'string' ? savedTheme : 'dark';
+  }
+  return 'dark'
 };
 
 export const useColors = () => {
   const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
-    localStorage.setItem('theme', theme);
-
     const body = document.querySelector('body');
     if (body) {
       body.style.backgroundColor = theme === 'light' ? '#ffffff' : '#000000';
@@ -19,6 +20,8 @@ export const useColors = () => {
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    localStorage.setItem('theme', theme);
+    console.log(localStorage.getItem('theme'))
   };
 
   const mainTheme = theme === 'light' ? 'white' : 'black';
