@@ -56,12 +56,12 @@
   }
 }
 
-.content-animation {
-  transition: transform .2s;
-}
-
 .icon-animation {
   transition: background-color .3s, transform .2s;
+}
+
+.content-animation {
+  transition: transform .2s;
 }
 
 .icon-animation:hover {
@@ -78,6 +78,7 @@
 .icon-animation-nav {
   position: relative;
   overflow: hidden;
+  transition: color .4s;
 }
 .icon-animation-nav:hover {
   color: black;
@@ -183,4 +184,21 @@
 
 .figcaption span button {
   transition: background .3s ease-in-out;
+}
+
+.animated-bg {
+  background-image: url(/public/images/rain.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 99;
+  animation: playGif 2s infinite;
+}
+
+@keyframes playGif {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
 }

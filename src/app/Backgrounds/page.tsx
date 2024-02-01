@@ -8,7 +8,7 @@ export default function Backgrounds() {
   const { theme, language } = useTheme();
 
   return (
-    <article className="flex flex-col justify-center xl:gap-96 px-36 xl:h-[1000px] w-full">
+    <article className="animated-bg flex flex-col justify-center xl:gap-96 px-36 xl:h-[1000px] w-full">
 
       <PhraseSection
         language={language}
