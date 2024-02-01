@@ -4,7 +4,7 @@ interface SectionProps {
 
 export const PhraseSection = ( props:SectionProps ) => {
   return (
-    <section className="flex mx-auto text-center">
+    <section className="slideBottom flex mx-auto text-center">
       <h1 className="text-6xl font-bold text-azul-claro textShadow-xl tracking-wider leading-relaxed">
         { props.language === 'pt-BR'
           ? `A vida não é esperar a tempestade passar, é aprender a dançar na chuva.`

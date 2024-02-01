@@ -1,8 +1,12 @@
 import { projectInterface } from "@/app/Projects/page";
+import { useTheme } from "../switchers/switchers";
 
 export const ProjectLayout = ({ list }: { list: projectInterface[] }) => {
+
+    const {language} = useTheme();
+
     return (
-        <section id="projetos" className="grid grid-cols-2 gap-4 px-4">
+        <section id="projetos" className="slideBottom grid grid-cols-2 gap-4 px-4">
             {list.map((project, index) => (
                 <figure key={index} className="figure relative">
                     <img src={`/images/project_${project.src}.png`} alt={project.alt} className="z-1" />
@@ -15,17 +19,17 @@ export const ProjectLayout = ({ list }: { list: projectInterface[] }) => {
 
                             <button
                                 onClick={() => window.open(project.site, '_blank')}
-                                className="icon-animation h-[50px] px-5 rounded bg-white text-black">
+                                className="icon-animation h-[50px] px-5 rounded-full bg-white text-black">
                                 <p className="content-animation">
-                                    ver site
+                                    {language=== 'pt-BR' ? 'Site' : 'Page'}
                                 </p>
                             </button>
 
                             <button
                                 onClick={() => window.open(project.repo, '_blank')}
-                                className="icon-animation h-[50px] px-10 rounded bg-white text-black">
+                                className="icon-animation h-[50px] px-10 rounded-full bg-white text-black">
                                 <p className="content-animation">
-                                    repositório
+                                    {language=== 'pt-BR' ? 'Repositório' : 'Repository'}
                                 </p>
                             </button>
 

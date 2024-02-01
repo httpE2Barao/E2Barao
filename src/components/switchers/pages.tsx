@@ -12,6 +12,7 @@ const getInitialPage = () => {
 
 export const usePage = () => {
   const [page, setPage] = useState(getInitialPage);
+  const [selected, setSelected] = useState(null)
   const router = useRouter();
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export const usePage = () => {
   const changePage = (newPage:number) => {
     var newPageString = '';
 
-    if (newPage === 0) {
+    if (newPage == 0) {
       newPageString = 'Home'
     } if (newPage == 1) {
       newPageString = 'Backgrounds'
@@ -36,10 +37,11 @@ export const usePage = () => {
       newPageString = 'Tecnologies'
     }
 
+    console.log(newPage)
     router.push(newPageString);
     setPage(newPageString);
     localStorage.setItem('page', page);
   };
 
-  return { page, changePage };
+  return { page, changePage, selected, setSelected };
 };

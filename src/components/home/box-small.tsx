@@ -21,7 +21,7 @@ export default function BoxSmall(props: BoxProps) {
         className={`${theme === 'dark' ? 'bg-azul-pastel' : 'bg-azul-claro'}
           ${props.bgNone === true && 'bg-transparent p-0'}
           ${props.last === true ? '2xl:row-start-3 2xl:col-span-3' : '2xl:col-start-4' }
-          flex items-center justify-center p-5 rounded-2xl max-h-[360px]
+          slideRight2 flex items-center justify-center p-5 rounded-2xl max-h-[360px]
           `}
       >
         {props.last !== true ? (

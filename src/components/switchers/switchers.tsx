@@ -7,10 +7,12 @@ import { usePage } from "./pages";
 
 interface ThemeContextProps {
   page: string;
+  selected: number;
   theme: string;
   mainTheme: string;
   altTheme: string;
   language: string;
+  setSelected: any;
   toggleTheme: () => void;
   changePage: ( page:number ) => void;
   changeLanguage: (event: SelectChangeEvent<string>) => void;
@@ -29,12 +31,12 @@ export const useTheme = () => {
 };
 
 const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { page, changePage } = usePage();
+  const { page, selected, changePage, setSelected } = usePage();
   const { language, changeLanguage } = useLanguage();
   const { theme, mainTheme, altTheme, toggleTheme } = useColors();
 
   return (
-    <ThemeContext.Provider value={{ page, theme, language, mainTheme, altTheme, toggleTheme, changePage, changeLanguage }}>
+    <ThemeContext.Provider value={{ page, selected, theme, language, mainTheme, altTheme, setSelected, toggleTheme, changePage, changeLanguage }}>
       {children}
     </ThemeContext.Provider>
   );

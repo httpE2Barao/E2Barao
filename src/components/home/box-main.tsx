@@ -34,7 +34,7 @@ export default function BoxMain() {
   return (
     <div className={`${theme==='dark'? 'bg-azul-pastel': 'bg-azul-claro'} 
     row-start-1 row-span-2 col-span-4 2xl:col-span-3 py-7 px-14 flex flex-col rounded-2xl `}>
-      <h1 className="text-[#00000090] ml-auto text-7xl pt-[5vh] tracking-wider leading-normal font-extrabold text-right max-w-[1350px]">
+      <h1 className="slideRight text-[#00000090] ml-auto text-7xl pt-[5vh] tracking-wider leading-normal font-extrabold text-right max-w-[1350px]">
         {language === 'pt-BR' ? PhraseMain[0] : PhraseMain[1]}
       </h1>
       <div className="flex flex-row justify-between mt-auto">
@@ -43,7 +43,7 @@ export default function BoxMain() {
             <p key={index} className={``}>
               {Array.isArray(subArray)
                 ? subArray.map((text, subIndex) => (
-                    <span key={subIndex} className={`home-abt-${subIndex} block`}>
+                    <span key={subIndex} className={`home-abt-${subIndex} block slideRight1`}>
                       {text}
                     </span>
                   ))

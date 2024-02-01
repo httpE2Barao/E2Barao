@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { usePage } from "../switchers/pages";
+import { useTheme } from "../switchers/switchers";
 
 interface ItemProps {
   item: string,
@@ -8,20 +9,22 @@ interface ItemProps {
   changePage: any
 }
 
-export const ItemNav = ( props:ItemProps ) => {
-  const [ active, setAtive ] = useState(false)
+export const ItemNav = (props: ItemProps) => {
+  const { selected, setSelected } = useTheme()
 
   return (
     <li
       key={props.index}
       onClick={() => {
         props.changePage(props.index + 1)
-        setAtive(!active)
+        setSelected(props.index)
       }}
-      className={`${props.theme === 'dark' ? 'hover:bg-azul-pastel hover:text-black' : 'hover:bg-azul-claro hover:text-white'} 
-      px-5 py-3 rounded-lg hover:cursor-pointer`}
+      className={` ${selected == props.index && 'bg-azul-claro text-black'}
+      icon-animation-nav px-5 py-3 rounded-lg hover:cursor-pointer`}
     >
-      {props.item}
+      <p className="content-animation-nav">
+        {props.item}
+      </p>
     </li>
   );
 };

@@ -14,7 +14,7 @@ export default function Backgrounds() {
         language={language}
       />
 
-      <section className="flex items-center justify-around xl:text-3xl">
+      <section className="slideBottom1 flex items-center justify-around xl:text-3xl">
         
         <Button text='Profissional' theme={theme}/>
         <Button text='Pessoal' theme={theme}/>

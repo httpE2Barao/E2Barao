@@ -17,6 +17,49 @@
   text-transform: uppercase;
 }
 
+.slideRight {
+  animation: .75s ease-in-out toRight;
+}
+.slideRight1 {
+  animation: 1s ease-in-out toRight;
+}
+.slideRight2 {
+  animation: 1.5s ease-in-out toRight;
+}
+
+@keyframes toRight {
+  from {
+    opacity: 0;
+    transform: translateX(-1rem)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+.slideBottom {
+  animation: .75s ease-in-out toBottom;
+}
+.slideBottom1 {
+  animation: 2s ease-in-out toBottom;
+}
+
+@keyframes toBottom {
+  from {
+    opacity: 0;
+    transform: translateY(-1rem);
+  } to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-animation {
+  transition: transform .2s;
+}
+
 .icon-animation {
   transition: background-color .3s, transform .2s;
 }
@@ -27,13 +70,33 @@
   transition: background-color .3s, color .3s;
 }
 
-.content-animation {
-  transition: transform .2s;
-}
-
-.icon-animation:hover > .content-animation {
+.icon-animation:hover>.content-animation {
   transform: scale(.8);
   transition: transform .3s;
+}
+
+.icon-animation-nav {
+  position: relative;
+  overflow: hidden;
+}
+.icon-animation-nav:hover {
+  color: black;
+  transition: color .4s;
+}
+.icon-animation-nav:hover .content-animation-nav::before {
+  width: 100%; /* Quando o mouse está sobre, aumenta a largura para 100% */
+}
+
+.content-animation-nav::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background-color: #00FFFF;
+  z-index: -1;
+  transition: width 0.3s ease;
 }
 
 .loader-container {
@@ -62,6 +125,7 @@
 }
 
 @keyframes spinner {
+
   /* from {
     transform: rotate(0deg) scale(1);
   } */
