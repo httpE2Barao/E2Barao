@@ -7,7 +7,7 @@ import { usePage } from "./pages";
 
 interface ThemeContextProps {
   page: string;
-  selected: number;
+  selected: number | null;
   theme: string;
   mainTheme: string;
   altTheme: string;
