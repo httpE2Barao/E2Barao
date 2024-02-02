@@ -5,10 +5,15 @@
 
 :root {
   list-style-type: none;
+  --azul-main: #00FFFF;
+  --azul-pastel: #8FFFFF;
+  --verde: #00FF1A;
+  --amarelo: #FFC700;
 }
 body {
   background: #000;
 }
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
