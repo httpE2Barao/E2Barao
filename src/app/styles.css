@@ -194,12 +194,11 @@
   transition: background .3s ease-in-out;
 }
 
-.bg-img-dark,
-.bg-img-light {
+.bg-img {
   position: relative;
 }
 
-.bg-img-dark::before {
+.bg-img::before {
   content: "";
   position: absolute;
   z-index: -1;
@@ -212,19 +211,8 @@
   background-repeat: no-repeat;
   animation: 2s ease-in-out toBottom;
 }
-
-.bg-img-light::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(to bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0), rgb(255, 255, 255)), url(/images/rain.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  animation: 2s ease-in-out toBottom;
+.invert-color::before{
+  filter: invert(1);
 }
 
 .animate {

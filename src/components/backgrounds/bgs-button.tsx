@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useTheme } from "../switchers/switchers";
 
 interface ButtonProps {
   text: string;
@@ -8,8 +8,10 @@ interface ButtonProps {
 
 export const Button = (props: ButtonProps) => {
 
+  const { theme } = useTheme();
+
   return (
-    <button id={`scrollButton-${props.index}`} className={`btn-${props.index} bg-white icon-animation py-5 px-14 rounded-full font-bold`}>
+    <button id={`scrollButton-${props.index}`} className={`btn-${props.index} ${theme==='dark' ? 'text-black bg-white' : 'text-white bg-black'} icon-animation py-5 px-14 rounded-full font-bold`}>
       <p className="content-animation">
         {props.text}
       </p>

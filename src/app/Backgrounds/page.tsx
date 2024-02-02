@@ -64,8 +64,8 @@ export default function Backgrounds() {
 
   return (
     <>
-      <article className={`${theme === 'dark' ? 'bg-img-dark' : 'bg-img-light'} 
-        flex flex-col justify-center xl:gap-72 px-36 2xl:h-screen w-full`}>
+      <article className={`bg-img ${ theme==='light' && 'invert-color'}
+      flex flex-col justify-center xl:gap-72 px-36 2xl:h-screen w-full`}>
 
         <PhraseSection language={language} />
 
