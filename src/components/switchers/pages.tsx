@@ -6,7 +6,7 @@ const getInitialPage = () => {
     const savedPage = localStorage.getItem('page');
     return typeof savedPage === 'string' ? savedPage : 'home';
   }
-  return 'home';
+  return '/';
 }
 
 export const usePage = () => {
