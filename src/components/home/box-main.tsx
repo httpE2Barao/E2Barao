@@ -2,8 +2,7 @@ import Image from "next/image";
 import { useTheme } from "../switchers/switchers";
 
 export default function BoxMain() {
-  const { language } = useTheme();
-  const { theme } = useTheme();
+  const { language, theme } = useTheme();
 
   const list = [
     {

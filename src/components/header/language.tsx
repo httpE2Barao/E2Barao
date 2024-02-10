@@ -18,8 +18,8 @@ export default function BasicSelect() {
           onChange={changeLanguage}
           className={`${theme === 'white' ? 'text-white bg-black' : 'text-black bg-white'} rounded-md pl-2`}
         >
-          <MenuItem value="pt-BR">PT</MenuItem>
-          <MenuItem value="en-US">EN</MenuItem>
+          <MenuItem value="pt-BR">Pt</MenuItem>
+          <MenuItem value="en-US">En</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -34,27 +34,31 @@ export const PersonalContent = () => {
 
   return (
     <section id="personal" className={`${theme === 'dark' ? 'text-white' : 'text-black'}
-       flex-col gap-20 p-20 pt-80 mx-auto max-w-[1500px]`}
+       flex-col gap-20 p-4 lg:pt-60 mx-auto max-w-[1430px]
+       pt-20 lg:p-20`}
     >
       {listRoot[0][languageConverted as keyof typeof listRoot[0]].map((item: string[], index: number) => (
         <div
           key={languageConverted + index}
           ref={index === 0 ? ref0 : index === 1 ? ref1 : ref2}
-          className={`grid-container-${index} mb-52 mx-auto ${addAnimationClass(index)}`}
+          className={`max-sm:text-center grid-container g-container-${index} mb-52 mx-auto xl:pb-32 ${addAnimationClass(index)}
+          `}
         >
-          <h1 className={`grid-title-${index} 2xl:text-7xl pb-8 tracking-wider max-w-[900px]`}
+          <h1 className={`gradient-title ${theme==='dark' ? `gradient-title-black-${index}` : `gradient-title-white-${index}` } 
+          text-2xl md:text-4xl lg:text-6xl lg:pb-8 tracking-wider max-w-[900px] 
+          `}
           >{item[0]}</h1>
 
           {index === 0
-            && <p className="grid-span">
+            && <p className="grid-span md:text-left lg:text-base xl:text-lg 2xl:text-2xl">
               {item[3]}</p>
           }
 
-          <p className={``}
+          <p className={`md:grid-cols-2 md:text-left lg:pt-5 lg:text-base xl:text-lg 2xl:text-2xl`}
           >{item[2]}</p>
 
           <Image src={`/images/${item[1]}`}
-            className={`grid-img-${index} rounded-xl ${addAnimationClass(index)}`}
+            className={`grid-img g-img-${index} rounded-xl ${addAnimationClass(index)}`}
             alt={item[1]} width={700} height={700} />
 
         </div>

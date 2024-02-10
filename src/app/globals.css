@@ -10,6 +10,14 @@
   --verde: #00FF1A;
   --amarelo: #FFC700;
 }
+
+@media screen and (min-width: 768px) {
+  html {
+    width: calc(100vw - 17px);
+    overflow-x: hidden;
+  }
+}
+
 body {
   background: #000;
 }

@@ -1,13 +1,11 @@
-"use client"
 import React from "react";
 import { Logo } from "./logo";
 import { Nav } from "./nav";
-import { usePage } from "@/components/switchers/pages";
 
 export const Header = () => {
-
   return (
-    <header className={`px-10 py-10 z-50 flex items-center justify-between`}>
+    <header className={`p-5 z-50 flex items-center justify-between w-full
+    2xl:p-10`}>
       <a>
         <Logo />
       </a>

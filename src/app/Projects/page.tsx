@@ -17,7 +17,7 @@ const renderText = (language: string, textObj: { ptBR: string, enUS: string }) =
 };
 
 export default function Projetos() {
-    const {language} = useTheme();
+    const { language } = useTheme();
 
     const projectsList = [
         {

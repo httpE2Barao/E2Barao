@@ -25,7 +25,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <Header />
           {children}
-        </body>
+        </body> 
       </ThemeProvider>
     </html>
   );

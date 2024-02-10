@@ -1,4 +1,3 @@
-"use client"
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,7 +16,7 @@ export const usePage = () => {
 
   useEffect(() => {
     const savedPage = localStorage.getItem('page');
-    setPage(savedPage || 'Home');
+    setPage(savedPage || '');
   }, []);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export const usePage = () => {
     var newPageString = '';
 
     if (newPage == 0) {
-      newPageString = 'Home'
+      newPageString = '/'
     } if (newPage == 1) {
       newPageString = 'Backgrounds'
     } if (newPage == 2){

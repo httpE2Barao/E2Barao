@@ -4,6 +4,7 @@ import { SelectChangeEvent } from "@mui/material";
 import { useLanguage } from "./language";
 import { useColors } from "./colors";
 import { usePage } from "./pages";
+import { useAnimation } from "./animations";
 
 interface ThemeContextProps {
   page: string;

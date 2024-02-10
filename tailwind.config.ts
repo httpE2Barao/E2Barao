@@ -16,6 +16,11 @@ const config: Config = {
         'verde': '#00FF1A',
         'amarelo': 'FFC700',
       },
+      screens: {
+        '2k': '1440px',
+        '4k': '2560px', 
+        'ultrawide': '3300px',
+      }
     },
   },
   plugins: [],
