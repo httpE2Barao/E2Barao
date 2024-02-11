@@ -2,7 +2,7 @@
 import { Button } from "@/components/backgrounds/bgs-button";
 import { PhraseSection } from "@/components/backgrounds/bgs-phrase";
 import { PersonalContent } from "@/components/backgrounds/personal";
-import { ProfessionalContent } from "@/components/backgrounds/professional";
+import { ProfessionalContent } from "@/components/backgrounds/professional/professional";
 import { useTheme } from "@/components/switchers/switchers";
 import { useEffect, useState } from "react";
 

@@ -11,6 +11,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Elias - Dev. Web",
   description: "Portfolio of a Web Developer",
+  icons: "/images/icon-logo.svg"
 };
 
 export default function RootLayout({
@@ -25,7 +26,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <Header />
           {children}
-        </body> 
+        </body>
       </ThemeProvider>
     </html>
   );

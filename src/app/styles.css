@@ -218,7 +218,7 @@
 }
 
 .animate {
-  animation: 1s forwards ease-out toTopScroll;
+  animation: 1.4s forwards ease-out toTopScroll;
 }
 
 @keyframes toTopScroll {

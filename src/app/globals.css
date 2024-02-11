@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   list-style-type: none;
   --azul-main: #00FFFF;
