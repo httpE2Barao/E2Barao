@@ -13,8 +13,8 @@ export const Button: React.FC<ButtonProps> = ({ index, text, onClick }) => {
 
   return (
     <button id={`scrollButton-${index}`} className={`btn-${index} ${theme==='dark' ? 'text-black bg-white' : 'text-white bg-black'} 
-    icon-animation  rounded-full font-bold text-base 
-    py-2 px-4 md:py-4 md:px-8 md:text-xl 2xl:py-7 2xl:px-12 2xl:text-4xl`}>
+    icon-animation  rounded-full font-bold 
+    py-4 px-8 text-xl 2xl:px-12 2xl:text-4xl`}>
       <p className="content-animation">
         {text}
       </p>

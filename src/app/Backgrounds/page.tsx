@@ -65,19 +65,19 @@ export default function Backgrounds() {
   return (
     <>
       <article className={`bg-img ${ theme==='light' && 'invert-color'}
-      flex flex-col justify-evenly h-screen w-full
+      flex flex-col justify-evenly h-[90vh] w-full
       px-5 max-sm:pb-10 sm:px-10 lg:px-36 2xl:gap-72 `}>
 
         <PhraseSection language={language} theme={theme}/>
 
         <section className="slideBottomSlow flex flex-col gap-5 items-center justify-around 
-        sm:gap-10 xl:text-3xl">
+        sm:gap-10 ">
           <h3 className={`${theme === 'dark' ? 'text-white' : 'text-black'} 
-          sm:text-xl lg:text-3xl xl:text-4xl 2xl:text-5xl 4k:text-8xl`}>
+          font-semibold text-3xl xl:text-5xl`}>
             {language === 'pt-BR' ? 'O que deseja saber?' : 'What would you like to know?'}
           </h3>
 
-          <span className="flex gap-10 xl:gap-20">
+          <span className="flex gap-10 xl:gap-20 text-3xl">
             <Button index={0} text={language === 'pt-BR' ? list[0] : list[1]} theme={theme} onClick={() => handleClick('#personal')} />
             <Button index={1} text={language === 'pt-BR' ? list[2] : list[3]} theme={theme} onClick={() => handleClick('#professional')} />
           </span>
