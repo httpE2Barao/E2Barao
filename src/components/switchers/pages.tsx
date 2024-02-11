@@ -24,7 +24,7 @@ export const usePage = () => {
   }, [page])
 
   const changePage = (newPage:number) => {
-    var newPageString = '';
+    var newPageString = '/';
 
     if (newPage == 0) {
       newPageString = '/'
