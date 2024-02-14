@@ -73,11 +73,11 @@ export default function Backgrounds() {
         <section className="slideBottomSlow flex flex-col gap-5 items-center justify-around 
         sm:gap-10 ">
           <h3 className={`${theme === 'dark' ? 'text-white' : 'text-black'} 
-          font-semibold text-3xl xl:text-5xl`}>
+          font-semibold text-2xl xl:text-5xl`}>
             {language === 'pt-BR' ? 'O que deseja saber?' : 'What would you like to know?'}
           </h3>
 
-          <span className="flex gap-10 xl:gap-20 text-3xl">
+          <span className="flex gap-10 xl:gap-20 text-2xl">
             <Button index={0} text={language === 'pt-BR' ? list[0] : list[1]} theme={theme} onClick={() => handleClick('#personal')} />
             <Button index={1} text={language === 'pt-BR' ? list[2] : list[3]} theme={theme} onClick={() => handleClick('#professional')} />
           </span>

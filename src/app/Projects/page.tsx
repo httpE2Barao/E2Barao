@@ -101,8 +101,8 @@ export default function Projetos() {
                 enUS: 'Website about negotiation model'
             }),
             abt: renderText(language, {
-                ptBR: 'Este é um projeto react de um festival musical. Eu criei uma interface moderna e responsiva, utilizando o conceito de "mobile first" para adaptar o layout aos diferentes tamanhos de tela utilizando o figma, depois o implementei com typescript para programar os componentes e as funcionalidades. O objetivo do projeto é mostrar as informações sobre o festival, como as atrações, os ingressos, o mapa do local e também respostas para perguntas frequentes.',
-                enUS: 'This is a react project for a music festival. I created a modern, responsive interface, using the concept of "mobile first" to adapt the layout to different screen sizes using figma, then implemented it with typescript to program the components and functionalities. The aim of the project is to display information about the festival, such as attractions, tickets, a map of the venue and answers to frequently asked questions.'
+                ptBR: 'Este é um projeto react de um festival musical com uma interface moderna e responsiva, utilizando o conceito de "mobile first" para adaptar o layout aos diferentes tamanhos de tela utilizando o figma, depois o implementei com typescript para programar os componentes e as funcionalidades. O objetivo do projeto é mostrar as informações sobre o festival, como as atrações, os ingressos, o mapa do local e também respostas para perguntas frequentes.',
+                enUS: 'This is a react project for a music festival with a modern, responsive interface, using the concept of "mobile first" to adapt the layout to different screen sizes using figma, then implemented it with typescript to program the components and functionalities. The aim of the project is to display information about the festival, such as attractions, tickets, a map of the venue and answers to frequently asked questions.'
             })
         },
         {

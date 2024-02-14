@@ -9,14 +9,14 @@ export default function BasicSelect() {
   const { theme, language, changeLanguage } = useTheme();
 
   return (
-    <Box sx={{ width: 55 }}>
+    <Box sx={{ width: 40 }}>
       <FormControl variant='standard' fullWidth>
         <Select
           id="demo-simple-select"
           label="Language"
           value={language}
           onChange={changeLanguage}
-          className={`${theme === 'white' ? 'text-white bg-black' : 'text-black bg-white'} rounded-md pl-2`}
+          className={`${theme === 'white' ? 'text-white bg-black' : 'text-black bg-white'} md:w-12 rounded-md pl-2`}
         >
           <MenuItem value="pt-BR">Pt</MenuItem>
           <MenuItem value="en-US">En</MenuItem>

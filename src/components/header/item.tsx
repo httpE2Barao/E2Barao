@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { usePage } from "../switchers/pages";
 import { useTheme } from "../switchers/switchers";
 
 interface ItemProps {
@@ -20,7 +18,7 @@ export const ItemNav = (props: ItemProps) => {
         setSelected(props.index)
       }}
       className={` ${selected == props.index && 'bg-azul-claro text-black'}
-      icon-animation-nav px-5 py-3 rounded-lg hover:cursor-pointer`}
+      icon-animation-nav p-3 rounded-lg hover:cursor-pointer`}
     >
       <p className="content-animation-nav">
         {props.item}

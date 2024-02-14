@@ -28,8 +28,10 @@ export default function BoxMain() {
 
   return (
     <div className={`${theme === 'dark' ? 'bg-azul-pastel' : 'bg-azul-claro'} 
-    row-start-1 row-span-2 col-span-4 2xl:col-span-3 py-7 px-14 flex flex-col rounded-2xl min-h-[700px]`}>
-      <h1 className="slideRight text-[#00000090] ml-auto text-7xl pt-[5vh] tracking-wider leading-normal font-extrabold text-right max-w-[1350px]">
+    w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl
+    p-4 lg:py-7 lg:px-14 2xl:col-span-3`}>
+      <h1 className="slideRight text-[#00000090] ml-auto pb-10 tracking-wider leading-normal font-extrabold text-right max-w-[1350px]
+      text-2xl sm:pt-[5vh] lg:text-7xl">
         {language === 'pt-BR' ? PhraseMain[0] : PhraseMain[1]}
       </h1>
       <div className="flex flex-row justify-between mt-auto">
@@ -42,7 +44,7 @@ export default function BoxMain() {
         </span>
         <span className="flex flex-row gap-5 hover:cursor-pointer mt-auto">
           <div
-            className="icon-animation bg-white rounded-full w-[100px] h-[100px] flex items-center"
+            className="icon-animation bg-white rounded-full px-4 lg:w-[100px] lg:h-[100px] flex items-center"
             onClick={() => window.open('https://www.linkedin.com/in/e2barao/', '_blank')}>
             <Image
               className="content-animation mx-auto"
@@ -54,7 +56,7 @@ export default function BoxMain() {
           </div>
           <div
             onClick={() => window.open('https://github.com/httpE2Barao', '_blank')}
-            className="icon-animation bg-white rounded-full w-[100px] h-[100px]">
+            className="icon-animation bg-white rounded-full lg:w-[100px] lg:h-[100px]">
             <Image
               className="content-animation m-auto pt-4 rounded-full p-2"
               src='/images/icon-github.svg'
