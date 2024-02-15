@@ -33,7 +33,7 @@ export const usePage = () => {
     } if (newPage == 2){
       newPageString = 'Projects'
     } if (newPage == 3){
-      newPageString = 'Tecnologies'
+      newPageString = 'Tecs'
     }
 
     console.log(newPage)

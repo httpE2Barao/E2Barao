@@ -47,7 +47,8 @@ export default function BoxSmall(props: BoxProps) {
                 ) : (
                   <>
                   
-                    <button className={` 2xl:hidden
+                    <button 
+                    className={` 2xl:hidden
                     col-span-3 row-start-2 h-24 text-3xl font-bold uppercase text-[#00000080] bg-white rounded-xl
                     hover:bg-black hover:text-white 
                     `}>
