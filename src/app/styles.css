@@ -52,8 +52,8 @@
     transform: translate3d(0, 0, 0);
   }
 }
-.slideTop {
-  animation: .75s ease-in-out toTop;
+.slideTopSlower {
+  animation: 4s ease-in-out toTop;
 }
 .slideTopSlow {
   animation: 2s ease-in-out toTop;
@@ -241,6 +241,16 @@
   background-size: cover;
   background-repeat: no-repeat;
   animation: 2s ease-in-out toBottom;
+}
+
+.invert-color {
+  transition: filter .2s;
+
+}
+
+.invert-color:hover {
+  filter: invert(1);
+  transition: filter .2s;
 }
 
 .invert-color::before {

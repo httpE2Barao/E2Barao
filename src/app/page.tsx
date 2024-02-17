@@ -16,9 +16,9 @@ const BoxesSmall = dynamic(
 export default function Home() {
 
   return (
-    <main className="px-5 pb-5">
-      <section className="grid grid-cols-4 grid-rows-2 gap-6 inset-0
-       2xl:grid-col-2 2xl:grid-row-4 ">
+    <main className="px-1.5 md:px-5 pb-5">
+      <section className="grid grid-col-2 gap-6 inset-0 justify-items-stretch
+        2xl:grid-row-4 ">
         <BoxMain />
         <BoxesSmall />
       </section>
