@@ -18,6 +18,7 @@
 }
 
 @media screen and (max-width: 1024px) {
+
   .home-abt-0,
   .home-abt-1 {
     font-size: 90%;
@@ -52,9 +53,11 @@
     transform: translate3d(0, 0, 0);
   }
 }
+
 .slideTopSlower {
   animation: 4s ease-in-out toTop;
 }
+
 .slideTopSlow {
   animation: 2s ease-in-out toTop;
 }
@@ -91,23 +94,8 @@
   }
 }
 
-.icon-animation {
-  transition: background-color .3s, transform .2s;
-}
-
 .content-animation {
   transition: transform .2s;
-}
-
-.icon-animation:hover {
-  color: black;
-  background-color: #00FFFF;
-  transition: background-color .3s, color .3s;
-}
-
-.icon-animation:hover>.content-animation {
-  transform: scale(.8);
-  transition: transform .3s;
 }
 
 .icon-animation-nav {
@@ -117,7 +105,6 @@
 }
 
 .icon-animation-nav:hover {
-  color: black;
   transition: color .4s;
 }
 
@@ -134,7 +121,7 @@
   height: 100%;
   width: 0;
   background-color: #00FFFF;
-  z-index: -1;
+  z-index: -10;
   transition: width 0.3s ease;
 }
 
@@ -232,7 +219,7 @@
 .bg-img::before {
   content: "";
   position: fixed;
-  z-index: -10;
+  z-index: -30;
   top: 0;
   left: 0;
   width: 100vw;
@@ -244,16 +231,25 @@
 }
 
 .invert-color {
-  transition: filter .2s;
-
-}
-
-.invert-color:hover {
   filter: invert(1);
   transition: filter .2s;
 }
 
-.invert-color::before {
+.invert-color-hover {
+  transition: filter .2s;
+}
+
+.invert-color-hover:hover {
+  filter: invert(1);
+  transition: filter .2s;
+}
+
+.invert-color-bg {
+  transition: filter .2s;
+
+}
+
+.invert-color-bg::before {
   filter: invert(1);
 }
 

@@ -26,14 +26,14 @@ export const ProjectLayout = ({ list }: { list: projectInterface[] }) => {
                             </h3>
                             <button
                                 onClick={() => window.open(project.site, '_blank')}
-                                className="sm:text-lg icon-animation sm:h-[50px] px-2 sm:px-5 rounded-full bg-white text-black">
+                                className="sm:text-lg invert-color-hover sm:h-[50px] px-2 sm:px-5 rounded-full bg-white text-black">
                                 <p className="content-animation">
                                     {language === 'pt-BR' ? 'Site' : 'Page'}
                                 </p>
                             </button>
                             <button
                                 onClick={() => window.open(project.repo, '_blank')}
-                                className="sm:text-lg icon-animation sm:h-[50px] px-2 sm:px-10 rounded-full bg-white text-black">
+                                className="sm:text-lg invert-color-hover sm:h-[50px] px-2 sm:px-10 rounded-full bg-white text-black">
                                 <p className="content-animation">
                                     {language === 'pt-BR' ? 'Repositório' : 'Repository'}
                                 </p>

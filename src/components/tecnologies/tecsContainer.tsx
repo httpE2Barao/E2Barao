@@ -17,7 +17,7 @@ const TecsGrid = ({ subList, type }: iTecsGridProps) => (
   <ul className={`grid ${type == 1 ? '' : ''} grid-cols-auto-fill gap-5 items-center`} style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(75px, 1fr))' }}>
     {subList.map((subItem: string, j: number) => (
       <li key={j} className={`${type==1 && 'grid-cols-1'}`}>
-        <Image src={`/images/${subItem}`} alt={subItem} width={100} height={100} className="hover:cursor-pointer invert-color rounded-lg w-24" />
+        <Image src={`/images/${subItem}`} alt={subItem} width={100} height={100} className="hover:cursor-pointer invert-color-hover rounded-lg w-24" />
       </li>
     ))}
   </ul>
@@ -34,7 +34,7 @@ const TecsList = ({ subList }: { subList: string[] }) => (
 );
 
 export const TecsContainer = ({ type }: { type?: number }) => (
-  <section className={`${type==1 ? 'col-span-4': 'grid grid-cols-2 gap-4'}
+  <section className={`${type==1 ? 'col-span-3': 'grid grid-cols-2 gap-4'}
   px-2 
   `}>
     {tecsList.map((item: ITecItem, index: number) => {
@@ -44,8 +44,8 @@ export const TecsContainer = ({ type }: { type?: number }) => (
       }
 
       return (
-        <div key={index} className={`
-        bg-azul-claro p-5 rounded-lg slideTopSlower hover:cursor-default `} >
+        <div key={index} className={`${type != 1 && 'slideTopSlower'} ${item.tecsSrc && 'col-span-2'}
+        bg-azul-claro p-5 rounded-lg hover:cursor-default `} >
           {item.tecsSrc ? (
             <TecsGrid subList={item.tecsSrc} />
           ) : (

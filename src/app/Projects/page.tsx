@@ -72,6 +72,23 @@ export default function Projetos() {
             })
         },
         {
+            src: 'typing-challenge',
+            site: 'https://typing-challenge-theta.vercel.app/',
+            repo: 'https://github.com/httpE2Barao/typing-challenge',
+            name: renderText(language, {
+                ptBR: 'Teste de Digitação',
+                enUS: 'Typing Challenge'
+            }),
+            alt: renderText(language, {
+                ptBR: 'Desafio de Digitação - palavras por minuto',
+                enUS: 'Typing Challenge - words per minute'
+            }),
+            abt: renderText(language, {
+                ptBR: 'Este projeto combina jQuery e Tailwind CSS para criar um desafio de digitação simples. Com um contador regressivo, ele monitora o tempo de digitação e fornece feedback em tempo real sobre erros. O jQuery gerencia interações do usuário, como iniciar e reiniciar o cronômetro. Ele consume uma API externa, apresentando frases aleatórias para digitação e exibe mensagens de erro se necessário. Ao final, registra o desempenho do usuário em um placar, incluindo média de palavras por minuto e número de acertos e erros, permitindo que acompanhe seu progresso.',
+                enUS: "This project combines jQuery and Tailwind CSS to create a simple typing challenge. With a countdown timer, it monitors typing time and provides real-time feedback on errors. jQuery manages user interactions such as starting and restarting the timer. By consuming an external API, it presents random phrases for typing and displays error messages if necessary. At the end, it records the user's performance on a scoreboard, including the average number of words per minute and the number of hits and misses, allowing them to track their progress"
+            })
+        },
+        {
             src: 'sincronario',
             site: 'https://sincronario.vercel.app/',
             repo: 'https://github.com/httpE2Barao/Sincronario',
