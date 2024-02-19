@@ -29,11 +29,11 @@ export const usePage = () => {
     if (newPage == 0) {
       newPageString = '/'
     } if (newPage == 1) {
-      newPageString = 'Backgrounds'
+      newPageString = 'Experiences'
     } if (newPage == 2){
-      newPageString = 'Projects'
-    } if (newPage == 3){
       newPageString = 'Tecs'
+    } if (newPage == 3){
+      newPageString = 'Projects'
     }
 
     console.log(newPage)

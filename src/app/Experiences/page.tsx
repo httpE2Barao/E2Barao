@@ -1,20 +1,22 @@
 "use client"
-import { Button } from "@/components/backgrounds/choices";
+import { Button } from "@/components/backgrounds/buttons";
+import { ChoicesContainer } from "@/components/backgrounds/choices";
 import { PersonalContent } from "@/components/backgrounds/personal";
 import { ProfessionalContent } from "@/components/backgrounds/professional/professional";
+import { ResumeAbt } from "@/components/backgrounds/resume";
 import { PhraseSection } from "@/components/phraseSection";
 import { useTheme } from "@/components/switchers/switchers";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Backgrounds() {
   const { theme, language } = useTheme();
-  const choice = ['Profissional', 'Professional', 'Pessoal', 'Personal'];
   const mainPhrase = language === 'pt-BR' ? 'A vida não é esperar a tempestade passar, é aprender a dançar na chuva.' : `Life isn't about waiting for the storm to pass, it's learning to dance in the rain.`;
 
   const [showPersonalContent, setShowPersonalContent] = useState(false);
   const [showProfessionalContent, setShowProfessionalContent] = useState(false);
 
-  const handleClick = ( targetId:string ) => {
+  const handleClick = (targetId: string) => {
     const smoothScroll = () => {
       const targetElement = document.querySelector(targetId);
 
@@ -32,7 +34,7 @@ export default function Backgrounds() {
       setShowProfessionalContent(false);
     } if (targetId === '#professional') {
       setShowProfessionalContent(true);
-      setShowPersonalContent(false); 
+      setShowPersonalContent(false);
     }
 
     smoothScroll();
@@ -65,28 +67,22 @@ export default function Backgrounds() {
 
   return (
     <>
-      <article className={`bg-img ${ theme==='light' && 'invert-color'}
-      flex flex-col justify-evenly h-[90vh] w-full
+      <article className={`bg-img ${theme === 'light' && 'invert-color-bg'}
+      flex flex-col justify-evenly w-full gap-32
       sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72 `}>
 
-        <PhraseSection phrase={mainPhrase}/>
+        <PhraseSection phrase={mainPhrase} />
 
-        <section className="slideBottomSlow flex flex-col gap-5 items-center justify-around 
-        sm:gap-10 ">
-          <h3 className={`${theme === 'dark' ? 'text-white' : 'text-black'} 
-          font-semibold text-2xl xl:text-5xl`}>
-            {language === 'pt-BR' ? 'O que deseja saber?' : 'What would you like to know?'}
-          </h3>
+        <ResumeAbt theme={theme} language={language}/>
 
-          <span className="flex gap-10 xl:gap-20 text-2xl">
-            <Button index={0} text={language === 'pt-BR' ? choice[0] : choice[1]} theme={theme} onClick={() => handleClick('#personal')} />
-            <Button index={1} text={language === 'pt-BR' ? choice[2] : choice[3]} theme={theme} onClick={() => handleClick('#professional')} />
-          </span>
-        </section>
+        <ChoicesContainer theme={theme} language={language} handleClick={handleClick} />
+
+      </article >
+
+      <article className="pb-32">
+        {showPersonalContent && <PersonalContent />}
+        {showProfessionalContent && <ProfessionalContent />}
       </article>
-
-      {showPersonalContent && <PersonalContent />}
-      {showProfessionalContent && <ProfessionalContent />}
     </>
   );
 }

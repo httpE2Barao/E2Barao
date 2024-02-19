@@ -1,5 +1,4 @@
 "use client"
-import { useEffect } from "react";
 import { useTheme } from "../switchers/switchers"
 import { ItemNav } from "./item"
 
@@ -8,8 +7,8 @@ interface iOptionsNav {
 }
 
 export const OptionsNav = ( props:iOptionsNav ) => {
-  const pt = ['Tragetória', 'Projetos', 'Tecnologias'];
-  const en = ['Backgrounds', 'Projects', 'Hard-skills'];
+  const pt = ['Experiências', 'Tecnologias', 'Projetos'];
+  const en = ['Experiences', 'Hard-skills', 'Projects'];
   const { theme, language, active, changePage } = useTheme()
 
   return (

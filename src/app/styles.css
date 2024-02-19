@@ -125,6 +125,19 @@
   transition: width 0.3s ease;
 }
 
+.seta-animation {
+  animation: 1.23s ease-out alternate-reverse infinite setaAnimation;
+}
+
+@keyframes setaAnimation {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-30px);
+  }
+}
+
 .loader-container {
   position: fixed;
   inset: 0;
@@ -244,13 +257,13 @@
   transition: filter .2s;
 }
 
-.invert-color-bg {
+.invert-color-bg::before {
   transition: filter .2s;
-
 }
 
 .invert-color-bg::before {
   filter: invert(1);
+  transition: filter .2s;
 }
 
 .animate {

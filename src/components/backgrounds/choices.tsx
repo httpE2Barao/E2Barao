@@ -1,23 +1,27 @@
-import { useTheme } from "../switchers/switchers";
+import { Button } from "./buttons";
 
-interface ButtonProps {
-  text: string;
-  index: number;
+interface iChoicesContainer {
   theme: string;
-  onClick: () => void;
+  language: string;
+  handleClick: (targetId: string) => void
 }
 
-export const Button: React.FC<ButtonProps> = ({ index, text, onClick }) => {
+const choice = ['Profissional', 'Professional', 'Pessoal', 'Personal'];
 
-  const { theme } = useTheme();
-
+export const ChoicesContainer = ( props:iChoicesContainer ) => {
   return (
-    <button id={`scrollButton-${index}`} className={`btn-${index} ${theme==='dark' ? 'text-black bg-white' : 'text-white bg-black'} 
-    icon-animation rounded-full font-bold invert-color-hover
-    py-4 px-8 text-xl 2xl:px-12 2xl:text-4xl`}>
-      <p className="content-animation">
-        {text}
-      </p>
-    </button>
-  );
-};
+    <section className="slideBottomSlow mb-20 flex flex-col gap-5 items-center justify-around 
+    sm:gap-10 ">
+      <h3 className={`${props.theme === 'dark' ? 'text-white' : 'text-black'} 
+      font-semibold text-2xl xl:text-5xl`}>
+        {props.language === 'pt-BR' ? 'Ver trajetória:' : 'View background:'}
+      </h3>
+
+      <span className="flex gap-10 xl:gap-20 text-2xl">
+        <Button index={0} text={props.language === 'pt-BR' ? choice[0] : choice[1]} theme={props.theme} onClick={() => props.handleClick('#personal')} />
+        <Button index={1} text={props.language === 'pt-BR' ? choice[2] : choice[3]} theme={props.theme} onClick={() => props.handleClick('#professional')} />
+      </span>
+    </section>
+
+  )
+}
