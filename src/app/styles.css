@@ -4,7 +4,7 @@
 
 .home-abt-0,
 .home-abt-1 {
-  font-size: 2.5rem;
+  font-size: 1.4rem;
   line-height: 1.3em;
   font-weight: 500;
 }
@@ -94,6 +94,30 @@
   }
 }
 
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
+
+.slide-content-0 {
+  animation: slide 20s linear infinite;
+}
+
+.slide-content-1 {
+  animation: slide 20s linear infinite;
+}
+
+.slide-content-2 {
+  animation: slide 20s linear infinite;
+}
+
 .content-animation {
   transition: transform .2s;
 }
@@ -133,6 +157,7 @@
   from {
     transform: translateY(0);
   }
+
   to {
     transform: translateY(-30px);
   }
@@ -241,6 +266,10 @@
   background-size: cover;
   background-repeat: no-repeat;
   animation: 2s ease-in-out toBottom;
+}
+
+.invert-img {
+  transform: scaleY(-1);
 }
 
 .invert-color {

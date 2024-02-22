@@ -9,7 +9,7 @@ import { PhraseSection } from "@/components/phraseSection";
 export default function HardSkills() {
   const boxRef = useRef<HTMLDivElement>(null);
   const { language } = useTheme();
-  const mainPhrase = language === 'pt-BR' ? 'Aquele que tem o PORQUÊ pode enfrentar qualquer COMO.' : 'They who have a WHY can bear almost any HOW.';
+  const mainPhrase = language === 'pt-BR' ? 'Aquele que tem um porquê pode enfrentar qualquer como.' : 'Those who have a why can handle almost any how.';
   const mainPhraseAuthor = 'Friedrich Nietzsche.'
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function HardSkills() {
   const { theme } = useTheme();
 
   return (
-    <article className={``}>
+    <article className={`max-w-[2500px] mx-auto`}>
 
       <PhraseSection phrase={mainPhrase} author={mainPhraseAuthor}/>
 
@@ -29,8 +29,8 @@ export default function HardSkills() {
         <Image
           src={`${theme === 'light' ? '/images/timeline-dark.svg' : '/images/timeline-main.svg'}`}
           alt='html5 css3 sass javascript typescript bootstrap react tailwind next.js jquery mysql'
-          width='1000' height='750'
-          className={`pt-4 pr-2`}
+          width={2500} height={1700}
+          className={`mx-auto pt-4 pr-2`}
         />
       </section>
           

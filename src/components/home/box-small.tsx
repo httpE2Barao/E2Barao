@@ -15,7 +15,8 @@ export default function BoxSmall(props: BoxProps) {
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (boxRef.current) {
+    if (boxRef.current && props.last) {
+    } else if (boxRef.current) {
       VanillaTilt.init(boxRef.current);
     }
   }, []);
@@ -24,21 +25,23 @@ export default function BoxSmall(props: BoxProps) {
     <>
       <div ref={boxRef}
         className={`
-          ${props.bgNone === true && 'hidden bg-transparent p-0 md:block'}
-          ${props.last === true ? 'col-span-4 max-lg:row-start-4' : '2xl:col-start-4 max-md:col-span-2'}
-          bg-azul-claro slideRightSlower justify-center p-5 rounded-2xl 
-          `}
-      >
+      bg-azul-claro slideRightSlower justify-center rounded-2xl
+        ${props.bgNone === undefined && props.last === undefined && 'xl:col-span-2 2xl:col-span-1'}
+        ${props.bgNone === true && 'm-auto hidden bg-transparent p-0 md:block row-start-3'}
+        ${props.last === true
+            ? 'row-start-4 col-span-4 lg:row-start-3 lg:col-span-3 2xl:col-span-2'
+            : 'p-5 max-md:col-span-2'}
+        `}>
         {props.last !== true ? (
           <Image
             src={`/images/img-${props.name}.png`}
-            className='min-w-[110px]'
+            className='min-w-[110px] m-auto'
             alt={props.alt}
-            width={400}
-            height={500}
+            width={475}
+            height={400}
           />
         ) : (
-          <TecsContainer type={1}/>
+          <TecsContainer type={1} />
         )}
       </div>
     </>

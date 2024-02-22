@@ -34,8 +34,8 @@ export const PersonalContent = () => {
 
   return (
     <section id="personal" className={`${theme === 'dark' ? 'text-white' : 'text-black'}
-       flex-col gap-20 p-4 lg:pt-60 mx-auto max-w-[1430px]
-       pt-20 lg:p-20`}
+       flex-col gap-20 p-4 lg:pt-60 mx-auto max-w-[2500px] 
+       pt-20 sm:pr-11 lg:p-20`}
     >
       {listRoot[0][languageConverted as keyof typeof listRoot[0]].map((item: string[], index: number) => (
         <div
@@ -45,7 +45,7 @@ export const PersonalContent = () => {
           `}
         >
           <h1 className={`gradient-title ${theme==='dark' ? `gradient-title-black-${index}` : `gradient-title-white-${index}` } 
-          text-2xl md:text-4xl lg:text-6xl lg:pb-8 tracking-wider max-w-[900px] 
+          text-3xl md:text-4xl lg:text-6xl lg:pb-8 tracking-wider leading-loose
           `}
           >{item[0]}</h1>
 

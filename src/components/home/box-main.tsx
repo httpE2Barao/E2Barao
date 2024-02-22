@@ -29,11 +29,13 @@ export default function BoxMain() {
   return (
     <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} 
     w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl
-    p-4 max-md:gap-20 lg:py-7 lg:px-14 2xl:col-span-3`}>
-      <h1 className="slideRight text-[#00000090] ml-auto pb-10 tracking-wider leading-normal font-extrabold text-right max-w-[1350px]
-      text-2xl sm:pt-[5vh] lg:text-7xl">
+    p-4 md:gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
+
+      <h1 className="slideRight textShadow-xl text-[#00000090] ml-auto p-10 tracking-wider leading-normal font-extrabold text-right max-w-[1350px]
+      text-3xl md:text-4xl xl:text-5xl 4k:text-6xl">
         {language === 'pt-BR' ? PhraseMain[0] : PhraseMain[1]}
       </h1>
+
       <div className="flex flex-row justify-between mt-auto">
         <span>
           {languageData.map((text, index) => (
@@ -42,9 +44,11 @@ export default function BoxMain() {
             </p>
           ))}
         </span>
+
         <span className="flex flex-row gap-5 hover:cursor-pointer mt-auto">
+
           <div
-            className="invert-color-hover bg-white rounded-full px-4 lg:w-[100px] lg:h-[100px] flex items-center"
+            className="invert-color-hover bg-white rounded-full px-4 max-sm:w-16 lg:w-[100px] lg:h-[100px] flex items-center"
             onClick={() => window.open('https://www.linkedin.com/in/e2barao/', '_blank')}>
             <Image
               className="content-animation mx-auto"
@@ -54,9 +58,10 @@ export default function BoxMain() {
               height={45}
             />
           </div>
+
           <div
             onClick={() => window.open('https://github.com/httpE2Barao', '_blank')}
-            className="invert-color-hover bg-white rounded-full lg:w-[100px] lg:h-[100px]">
+            className="invert-color-hover bg-white rounded-full max-sm:w-16 lg:w-[100px] lg:h-[100px]">
             <Image
               className="content-animation m-auto pt-4 rounded-full p-2"
               src='/images/icon-github.svg'

@@ -6,7 +6,7 @@ export const ProfessionalContent = () => {
   const { theme, language } = useTheme();
 
   return (
-    <section id="professional" className={`${theme === 'dark' ? 'text-white' : 'text-black'} mx-auto max-w-[2000px] animate lg:pt-20`}>
+    <section id="professional" className={`${theme === 'dark' ? 'text-white' : 'text-black'} mx-auto max-w-[2500px] animate lg:pt-20`}>
       <Chrono
         items={experiences.map((item, index) => {
           const title = Array.isArray(item.title) ? item.title[0] + item.title[language === 'pt-BR' ? 1 : 2] : item.title;
@@ -35,16 +35,17 @@ export const ProfessionalContent = () => {
         slideItemDuration={4000}
         slideShow
         fontSizes={{
-          cardTitle: '1rem',
+          title: '.7em',
+          cardTitle: '1.2em',
         }}
         theme={{
           primary: '#00FFFF',
           secondary: `${theme === 'dark' ? 'white' : 'black'}`,
           titleColor: `${theme === 'dark' ? 'white' : 'black'}`,
-          cardTitleColor: '#FFC700',
+          cardTitleColor: '#00a5a5',
           cardBgColor: 'white',
           cardForeColor: '#00FFFF',
-          titleColorActive: 'black',
+          titleColorActive: `${theme === 'dark' ? 'black' : 'white'}`,
           cardDetailsColor: 'black',
         }}
       />

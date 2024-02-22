@@ -7,8 +7,8 @@ export const experiences = [
     cardSubtitle: `Ensino fundamental e médio`,
     cardDetailedText: [
       {
-        softSkills: 'Comunicação, Trabalho em equipe, Pesquisa.',
-        hardSkills: 'Ciências Exatas, Humanas, Artes e Inglês.',
+        softSkills: 'Adaptabilidade, Comunicação, Criatividade, Trabalho em equipe, Resolução de problemas.',
+        hardSkills: 'Habilidades matemáticas, escrita, pesquisa e competências em ciências humanas, artes e inglês.',
         description: `Responsável pelo controle e organização das transações financeiras da empresa de ar condicionado, garantindo as informações financeiras que estejam devidamente atualizadas. Atividades incluem verificação diária do valor atualizado pela inflação, atualização do valor no banco de dados, emissão de faturas, entre outras funções como auxiliar na organização dos produtos de saída. Espera-se que demonstre habilidades de organização, atenção aos detalhes, boa comunicação, conhecimento no Excel em sistemas financeiros, e capacidade de trabalho em equipe.`
       },
       {

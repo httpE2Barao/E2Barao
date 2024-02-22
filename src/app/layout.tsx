@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "./styles.css"
 import ThemeProvider from "@/components/switchers/switchers";
-import { MenuNav } from "@/components/menu";
+import { MenuNav } from "@/components/header/menu";
 import { Header } from "@/components/header/header";
 
 const inter = Inter({ subsets: ["latin"] });

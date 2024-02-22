@@ -14,10 +14,11 @@ interface iTecsGridProps {
 
 const TecsGrid = ({ subList, type }: iTecsGridProps) => (
 
-  <ul className={`grid ${type == 1 ? '' : ''} grid-cols-auto-fill gap-5 items-center`} style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(75px, 1fr))' }}>
+  <ul className={`${type == 1 ? '' : '4k:py-10'} grid my-auto gap-5 items-center justify-center`}
+    style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(20px, 5em))'}}>
     {subList.map((subItem: string, j: number) => (
-      <li key={j} className={`${type==1 && 'grid-cols-1'}`}>
-        <Image src={`/images/${subItem}`} alt={subItem} width={100} height={100} className="hover:cursor-pointer invert-color-hover rounded-lg w-24" />
+      <li key={j} className={`${type == 1 && 'grid-cols-1 '}`}>
+        <Image src={`/images/${subItem}`} alt={subItem} width={500} height={500} className={`"hover:cursor-pointer invert-color-hover rounded-lg w-20"`} />
       </li>
     ))}
   </ul>
@@ -34,11 +35,11 @@ const TecsList = ({ subList }: { subList: string[] }) => (
 );
 
 export const TecsContainer = ({ type }: { type?: number }) => (
-  <section className={`${type==1 ? 'col-span-3': 'grid grid-cols-2 gap-4'}
+  <section className={`${type == 1 ? 'col-span-3' : 'grid grid-cols-2 gap-4'}
   px-2 
   `}>
     {tecsList.map((item: ITecItem, index: number) => {
-      
+
       if (type && !item.tecsSrc) {
         return null;
       }
