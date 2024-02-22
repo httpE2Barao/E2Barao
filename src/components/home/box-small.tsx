@@ -25,11 +25,11 @@ export default function BoxSmall(props: BoxProps) {
     <>
       <div ref={boxRef}
         className={`
-      bg-azul-claro slideRightSlower justify-center rounded-2xl
-        ${props.bgNone === undefined && props.last === undefined && 'xl:col-span-2 2xl:col-span-1'}
+      bg-azul-claro slideRightSlower justify-center rounded-2xl 
+        ${props.bgNone === undefined && props.last === undefined && 'xl:col-span-2 2xl:col-span-1 shadow-lg'}
         ${props.bgNone === true && 'm-auto hidden bg-transparent p-0 md:block row-start-3'}
         ${props.last === true
-            ? 'row-start-4 col-span-4 lg:row-start-3 lg:col-span-3 2xl:col-span-2'
+            ? 'row-start-4 col-span-4 lg:row-start-3 lg:col-span-3 2xl:col-span-2 shadow-lg'
             : 'p-5 max-md:col-span-2'}
         `}>
         {props.last !== true ? (

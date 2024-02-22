@@ -35,31 +35,34 @@ export const PersonalContent = () => {
   return (
     <section id="personal" className={`${theme === 'dark' ? 'text-white' : 'text-black'}
        flex-col gap-20 p-4 lg:pt-60 mx-auto max-w-[2500px] 
-       pt-20 sm:pr-11 lg:p-20`}
+       pt-20 max-sm:text-center sm:pr-11 lg:p-20`}
     >
       {listRoot[0][languageConverted as keyof typeof listRoot[0]].map((item: string[], index: number) => (
         <div
           key={languageConverted + index}
           ref={index === 0 ? ref0 : index === 1 ? ref1 : ref2}
-          className={`max-sm:text-center grid-container g-container-${index} mb-52 mx-auto xl:pb-32 ${addAnimationClass(index)}
+          className={`flex-conteiner g-container-${index} mb-52 mx-auto xl:pb-32 ${addAnimationClass(index)}
           `}
         >
           <h1 className={`gradient-title ${theme==='dark' ? `gradient-title-black-${index}` : `gradient-title-white-${index}` } 
-          text-3xl md:text-4xl lg:text-6xl lg:pb-8 tracking-wider leading-loose
+          text-3xl pb-5 md:text-4xl lg:text-6xl lg:pb-8 tracking-wider leading-loose
           `}
           >{item[0]}</h1>
 
           {index === 0
-            && <p className="grid-span md:text-left lg:text-base xl:text-lg 2xl:text-2xl">
+            && <p className="grid-span pb-4 md:text-left lg:text-base xl:text-lg 2xl:text-2xl">
               {item[3]}</p>
           }
 
-          <p className={`md:grid-cols-2 md:text-left lg:pt-5 lg:text-base xl:text-lg 2xl:text-2xl`}
-          >{item[2]}</p>
-
-          <Image src={`/images/${item[1]}`}
-            className={`grid-img g-img-${index} rounded-xl ${addAnimationClass(index)}`}
+          <p className={`md:text-left lg:pt-5 lg:text-base xl:text-lg 2xl:text-2xl`}>
+            
+            <Image src={`/images/${item[1]}`}
+            className={`grid-img g-img-${index} px-3 pt-3 w-1/2 float-start rounded-2xl ${addAnimationClass(index)}`}
             alt={item[1]} width={700} height={700} />
+
+            {item[2]}
+
+          </p>
 
         </div>
       ))}
