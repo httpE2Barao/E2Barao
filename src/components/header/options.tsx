@@ -7,8 +7,8 @@ interface iOptionsNav {
 }
 
 export const OptionsNav = ( props:iOptionsNav ) => {
-  const pt = ['Experiências', 'Tecnologias', 'Projetos'];
-  const en = ['Experiences', 'Hard-skills', 'Projects'];
+  const pt = ['Projetos', 'Experiências', 'Tecnologias'];
+  const en = ['Projects', 'Experiences', 'Hard-skills'];
   const { theme, language, active, changePage } = useTheme()
 
   return (

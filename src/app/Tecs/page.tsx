@@ -20,7 +20,7 @@ export default function HardSkills() {
   const { theme } = useTheme();
 
   return (
-    <article className={`max-w-[2500px] mx-auto`}>
+    <article className={`max-w-[2500px] mx-auto pb-20`}>
 
       <PhraseSection phrase={mainPhrase} author={mainPhraseAuthor}/>
 

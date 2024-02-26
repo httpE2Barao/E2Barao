@@ -31,8 +31,8 @@ export default function BoxMain() {
     w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl shadow-lg
     p-4 md:gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
 
-      <h1 className="slideRight textShadow-xl text-[#00000090] ml-auto p-10 tracking-wider leading-normal font-extrabold text-right max-w-[1350px]
-      text-3xl md:text-4xl xl:text-5xl 4k:text-6xl">
+      <h1 className="slideRight textShadow-xl text-3xl text-[#000000a8] ml-auto p-10 tracking-wider leading-normal font-extrabold text-right py-[8vh] max-w-[1350px] 
+      md:text-4xl xl:text-5xl 4k:text-6xl">
         {language === 'pt-BR' ? PhraseMain[0] : PhraseMain[1]}
       </h1>
 
