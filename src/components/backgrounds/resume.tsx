@@ -1,14 +1,21 @@
+import { useTheme } from "../switchers/switchers";
+
 interface iResumeAbt {
   theme: string;
   language: string;
 }
 
 export const ResumeAbt = (props: iResumeAbt) => {
+
+  const {language} = useTheme();
+
   return (
     <section id="resume-abt" className={`${props.theme === 'dark' ? 'text-white' : 'text-black'}
-    text-center px-4 py-10 pt-40 mx-auto max-w-[1750px]`}>
+    text-center text-xl px-4 py-10 pt-40 mx-auto max-w-[1750px]`}>
       <p>
-        Como desenvolvedor web, minha paixão pela tecnologia desde a infância me impulsiona a criar soluções inovadoras e eficientes. Com expertise em design e front-end, trabalho com as mais modernas tecnologias para oferecer resultados de alta qualidade. Estou comprometido com a aprendizagem contínua e a resolução proativa de desafios, buscando sempre superar expectativas e contribuir para o sucesso de projetos dinâmicos e desafiadores.
+        {language==='pt-BR' 
+        ? 'A paixão pela tecnologia que se manifesta desde a infância continua, domino as ferramentas e linguagens de front-end mais modernas para criar soluções inovadoras e de alta qualidade. Com um olhar atento às últimas tendências e tecnologias, trabalho de forma proativa e dedicada, buscando aprimorar minhas habilidades e conhecimentos continuamente. Procurando um desenvolvedor web que vai além das expectativas? Entre em contato comigo e vamos juntos transformar a realidade digital!' 
+        : 'My lifelong passion for technology fuels my expertise in mastering the latest front-end tools and languages, allowing me to deliver innovative and high-quality solutions. I proactively monitor industry trends and technologies, working with dedication and perseverance to continuously enhance my skills and knowledge.'}
       </p>
     </section>
   )

@@ -80,12 +80,12 @@ export const experiences = [
       {
         softSkills: 'Organização, Atenção aos detalhes, Comunicação, Proatividade.',
         hardSkills: 'Inglês, Espanhol, Competência em sistemas financeiros e Excel.',
-        description: [`Realizei o controle e organização das informações financeiras da empresa e outras funções administrativas relacionadas, garantindo a organização e a flexibilidade.`, `Identifiquei e corrigi inconsistências nos relatórios financeiros, garantindo a precisão das informações.`, `Implementei um novo sistema de organização, otimizando o tempo de pesquisa e atualização do valor no banco de dados em 200%.`]
+        description: [`Realizei o controle e organização das informações financeiras da empresa e outras funções administrativas relacionadas, garantindo a organização e a flexibilidade.`, `Identifiquei e corrigi inconsistências nos relatórios financeiros, garantindo a precisão das informações.`, `Implementei um novo sistema de organização, triplicando a otimização do tempo de pesquisa e atualização do valor.`]
       },
       {
         softSkills: 'Organization, Attention to detail, Communication, Proactivity.',
         hardSkills: 'English, Spanish, Competence in financial systems and Excel.',
-        description: ["Controlled and organized the company's financial information and other related administrative functions, ensuring organization and flexibility.","Identified and corrected inconsistencies in financial reports, ensuring accuracy of information.","Implemented a new organization system, optimizing research time and database value update by 200%."]
+        description: ["Controlled and organized the company's financial information and other related administrative functions, ensuring organization and flexibility.","Identified and corrected inconsistencies in financial reports, ensuring accuracy of information.","Successfully implemented a new organization system that tripled the optimization of research and value update time."]
       },
     ]
   },

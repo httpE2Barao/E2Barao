@@ -5,6 +5,7 @@ import { experiences } from "./experiences";
 
 export const ProfessionalContent = () => {
   const { theme, language } = useTheme();
+  const cardDatailedTextIndex = language === 'pt-BR' ? 0 : 1;
 
   return (
     <section
@@ -26,34 +27,28 @@ export const ProfessionalContent = () => {
           const cardDetailedText = Array.isArray(item.cardDetailedText)
             ? (
               <div>
-                {language === 'pt-BR' && (
-                  <>
-                    <p>
-                      <b>Soft Skills:</b> {item.cardDetailedText[0].softSkills}
-                    </p>
-                    <p>
-                      <b>Hard Skills:</b> {item.cardDetailedText[0].hardSkills}
-                    </p>
-                    <br />
-                    <ul>
-                      {Array.isArray(item.cardDetailedText[0].description) ? (
-                        item.cardDetailedText[0].description.map((desc, idx) => (
-                          <>
-                            <li key={idx}><b>~</b>{desc}</li><br />
-                          </>
-                        ))
-                      ) : (
-                        <>
-                          <li><b>~</b>{item.cardDetailedText[0].description}</li><br />
-                        </>
-                      )}
-                    </ul>
-                    <br />
-                  </>
-                )}
+                <p>
+                  <b>Soft Skills:</b> {item.cardDetailedText[cardDatailedTextIndex].softSkills}
+                </p>
+                <p>
+                  <b>Hard Skills:</b> {item.cardDetailedText[cardDatailedTextIndex].hardSkills}
+                </p>
+                <br />
+                <ul>
+                  {Array.isArray(item.cardDetailedText[cardDatailedTextIndex].description) ? (
+                    item.cardDetailedText[cardDatailedTextIndex].description.map((desc: string, idx: number) => (
+                      <li key={idx}><b>~</b>{desc}</li>
+                    ))
+                  ) : (
+                    <li><b>~</b>{item.cardDetailedText[cardDatailedTextIndex].description}</li>
+                  )}
+
+                </ul>
+                <br />
               </div>
             )
             : item.cardDetailedText;
+
 
           return {
             title,
@@ -84,6 +79,6 @@ export const ProfessionalContent = () => {
           cardDetailsColor: "black",
         }}
       />
-    </section>
+    </section >
   );
 };

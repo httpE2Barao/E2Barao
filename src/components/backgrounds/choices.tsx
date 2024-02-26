@@ -13,7 +13,7 @@ export const ChoicesContainer = ( props:iChoicesContainer ) => {
     <section className="slideBottomSlow mb-20 flex flex-col gap-5 items-center justify-around 
     sm:gap-10 ">
       <h3 className={`${props.theme === 'dark' ? 'text-white' : 'text-black'} 
-      font-semibold text-2xl xl:text-4xl`}>
+      font-semibold text-2xl 2xl:text-4xl`}>
         {props.language === 'pt-BR' ? 'Ver trajetória:' : 'View background:'}
       </h3>
 

@@ -20,8 +20,8 @@ export default function BoxMain() {
   ];
 
   const PhraseMain = [
-    'A colaboração entre as pessoas é o que torna a tecnologia poderosa.',
-    'Collaboration between people is what makes technology powerful.'
+    ['Faça o que você ama,', <br />, 'ame o que você faz!'],
+    ['Do what you love,', <br />, 'love what you do!']
   ];
 
   const languageData = language === 'pt-BR' ? list[0].ptBR : list[0].enUS;
@@ -31,9 +31,14 @@ export default function BoxMain() {
     w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl shadow-lg
     p-4 md:gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
 
-      <h1 className="slideRight textShadow-xl text-3xl text-[#000000a8] ml-auto p-10 tracking-wider leading-normal font-extrabold text-right py-[8vh] max-w-[1350px] 
-      md:text-4xl xl:text-5xl 4k:text-6xl">
-        {language === 'pt-BR' ? PhraseMain[0] : PhraseMain[1]}
+      <h1 className="slideRight textShadow-xl text-2xl text-[#000000a8] tracking-widest leading-normal font-extrabold py-[8vh]
+      md:text-4xl xl:text-5xl 2k:text-4xl 2xl:text-5xl 4k:text-6xl w-full flex flex-col justify-between">
+        <span className="text-left">
+          {language === 'pt-BR' ? PhraseMain[0][0] : PhraseMain[1][0]}<br/>
+        </span>
+        <span className="text-right lg:pt-10">
+          {language === 'pt-BR' ? PhraseMain[0][2] : PhraseMain[1][2]}
+        </span>
       </h1>
 
       <div className="flex flex-row justify-between mt-auto">
