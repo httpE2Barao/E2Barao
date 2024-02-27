@@ -10,7 +10,7 @@ interface ITecItem {
 const TecsList = ({ subList }: { subList: string[] }) => (
   <ul className="grid grid-cols-2 gap-3">
     {subList.map((subItem: string, j: number) => (
-      <li key={j} className="">
+      <li key={j}>
         {subItem}
       </li>
     ))}
@@ -19,8 +19,7 @@ const TecsList = ({ subList }: { subList: string[] }) => (
 
 export const TecsContainer = ({ type }: { type?: number }) => (
   <section className={`${type == 1 ? 'col-span-3 grid-rows-1' : 'grid-cols-2 gap-4'}
-  grid px-2 items-center
-  `}>
+  grid px-2 items-center`}>
     {tecsList.map((item: ITecItem, index: number) => {
 
       if (type && !item.tecsSrc) {

@@ -25,6 +25,10 @@
   }
 }
 
+.flash {
+  opacity: initial;
+  transition: .3s opacity;
+}
 
 .slideRight {
   animation: .75s ease-in-out toRight;

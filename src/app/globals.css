@@ -5,7 +5,7 @@
 :root {
   list-style-type: none;
   --azul-main: #00FFFF;
-  --azul-pastel: #8FFFFF;
+  --azul-fundo: #8FFFFF;
   --verde: #00FF1A;
   --amarelo: #FFC700;
   overflow-x: hidden;
