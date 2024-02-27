@@ -22,7 +22,7 @@ export const ItemNav = (props: ItemProps) => {
       ${props.menuStyle && 'p-5'}
       ${selected == props.index && 'bg-azul-claro text-black'}
       ${props.menuStyle 
-        ? (selected != props.index && (theme==='dark' ? 'text-dark' : 'text-white'))
+        ? (selected != props.index && (theme==='dark' && 'text-dark'))
         : (selected != props.index && (theme==='dark' ? 'text-white' : 'text-dark'))
       }
       hover:text-black icon-animation-nav p-3 rounded-lg hover:cursor-pointer`}>

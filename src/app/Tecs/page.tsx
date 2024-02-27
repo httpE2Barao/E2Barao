@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { useTheme } from "@/components/switchers/switchers";
 import Image from "next/image";
 import VanillaTilt from "vanilla-tilt";
-import { TecsContainer } from "@/components/tecnologies/tecsContainer";
+import { TecsContainer } from "@/components/tecnologies/tecs-container";
 import { PhraseSection } from "@/components/phraseSection";
 
 export default function HardSkills() {

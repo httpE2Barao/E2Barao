@@ -1,3 +1,4 @@
+"use client"
 import { useTheme } from "../switchers/switchers";
 import BoxSmall from "./box-small";
 
@@ -26,7 +27,7 @@ export default function BoxesSmall() {
       <BoxSmall
         name={'dev'}
         alt={'Developer | Desenvolvedor'}
-        key={'img-dev'+ 1}
+        key={'img-home-dev'}
         bgNone={true}
       />
       {languageData.map((subArray, index) => (

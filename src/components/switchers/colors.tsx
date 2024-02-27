@@ -14,7 +14,7 @@ export const useColors = () => {
   useEffect(() => {
     const body = document.querySelector('body');
     if (body) {
-      body.style.backgroundColor = theme === 'light' ? '#ffffff' : '#000000';
+      body.style.backgroundColor = theme === 'light' ? '#ccfbf1' : '#000000';
     }
   }, [theme]);
 
