@@ -263,8 +263,20 @@
   animation: 2s ease-in-out toBottom;
 }
 
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.invisible {
+  visibility: hidden;
+  opacity: 0;
+}
+
+
 .invert-img {
   transform: scaleY(-1);
+  transition: display 2s;
 }
 
 .invert-color {

@@ -6,7 +6,7 @@ import { ProfessionalContent } from "@/components/backgrounds/professional/profe
 import { ResumeAbt } from "@/components/backgrounds/resume";
 import { PhraseSection } from "@/components/phraseSection";
 import { useTheme } from "@/components/switchers/switchers";
-import Image from "next/image";
+import { ToTheTopButton } from "@/components/toTopBtn";
 import { useEffect, useState } from "react";
 
 export default function Backgrounds() {
@@ -69,13 +69,14 @@ export default function Backgrounds() {
     <>
       <article className={`bg-img ${theme === 'light' && 'invert-color-bg'}
       flex flex-col justify-evenly w-full gap-32
-      sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72 `}>
+      sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72`}>
 
-        <PhraseSection phrase={mainPhrase} handleClick={handleClick}/>
+        <PhraseSection phrase={mainPhrase} handleClick={handleClick} />
 
         <ResumeAbt theme={theme} language={language} />
 
         <ChoicesContainer theme={theme} language={language} handleClick={handleClick} />
+
 
       </article >
 

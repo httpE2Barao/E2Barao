@@ -6,6 +6,7 @@ import "./styles.css"
 import ThemeProvider from "@/components/switchers/switchers";
 import { MenuNav } from "@/components/header/menu";
 import { Header } from "@/components/header/header";
+import { ToTheTopButton } from "@/components/toTopBtn";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +25,11 @@ export default function RootLayout({
   return (
     <html lang={'pt-BR'}>
       <ThemeProvider>
-        <body className={inter.className}>
+        <body className={`${inter.className} relative`}>
           <Header />
           {children}
           <MenuNav />
+          <ToTheTopButton />
         </body>
       </ThemeProvider>
     </html>

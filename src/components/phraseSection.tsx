@@ -27,7 +27,7 @@ export const PhraseSection = (props: SectionProps) => {
           : <Image src='/images/icon-down-arrow.png' alt="seta pra baixo" width={50} height={50}
             className={`${theme === 'dark' && 'invert-color'} seta-animation mx-auto hover:cursor-pointer`} 
             onClick={() => {
-              props.handleClick ? props.handleClick('#resume-abt') : ''
+              props.handleClick && props.handleClick('#resume-abt')
             }}/>
         }
 
