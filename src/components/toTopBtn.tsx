@@ -32,7 +32,7 @@ export const ToTheTopButton = () => {
 
   return (
     <div
-      className={`invert-img sticky bottom-5 right-5 ml-auto w-fit p-5 bg-azul-claro ring-2 ring-black rounded-full hover:cursor-pointer 
+      className={`invert-img sticky bottom-5 right-5 ml-auto w-fit p-5 bg-azul-claro ring-2 ring-black rounded-full hover:cursor-pointer overflow-hidden
       ${theme==='dark' ? 'ring-black' : 'ring-white'}
       ${isVisible ? 'visible' : 'invisible'}`}
       onClick={scrollToTop}
@@ -42,7 +42,7 @@ export const ToTheTopButton = () => {
         src={'/images/icon-down-arrow.png'}
         alt="ir para o topo"
         width={100}
-        height={100}
+        height={50}
         style={{ transform: 'scaleX(-1)' }}
         className="seta-animation pt-5 w-10 max-w-20"
       />

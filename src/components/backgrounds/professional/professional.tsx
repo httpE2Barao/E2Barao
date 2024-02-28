@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Chrono } from "react-chrono";
 import { useTheme } from "../../switchers/switchers";
@@ -36,13 +37,12 @@ export const ProfessionalContent = () => {
                 <br />
                 <ul>
                   {Array.isArray(item.cardDetailedText[cardDatailedTextIndex].description) ? (
-                    item.cardDetailedText[cardDatailedTextIndex].description.map((desc: string, idx: number) => (
+                    Array.from(item.cardDetailedText[cardDatailedTextIndex].description).map((desc: string, idx: number) => (
                       <li key={idx}><b>~</b>{desc}</li>
                     ))
                   ) : (
                     <li><b>~</b>{item.cardDetailedText[cardDatailedTextIndex].description}</li>
                   )}
-
                 </ul>
                 <br />
               </div>

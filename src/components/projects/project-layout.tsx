@@ -1,3 +1,4 @@
+"use client"
 import { useState } from 'react';
 import { projectInterface } from "@/app/Projects/page";
 import { useTheme } from "../switchers/switchers";

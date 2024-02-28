@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import { useTheme } from "../switchers/switchers";
-import { BoxMainPhase } from "./box-phase";
+import { BoxMainPhrase } from "./box-phrase";
 
 export default function BoxMain() {
   const { language, theme } = useTheme();
@@ -24,7 +24,7 @@ export default function BoxMain() {
   return (
     <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl shadow-lg p-4 md:gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
 
-      <BoxMainPhase language={language} />
+      <BoxMainPhrase language={language} />
 
       {/* Apresentação */}
       <div className="flex max-sm:flex-col justify-between mt-auto font-extrabold pr-4">

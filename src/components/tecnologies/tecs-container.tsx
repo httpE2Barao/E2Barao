@@ -27,7 +27,7 @@ export const TecsContainer = ({ type }: { type?: number }) => (
       }
 
       return (
-        <div key={index} className={`${type != 1 && 'slideTopSlower bg-azul-claro'} ${item.tecsSrc && 'col-span-2'}
+        <div key={index} className={`${type != 1 && !item.tecsSrc && 'slideTopSlower bg-azul-claro'} ${item.tecsSrc && 'col-span-2'}
         p-5 rounded-lg hover:cursor-default`} >
           {item.tecsSrc ? (
             <TecsGrid subList={item.tecsSrc} type={type} />

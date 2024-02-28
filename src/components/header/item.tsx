@@ -20,7 +20,7 @@ export const ItemNav = (props: ItemProps) => {
       }}
       className={`
       ${props.menuStyle && 'p-5'}
-      ${selected == props.index && 'bg-azul-claro text-black'}
+      ${selected == props.index && (theme==='dark' ? 'bg-white text-black' : 'bg-azul-claro')}
       ${props.menuStyle 
         ? (selected != props.index && (theme==='dark' && 'text-dark'))
         : (selected != props.index && (theme==='dark' ? 'text-white' : 'text-dark'))
