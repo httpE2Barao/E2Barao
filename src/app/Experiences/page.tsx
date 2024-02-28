@@ -77,7 +77,6 @@ export default function Backgrounds() {
 
         <ChoicesContainer theme={theme} language={language} handleClick={handleClick} />
 
-
       </article >
 
       <article className="pb-32">

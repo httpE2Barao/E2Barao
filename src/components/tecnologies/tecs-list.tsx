@@ -23,7 +23,7 @@ export const tecsList = [
     tecsSrc: [
       'img-javascript.png',
       'img-react.png',
-      'img-typeScript.png',
+      'img-typescript.png',
       'img-tailwind.png',
       'img-nextjs.png',
       'img-bootstrap.png',
