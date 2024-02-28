@@ -90,7 +90,7 @@ export const experiences = [
     ]
   },
   {
-    title: ['2020 - 2022 ', '(~12 meses)', '(~12 months)'],
+    title: ['2022 - 2023 ', '(~12 meses)', '(~12 months)'],
     cardTitle: 'Alura',
     cardSubtitle: ['Cursos de tecnologia online', 'Online technology courses'],
     url: 'https://cursos.alura.com.br/user/elias-barao',

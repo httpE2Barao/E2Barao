@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
-import { Header } from "./header/header";
-import { useTheme } from "./switchers/switchers";
+import { Header } from "../header/header";
+import { useTheme } from "../switchers/switchers";
 
 interface LoaderProps {
   selector: string;

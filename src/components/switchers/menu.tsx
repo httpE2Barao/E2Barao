@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 
-
 export const useMenu = () => {
-  const [active, setActive] = useState(false);
+  const [isMenuActive, setMenuActive] = useState(false);
 
-  const changeState = () => {
-    setActive(!active);
-    console.log(`Menu aberto?: ${active}`)
+  const changeMenuState = () => {
+    setMenuActive(!isMenuActive);
+    console.log(`Menu aberto?: ${isMenuActive}`)
   };
 
   useEffect(() => {
-    localStorage.setItem('state', JSON.stringify(active));
-  }, [active]);
+    localStorage.setItem('state', JSON.stringify(isMenuActive));
+  }, [isMenuActive]);
 
-  return { active, changeState };
+  return { isMenuActive, changeMenuState };
 };

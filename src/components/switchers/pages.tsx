@@ -11,7 +11,7 @@ const getInitialPage = () => {
 
 export const usePage = () => {
   const [page, setPage] = useState(getInitialPage);
-  const [selected, setSelected] = useState(null)
+  const [pageSelected, setPageSelected] = useState(null)
   const router = useRouter();
 
   useEffect(() => {
@@ -36,11 +36,11 @@ export const usePage = () => {
       newPageString = 'Tecs'
     }
 
-    console.log(newPage)
+    setPageSelected(pageSelected)
     router.push(newPageString);
     setPage(newPageString);
     localStorage.setItem('page', page);
   };
 
-  return { page, changePage, selected, setSelected };
+  return { page, changePage, pageSelected, setPageSelected };
 };

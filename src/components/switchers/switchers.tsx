@@ -7,18 +7,20 @@ import { usePage } from "./pages";
 import { useMenu } from "./menu";
 
 interface ThemeContextProps {
-  page: string;
-  selected: number | null;
+  language: string;
+  changeLanguage: (event: SelectChangeEvent<string>) => void;
+
   theme: string;
-  active: boolean;
   mainTheme: string;
   altTheme: string;
-  language: string;
-  setSelected: any;
   toggleTheme: () => void;
+
+  page: string;
+  pageSelected: number | null;
   changePage: ( page:number ) => void;
-  changeLanguage: (event: SelectChangeEvent<string>) => void;
-  changeState: () => void
+  
+  isMenuActive: boolean;
+  changeMenuState: () => void
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
@@ -34,13 +36,13 @@ export const useTheme = () => {
 };
 
 const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { page, selected, changePage, setSelected } = usePage();
-  const { language, changeLanguage } = useLanguage();
   const { theme, mainTheme, altTheme, toggleTheme } = useColors();
-  const { active, changeState } = useMenu();
+  const { page, pageSelected, changePage } = usePage();
+  const { language, changeLanguage } = useLanguage();
+  const { isMenuActive, changeMenuState } = useMenu();
 
   return (
-    <ThemeContext.Provider value={{ page, selected, theme, language, mainTheme, altTheme, active, setSelected, toggleTheme, changePage, changeLanguage, changeState, }}>
+    <ThemeContext.Provider value={{ page, pageSelected, language, theme, mainTheme, altTheme, isMenuActive, toggleTheme, changePage, changeLanguage, changeMenuState, }}>
       {children}
     </ThemeContext.Provider>
   );

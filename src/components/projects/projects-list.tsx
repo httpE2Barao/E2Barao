@@ -1,11 +1,24 @@
+export interface projectInterface {
+  src: string,
+  name: string,
+  alt: string,
+  abt: string,
+  site: string,
+  repo: string,
+  tags?: string | string[],
+}
+
 export const projectsList = (language: string) => {
   const renderText = (textObj: { ptBR: string, enUS: string }) => {
     return language === 'pt-BR' ? textObj.ptBR : textObj.enUS;
   };
 
+  // tags = javascript, react, typescript, tailwind, nextjs, bootstrap, jquery, github, figma, uiux, styledcomponents, sass, html, css.
+
   return [
     {
       src: 'space-tourism',
+      tags: ['typescript', 'react', 'tailwind', 'html', 'css',],
       site: 'https://turismo-espacial-xi.vercel.app/',
       repo: 'https://github.com/httpE2Barao/SpaceTourism',
       name: renderText({
@@ -23,6 +36,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'negociacoes',
+      tags: '',
       site: 'https://negocicoes.vercel.app/dist/index.html',
       repo: 'https://github.com/httpE2Barao/Code-study/tree/main/TypeScript/Negocia%C3%A7%C3%B5es',
       name: renderText({
@@ -40,6 +54,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'serenatto-cafe',
+      tags: '',
       site: 'https://serenatto-ebon.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto',
       name: renderText({
@@ -57,6 +72,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'typing-challenge',
+      tags: '',
       site: 'https://typing-challenge-theta.vercel.app/',
       repo: 'https://github.com/httpE2Barao/typing-challenge',
       name: renderText({
@@ -74,6 +90,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'stopwatch',
+      tags: '',
       site: 'https://stopwatch-react-app0.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Stopwatch-react-app',
       name: renderText({
@@ -91,6 +108,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'bank',
+      tags: '',
       site: 'https://httpe2barao.github.io/MoniBank/pages/abrir-conta-form.html',
       repo: 'https://github.com/httpE2Barao/MoniBank',
       name: renderText({
@@ -108,6 +126,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'newsletter',
+      tags: '',
       site: 'https://newslettertailwind.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Newsletter',
       name: renderText({
@@ -125,6 +144,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'cep-autocomplete',
+      tags: '',
       site: 'https://cep-auto-complete.vercel.app/',
       repo: 'https://github.com/httpE2Barao/CEP_auto-complete',
       name: renderText({
