@@ -13,7 +13,7 @@ export const Nav = () => {
       
       <OptionsNav />
       
-      <Utils theme={theme} toggleTheme={toggleTheme} />
+      <Utils theme={theme} toggleTheme={toggleTheme}/>
     </nav>
   );
 };

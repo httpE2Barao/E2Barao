@@ -9,7 +9,7 @@ interface iOptionsNav {
 export const OptionsNav = (props: iOptionsNav) => {
   const pt = ['Projetos', 'Experiências', 'Tecnologias'];
   const en = ['Projects', 'Experiences', 'Hard-skills'];
-  const { theme, language, isMenuActive, pageSelected, changePage } = useTheme()
+  const { theme, language, isMenuActive, pageSelected, changePage, handleBack } = useTheme()
 
   return (
     <div className={`${props.menuStyle ? 'nav-menu flex-col gap-10 m-7 ' : 'md:flex hidden'} ${isMenuActive ? 'flex' : 'hidden'}
@@ -17,10 +17,10 @@ export const OptionsNav = (props: iOptionsNav) => {
     `}>
       {language === 'pt-BR'
         ? pt.map((item, index) => (
-          <ItemNav key={index} item={item} index={index} theme={theme} menuStyle={props.menuStyle} pageSelected={pageSelected} changePage={changePage} />
+          <ItemNav key={index} item={item} index={index} theme={theme} menuStyle={props.menuStyle} pageSelected={pageSelected} changePage={changePage} resetProject={handleBack}/>
         ))
         : en.map((item, index) => (
-          <ItemNav key={index} item={item} index={index} theme={theme} menuStyle={props.menuStyle} pageSelected={pageSelected} changePage={changePage} />
+          <ItemNav key={index} item={item} index={index} theme={theme} menuStyle={props.menuStyle} pageSelected={pageSelected} changePage={changePage} resetProject={handleBack}/>
         ))}
     </div>
   )

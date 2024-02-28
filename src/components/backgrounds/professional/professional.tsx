@@ -9,11 +9,7 @@ export const ProfessionalContent = () => {
   const cardDatailedTextIndex = language === 'pt-BR' ? 0 : 1;
 
   return (
-    <section
-      id="professional"
-      className={`${theme === "dark" ? "text-white" : "text-black"
-        } mx-auto max-w-[2500px] animate lg:pt-20`}
-    >
+    <section id="professional" className={`${theme === "dark" ? "text-white" : "text-black"} pt-20 mx-auto max-w-[2500px] animate lg:pt-20`}>
       <Chrono
         items={experiences.map((item, index) => {
           const title = Array.isArray(item.title)

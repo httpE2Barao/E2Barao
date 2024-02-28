@@ -23,8 +23,7 @@ export function Loader(props: LoaderProps): JSX.Element {
 
   return (
     <div className={`loader-container ${loaded ? 'hidden' : ''} ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}>
-      <Header />
-      <div className="loader"></div>
+      <span className="loader"></span>
     </div>
   );
 }

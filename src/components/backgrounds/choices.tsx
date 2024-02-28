@@ -10,7 +10,7 @@ const choice = ['Profissional', 'Professional', 'Pessoal', 'Personal'];
 
 export const ChoicesContainer = ( props:iChoicesContainer ) => {
   return (
-    <section className="slideBottomSlow mb-20 flex flex-col gap-5 items-center justify-around 
+    <section className="mb-20 flex flex-col gap-5 items-center justify-around 
     sm:gap-10 ">
       <h3 className={`${props.theme === 'dark' ? 'text-white' : 'text-black'} 
       font-semibold text-2xl 2xl:text-4xl`}>

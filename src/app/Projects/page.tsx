@@ -1,19 +1,25 @@
 "use client"
-import { Loader } from "@/components/projects/project-loader";
-import { ProjectLayout } from "@/components/projects/project-layout";
-import { projectInterface, projectsList } from "@/components/projects/projects-list";
-import { useTheme } from "@/components/switchers/switchers";
+import React from "react";
 import { OpenedProject } from "@/components/projects/project-opened";
+import { useTheme } from "@/components/switchers/switchers";
+import { projectsList } from "@/components/projects/projects-list";
+import { ProjectLayout } from "@/components/projects/project-layout";
 
 export default function Projetos() {
-    const {language} = useTheme()
-    const list:projectInterface[] = projectsList(language);
+    const { language, isProjectOpened, currentProject, handleBack } = useTheme();
+    const list = projectsList(language);
 
     return (
         <>
-            <Loader selector="#projetos" />
-            <ProjectLayout list={list} />
-            <OpenedProject list={list} />
+            {isProjectOpened === false && <ProjectLayout list={list} />}
+            {isProjectOpened === true && (
+                <OpenedProject
+                    list={list}
+                    project={currentProject}
+                    language={language}
+                    onBack={handleBack}
+                />
+            )}
         </>
     );
 }

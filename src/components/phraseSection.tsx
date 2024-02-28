@@ -30,7 +30,6 @@ export const PhraseSection = (props: SectionProps) => {
               props.handleClick && props.handleClick('#resume-abt')
             }}/>
         }
-
       </section>
     </>
   )

@@ -1,17 +1,17 @@
 "use client"
-import { Button } from "@/components/backgrounds/buttons";
 import { ChoicesContainer } from "@/components/backgrounds/choices";
 import { PersonalContent } from "@/components/backgrounds/personal";
 import { ProfessionalContent } from "@/components/backgrounds/professional/professional";
 import { ResumeAbt } from "@/components/backgrounds/resume";
 import { PhraseSection } from "@/components/phraseSection";
 import { useTheme } from "@/components/switchers/switchers";
-import { ToTheTopButton } from "@/components/toTopBtn";
 import { useEffect, useState } from "react";
 
 export default function Backgrounds() {
   const { theme, language } = useTheme();
-  const mainPhrase = language === 'pt-BR' ? 'A vida não é esperar a tempestade passar, é aprender a dançar na chuva.' : `Life isn't about waiting for the storm to pass, it's learning to dance in the rain.`;
+  const mainPhrase = language === 'pt-BR' 
+  ? 'A vida não é esperar a tempestade passar, é aprender a dançar na chuva.' 
+  : `Life isn't about waiting for the storm to pass, it's learning to dance in the rain.`;
 
   const [showPersonalContent, setShowPersonalContent] = useState(false);
   const [showProfessionalContent, setShowProfessionalContent] = useState(false);

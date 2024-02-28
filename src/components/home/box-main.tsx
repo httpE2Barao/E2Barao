@@ -1,4 +1,5 @@
 "use client"
+import React from "react";
 import Image from "next/image";
 import { useTheme } from "../switchers/switchers";
 import { BoxMainPhrase } from "./box-phrase";
@@ -10,11 +11,13 @@ export default function BoxMain() {
     {
       ptBR: [
         'Elias Edson Barão.',
-        'Cientista da Computação apaixonado por desenvolvimento web.',
+        'Cientista da Computação',
+        'apaixonado por desenvolvimento web.',
       ],
       enUS: [
         'Elias Edson Barão',
-        'Computer Scientist with a passion for web development.',
+        'Computer Scientist',
+        'with a passion for web development.',
       ]
     }
   ];
@@ -32,6 +35,7 @@ export default function BoxMain() {
           {languageData.map((text, index) => (
             <p key={index} className={`home-abt h-abt-${index} block slideRightSlow`}>
               {text}
+              {index !== languageData.length - 1 && <br />} {/* Add <br/> except for the last item */}
             </p>
           ))}
         </span>

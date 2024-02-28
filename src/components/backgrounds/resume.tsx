@@ -14,8 +14,8 @@ export const ResumeAbt = (props: iResumeAbt) => {
     text-center font-semibold text-xl px-4 py-10 pt-40 mx-auto max-w-[2000px]`}>
       <p>
         {language==='pt-BR' 
-        ? 'A paixão pela tecnologia que se manifesta desde a infância continua, domino as ferramentas e linguagens de front-end mais modernas para criar soluções inovadoras e de alta qualidade. Com um olhar atento às últimas tendências e tecnologias, trabalho de forma proativa e dedicada, buscando aprimorar minhas habilidades e conhecimentos continuamente.' 
-        : 'My lifelong passion for technology fuels my expertise in mastering the latest front-end tools and languages, allowing me to deliver innovative and high-quality solutions. I proactively monitor industry trends and technologies, working with dedication and perseverance to continuously enhance my skills and knowledge.'}
+        ? 'Movido por uma paixão inabalável pela tecnologia, sou um desenvolvedor front-end altamente proficiente que domina as ferramentas e linguagens mais recentes para criar soluções inovadoras e de alta qualidade. Anseio por novos desafios e mantenho-me atualizado com as últimas tendências e tecnologias, sempre buscando aprimorar minhas habilidades e conhecimentos de forma proativa e dedicada.' 
+        : 'Driven by an unwavering passion for technology, I am a highly proficient front-end developer who masters the latest tools and languages to create innovative and high-quality solutions. I crave new challenges and keep myself updated with the latest trends and technologies, always striving to improve my skills and knowledge proactively and dedicatedly.'}
       </p>
     </section>
   )

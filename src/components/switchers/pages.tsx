@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { UseSelectedProject } from "./projects";
 
 const getInitialPage = () => {
   if (typeof window !== 'undefined') {
@@ -10,36 +11,43 @@ const getInitialPage = () => {
 }
 
 export const usePage = () => {
-  const [page, setPage] = useState(getInitialPage);
-  const [pageSelected, setPageSelected] = useState(null)
+  const [page, setPage] = useState(getInitialPage());
+  const [pageSelected, setPageSelected] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const savedPage = localStorage.getItem('page');
-    setPage(savedPage || '');
+    setPage(savedPage || '/');
   }, []);
 
   useEffect(() => {
     localStorage.setItem('page', page);
-  }, [page])
+  }, [page]);
 
-  const changePage = (newPage:number) => {
-    var newPageString = '/';
+  const changePage = (newPage: number) => {
+    let newPageString = '/';
 
-    if (newPage == 0) {
-      newPageString = '/'
-    } if (newPage == 1) {
-      newPageString = 'Projects'
-    } if (newPage == 2){
-      newPageString = 'Experiences'
-    } if (newPage == 3){
-      newPageString = 'Tecs'
+    switch (newPage) {
+      case 0:
+        newPageString = '/';
+        break;
+      case 1:
+        newPageString = '/Projects';
+        break;
+      case 2:
+        newPageString = '/Experiences';
+        break;
+      case 3:
+        newPageString = '/Tecs';
+        break;
+      default:
+        newPageString = '/';
     }
 
-    setPageSelected(pageSelected)
+    setPageSelected(null);
     router.push(newPageString);
     setPage(newPageString);
-    localStorage.setItem('page', page);
+    localStorage.setItem('page', newPageString);
   };
 
   return { page, changePage, pageSelected, setPageSelected };

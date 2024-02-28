@@ -21,7 +21,6 @@ export const useColors = () => {
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
     localStorage.setItem('theme', theme);
-    console.log(localStorage.getItem('theme'))
   };
 
   const mainTheme = theme === 'light' ? 'white' : 'black';

@@ -1,11 +1,19 @@
+"use client"
 import { useState } from "react"
 
 export const UseSelectedProject = () => {
-  const [selectedProject, setSelectedProject] = useState()
+  const [isProjectOpened, setIsProjectOpened] = useState(false);
+  const [currentProject, setCurrentProject] = useState('seeAll')
 
-  const changeProject = (props: any) => {
-    setSelectedProject(props)
+  function changeProject(props: string) {
+    setIsProjectOpened(true)
+    setCurrentProject(props)
   }
 
-  return {selectedProject, setSelectedProject}
+  const handleBack = () => {
+    setIsProjectOpened(false)
+    setCurrentProject('seeAll')
+  };
+
+  return { isProjectOpened, currentProject, changeProject, handleBack }
 }
