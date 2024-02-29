@@ -15,6 +15,7 @@
 }
 
 @media screen and (max-width: 640px) {
+
   .home-abt-0,
   .home-abt-1 {
     font-size: 90%;
@@ -233,23 +234,30 @@
   transition: background .3s ease-in-out;
 }
 
-.bg-img {
+.bg-img-rain {
   position: relative;
   overflow: hidden;
 }
 
-.bg-img::before {
-  content: "";
-  position: fixed;
-  z-index: -30;
+.bg-img-monitor {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(/images/project-monitor.png);
+}
+
+.bg-img-rain::before {
+  height: 100%;
+  width: 100vw;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100%;
-  background-image: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgb(0, 0, 0)), url(/images/rain.jpg);
+  position: fixed;
+  content: "";
+  z-index: -30;
   background-size: cover;
   background-repeat: no-repeat;
   animation: 2s ease-in-out toBottom;
+  background-image: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgb(0, 0, 0)), url(/images/rain.jpg);
 }
 
 .visible {
@@ -377,19 +385,27 @@
 }
 
 @media screen and (max-width: 640px) {
-  .g-container-0 h1, .g-container-2 h1{
+
+  .g-container-0 h1,
+  .g-container-2 h1 {
     text-align: center;
   }
-  .g-img-0, .g-img-1, .g-img-2 {
+
+  .g-img-0,
+  .g-img-1,
+  .g-img-2 {
     border-radius: 2em;
-    float: initial; 
+    float: initial;
     padding: 1em 0;
     margin: 0 auto;
     width: 90%;
   }
 }
+
 @media screen and (min-width: 640px) {
-  .g-img-0, .g-img-2 {
+
+  .g-img-0,
+  .g-img-2 {
     padding-right: 0.75rem;
   }
 }

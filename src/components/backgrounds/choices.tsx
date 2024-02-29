@@ -1,4 +1,4 @@
-import { Button } from "./buttons";
+import { Button } from "../buttons";
 
 interface iChoicesContainer {
   theme: string;

@@ -76,7 +76,7 @@ export const projectsList = (language: string) => {
       site: 'https://serenatto-ebon.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto',
       name: renderText({
-        ptBR: 'Caffeteria',
+        ptBR: 'Cafeteria',
         enUS: 'Coffe shop'
       }),
       alt: renderText({

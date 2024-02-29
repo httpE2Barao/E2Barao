@@ -1,15 +1,19 @@
 import Image from 'next/image';
 import { projectInterface } from './projects-list';
 import { MouseEventHandler } from 'react';
+import { ProjectInfo } from './project-layout-info';
+import { dark } from '@mui/material/styles/createPalette';
+import { Button } from '../buttons';
 
 interface iOpenedProject {
+  theme: string;
   list: projectInterface[];
   project: string;
   language: string;
   onBack: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const OpenedProject = ({ list, project, language, onBack }: iOpenedProject) => {
+export const OpenedProject = ({ theme, list, project, language, onBack }: iOpenedProject) => {
   const selectedProject = list.find(item => item.src === project);
 
   if (!selectedProject) {
@@ -17,34 +21,30 @@ export const OpenedProject = ({ list, project, language, onBack }: iOpenedProjec
   }
 
   return (
-    <div className='flex flex-col gap-5'>
-      <Image src={`/images/project_${selectedProject.src}.png`} alt={selectedProject.abt} width={1000} height={500} />
+    <article className='flex flex-col gap-5 items-center px-5 relative'>
 
-      <span>
-        <button
-          onClick={() => window.open(selectedProject.site, '_blank')}
-          className="sm:text-lg invert-color-hover sm:h-[50px] px-2 sm:px-5 rounded-full bg-white text-black">
-          <p className="content-animation">
-            {language === 'pt-BR' ? 'Site' : 'Page'}
-          </p>
-        </button>
-        <button
-          onClick={() => window.open(selectedProject.repo, '_blank')}
-          className="sm:text-lg invert-color-hover sm:h-[50px] px-2 sm:px-10 rounded-full bg-white text-black">
-          <p className="content-animation">
-            {language === 'pt-BR' ? 'Repositório' : 'Repository'}
-          </p>
-        </button>
+      <ProjectInfo project={selectedProject} changeTheme={true} />
+
+      <span className='flex gap-10 mt-10'>
+        <Button text={language === 'pt-BR' ? 'Site' : 'Page'} index={0} theme={theme} onClick={() => window.open(selectedProject.site, '_blank')} />
+        <Button text={language === 'pt-BR' ? 'Repositório' : 'Repository'} index={1} theme={theme} onClick={() => window.open(selectedProject.repo, '_blank')} />
       </span>
 
-      <p className='text-azul-claro z-20 hover:cursor-pointer flex gap-5 items-center rounded-lg p-2'>
-        {language === 'pt-BR' ? 'Detalhes' : 'Details'}
-      </p>
-      <div className='flex flex-col'>
-        <Image src='/images/icon-down-arrow.png' className={`invert-color m-auto`} alt='seta para baixo' width={20} height={20} />
-        <p className="max-sm:leading-tight lg:text-xl z-10 text-justify">{selectedProject.abt}</p>
+      <div className='bg-img-monitor w-full'>
+        <Image src={`/images/project_${selectedProject.src}.png`} alt={selectedProject.abt} width={1500} height={1000} className='pt-8 pb-28 px-24' />
       </div>
-      <button onClick={onBack}>Voltar</button>
-    </div>
+
+      <div className={`${theme === 'dark' && 'text-white'} flex flex-col max-w-[1500px] gap-10 items-center`}>
+        <h2 className='self-start text-2xl font-semibold uppercase mt-10'>
+          {language === 'pt-BR' ? 'Sobre:' : 'About:'}
+        </h2>
+
+        <p className="content-animation max-sm:leading-tight lg:text-xl text-justify">{selectedProject.abt}</p>
+
+        <Button text={`${language === 'pt-BR' ? 'Voltar' : 'Back'}`} index={2} theme={theme} onClick={onBack} />
+
+      </div>
+
+    </article>
   );
 };

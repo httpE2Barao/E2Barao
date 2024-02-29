@@ -67,7 +67,7 @@ export default function Backgrounds() {
 
   return (
     <>
-      <article className={`bg-img ${theme === 'light' && 'invert-color-bg'}
+      <article className={`bg-img bg-img-rain ${theme === 'light' && 'invert-color-bg'}
       flex flex-col justify-evenly w-full gap-32
       sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72`}>
 

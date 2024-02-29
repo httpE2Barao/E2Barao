@@ -10,7 +10,7 @@ export const BoxMainPhrase = ({language}: {language:string}) => {
 
       <span className="text-left">
         {language === 'pt-BR' ? phraseMainPT : phraseMainEN}
-        <br />
+        <br/>
       </span>
       <span className="text-right lg:pt-10">
         {language === 'pt-BR' ? phraseSubPT : phraseSubEN}

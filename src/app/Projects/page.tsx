@@ -6,7 +6,7 @@ import { projectsList } from "@/components/projects/projects-list";
 import { ProjectLayout } from "@/components/projects/project-layout";
 
 export default function Projetos() {
-    const { language, isProjectOpened, currentProject, handleBack } = useTheme();
+    const { theme, language, isProjectOpened, currentProject, handleBack } = useTheme();
     const list = projectsList(language);
 
     return (
@@ -14,6 +14,7 @@ export default function Projetos() {
             {isProjectOpened === false && <ProjectLayout list={list} />}
             {isProjectOpened === true && (
                 <OpenedProject
+                    theme={theme}
                     list={list}
                     project={currentProject}
                     language={language}
