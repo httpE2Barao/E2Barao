@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { projectInterface } from './projects-list';
-import { MouseEventHandler } from 'react';
+import { MouseEventHandler, useEffect } from 'react';
 import { ProjectInfo } from './project-layout-info';
 import { Button } from '../buttons';
 
@@ -19,8 +19,12 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
     return null;
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <article className='flex flex-col gap-5 items-center px-5 relative'>
+    <article className='slideBottom flex flex-col gap-5 items-center px-5 relative'>
 
       <ProjectInfo project={selectedProject} changeTheme={true} />
 

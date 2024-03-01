@@ -37,8 +37,8 @@ export default function BoxSmall(props: BoxProps) {
           src={`/images/img-${props.name}.png`}
           className='min-w-[110px] m-auto'
           alt={props.alt}
-          width={475}
-          height={400}
+          width={500}
+          height={500}
         />
       )}
     </div>

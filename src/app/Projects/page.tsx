@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useEffect } from "react";
 import { OpenedProject } from "@/components/projects/project-opened";
 import { useTheme } from "@/components/switchers/switchers";
 import { projectsList } from "@/components/projects/projects-list";

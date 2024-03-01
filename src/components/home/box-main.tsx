@@ -26,7 +26,7 @@ export default function BoxMain() {
 
   return (
     <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} 
-    w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl shadow-lg p-4 gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
+    flex flex-col w-full row-start-1 row-span-2 col-span-4 rounded-2xl shadow-lg p-4 gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
 
       <BoxMainPhrase language={language} />
 
