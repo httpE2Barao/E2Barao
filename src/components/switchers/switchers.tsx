@@ -1,11 +1,11 @@
 "use client"
-import React, { MouseEventHandler, createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { SelectChangeEvent } from "@mui/material";
+import { UseSelectedProject } from "./projects";
 import { useLanguage } from "./language";
 import { useColors } from "./colors";
 import { usePage } from "./pages";
 import { useMenu } from "./menu";
-import { UseSelectedProject } from "./projects";
 
 interface ThemeContextProps {
   language: string;
@@ -38,11 +38,16 @@ export const useTheme = () => {
 };
 
 const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isProjectOpened, currentProject, changeProject, handleBack } = UseSelectedProject();
   const { theme, mainTheme, altTheme, toggleTheme } = useColors();
   const { page, pageSelected, changePage } = usePage();
   const { language, changeLanguage } = useLanguage();
   const { isMenuActive, changeMenuState } = useMenu();
-  const { isProjectOpened, currentProject, changeProject, handleBack } = UseSelectedProject();
+
+  useEffect(() => {
+    const imagem = new Image();
+    imagem.src = 'images/rain.jpg';
+  }, []); 
 
   return (
     <ThemeContext.Provider value={{ page, pageSelected, handleBack, language, theme, mainTheme, altTheme, isMenuActive, isProjectOpened, currentProject, changeProject, toggleTheme, changePage, changeLanguage, changeMenuState }}>
@@ -50,5 +55,6 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     </ThemeContext.Provider>
   );
 };
+
 
 export default ThemeProvider;

@@ -32,7 +32,7 @@ export const ToTheTopButton = () => {
 
   return (
     <div
-      className={`invert-img sticky bottom-5 right-5 ml-auto w-fit p-5 bg-azul-claro ring-2 ring-black rounded-full hover:cursor-pointer overflow-hidden
+      className={`invert-img z-50 sticky bottom-5 right-5 ml-auto w-fit p-5 bg-azul-claro ring-2 ring-black rounded-full hover:cursor-pointer overflow-hidden
       ${theme==='dark' ? 'ring-black' : 'ring-white'}
       ${isVisible ? 'visible' : 'invisible'}`}
       onClick={scrollToTop}

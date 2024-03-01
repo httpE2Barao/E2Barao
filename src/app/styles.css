@@ -11,18 +11,20 @@
 }
 
 .h-abt-0 {
+  font-size: 2rem;
+}
+
+.h-abt-1 {
   font-size: 1.4rem;
 }
 
-@media screen and (max-width: 640px) {
+.h-abt-2 {
+  font-size: 1.2rem;
+}
 
-  .home-abt-0,
-  .home-abt-1 {
-    font-size: 90%;
-  }
-
-  .home-abt-2 {
-    font-size: 80%;
+@media screen and (max-width: 1024px) {
+  .home-abt {
+    font-size: 1rem;
   }
 }
 
@@ -239,13 +241,6 @@
   overflow: hidden;
 }
 
-.bg-img-monitor {
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-image: url(/images/project-monitor.png);
-}
-
 .bg-img-rain::before {
   height: 100%;
   width: 100vw;
@@ -257,7 +252,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   animation: 2s ease-in-out toBottom;
-  background-image: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgb(0, 0, 0)), url(/images/rain.jpg);
+  background-image: url(/images/rain-nobg.png);
 }
 
 .visible {

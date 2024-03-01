@@ -18,8 +18,8 @@ export const ChoicesContainer = ( props:iChoicesContainer ) => {
       </h3>
 
       <span className="flex gap-10 xl:gap-20 text-2xl">
-        <Button index={0} text={props.language === 'pt-BR' ? choice[0] : choice[1]} theme={props.theme} onClick={() => props.handleClick('#personal')} />
-        <Button index={1} text={props.language === 'pt-BR' ? choice[2] : choice[3]} theme={props.theme} onClick={() => props.handleClick('#professional')} />
+        <Button index={0} text={props.language === 'pt-BR' ? choice[0] : choice[1]} theme={props.theme} onClick={() => props.handleClick('#professional')} />
+        <Button index={1} text={props.language === 'pt-BR' ? choice[2] : choice[3]} theme={props.theme} onClick={() => props.handleClick('#personal')} />
       </span>
     </section>
 

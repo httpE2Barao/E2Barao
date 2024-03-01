@@ -5,6 +5,7 @@ import Image from "next/image";
 import VanillaTilt from "vanilla-tilt";
 import { TecsContainer } from "@/components/tecnologies/tecs-container";
 import { PhraseSection } from "@/components/phraseSection";
+import { Button } from "@/components/buttons";
 
 export default function HardSkills() {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -20,9 +21,9 @@ export default function HardSkills() {
   const { theme } = useTheme();
 
   return (
-    <article className={`max-w-[2500px] mx-auto pb-20`}>
+    <article className={`flex flex-col items-center max-w-[2500px] mx-auto pb-20`}>
 
-      <PhraseSection phrase={mainPhrase} author={mainPhraseAuthor}/>
+      <PhraseSection phrase={mainPhrase} author={mainPhraseAuthor} />
 
       <section className={`${theme === 'dark' ? 'text-white' : 'text-black'} slideTopSlow`}>
         <h1 className="px-4 text-3xl font-bold tracking-wide text-left">Overview</h1>
@@ -33,8 +34,13 @@ export default function HardSkills() {
           className={`mx-auto pt-4 pr-2`}
         />
       </section>
-          
+
       <TecsContainer />
+
+      <span className="mt-5">
+        <Button text={`${language === 'pt-BR' ? 'Repositório de estudos' : 'Study repository'}`} index={5} theme={theme} onClick={() => window.open('https://github.com/httpE2Barao/Study-Repo', '_blank')}/>
+      </span>
+
     </article >
   );
 }

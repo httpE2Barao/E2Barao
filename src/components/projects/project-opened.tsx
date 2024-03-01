@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { projectInterface } from './projects-list';
 import { MouseEventHandler } from 'react';
 import { ProjectInfo } from './project-layout-info';
-import { dark } from '@mui/material/styles/createPalette';
 import { Button } from '../buttons';
 
 interface iOpenedProject {
@@ -30,12 +29,8 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
         <Button text={language === 'pt-BR' ? 'Repositório' : 'Repository'} index={1} theme={theme} onClick={() => window.open(selectedProject.repo, '_blank')} />
       </span>
 
-      <div className='bg-img-monitor w-full'>
-        <Image src={`/images/project_${selectedProject.src}.png`} alt={selectedProject.abt} width={1500} height={1000} className='pt-8 pb-28 px-24' />
-      </div>
-
-      <div className={`${theme === 'dark' && 'text-white'} flex flex-col max-w-[1500px] gap-10 items-center`}>
-        <h2 className='self-start text-2xl font-semibold uppercase mt-10'>
+      <div className={`${theme === 'dark' && 'text-white'} flex flex-col pb-10 max-w-[1500px] gap-10 items-center`}>
+        <h2 className='self-start text-2xl font-semibold uppercase mt-8'>
           {language === 'pt-BR' ? 'Sobre:' : 'About:'}
         </h2>
 
@@ -44,6 +39,12 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
         <Button text={`${language === 'pt-BR' ? 'Voltar' : 'Back'}`} index={2} theme={theme} onClick={onBack} />
 
       </div>
+
+      <div className='flex items-center justify-center rounded-lg overflow-hidden'>
+        <Image src={`/images/project_${selectedProject.src}.png`} alt={selectedProject.abt} width={1500} height={1000} className='relative z-10 hover:cursor-pointer' 
+        onClick={() => window.open(selectedProject.site, '_blank')}/>
+      </div>
+
 
     </article>
   );

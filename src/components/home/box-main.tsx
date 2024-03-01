@@ -25,7 +25,8 @@ export default function BoxMain() {
   const languageData = language === 'pt-BR' ? list[0].ptBR : list[0].enUS;
 
   return (
-    <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl shadow-lg p-4 md:gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
+    <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} 
+    w-full row-start-1 row-span-2 col-span-4 flex flex-col rounded-2xl shadow-lg p-4 gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
 
       <BoxMainPhrase language={language} />
 
@@ -35,7 +36,7 @@ export default function BoxMain() {
           {languageData.map((text, index) => (
             <p key={index} className={`home-abt h-abt-${index} block slideRightSlow`}>
               {text}
-              {index !== languageData.length - 1 && <br />} {/* Add <br/> except for the last item */}
+              {index !== languageData.length - 1 && <br />}
             </p>
           ))}
         </span>
