@@ -26,7 +26,7 @@ export const experiences = [
       {
         softSkills: 'Organização, Proatividade, Responsabilidade, Atenção aos detalhes.',
         hardSkills: 'Pesquisa, Administração, Logística.',
-        description: [`Reponsavél pelo controle, pesquisa e organização de processos jurídicos. Realizando a triagem de documentos, a expedição para outros setores e auxiliando na digitalização de processos contribuindo para a otimização do fluxo de trabalho.`, `Aprimorei as habilidades de atenção aos detalhes e proatividade.`]
+        description: [`Responsavél pelo controle, pesquisa e organização de processos jurídicos. Realizando a triagem de documentos, a expedição para outros setores e auxiliando na digitalização de processos contribuindo para a otimização do fluxo de trabalho.`, `Aprimorei as habilidades de atenção aos detalhes e proatividade.`]
       },
       {
         softSkills: 'Organization, Proactivity, Responsibility, Attention to detail.',
@@ -38,7 +38,7 @@ export const experiences = [
   {
     title: '2019 - 2020',
     cardTitle: 'Barracão ensena',
-    cardSubtitle: `Curso Técnico de Audio-Visual & Teatro`,
+    cardSubtitle: ['Curso Técnico de Audio-Visual & Teatro','Audio-Visual & Theater Technical Course'],
     url: 'https://teatrobarracaoencena.com.br/',
     cardDetailedText: [
       {
@@ -56,7 +56,7 @@ export const experiences = [
   {
     title: ['2020 - 2022 ', '(~12 meses)', '(~12 months)'],
     cardTitle: 'Descomplica',
-    cardSubtitle: `Rede de ensino online (MEC: 5)`,
+    cardSubtitle: [`Rede de ensino online (MEC: 5)`,'Online education network (MEC rating: 5)'],
     url: 'https://descomplica.com.br/',
     cardDetailedText: [
       {
@@ -74,7 +74,7 @@ export const experiences = [
   {
     title: ['2021 - 2022 ', '(~6 meses)', '(~6 months)'],
     cardTitle: "Hella’s Air Temp",
-    cardSubtitle: `Auxiliar Financeiro`,
+    cardSubtitle: [`Auxiliar Financeiro`,`Financial Assistant`],
     url: 'https://hellasairtemp.com/',
     cardDetailedText: [
       {
@@ -98,20 +98,20 @@ export const experiences = [
       {
         softSkills: 'Aprendizagem, Trabalho em equipe, Disciplina, Organização.',
         hardSkills: 'Desenvolvimento Web / Front-end, Conhecimento em Git/Github e VisualStudioCode.',
-        description: [`Fundamentos da lógica de programação.`, `Conhecimento em desenvolvimento de aplicações web utilizando JavaScript, TypeScript, React, Tailwind... Com interface intuitiva e responsiva.`, `Implementação de APIs RESTful para integração com outros sistemas.`]
+        description: [`Fundamentos da lógica de programação.`, `Conhecimento em desenvolvimento de aplicações web utilizando JavaScript, TypeScript, React, Tailwind... Com interface intuitiva e responsiva.`, `Implementação de APIs REST para integração com outros sistemas.`]
       },
       {
         softSkills: 'Learning, Teamwork, Discipline, Organization.',
         hardSkills: 'Web Development / Front-end, Knowledge of Git/Github and VisualStudioCode.',
-        description: ['Programming logic fundamentals.','Knowledge in web application development using JavaScript, TypeScript, React, Tailwind... With an intuitive and responsive interface.','Implemented RESTful APIs for integration with other systems.']
+        description: ['Programming logic fundamentals.','Knowledge in web application development using JavaScript, TypeScript, React, Tailwind... With an intuitive and responsive interface.','Implemented REST APIs for integration with other systems.']
       },
     ]
   },
   {
     title: ['2023 - ', 'Atualmente', 'Today'],
-    cardTitle: 'Centro Universitário IBMR',
-    cardSubtitle: `Bacharelado Ciência da Computação (MEC: 4)`,
-    url: 'https://teatrobarracaoencena.com.br/',
+    cardTitle: ['Centro Universitário IBMR','IBMR University Center'],
+    cardSubtitle: [`Bacharelado Ciência da Computação (MEC: 4)`,`Bachelor of Computer Science (MEC rating: 4)`],
+    url: 'https://www.ibmr.br/',
     cardDetailedText: [
       {
         softSkills: 'Aprendizagem, Resolução de problemas, Pensamento crítico, Comunicação.',

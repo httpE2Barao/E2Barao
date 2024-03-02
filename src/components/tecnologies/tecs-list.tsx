@@ -1,10 +1,11 @@
 export const tecsList = [
   {
     concepts: [
-      'Mobile First',
-      'Orientação a Objeto',
-      'Código Limpo',
-      'Pensamento Analítico',
+      ['Pensamento Analítico','Analytical Thinking'],
+      ['Aprendizado Contínuo','Continuous Learning'],
+      ['"Mobile First"','Mobile First'],
+      ['Orientação a Objeto','Object Orientation'],
+      ['Código Limpo','Clean Code'],
     ],
   },
   {
