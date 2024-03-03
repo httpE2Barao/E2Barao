@@ -9,78 +9,66 @@ import { useEffect, useState } from "react";
 
 export default function Backgrounds() {
   const { theme, language } = useTheme();
-  const mainPhrase = language === 'pt-BR' 
-  ? 'A vida não é esperar a tempestade passar, é aprender a dançar na chuva.' 
-  : `Life isn't about waiting for the storm to pass, it's learning to dance in the rain.`;
+  const mainPhrase =
+    language === "pt-BR"
+      ? "A vida não é esperar a tempestade passar, é aprender a dançar na chuva."
+      : `Life isn't about waiting for the storm to pass, it's learning to dance in the rain.`;
 
-  const [showPersonalContent, setShowPersonalContent] = useState(false);
-  const [showProfessionalContent, setShowProfessionalContent] = useState(false);
+  const [activeContent, setActiveContent] = useState("");
 
   const handleClick = (targetId: string) => {
-    const smoothScroll = () => {
-      const targetElement = document.querySelector(targetId);
+    setActiveContent(targetId.replace("#", ""));
+    smoothScroll(targetId);
+  };
 
-      if (targetElement) {
-        targetElement.scrollIntoView({
-          behavior: 'smooth',
-        });
-      } else {
-        console.error(`Element with ID ${targetId} not found`);
-      }
-    };
-
-    if (targetId === '#personal') {
-      setShowPersonalContent(true);
-      setShowProfessionalContent(false);
-    } if (targetId === '#professional') {
-      setShowProfessionalContent(true);
-      setShowPersonalContent(false);
+  const smoothScroll = (targetId: string) => {
+    const targetElement = document.querySelector(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+      });
+    } else {
+      console.error(`Element with ID ${targetId} not found`);
     }
-
-    smoothScroll();
   };
 
   useEffect(() => {
-    const init = () => {
-      const buttonProfessional = document.getElementById('scrollButton-0');
-      const buttonPersonal = document.getElementById('scrollButton-1');
+    const buttonProfessional = document.getElementById("scrollButton-0");
+    const buttonPersonal = document.getElementById("scrollButton-1");
 
-      buttonPersonal?.addEventListener('click', () => handleClick('#personal'));
-      buttonProfessional?.addEventListener('click', () => handleClick('#professional'));
+    const personalClickHandler = () => handleClick("#personal");
+    const professionalClickHandler = () => handleClick("#professional");
 
-      return () => {
-        buttonPersonal?.removeEventListener('click', () => handleClick('#personal'));
-        buttonProfessional?.removeEventListener('click', () => handleClick('#professional'));
-      };
-    };
-
-    if (document.readyState === 'complete') {
-      init();
-    } else {
-      document.addEventListener('DOMContentLoaded', init);
-    }
+    buttonPersonal?.addEventListener("click", personalClickHandler);
+    buttonProfessional?.addEventListener("click", professionalClickHandler);
 
     return () => {
-      document.removeEventListener('DOMContentLoaded', init);
+      buttonPersonal?.removeEventListener("click", personalClickHandler);
+      buttonProfessional?.removeEventListener("click", professionalClickHandler);
     };
   }, []);
 
   return (
     <>
-      <article className={`bg-img bg-img-rain flex flex-col justify-evenly w-full gap-32
-      sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72`}>
-
-        <PhraseSection phrase={mainPhrase} type={0} handleClick={handleClick} />
-
+      <article
+        className={`bg-img bg-img-rain flex flex-col justify-evenly w-full gap-32
+      sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72`}
+      >
+        <PhraseSection
+          phrase={mainPhrase}
+          type={0}
+          handleClick={handleClick}
+        />
         <ResumeAbt theme={theme} language={language} />
-
-        <ChoicesContainer theme={theme} language={language} handleClick={handleClick} />
-
-      </article >
-
+        <ChoicesContainer
+          theme={theme}
+          language={language}
+          handleClick={handleClick}
+        />
+      </article>
       <article className="pb-32">
-        {showPersonalContent && <PersonalContent />}
-        {showProfessionalContent && <ProfessionalContent />}
+        {activeContent === "personal" && <PersonalContent />}
+        {activeContent === "professional" && <ProfessionalContent />}
       </article>
     </>
   );

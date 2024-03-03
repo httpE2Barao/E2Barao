@@ -6,7 +6,7 @@ import { useTheme } from "@/components/switchers/switchers"
 import { useState } from "react";
 
 export default function Contact() {
-  const { language, theme, changePage } = useTheme();
+  const { language, theme } = useTheme();
   const [isResumeOpen, setIsResumeOpen] = useState(true);
 
   return (
