@@ -5,7 +5,7 @@ interface iContactMe {
 export const ContactMe = (props: iContactMe) => {
 
   const contactsList = [
-    ['WhatsApp', 'https://api.whatsapp.com/send?phone=551998046755'],
+    ['WhatsApp', 'https://api.whatsapp.com/send?phone=5541998046755'],
     ['Email', 'mailto:e2barao@hotmail.com'],
     ['GitHub', 'https://github.com/httpE2Barao'],
     ['LinkedIn', 'https://www.linkedin.com/in/e2barao/']

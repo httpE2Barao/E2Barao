@@ -73,7 +73,7 @@ export const projectsList = (language: string) => {
     {
       src: 'moni-bank',
       tags: ['javascript','html','css'],
-      site: 'https://httpe2barao.github.io/MoniBank/pages/abrir-conta-form.html',
+      site: 'https://moni-bank-omega.vercel.app/',
       repo: 'https://github.com/httpE2Barao/MoniBank',
       name: renderText({
         ptBR: 'Banco digital',
@@ -84,8 +84,8 @@ export const projectsList = (language: string) => {
         enUS: 'Digital Bank Account Sign-Up Project'
       }),
       abt: renderText({
-        ptBR: 'O projeto usa Javascript para criar uma conta em um site de banco. Ele tem boas práticas de validação de formulários, como verificar se o usuário é maior de idade, se o CPF tem os dígitos válidos e com a funcionalidade de tirar foto pelo webcam. Ele também trata os erros que podem ocorrer com dados inválidos. O projeto é simples, e mostra como usar a lógica de programação para fazer uma aplicação web de cadastro.',
-        enUS: 'This is a project that uses the following technologies: React, Typescript and Sass. With React, I created reusable components that use the useState and useEffect hooks to manage state and side effects. With Typescript, I defined interfaces for the data types, converted them and avoided typing conflicts. With Sass, I styled the components with variables and the adaptation with Media Queries.'
+        ptBR: 'O projeto usa Javascript para criar uma conta em um site de banco. Utiliza boas práticas de validação de formulários, como verificar se o usuário é maior de idade, se o CPF tem os dígitos válidos e com a funcionalidade de tirar foto pelo webcam. Ele também trata os erros que podem ocorrer com dados inválidos. O projeto é simples, e mostra como usar a lógica de programação para fazer uma aplicação web de cadastro.',
+        enUS: 'The project uses Javascript to create an account on a bank website. It uses good form validation practices, such as checking that the user is of legal age, that the CPF has valid digits and with the functionality to take a photo via the webcam. It also handles errors that can occur with invalid data. The project is simple and shows how to use programming logic to make a registration web application.'
       })
     },
     {
@@ -108,7 +108,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'typing-challenge',
-      tags: ['javascript','html','css','github'],
+      tags: ['javascript','html','css','tailwind','jquery','api','github'],
       site: 'https://typing-challenge-theta.vercel.app/',
       repo: 'https://github.com/httpE2Barao/typing-challenge',
       name: renderText({
