@@ -53,24 +53,6 @@ export const projectsList = (language: string) => {
       })
     },
     {
-      src: 'stopwatch',
-      tags: ['typescript','sass','html','css','github'],
-      site: 'https://stopwatch-react-app0.vercel.app/',
-      repo: 'https://github.com/httpE2Barao/Stopwatch-react-app',
-      name: renderText({
-        ptBR: 'Temporizador',
-        enUS: 'Stopwatch'
-      }),
-      alt: renderText({
-        ptBR: 'Site sobre modelo de negociação',
-        enUS: 'Website about negotiation model'
-      }),
-      abt: renderText({
-        ptBR: 'Este projeto utiliza as tecnologias React, Typescript e Sass para oferecer uma experiência robusta e personalizável. Através de componentes reutilizáveis e gerenciamento de estado eficiente com hooks, o projeto garante flexibilidade e facilidade de manutenção. A tipagem estática do Typescript previne erros e garante a confiabilidade do código, enquanto o Sass permite estilização avançada com variáveis e adaptação a diferentes dispositivos.',
-        enUS: "This project leverages React, TypeScript, and Sass to deliver a robust and customizable user experience. By utilizing reusable components and efficient state management with hooks, the project ensures flexibility and maintainability. TypeScript's static typing prevents errors and guarantees code reliability, while Sass empowers advanced styling with variables and device-agnostic adaptation."
-      })
-    },
-    {
       src: 'serenatto-cafe',
       tags: ['javascript','bootstrap','css','github'],
       site: 'https://serenatto-ebon.vercel.app/',
@@ -89,10 +71,28 @@ export const projectsList = (language: string) => {
       })
     },
     {
-      src: 'cep-autocomplete',
-      tags: ['javascript','api','html','css'],
-      site: 'https://cep-auto-complete.vercel.app/',
-      repo: 'https://github.com/httpE2Barao/CEP_auto-complete',
+      src: 'moni-bank',
+      tags: ['javascript','html','css'],
+      site: 'https://httpe2barao.github.io/MoniBank/pages/abrir-conta-form.html',
+      repo: 'https://github.com/httpE2Barao/MoniBank',
+      name: renderText({
+        ptBR: 'Banco digital',
+        enUS: 'Digital bank'
+      }),
+      alt: renderText({
+        ptBR: 'Projeto de cadastro em um banco digital',
+        enUS: 'Digital Bank Account Sign-Up Project'
+      }),
+      abt: renderText({
+        ptBR: 'O projeto usa Javascript para criar uma conta em um site de banco. Ele tem boas práticas de validação de formulários, como verificar se o usuário é maior de idade, se o CPF tem os dígitos válidos e com a funcionalidade de tirar foto pelo webcam. Ele também trata os erros que podem ocorrer com dados inválidos. O projeto é simples, e mostra como usar a lógica de programação para fazer uma aplicação web de cadastro.',
+        enUS: 'This is a project that uses the following technologies: React, Typescript and Sass. With React, I created reusable components that use the useState and useEffect hooks to manage state and side effects. With Typescript, I defined interfaces for the data types, converted them and avoided typing conflicts. With Sass, I styled the components with variables and the adaptation with Media Queries.'
+      })
+    },
+    {
+      src: 'stopwatch',
+      tags: ['typescript','sass','html','css','github'],
+      site: 'https://stopwatch-react-app0.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/Stopwatch-react-app',
       name: renderText({
         ptBR: 'Temporizador',
         enUS: 'Stopwatch'
@@ -102,8 +102,8 @@ export const projectsList = (language: string) => {
         enUS: 'Website about negotiation model'
       }),
       abt: renderText({
-        ptBR: 'Este é um projeto que usa as seguintes tecnologias: React, Typescript e Sass. Com React, criei componentes reutilizáveis que usam os hooks useState e useEffect para gerenciar o estado e os efeitos colaterais. Com Typescript, eu defini interfaces para os tipos de dados, fiz conversão deles e evitei conflitos de tipagem. Com Sass, eu estilizei os componentes com variáveis e a adaptação com Media Queries.',
-        enUS: 'This is a project that uses the following technologies: React, Typescript and Sass. With React, I created reusable components that use the useState and useEffect hooks to manage state and side effects. With Typescript, I defined interfaces for the data types, converted them and avoided typing conflicts. With Sass, I styled the components with variables and the adaptation with Media Queries.'
+        ptBR: 'Este projeto utiliza as tecnologias React, Typescript e Sass para oferecer uma experiência robusta e personalizável. Através de componentes reutilizáveis e gerenciamento de estado eficiente com hooks, o projeto garante flexibilidade e facilidade de manutenção. A tipagem estática do Typescript previne erros e garante a confiabilidade do código, enquanto o Sass permite estilização avançada com variáveis e adaptação a diferentes dispositivos.',
+        enUS: "This project leverages React, TypeScript, and Sass to deliver a robust and customizable user experience. By utilizing reusable components and efficient state management with hooks, the project ensures flexibility and maintainability. TypeScript's static typing prevents errors and guarantees code reliability, while Sass empowers advanced styling with variables and device-agnostic adaptation."
       })
     },
     {
@@ -122,24 +122,6 @@ export const projectsList = (language: string) => {
       abt: renderText({
         ptBR: 'Este projeto combina jQuery e Tailwind CSS para criar um desafio de digitação simples. Com um contador regressivo, ele monitora o tempo de digitação e fornece feedback em tempo real sobre erros. O jQuery gerencia interações do usuário, como iniciar e reiniciar o cronômetro. Ele consume uma API externa, apresentando frases aleatórias para digitação e exibe mensagens de erro se necessário. Ao final, registra o desempenho do usuário em um placar, incluindo média de palavras por minuto e número de acertos e erros, permitindo que acompanhe seu progresso.',
         enUS: "This project combines jQuery and Tailwind CSS to create a simple typing challenge. With a countdown timer, it monitors typing time and provides real-time feedback on errors. jQuery manages user interactions such as starting and restarting the timer. By consuming an external API, it presents random phrases for typing and displays error messages if necessary. At the end, it records the user's performance on a scoreboard, including the average number of words per minute and the number of hits and misses, allowing them to track their progress"
-      })
-    },
-    {
-      src: 'digital-bank',
-      tags: ['javascript','html','css'],
-      site: 'https://httpe2barao.github.io/MoniBank/pages/abrir-conta-form.html',
-      repo: 'https://github.com/httpE2Barao/MoniBank',
-      name: renderText({
-        ptBR: 'Banco digital',
-        enUS: 'Digital bank'
-      }),
-      alt: renderText({
-        ptBR: 'Projeto de cadastro em um banco digital',
-        enUS: 'Digital Bank Account Sign-Up Project'
-      }),
-      abt: renderText({
-        ptBR: 'Este é um projeto que usa as seguintes tecnologias: React, Typescript e Sass. Com React, criei componentes reutilizáveis que usam os hooks useState e useEffect para gerenciar o estado e os efeitos colaterais. Com Typescript, eu defini interfaces para os tipos de dados, fiz conversão deles e evitei conflitos de tipagem. Com Sass, eu estilizei os componentes com variáveis e a adaptação com Media Queries.',
-        enUS: 'This is a project that uses the following technologies: React, Typescript and Sass. With React, I created reusable components that use the useState and useEffect hooks to manage state and side effects. With Typescript, I defined interfaces for the data types, converted them and avoided typing conflicts. With Sass, I styled the components with variables and the adaptation with Media Queries.'
       })
     },
   ];

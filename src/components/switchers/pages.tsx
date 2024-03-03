@@ -11,7 +11,7 @@ const getInitialPage = () => {
 
 export const usePage = () => {
   const [page, setPage] = useState(getInitialPage());
-  const [pageSelected, setPageSelected] = useState(null);
+  const [pageSelected, setPageSelected] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const usePage = () => {
         newPageString = '/';
     }
 
-    setPageSelected(null);
+    setPageSelected(newPage - 1);
     router.push(newPageString);
     setPage(newPageString);
     localStorage.setItem('page', newPageString);

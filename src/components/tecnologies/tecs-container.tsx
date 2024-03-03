@@ -4,7 +4,7 @@ import { TecsGrid } from "./tecs-grid";
 import { useTheme } from "../switchers/switchers";
 
 const TecsList = ({ subList }: { subList: string[] }) => (
-  <ul className="grid grid-cols-2 gap-3">
+  <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
     {subList.map((subItem: string, j: number) => (
       <li key={j}>
         {subItem}
@@ -20,6 +20,7 @@ export const TecsContainer = ({ type }: { type?: number }) => {
   return (
     <section className={`${type == 1 ? 'col-span-3 grid-rows-1' : 'grid-cols-2 gap-4'}
       grid px-2 items-center`}>
+
       {tecsList.map((item, index) => {
         if (type && !('tecsSrc' in item)) {
           return null;

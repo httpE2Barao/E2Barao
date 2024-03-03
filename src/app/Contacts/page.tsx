@@ -7,13 +7,13 @@ import { useState } from "react";
 
 export default function Contact() {
   const { language, theme } = useTheme();
-  const [isResumeOpen, setIsResumeOpen] = useState(true);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   return (
-    <article className="slideBottom mx-auto p-20 flex flex-col gap-32 items-center">
+    <article className=" mx-auto p-20 flex flex-col gap-32 items-center">
 
-      <section className="w-full flex flex-col gap-20 items-center">
-        <div className="w-4/6">
+      <section className="w-full flex flex-col gap-20 items-center slideBottom">
+        <div className="md:w-4/6">
           <PhraseSection type={2} phrase={language === 'pt-BR' ? 'Juntos, podemos ir mais longe.' : 'Together, we can go further.'}/>
         </div>
         <div>
@@ -21,7 +21,7 @@ export default function Contact() {
         </div>
       </section>
 
-      <section className="w-full flex flex-col items-center">
+      <section className="slideTopSlower w-full flex flex-col items-center">
         <Button
           index={4} theme={theme} onClick={() => setIsResumeOpen(!isResumeOpen)}
           text={language === 'pt-BR'

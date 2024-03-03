@@ -35,11 +35,11 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
         </span>
 
         <div className={`${theme === 'dark' && 'text-white'} flex flex-col pb-10 max-w-[1500px] gap-10 items-center`}>
-          <h2 className='self-start text-2xl font-semibold uppercase mt-8'>
-            {language === 'pt-BR' ? 'Sobre:' : 'About:'}
+          <h2 className='self-start lg:self-center text-2xl font-semibold uppercase mt-8'>
+            {language === 'pt-BR' ? 'Sobre' : 'About'}
           </h2>
 
-          <p className="content-animation max-sm:leading-tight lg:text-xl text-justify">{selectedProject.abt}</p>
+          <p className="content-animation max-sm:leading-tight lg:text-xl text-justify lg:w-2/3 2xl:w-full">{selectedProject.abt}</p>
 
           <Button text={`${language === 'pt-BR' ? 'Voltar' : 'Back'}`} index={2} theme={theme} onClick={onBack} />
 
