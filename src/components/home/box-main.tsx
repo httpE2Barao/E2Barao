@@ -11,13 +11,13 @@ export default function BoxMain() {
     {
       ptBR: [
         'Elias Edson Barão.',
-        'Cientista da Computação',
-        'apaixonado por desenvolvimento web.',
+        'Desenvolvedor web',
+        '& Cientista da Computação.',
       ],
       enUS: [
         'Elias Edson Barão',
-        'Computer Scientist',
-        'with a passion for web development.',
+        'Web developer',
+        '& Computer Scientist.',
       ]
     }
   ];
@@ -26,7 +26,7 @@ export default function BoxMain() {
 
   return (
     <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} 
-    flex flex-col w-full row-start-1 row-span-2 col-span-4 rounded-2xl shadow-lg p-4 gap-20 lg:py-7 lg:px-10 lg:col-span-3 xl:col-span-2`}>
+    flex flex-col w-full row-start-1 row-span-2 col-span-4 rounded-2xl shadow-lg p-4 gap-20 lg:py-7 lg:px-10 lg:col-span-2 xl:col-span-2`}>
 
       <BoxMainPhrase language={language} />
 
@@ -42,7 +42,7 @@ export default function BoxMain() {
         </span>
 
         {/* Social Buttons */}
-        <span className="flex flex-row gap-5 hover:cursor-pointer mt-auto">
+        <span className="flex flex-row gap-5 hover:cursor-pointer mt-auto ml-auto py-5">
           <div
             className="invert-color-hover min-w-16 bg-white rounded-full px-4 max-sm:w-16 lg:w-[100px] lg:h-[100px] flex items-center"
             onClick={() => window.open('https://www.linkedin.com/in/e2barao/', '_blank')}>

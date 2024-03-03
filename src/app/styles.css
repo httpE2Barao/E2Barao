@@ -5,6 +5,7 @@
 .home-abt {
   margin: 15px 0 10px;
   font-size: 1rem;
+  -webkit-background-clip: text;
   color: rgba(0, 0, 0, 0.50);
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -12,6 +13,8 @@
 
 .h-abt-0 {
   font-size: 2rem;
+  color: transparent;
+  background-image: linear-gradient(to bottom, #000000, var(--azul-main));
 }
 
 .h-abt-1 {
@@ -19,7 +22,7 @@
 }
 
 .h-abt-2 {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 @media screen and (max-width: 1024px) {

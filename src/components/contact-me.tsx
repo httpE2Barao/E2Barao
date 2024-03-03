@@ -13,7 +13,7 @@ export const ContactMe = (props: iContactMe) => {
 
   return (
     <ul className={`${props.theme === 'dark' ? 'text-white' : 'text-black'}
-    flex flex-row gap-10 text-3xl`}>
+    flex flex-col text-center md:flex-row gap-10 text-3xl`}>
       {contactsList.map((contact, index) => {
         return (
           <li key={index} className={`underline hover:cursor-pointer hover:text-azul-claro

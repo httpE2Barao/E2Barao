@@ -5,7 +5,7 @@ interface ItemProps {
   index: number,
   menuStyle?: boolean,
   theme: string,
-  pageSelected: any,
+  pageSelected: number | null,
   changePage: any,
   resetProject: any,
 }

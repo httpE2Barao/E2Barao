@@ -30,6 +30,8 @@ export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
 
   const isFlashing = (index: number) => flashingDivs.includes(index);
 
+  const maxItems = type === 1 ? 10 : subList.length;
+
   return (
     <>
       <ul
@@ -39,7 +41,7 @@ export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
             }`,
         }}
       >
-        {subList.map((subItem: string, j: number) => (
+        {subList.slice(0, maxItems).map((subItem: string, j: number) => (
           <li key={j} className={`${type == 1 && 'grid-cols-1 '}`}>
             <Image
               src={`/images/${subItem}`}
@@ -61,3 +63,4 @@ export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
     </>
   );
 };
+

@@ -18,7 +18,7 @@ export const PhraseSection = (props: SectionProps) => {
       slideBottom flex flex-col gap-20 mx-auto text-center items-center justify-center p-5 md:p-10 overflow-visible`}>
 
         <h1 className={`${theme === 'light' ? 'gradient-title-white-2' : 'gradient-title-black-2'} 
-        gradient-title font-bold tracking-wider leading-[5rem]
+        pb-5 gradient-title font-bold tracking-wider leading-[5rem]
         text-3xl md:text-5xl 4k:text-7xl ultrawide:text-7xl `}>
           {props.phrase}
         </h1>
