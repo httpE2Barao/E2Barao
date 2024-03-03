@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import BoxMain from "@/components/home/box-main";
 import BoxesSmall from "@/components/home/box-small-layout";
 

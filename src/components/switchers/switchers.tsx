@@ -46,7 +46,7 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const imagem = new Image();
-    imagem.src = 'images/rain.jpg';
+    imagem.src = '/images/rain-nobg.png';
   }, []); 
 
   return (
