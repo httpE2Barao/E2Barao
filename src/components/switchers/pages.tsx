@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { UseSelectedProject } from "./projects";
 
 const getInitialPage = () => {
   if (typeof window !== 'undefined') {
@@ -39,6 +38,9 @@ export const usePage = () => {
         break;
       case 3:
         newPageString = '/Tecs';
+        break;
+      case 4:
+        newPageString = '/Contacts';
         break;
       default:
         newPageString = '/';

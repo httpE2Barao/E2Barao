@@ -6,7 +6,7 @@ import "./styles.css"
 import ThemeProvider from "@/components/switchers/switchers";
 import { MenuNav } from "@/components/header/menu";
 import { Header } from "@/components/header/header";
-import { ToTheTopButton } from "@/components/toTopBtn";
+import { ToTheTopButton } from "@/components/to-top-btn";
 
 const inter = Inter({ subsets: ["latin"] });
 

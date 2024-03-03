@@ -7,8 +7,8 @@ interface iOptionsNav {
 }
 
 export const OptionsNav = (props: iOptionsNav) => {
-  const pt = ['Projetos', 'Experiências', 'Tecnologias'];
-  const en = ['Projects', 'Experiences', 'Hard-skills'];
+  const pt = ['Projetos', 'Experiências', 'Tecnologias', 'Contatos'];
+  const en = ['Projects', 'Experiences', 'Hard-skills', 'Contacts'];
   const { theme, language, isMenuActive, pageSelected, changePage, handleBack } = useTheme()
 
   return (

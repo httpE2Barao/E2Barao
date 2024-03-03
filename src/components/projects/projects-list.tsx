@@ -66,8 +66,8 @@ export const projectsList = (language: string) => {
         enUS: 'Website about negotiation model'
       }),
       abt: renderText({
-        ptBR: 'Este é um projeto que usa as seguintes tecnologias: React, Typescript e Sass. Com React, criei componentes reutilizáveis que usam os hooks useState e useEffect para gerenciar o estado e os efeitos colaterais. Com Typescript, eu defini interfaces para os tipos de dados, fiz conversão deles e evitei conflitos de tipagem. Com Sass, eu estilizei os componentes com variáveis e a adaptação com Media Queries.',
-        enUS: 'This is a project that uses the following technologies: React, Typescript and Sass. With React, I created reusable components that use the useState and useEffect hooks to manage state and side effects. With Typescript, I defined interfaces for the data types, converted them and avoided typing conflicts. With Sass, I styled the components with variables and the adaptation with Media Queries.'
+        ptBR: 'Este projeto utiliza as tecnologias React, Typescript e Sass para oferecer uma experiência robusta e personalizável. Através de componentes reutilizáveis e gerenciamento de estado eficiente com hooks, o projeto garante flexibilidade e facilidade de manutenção. A tipagem estática do Typescript previne erros e garante a confiabilidade do código, enquanto o Sass permite estilização avançada com variáveis e adaptação a diferentes dispositivos.',
+        enUS: "This project leverages React, TypeScript, and Sass to deliver a robust and customizable user experience. By utilizing reusable components and efficient state management with hooks, the project ensures flexibility and maintainability. TypeScript's static typing prevents errors and guarantees code reliability, while Sass empowers advanced styling with variables and device-agnostic adaptation."
       })
     },
     {

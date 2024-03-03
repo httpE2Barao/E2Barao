@@ -3,7 +3,7 @@ import { ChoicesContainer } from "@/components/backgrounds/choices";
 import { PersonalContent } from "@/components/backgrounds/personal";
 import { ProfessionalContent } from "@/components/backgrounds/professional/professional";
 import { ResumeAbt } from "@/components/backgrounds/resume";
-import { PhraseSection } from "@/components/phraseSection";
+import { PhraseSection } from "@/components/phrase-section";
 import { useTheme } from "@/components/switchers/switchers";
 import { useEffect, useState } from "react";
 
@@ -70,7 +70,7 @@ export default function Backgrounds() {
       <article className={`bg-img bg-img-rain flex flex-col justify-evenly w-full gap-32
       sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72`}>
 
-        <PhraseSection phrase={mainPhrase} handleClick={handleClick} />
+        <PhraseSection phrase={mainPhrase} type={0} handleClick={handleClick} />
 
         <ResumeAbt theme={theme} language={language} />
 

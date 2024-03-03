@@ -1,16 +1,25 @@
 export const tecsList = [
   {
     concepts: [
-      ['Pensamento Analítico','Analytical Thinking'],
-      ['Aprendizado Contínuo','Continuous Learning'],
-      ['"Mobile First"','Mobile First'],
-      ['Orientação a Objeto','Object Orientation'],
-      ['Código Limpo','Clean Code'],
+      ['Aprendizado Contínuo', 'Continuous Learning'],
+      ['Pensamento Analítico', 'Analytical Thinking'],
+      ['Versionamento de Código', 'Code versioning'],
+      ['Orientação a Objeto', 'Object Orientation'],
+      ['"Mobile First"', 'Mobile First'],
+      ['Código Limpo', 'Clean Code'],
+      ['Acessibilidade', 'Accessibility'],
+      ['Arquitetura de software', 'Software Architecture'],
+      ['Arquitetura de Informação', 'Information Architecture'],
+      ['Programação Funcional', 'Functional Programming'],
+      ['Experiência e Interface do Usuário', 'User Experience and Interface'],
+      ['Gerenciamento de estado', 'State Management'],
+      ['Renderização no servidor', 'Server Side Render'],
     ],
   },
   {
     programs: [
       'Git / Github',
+      'Visual Studio Code',
       'PS6',
       'Figma',
       'Sony Vegas',
@@ -36,10 +45,10 @@ export const tecsList = [
       'img-sass.png',
       'img-html.png',
       'img-css.png',
+      'img-visualcode.png',
       'img-photoshop.png',
       'img-lightroom.png',
       'img-microsoft365.png',
-      'img-visualcode.png',
     ],
   },
 ];
