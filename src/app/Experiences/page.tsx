@@ -11,7 +11,7 @@ export default function Backgrounds() {
   const { theme, language } = useTheme();
   const mainPhrase =
     language === "pt-BR"
-      ? "A vida não é esperar a tempestade passar, é aprender a dançar na chuva."
+      ? "A vida não é sobre esperar a tempestade passar, é aprender a dançar na chuva."
       : `Life isn't about waiting for the storm to pass, it's learning to dance in the rain.`;
 
   const [activeContent, setActiveContent] = useState("");
@@ -46,7 +46,7 @@ export default function Backgrounds() {
       buttonPersonal?.removeEventListener("click", personalClickHandler);
       buttonProfessional?.removeEventListener("click", professionalClickHandler);
     };
-  }, []);
+  }, [handleClick]);
 
   return (
     <>
