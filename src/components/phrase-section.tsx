@@ -14,8 +14,8 @@ export const PhraseSection = (props: SectionProps) => {
 
   return (
     <>
-      <section className={`${props.type == 0 && 'h-[80vh]'} ${props.type == 1 && 'h-[55vh]'} ${props.type == 2 && 'h-[25vh]'} ${theme === 'light' ? 'text-black' : 'text-white'}
-      slideBottom flex flex-col gap-20 mx-auto text-center items-center justify-center p-5 md:p-10 overflow-visible`}>
+      <section className={`${props.type == 0 && 'h-[80vh] slideTopSlower'} ${props.type == 1 && 'h-[55vh] slideBottom'} ${props.type == 2 && 'h-[25vh] slideBottom'} ${theme === 'light' ? 'text-black' : 'text-white'}
+       flex flex-col gap-20 mx-auto text-center items-center justify-center p-5 md:p-10 overflow-visible`}>
 
         <h1 className={`${theme === 'light' ? 'gradient-title-white-2' : 'gradient-title-black-2'} 
         pb-5 gradient-title font-bold tracking-wider leading-[5rem]
