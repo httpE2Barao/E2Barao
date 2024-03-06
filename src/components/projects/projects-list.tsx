@@ -18,7 +18,7 @@ export const projectsList = (language: string) => {
   return [
     {
       src: 'space-tourism',
-      tags: ['typescript','react','tailwind','github','figma','html','css'],
+      tags: ['typescript', 'react', 'tailwind', 'github', 'figma', 'html', 'css'],
       site: 'https://turismo-espacial-xi.vercel.app/',
       repo: 'https://github.com/httpE2Barao/SpaceTourism',
       name: renderText({
@@ -36,7 +36,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'negociacoes',
-      tags: ['typescript','github','api','html','css'],
+      tags: ['typescript', 'github', 'api', 'html', 'css'],
       site: 'https://negocicoes.vercel.app/dist/index.html',
       repo: 'https://github.com/httpE2Barao/Code-study/tree/main/TypeScript/Negocia%C3%A7%C3%B5es',
       name: renderText({
@@ -54,7 +54,7 @@ export const projectsList = (language: string) => {
     },
     {
       src: 'serenatto-cafe',
-      tags: ['javascript','bootstrap','css','github'],
+      tags: ['javascript', 'bootstrap', 'css', 'github'],
       site: 'https://serenatto-ebon.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto',
       name: renderText({
@@ -71,26 +71,26 @@ export const projectsList = (language: string) => {
       })
     },
     {
-      src: 'moni-bank',
-      tags: ['javascript','html','css'],
-      site: 'https://moni-bank-omega.vercel.app/',
-      repo: 'https://github.com/httpE2Barao/MoniBank',
+      src: 'typing-challenge',
+      tags: ['javascript', 'html', 'css', 'tailwind', 'jquery', 'api', 'github'],
+      site: 'https://typing-challenge-theta.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/typing-challenge',
       name: renderText({
-        ptBR: 'Banco digital',
-        enUS: 'Digital bank'
+        ptBR: 'Desafio de Digitação',
+        enUS: 'Typing Challenge'
       }),
       alt: renderText({
-        ptBR: 'Projeto de cadastro em um banco digital',
-        enUS: 'Digital Bank Account Sign-Up Project'
+        ptBR: 'Desafio de Digitação - palavras por minuto',
+        enUS: 'Typing Challenge - words per minute'
       }),
       abt: renderText({
-        ptBR: 'O projeto usa Javascript para criar uma conta em um site de banco. Utiliza boas práticas de validação de formulários, como verificar se o usuário é maior de idade, se o CPF tem os dígitos válidos e com a funcionalidade de tirar foto pelo webcam. Ele também trata os erros que podem ocorrer com dados inválidos. O projeto é simples, e mostra como usar a lógica de programação para fazer uma aplicação web de cadastro.',
-        enUS: 'The project uses Javascript to create an account on a bank website. It uses good form validation practices, such as checking that the user is of legal age, that the CPF has valid digits and with the functionality to take a photo via the webcam. It also handles errors that can occur with invalid data. The project is simple and shows how to use programming logic to make a registration web application.'
+        ptBR: 'Este projeto combina jQuery e Tailwind CSS para criar um desafio de digitação simples. Com um contador regressivo, ele monitora o tempo de digitação e fornece feedback em tempo real sobre erros. O jQuery gerencia interações do usuário, como iniciar e reiniciar o cronômetro. Ele consume uma API externa, apresentando frases aleatórias para digitação e exibe mensagens de erro se necessário. Ao final, registra o desempenho do usuário em um placar, incluindo média de palavras por minuto e número de acertos e erros, permitindo que acompanhe seu progresso.',
+        enUS: "This project combines jQuery and Tailwind CSS to create a simple typing challenge. With a countdown timer, it monitors typing time and provides real-time feedback on errors. jQuery manages user interactions such as starting and restarting the timer. By consuming an external API, it presents random phrases for typing and displays error messages if necessary. At the end, it records the user's performance on a scoreboard, including the average number of words per minute and the number of hits and misses, allowing them to track their progress"
       })
     },
     {
       src: 'stopwatch',
-      tags: ['typescript','sass','html','css','github'],
+      tags: ['typescript', 'sass', 'html', 'css', 'github'],
       site: 'https://stopwatch-react-app0.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Stopwatch-react-app',
       name: renderText({
@@ -107,21 +107,21 @@ export const projectsList = (language: string) => {
       })
     },
     {
-      src: 'typing-challenge',
-      tags: ['javascript','html','css','tailwind','jquery','api','github'],
-      site: 'https://typing-challenge-theta.vercel.app/',
-      repo: 'https://github.com/httpE2Barao/typing-challenge',
+      src: 'moni-bank',
+      tags: ['javascript', 'html', 'css'],
+      site: 'https://moni-bank-omega.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/MoniBank',
       name: renderText({
-        ptBR: 'Desafio de Digitação',
-        enUS: 'Typing Challenge'
+        ptBR: 'Banco digital',
+        enUS: 'Digital bank'
       }),
       alt: renderText({
-        ptBR: 'Desafio de Digitação - palavras por minuto',
-        enUS: 'Typing Challenge - words per minute'
+        ptBR: 'Projeto de cadastro em um banco digital',
+        enUS: 'Digital Bank Account Sign-Up Project'
       }),
       abt: renderText({
-        ptBR: 'Este projeto combina jQuery e Tailwind CSS para criar um desafio de digitação simples. Com um contador regressivo, ele monitora o tempo de digitação e fornece feedback em tempo real sobre erros. O jQuery gerencia interações do usuário, como iniciar e reiniciar o cronômetro. Ele consume uma API externa, apresentando frases aleatórias para digitação e exibe mensagens de erro se necessário. Ao final, registra o desempenho do usuário em um placar, incluindo média de palavras por minuto e número de acertos e erros, permitindo que acompanhe seu progresso.',
-        enUS: "This project combines jQuery and Tailwind CSS to create a simple typing challenge. With a countdown timer, it monitors typing time and provides real-time feedback on errors. jQuery manages user interactions such as starting and restarting the timer. By consuming an external API, it presents random phrases for typing and displays error messages if necessary. At the end, it records the user's performance on a scoreboard, including the average number of words per minute and the number of hits and misses, allowing them to track their progress"
+        ptBR: 'O projeto usa Javascript para criar uma conta em um site de banco. Utiliza boas práticas de validação de formulários, como verificar se o usuário é maior de idade, se o CPF tem os dígitos válidos e com a funcionalidade de tirar foto pelo webcam. Ele também trata os erros que podem ocorrer com dados inválidos. O projeto é simples, e mostra como usar a lógica de programação para fazer uma aplicação web de cadastro.',
+        enUS: 'The project uses Javascript to create an account on a bank website. It uses good form validation practices, such as checking that the user is of legal age, that the CPF has valid digits and with the functionality to take a photo via the webcam. It also handles errors that can occur with invalid data. The project is simple and shows how to use programming logic to make a registration web application.'
       })
     },
   ];

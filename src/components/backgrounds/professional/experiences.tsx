@@ -99,7 +99,7 @@ export const experiences = [
       {
         softSkills: 'Organização, Proatividade, Responsabilidade, Atenção aos detalhes.',
         hardSkills: 'Pesquisa, Administração, Logística.',
-        description: [`Responsavél pelo controle, pesquisa e organização de processos jurídicos. Realizando a triagem de documentos, a expedição para outros setores e auxiliando na digitalização de processos contribuindo para a otimização do fluxo de trabalho.`, `Aprimorei as habilidades de atenção aos detalhes e proatividade.`]
+        description: [`Responsável pelo controle, pesquisa e organização de processos jurídicos. Realizando a triagem de documentos, a expedição para outros setores e auxiliando na digitalização de processos contribuindo para a otimização do fluxo de trabalho.`, `Aprimorei as habilidades de atenção aos detalhes e proatividade.`]
       },
       {
         softSkills: 'Organization, Proactivity, Responsibility, Attention to detail.',
