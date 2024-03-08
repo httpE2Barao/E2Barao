@@ -19,6 +19,25 @@ export const experiences = [
     ]
   },
   {
+    title: ['2023 - ', 'Atualmente', 'Today'],
+    cardTitle: ['Motorista autônomo', 'Autonomous vehicle driver'],
+    cardSubtitle: [`Motorista de aplicativo`, `Rideshare driver`],
+    cardDetailedText: [
+      {
+        softSkills: 'Atenção, Compromisso, Responsabilidade, Comunicação, Pontualidade.',
+        hardSkills: 'Logística, Gestão de Rotas e Tempo, Habilidades de direção, Uso Avançado de Aplicativos de Navegação',
+        description: [`Consciência Situacional: Capacidade de estar atento ao ambiente ao redor.`, `Técnicas de direção econômica e defensiva e habilidade para dirigir em condições de trânsito desafiadoras.`, `Planejamento de rotas eficientes e gerenciamento de tempo para aumentar a produtividade.`]
+      },
+      {
+        softSkills: "Attention, Commitment, Responsibility, Communication, Punctuality",
+        hardSkills: "Logistics, Route and Time Management, Driving Skills, Advanced Use of Navigation Apps",
+        description: ["Situational Awareness: The ability to be attentive to the surrounding environment.", "Economic and defensive driving techniques and the ability to drive in challenging traffic conditions.", "Planning of efficient routes and time management to increase productivity."
+        ]
+      }
+
+    ]
+  },
+  {
     title: ['2022 - 2023 ', '(~12 meses)', '(~12 months)'],
     cardTitle: 'Alura',
     cardSubtitle: ['Cursos de tecnologia online', 'Online technology courses'],

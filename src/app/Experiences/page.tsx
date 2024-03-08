@@ -51,8 +51,8 @@ export default function Backgrounds() {
   return (
     <>
       <article
-        className={`bg-img bg-img-rain flex flex-col justify-evenly w-full gap-32
-      sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2xl:gap-72`}
+        className={`bg-img bg-img-rain flex flex-col justify-evenly w-full gap-20
+      sm:px-5 max-sm:pb-10 md:px-10 lg:px-36 2k:gap-20`}
       >
         <PhraseSection
           phrase={mainPhrase}

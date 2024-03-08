@@ -21,7 +21,7 @@ export default function HardSkills() {
   const { theme } = useTheme();
 
   return (
-    <article className={`flex flex-col items-center max-w-[2500px] mx-auto pb-20`}>
+    <article className={`max-w-[2500px] mx-auto pb-20`}>
 
       <PhraseSection phrase={mainPhrase} type={1} author={mainPhraseAuthor} />
 
@@ -35,12 +35,12 @@ export default function HardSkills() {
         />
       </section>
 
-      <TecsContainer type={0}/>
-
-      <span className="mt-5">
-        <Button text={`${language === 'pt-BR' ? 'Repositório de estudos' : 'Study repository'}`} index={5} theme={theme} onClick={() => window.open('https://github.com/httpE2Barao/Study-Repo', '_blank')}/>
-      </span>
-
+      <section className="flex flex-col items-center">
+        <TecsContainer type={0} />
+        <span className="mt-5">
+          <Button text={`${language === 'pt-BR' ? 'Repositório de estudos' : 'Study repository'}`} index={5} theme={theme} onClick={() => window.open('https://github.com/httpE2Barao/Study-Repo', '_blank')} />
+        </span>
+      </section>
     </article >
   );
 }

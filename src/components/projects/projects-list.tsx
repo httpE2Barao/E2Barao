@@ -38,9 +38,9 @@ export const projectsList = (language: string) => {
       src: 'negociacoes',
       tags: ['typescript', 'github', 'api', 'html', 'css'],
       site: 'https://negocicoes.vercel.app/dist/index.html',
-      repo: 'https://github.com/httpE2Barao/Code-study/tree/main/TypeScript/Negocia%C3%A7%C3%B5es',
+      repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/TypeScript/Negocia%C3%A7%C3%B5es',
       name: renderText({
-        ptBR: 'Negociações',
+        ptBR: 'Negocia',
         enUS: 'Negotiations'
       }),
       alt: renderText({
@@ -58,8 +58,8 @@ export const projectsList = (language: string) => {
       site: 'https://serenatto-ebon.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto',
       name: renderText({
-        ptBR: 'Cafeteria',
-        enUS: 'Coffe shop'
+        ptBR: 'Serenatto',
+        enUS: 'Serenatto'
       }),
       alt: renderText({
         ptBR: 'Cafeteria Serenatto',

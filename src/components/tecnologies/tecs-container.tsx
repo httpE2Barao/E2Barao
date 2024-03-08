@@ -30,7 +30,10 @@ export const TecsContainer = ({ type }: { type?: number }) => {
           <div key={index} className={`${type != 1 && !('tecsSrc' in item) && 'slideTopSlower bg-azul-claro'} ${'tecsSrc' in item && 'col-span-2'}
             p-5 rounded-lg hover:cursor-default`} >
             {('tecsSrc' in item && item.tecsSrc) ? (
-              <TecsGrid subList={item.tecsSrc} type={type} />
+              <>
+                <h1 className="text-3xl font-bold tracking-wide text-center mb-10 mt-5">Tecnologias</h1>
+                <TecsGrid subList={item.tecsSrc} type={type} />
+              </>
             ) : (
               <>
                 <h1 className="text-xl pb-4 uppercase font-bold tracking-wider">{item.concepts ? 'Concepts' : 'Programs'}</h1>
