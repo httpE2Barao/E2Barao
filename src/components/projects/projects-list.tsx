@@ -38,7 +38,7 @@ export const projectsList = (language: string) => {
       src: 'negociacoes',
       tags: ['typescript', 'github', 'api', 'html', 'css'],
       site: 'https://negocicoes.vercel.app/dist/index.html',
-      repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/TypeScript/Negocia%C3%A7%C3%B5es',
+      repo: 'https://github.com/httpE2Barao/Negotiation',
       name: renderText({
         ptBR: 'Negocia',
         enUS: 'Negotiations'
