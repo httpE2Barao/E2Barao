@@ -41,7 +41,7 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
 
           <p className="content-animation max-sm:leading-tight lg:text-xl text-justify lg:w-2/3 2xl:w-full">{selectedProject.abt}</p>
 
-          <Button text={`${language === 'pt-BR' ? 'Voltar' : 'Back'}`} index={2} theme={theme} onClick={onBack} />
+          <Button text={`${language === 'pt-BR' ? 'Voltar' : 'Return'}`} index={2} theme={theme} onClick={onBack} />
 
         </div>
 
