@@ -138,7 +138,6 @@
 
 .icon-animation-nav:hover .content-animation-nav::before {
   width: 100%;
-  /* Quando o mouse está sobre, aumenta a largura para 100% */
 }
 
 .content-animation-nav::before {
@@ -383,7 +382,6 @@
 }
 
 @media screen and (max-width: 640px) {
-
   .g-container-0 h1,
   .g-container-2 h1 {
     text-align: center;
@@ -401,7 +399,6 @@
 }
 
 @media screen and (min-width: 640px) {
-
   .g-img-0,
   .g-img-2 {
     padding-right: 0.75rem;
