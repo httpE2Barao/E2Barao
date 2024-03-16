@@ -14,7 +14,7 @@ const TecsList = ({ subList }: { subList: string[] }) => (
 );
 
 export const TecsContainer = ({ type }: { type?: number }) => {
-  const { language } = useTheme();
+  const { language, theme } = useTheme();
   const languageIndex = language === 'pt-BR' ? 0 : 1;
 
   return (
@@ -31,7 +31,7 @@ export const TecsContainer = ({ type }: { type?: number }) => {
             p-5 rounded-lg hover:cursor-default`} >
             {('tecsSrc' in item && item.tecsSrc) ? (
               <>
-                <h1 className="text-3xl font-bold tracking-wide text-center mb-10 mt-5">Tecnologias</h1>
+                <h1 className={`text-3xl font-bold tracking-wide text-center mb-10 mt-5 ${theme==='dark'?'text-white':'text-black'}`}>Tecnologias</h1>
                 <TecsGrid subList={item.tecsSrc} type={type} />
               </>
             ) : (
