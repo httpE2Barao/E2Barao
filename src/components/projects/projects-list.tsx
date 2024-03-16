@@ -18,7 +18,7 @@ export const projectsList = (language: string) => {
   return [
     {
       src: 'space-tourism',
-      tags: ['typescript', 'react', 'tailwind', 'github', 'figma', 'html', 'css'],
+      tags: ['javascript', 'react', 'tailwind', 'github', 'figma', 'html', 'css'],
       site: 'https://turismo-espacial-xi.vercel.app/',
       repo: 'https://github.com/httpE2Barao/SpaceTourism',
       name: renderText({
