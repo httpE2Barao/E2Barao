@@ -15,7 +15,7 @@ export const ProjectInfo = ({ project, changeTheme }: ProjectInfoProps) => {
       <div className="uppercase z-10 flex flex-col items-center gap-5 font-bold max-md:tracking-wider">
         <h3
           className={`${changeTheme?'text-5xl hover:cursor-default':'hover:cursor-pointer'} 
-          font-bold text-shadow my-10 p-2 rounded bg-azul-pastel text-black text-3xl max-sm:text-xl md:text-4xl`}
+          font-bold text-shadow my-10 p-2 rounded bg-azul-pastel text-black text-center text-3xl max-sm:text-xl md:text-4xl`}
           onClick={() => changeProject(project.src)}>
           {project.name}
         </h3>
