@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import Image from "next/image";
 import VanillaTilt from "vanilla-tilt";
 import { TecsContainer } from '../tecnologies/tecs-container';
+import { useTheme } from '../switchers/switchers';
 
 interface BoxProps {
   name: string | string[];
@@ -12,6 +13,7 @@ interface BoxProps {
 }
 
 export default function BoxSmall(props: BoxProps) {
+  const { changePage } = useTheme();
   const boxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,14 +24,16 @@ export default function BoxSmall(props: BoxProps) {
   }, [props.last]);
 
   return (
-    <div ref={boxRef}
+    <div
+      ref={boxRef}
       className={`bg-azul-claro slideRightSlower justify-center rounded-2xl
-      ${props.bgNone === undefined && props.last === undefined && 'col-span-2 2xl:col-span-1 shadow-lg'}
-      ${props.bgNone === true && 'm-auto hidden bg-transparent p-0 lg:block row-start-3'}
-      ${props.last === true
+        ${props.bgNone === undefined && props.last === undefined && 'max-lg:col-span-2 lg:col-span-1 shadow-lg'}
+        ${props.bgNone === true && 'm-auto hidden bg-transparent p-0 lg:block row-start-3'}
+        ${props.last === true
           ? 'bg-transparent flex row-start-4 col-span-4 lg:row-start-3 lg:col-span-3 2xl:col-span-2'
           : 'p-5 max-md:col-span-2'}
-      `}>
+      `}
+    >
       {props.last === true ? (
         <TecsContainer type={1} />
       ) : (
@@ -39,8 +43,10 @@ export default function BoxSmall(props: BoxProps) {
           alt={props.alt}
           width={500}
           height={500}
+          onClick={() => props.bgNone && changePage(4)}
         />
       )}
     </div>
   );
+  
 }

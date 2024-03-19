@@ -9,7 +9,7 @@ interface iTecsGridProps {
 }
 
 export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
-  const { theme } = useTheme();
+  const { theme, page } = useTheme();
   const [flashingDivs, setFlashingDivs] = useState<number[]>([]);
   const numberOfFlashingDivs = 7;
 
@@ -29,11 +29,13 @@ export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
   }, [subList]);
 
   const isFlashing = (index: number) => flashingDivs.includes(index);
-
   const maxItems = type === 1 ? 10 : subList.length;
 
   return (
     <>
+      {
+        page === '/Tecs' && <h1 className={`text-3xl font-bold tracking-wide text-center mb-10 mt-5 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Tecnologias</h1>
+      }
       <ul
         className={`${type == 1 ? '' : '4k:py-10'} flex flex-wrap my-auto gap-5 items-center justify-center`}
         style={{

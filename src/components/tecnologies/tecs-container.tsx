@@ -31,8 +31,7 @@ export const TecsContainer = ({ type }: { type?: number }) => {
             p-5 rounded-lg hover:cursor-default`} >
             {('tecsSrc' in item && item.tecsSrc) ? (
               <>
-                <h1 className={`text-3xl font-bold tracking-wide text-center mb-10 mt-5 ${theme==='dark'?'text-white':'text-black'}`}>Tecnologias</h1>
-                <TecsGrid subList={item.tecsSrc} type={type} />
+                <TecsGrid subList={item.tecsSrc} type={type}/>
               </>
             ) : (
               <>
