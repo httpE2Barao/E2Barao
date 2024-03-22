@@ -4,7 +4,7 @@ import { TecsGrid } from "./tecs-grid";
 import { useTheme } from "../switchers/switchers";
 
 const TecsList = ({ subList }: { subList: string[] }) => (
-  <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+  <ul className="grid grid-cols-2 gap-3">
     {subList.map((subItem: string, j: number) => (
       <li key={j}>
         {subItem}
@@ -14,7 +14,7 @@ const TecsList = ({ subList }: { subList: string[] }) => (
 );
 
 export const TecsContainer = ({ type }: { type?: number }) => {
-  const { language, theme } = useTheme();
+  const { language } = useTheme();
   const languageIndex = language === 'pt-BR' ? 0 : 1;
 
   return (
@@ -27,7 +27,7 @@ export const TecsContainer = ({ type }: { type?: number }) => {
         }
 
         return (
-          <div key={index} className={`${type != 1 && !('tecsSrc' in item) && 'slideTopSlower bg-azul-claro'} ${'tecsSrc' in item && 'col-span-2'}
+          <div key={index} className={`${type != 1 && !('tecsSrc' in item) && 'slideTopSlower bg-azul-claro max-md:col-span-2'} ${'tecsSrc' in item && 'col-span-2'}
             p-5 rounded-lg hover:cursor-default`} >
             {('tecsSrc' in item && item.tecsSrc) ? (
               <>

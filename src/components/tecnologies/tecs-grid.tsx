@@ -29,7 +29,7 @@ export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
   }, [subList]);
 
   const isFlashing = (index: number) => flashingDivs.includes(index);
-  const maxItems = type === 1 ? 10 : subList.length;
+  const maxItems = type === 1 ? 12 : subList.length;
 
   return (
     <>
@@ -37,25 +37,18 @@ export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
         page === '/Tecs' && <h1 className={`text-3xl font-bold tracking-wide text-center mb-10 mt-5 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Tecnologias</h1>
       }
       <ul
-        className={`${type == 1 ? '' : '4k:py-10'} flex flex-wrap my-auto gap-5 items-center justify-center`}
-        style={{
-          gridTemplateColumns: `${type == 1 ? 'repeat( ,minmax(20px, 5em))' : 'repeat(auto-fill, minmax(20px, 5em))'
-            }`,
-        }}
-      >
+        className={`${type == 1 ? '' : '4k:py-10'} flex flex-wrap my-auto gap-5 items-center justify-center`}>
         {subList.slice(0, maxItems).map((subItem: string, j: number) => (
-          <li key={j} className={`${type == 1 && 'grid-cols-1 '}`}>
+          <li key={j}>
             <Image
               src={`/images/${subItem}`}
               alt={subItem}
               width={500}
               height={500}
-              className={`
-            rounded-lg w-20 hover:opacity-100
+              className={`rounded-lg w-20 hover:opacity-100
             ${type == 1 && `${isFlashing(j) && 'flash'} opacity-30 transition-opacity`}
             ${theme === 'light' && 'invert-color'}
-            `}
-            />
+          `}/>
           </li>
         ))}
       </ul>
