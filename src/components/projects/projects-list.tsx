@@ -160,5 +160,23 @@ export const projectsList = (language: string) => {
         enUS: 'This project uses JavaScript to create an address search functionality based on the ZIP code provided by the user. The idea is to allow users to enter a ZIP code and then get detailed information about the address associated with that ZIP code. Before proceeding with the query, it checks that the user is of legal age. It also validates the CPF digits to ensure that they are valid. This helps to avoid errors and inconsistencies in the data entered.'
       })
     },
+    {
+      src: 'codechella',
+      tags: ['typescript', 'react', 'html', 'sass', 'css'],
+      site: 'https://code-chella2023-six.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/CodeChella2023',
+      name: renderText({
+        ptBR: 'Festival',
+        enUS: 'Festival'
+      }),
+      alt: renderText({
+        ptBR: 'Projeto react de um evento festival codechella',
+        enUS: 'Codechella festival event project using react'
+      }),
+      abt: renderText({
+        ptBR: 'Este projeto utiliza TypeScript e React para criar interfaces de usuário interativas e dinâmicas. O site oferece a possibilidade de explorar a programação do festival, visualizar os palcos e o mapa do local, consultar perguntas frequentes e adquirir ingressos para diferentes setores.',
+        enUS: 'This project uses TypeScript and React to create interactive and dynamic user interfaces. The site offers the possibility to explore the festival program, view the stages and the venue map, consult frequently asked questions and purchase tickets for different sectors.'
+      })
+    },
   ];
 };
