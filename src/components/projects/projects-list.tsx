@@ -13,7 +13,7 @@ export const projectsList = (language: string) => {
     return language === 'pt-BR' ? textObj.ptBR : textObj.enUS;
   };
 
-  // tags = javascript, react, typescript, tailwind, nextjs, bootstrap, jquery, github, figma, uiux, styledcomponents, sass, html, css.
+  // tags = javascript, react, typescript, tailwind, nextjs, bootstrap, jquery, github, figma, uiux, styledcomponents, sass, html, css, api.
 
   return [
     {
@@ -122,6 +122,42 @@ export const projectsList = (language: string) => {
       abt: renderText({
         ptBR: 'O projeto usa Javascript para criar uma conta em um site de banco. Utiliza boas práticas de validação de formulários, como verificar se o usuário é maior de idade, se o CPF tem os dígitos válidos e com a funcionalidade de tirar foto pelo webcam. Ele também trata os erros que podem ocorrer com dados inválidos. O projeto é simples, e mostra como usar a lógica de programação para fazer uma aplicação web de cadastro.',
         enUS: 'The project uses Javascript to create an account on a bank website. It uses good form validation practices, such as checking that the user is of legal age, that the CPF has valid digits and with the functionality to take a photo via the webcam. It also handles errors that can occur with invalid data. The project is simple and shows how to use programming logic to make a registration web application.'
+      })
+    },
+    {
+      src: 'cadastro-inteligente',
+      tags: ['javascript', 'html', 'css', 'api'],
+      site: 'https://cep-auto-complete.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/CEP_auto-complete',
+      name: renderText({
+        ptBR: 'Cadastro Inteligente',
+        enUS: 'Smart Registration'
+      }),
+      alt: renderText({
+        ptBR: 'Projeto de busca de endereço CEP',
+        enUS: 'Zip code address search project'
+      }),
+      abt: renderText({
+        ptBR: 'Este projeto utiliza JavaScript para criar uma funcionalidade de busca de endereço com base no CEP fornecido pelo usuário. A ideia é permitir que os usuários insiram um CEP e, em seguida, obtenham informações detalhadas sobre o endereço associado a esse CEP. Antes de prosseguir com a consulta, verifica se o usuário é maior de idade. Além disso, valida os dígitos do CPF para garantir que sejam válidos. Isso ajuda a evitar erros e inconsistências nos dados inseridos.',
+        enUS: 'This project uses JavaScript to create an address search functionality based on the ZIP code provided by the user. The idea is to allow users to enter a ZIP code and then get detailed information about the address associated with that ZIP code. Before proceeding with the query, it checks that the user is of legal age. It also validates the CPF digits to ensure that they are valid. This helps to avoid errors and inconsistencies in the data entered.'
+      })
+    },
+    {
+      src: 'books-react',
+      tags: ['javascript', 'html', 'css', 'api'],
+      site: 'https://books-react-project-a.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/Books_react-project',
+      name: renderText({
+        ptBR: 'Biblioteca',
+        enUS: 'Library'
+      }),
+      alt: renderText({
+        ptBR: 'Projeto de cadastro com busca de endereço CEP',
+        enUS: 'Registration project with ZIP code address search'
+      }),
+      abt: renderText({
+        ptBR: 'Este projeto utiliza JavaScript para criar uma funcionalidade de busca de endereço com base no CEP fornecido pelo usuário. A ideia é permitir que os usuários insiram um CEP e, em seguida, obtenham informações detalhadas sobre o endereço associado a esse CEP. Antes de prosseguir com a consulta, verifica se o usuário é maior de idade. Além disso, valida os dígitos do CPF para garantir que sejam válidos. Isso ajuda a evitar erros e inconsistências nos dados inseridos.',
+        enUS: 'This project uses JavaScript to create an address search functionality based on the ZIP code provided by the user. The idea is to allow users to enter a ZIP code and then get detailed information about the address associated with that ZIP code. Before proceeding with the query, it checks that the user is of legal age. It also validates the CPF digits to ensure that they are valid. This helps to avoid errors and inconsistencies in the data entered.'
       })
     },
   ];
