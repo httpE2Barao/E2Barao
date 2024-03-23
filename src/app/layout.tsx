@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Elias - Dev. Web",
   description: "Portfolio of a Web Developer",
-  icons: "/images/icon-logo.svg"
+  icons: "/images/icon-logo-dark-clean.png"
 };
 
 export default function RootLayout({
