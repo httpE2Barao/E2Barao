@@ -11,7 +11,7 @@ const getInitialPage = () => {
 
 export const usePage = () => {
   const [page, setPage] = useState(getInitialPage());
-  const [pageSelected, setPageSelected] = useState(0);
+  const [pageSelected, setPageSelected] = useState(-1);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const usePage = () => {
         newPageString = '/Contacts';
         break;
       default:
-        newPageString = '/';
+        newPageString = '';
     }
 
     setPageSelected(newPage - 1);
