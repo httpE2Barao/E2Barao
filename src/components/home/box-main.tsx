@@ -25,7 +25,7 @@ export default function BoxMain() {
   const languageData = language === 'pt-BR' ? list[0].ptBR : list[0].enUS;
 
   return (
-    <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} 
+    <div className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} slideRight
     flex flex-col w-full row-start-1 row-span-2 col-span-4 rounded-2xl shadow-lg p-4 gap-20 lg:py-7 lg:px-10 lg:col-span-3 2xl:col-span-2`}>
 
       <BoxMainPhrase language={language} />
