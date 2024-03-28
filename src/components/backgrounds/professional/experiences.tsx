@@ -1,6 +1,24 @@
 
 export const experiences = [
   {
+    title: ['2024 - ', 'Atualmente', 'Today'],
+    cardTitle: ['Workana', 'Workana'],
+    cardSubtitle: [`Freelancer como Desenvolvedor Web`, `Freelance Web Developer`],
+    url: 'https://www.workana.com/freelancer/6e69ccc4b97986cda392335af8e005c6',
+    cardDetailedText: [
+      {
+        softSkills: 'Resolução de problemas, Pensamento analítico, Comprometimento, Comunicação.',
+        hardSkills: 'Linguagens de Programação, Web Design, Bancos de Dados, WordPress',
+        description: [`HTML5, CSS3, SASS, JavaScript, Typescript, React.js, Node.js, PHP, Next.js`,`Design UX/UI`,`Sites Responsivos`,`SEO - Search Engine Optimization`],
+      },
+      {
+        softSkills: 'Problem solving, Analytical thinking, Commitment, Communication.',
+        hardSkills: 'Programming Languages, Web Design, Databases, WordPress',
+        description: [`HTML5, CSS3, SASS, JavaScript, Typescript, React.js, Node.js, PHP, Next.js`,`Design UX/UI`,`Responsive Website`,`SEO - Search Engine Optimization`]
+      },
+    ]
+  },
+  {
     title: ['2023 - ', 'Atualmente', 'Today'],
     cardTitle: ['Centro Universitário IBMR', 'IBMR University Center'],
     cardSubtitle: [`Bacharelado Ciência da Computação (MEC: 4)`, `Bachelor of Computer Science (MEC rating: 4)`],
