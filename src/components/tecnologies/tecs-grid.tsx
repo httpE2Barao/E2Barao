@@ -13,20 +13,20 @@ export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
   const [flashingDivs, setFlashingDivs] = useState<number[]>([]);
   const numberOfFlashingDivs = 7;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const divsToFlash: number[] = [];
-      while (divsToFlash.length < numberOfFlashingDivs) {
-        const randomIndex = Math.floor(Math.random() * subList.length);
-        if (!divsToFlash.includes(randomIndex)) {
-          divsToFlash.push(randomIndex);
-        }
-      }
-      setFlashingDivs(divsToFlash);
-    }, 500);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const divsToFlash: number[] = [];
+  //     while (divsToFlash.length < numberOfFlashingDivs) {
+  //       const randomIndex = Math.floor(Math.random() * subList.length);
+  //       if (!divsToFlash.includes(randomIndex)) {
+  //         divsToFlash.push(randomIndex);
+  //       }
+  //     }
+  //     setFlashingDivs(divsToFlash);
+  //   }, 500);
 
-    return () => clearInterval(interval);
-  }, [subList]);
+  //   return () => clearInterval(interval);
+  // }, [subList]);
 
   const isFlashing = (index: number) => flashingDivs.includes(index);
   const maxItems = type === 1 ? 12 : subList.length;

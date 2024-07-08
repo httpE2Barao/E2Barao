@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/image"
 import { useTheme } from "./switchers/switchers"
 
 interface SectionProps {
