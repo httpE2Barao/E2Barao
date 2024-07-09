@@ -1,15 +1,15 @@
-import { PhraseSection } from '@/components/phrase-section';
 import React from 'react';
 import BoxMain from "@/components/home/box-main";
+import IntroConteiner from '@/components/home/intro-main';
 // import BoxesSmall from "@/components/home/box-small-layout";
 
 export default function Home() {
 
   return (
-    <main className="px-1.5 md:px-5 pb-5 ">
-      <section>
+    <main className="px-1.5 md:px-5 pb-5">
+      <section className='flex flex-col gap-32'>
         <BoxMain />
-
+        <IntroConteiner />
       </section>
     </main>
   );

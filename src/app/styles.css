@@ -9,12 +9,9 @@
   letter-spacing: 1px;
 }
 
-/* .h-abt-0 {
-} */
-
-/* .h-abt-1 {
-  font-size: 1.4rem;
-} */
+.h-abt-0, .h-abt-1 {
+  font-size: 1.5rem;
+}
 
 .h-abt-2 {
   color: transparent;

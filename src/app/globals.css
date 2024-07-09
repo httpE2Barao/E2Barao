@@ -5,9 +5,11 @@
 :root {
   list-style-type: none;
   --azul-main: #00FFFF;
+  --azul-escuro: #0094FF;
   --azul-fundo: #8FFFFF;
   --verde: #00FF1A;
   --amarelo: #FFC700;
+  --laranja: #FF8A00;
   overflow-x: hidden;
 }
 
