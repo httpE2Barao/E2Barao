@@ -10,14 +10,14 @@ export default function BoxMain() {
   const list = [
     {
       ptBR: [
-        'Elias Edson Barão.',
-        'Desenvolvedor web',
-        '& Cientista da Computação.',
+        'Me chamo Elias Barão.',
+        'Eu crio e desenvolvo sites e aplicativos.',
+        'Engenheiro de Software.',
       ],
       enUS: [
-        'Elias Edson Barão',
-        'Web developer',
-        '& Computer Scientist.',
+        'My name is Elias Barão.',
+        'I design and develop web applications.',
+        'Software Engineer',
       ]
     }
   ];
@@ -34,7 +34,7 @@ export default function BoxMain() {
       <div className="flex max-sm:flex-col justify-between mt-auto font-extrabold pr-4">
         <span>
           {languageData.map((text, index) => (
-            <p key={index} className={`home-abt h-abt-${index} block slideRightSlow`}>
+            <p key={index} className={`home-abt text-2xl h-abt-${index} block slideRightSlow`}>
               {text}
               {index !== languageData.length - 1 && <br />}
             </p>

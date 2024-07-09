@@ -1,20 +1,16 @@
 export const BoxMainPhrase = ({language}: {language:string}) => {
 
-  const phraseMainPT = 'Faça o que você ama,';
-  const phraseMainEN = 'Do what you love,';
-  const phraseSubPT = 'ame o que você faz!';
-  const phraseSubEN = 'love what you do!';
+  const phraseMainPT = 'A colaboração entre as pessoas é o que torna a tecnologia poderosa.';
+  const phraseMainEN = 'Collaboration among people is what makes technology powerful.';
 
   return (
-    <h1 className="slideRight pt-[7vh] flex flex-col gap-10 justify-between text-[1.77em] text-[#00000077] tracking-widest leading-normal font-extrabold uppercase sm:text-4xl 2k:text-4xl 2xl:text-4xl 4k:text-6xl w-full">
+    <h1 className="slideRight pt-5 px-3 ml-auto max-w-[20em] flex flex-col gap-10 justify-between text-[1.77em] text-[#000000ca] tracking-wide font-extrabold sm:text-4xl 2k:text-4xl 2xl:text-4xl 4k:text-6xl w-full">
 
-      <span className="text-left max-lg:text-center">
+      <span className="text-right leading-normal">
         {language === 'pt-BR' ? phraseMainPT : phraseMainEN}
         <br/>
       </span>
-      <span className="text-right max-lg:text-center lg:pt-10">
-        {language === 'pt-BR' ? phraseSubPT : phraseSubEN}
-      </span>
+
     </h1>
   )
 }

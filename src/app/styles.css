@@ -3,31 +3,28 @@
 }
 
 .home-abt {
-  margin: 15px 0 10px;
-  font-size: 1rem;
+  margin: 10px 0;
   -webkit-background-clip: text;
-  color: rgba(0, 0, 0, 0.50);
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  color: hsla(0, 0%, 0%, 0.80);
+  letter-spacing: 1px;
 }
 
-.h-abt-0 {
-  font-size: 2rem;
-  color: transparent;
-  background-image: linear-gradient(to bottom, #000000, var(--azul-main));
-}
+/* .h-abt-0 {
+} */
 
-.h-abt-1 {
+/* .h-abt-1 {
   font-size: 1.4rem;
-}
+} */
 
 .h-abt-2 {
+  color: transparent;
+  background-image: linear-gradient(to bottom, #000000, #00FFFF);
   font-size: 1rem;
 }
 
 @media screen and (max-width: 1024px) {
-  .home-abt {
-    font-size: 1rem;
+  .home-0, .home-1 {
+    font-size: 1.4rem;
   }
 }
 
