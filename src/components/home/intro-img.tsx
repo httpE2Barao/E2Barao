@@ -6,7 +6,7 @@ const ImagemIntroducao = () => {
 
     return (
         <span className={'flip-conteiner'}>
-            <div className={'flip max-lg:right-0'}>
+            <div className={'flip mx-auto'}>
                 <div className="frente">
 
                 </div>

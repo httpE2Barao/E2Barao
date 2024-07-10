@@ -1,15 +1,16 @@
 import React from 'react';
 import BoxMain from "@/components/home/box-main";
 import IntroConteiner from '@/components/home/intro-main';
-// import BoxesSmall from "@/components/home/box-small-layout";
+import InfiniteScroll from '@/components/home/infinite-scroll';
 
 export default function Home() {
-
+  
   return (
-    <main className="px-1.5 md:px-5 pb-5">
-      <section className='flex flex-col gap-32'>
+    <main className="px-1.5 md:px-5 pb-5 max-w-[3020px] mx-auto">
+      <section className='flex flex-col gap-20'>
         <BoxMain />
         <IntroConteiner />
+        <InfiniteScroll />
       </section>
     </main>
   );

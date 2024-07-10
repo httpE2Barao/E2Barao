@@ -13,7 +13,7 @@ export const OptionsNav = (props: iOptionsNav) => {
 
   return (
     <div className={`${props.menuStyle ? 'nav-menu flex-col gap-10 m-7 ' : 'md:flex hidden'} ${isMenuActive ? 'flex' : 'hidden'}
-    font-semibold gap-5 lg:text-xl xl:gap-10
+    font-normal gap-5 lg:text-lg xl:gap-5
     `}>
       {language === 'pt-BR'
         ? pt.map((item, index) => (

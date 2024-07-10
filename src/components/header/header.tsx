@@ -5,7 +5,7 @@ import { MenuNav } from "./menu";
 
 export const Header = () => {
   return (
-    <header className={`relative p-5 flex items-center justify-between w-full`}>
+    <header className={`relative p-5 flex items-center justify-between max-w-[3020px] mx-auto`}>
       <a>
         <Logo />
       </a>

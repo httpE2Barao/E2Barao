@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { useTheme } from "../switchers/switchers";
 import { BoxMainPhrase } from "./box-phrase";
-import ImagemIntroducao from "./intro-img";
+import ArrowToDown from "./down-arrow";
 
 export default function BoxMain() {
   const { language, theme } = useTheme();
@@ -36,7 +36,7 @@ export default function BoxMain() {
         <div className="flex max-md:flex-col justify-between mt-auto font-extrabold pr-4">
           <span>
             {languageData.map((text, index) => (
-              <p key={index} className={`home-abt h-abt-${index} block slideRightSlow`}>
+              <p key={index} className={`home-abt h-abt-${index} block slideRightSlow w-[60vw]`}>
                 {text}
                 {index !== languageData.length - 1 && <br />}
               </p>
@@ -44,7 +44,7 @@ export default function BoxMain() {
           </span>
 
           {/* Social Buttons */}
-          <span className="flex flex-row-reverse gap-5 hover:cursor-pointer mt-auto ml-auto py-5 max-md:absolute max-md:translate-y-[150px]">
+          <span className="flex flex-row-reverse w-[95%] lg:gap-5 hover:cursor-pointer mt-auto ml-auto py-5 max-md:absolute max-md:justify-between max-md:translate-y-[150px] overflow-hidden">
             <div
               className="invert-color-hover min-w-16 bg-white rounded-full px-5 max-sm:w-16 lg:w-[100px] lg:h-[100px] flex items-center"
               onClick={() => window.open('https://www.linkedin.com/in/e2barao/', '_blank')}>
@@ -70,7 +70,7 @@ export default function BoxMain() {
           </span>
         </div>
       </article>
-
+      <ArrowToDown />
     </>
   );
 }
