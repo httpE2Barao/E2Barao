@@ -9,7 +9,8 @@
   letter-spacing: 1px;
 }
 
-.h-abt-0, .h-abt-1 {
+.h-abt-0,
+.h-abt-1 {
   font-size: 1.5rem;
 }
 
@@ -19,8 +20,91 @@
   font-size: 1rem;
 }
 
+.flip-conteiner {
+  position: relative;
+  height: 550px;
+}
+
 @media screen and (max-width: 1024px) {
-  .home-0, .home-1 {
+  .flip-conteiner {
+    transform: translateY(-8em);
+    margin-left: auto;
+    width: 500px;
+  }
+
+  .intro-conteiner > p {
+    transform: translateY(-8em);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .flip-conteiner {
+    width: 250em;
+  }
+}
+
+@keyframes flipIn {
+  from {
+    backface-visibility: hidden;
+  }
+
+  to {
+    backface-visibility: visible;
+  }
+}
+
+@keyframes flipOut {
+  from {
+    backface-visibility: visible;
+  }
+
+  to {
+    backface-visibility: hidden;
+  }
+}
+
+.flip-conteiner:hover .flip {
+  transform: rotateY(180deg);
+}
+
+.flip-conteiner:hover .verso {
+  animation: flipIn .8s forwards;
+}
+
+.flip {
+  position: absolute;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  width: 500px;
+  height: 500px;
+  transition: .75s;
+}
+
+.frente,
+.verso {
+  animation: flipOut .8s forwards;
+  transition: .75s;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.verso {
+  transform: rotateY(180deg);
+  border-radius: 50%;
+}
+
+.frente {
+  background-image: url(../../public/images/img-dev-azul.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+@media screen and (max-width: 1024px) {
+
+  .home-0,
+  .home-1 {
     font-size: 1.4rem;
   }
 }
@@ -376,6 +460,7 @@
 }
 
 @media screen and (max-width: 640px) {
+
   .g-container-0 h1,
   .g-container-2 h1 {
     text-align: center;
@@ -393,6 +478,7 @@
 }
 
 @media screen and (min-width: 640px) {
+
   .g-img-0,
   .g-img-2 {
     padding-right: 0.75rem;
