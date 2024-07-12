@@ -33,7 +33,7 @@ export default function BoxMain() {
         <BoxMainPhrase language={language} />
 
         {/* Apresentação */}
-        <div className="flex max-md:flex-col justify-between mt-auto font-extrabold pr-4">
+        <div className="flex flex-row-reverse text-right max-md:flex-col justify-between mt-auto font-extrabold pr-4">
           <span>
             {languageData.map((text, index) => (
               <p key={index} className={`home-abt h-abt-${index} block slideRightSlow w-[60vw]`}>
@@ -44,7 +44,7 @@ export default function BoxMain() {
           </span>
 
           {/* Social Buttons */}
-          <span className="flex flex-row-reverse w-[95%] lg:gap-5 hover:cursor-pointer mt-auto ml-auto py-5 max-md:absolute max-md:justify-between max-md:translate-y-[150px] overflow-hidden">
+          <span className="flex flex-row-reverse justify-end w-[95%] lg:gap-5 hover:cursor-pointer mt-auto mr-auto py-5 max-md:absolute max-md:justify-between max-md:translate-y-[150px] overflow-hidden">
             <div
               className="invert-color-hover min-w-16 bg-white rounded-full px-5 max-sm:w-16 lg:w-[100px] lg:h-[100px] flex items-center"
               onClick={() => window.open('https://www.linkedin.com/in/e2barao/', '_blank')}>

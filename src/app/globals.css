@@ -1,8 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 :root {
+  --font-title: 'Rubik', sans-serif;
   list-style-type: none;
   --azul-main: #00FFFF;
   --azul-escuro: #0094FF;
