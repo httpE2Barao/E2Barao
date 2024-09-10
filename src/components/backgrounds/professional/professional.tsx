@@ -45,7 +45,6 @@ export const ProfessionalContent = () => {
             )
             : item.cardDetailedText;
 
-
           return {
             title,
             cardTitle,
@@ -56,6 +55,7 @@ export const ProfessionalContent = () => {
           };
         })}
         mode="VERTICAL_ALTERNATING"
+        borderLessCards={true}
         timelinePointDimension={30}
         cardHeight={150}
         slideItemDuration={4000}
