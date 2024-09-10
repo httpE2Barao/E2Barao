@@ -9,7 +9,7 @@ export default function Home() {
     <main className="px-1.5 md:px-5 pb-5 max-w-[3020px] mx-auto">
       <section className='flex flex-col gap-20'>
         <BoxMain />
-        <IntroConteiner />
+        {/* <IntroConteiner /> */}
         <InfiniteScroll />
       </section>
     </main>
