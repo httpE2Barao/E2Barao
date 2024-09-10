@@ -70,7 +70,7 @@ export default function BoxMain() {
           </span>
         </div>
       </article>
-      <ArrowToDown />
+      {/* <ArrowToDown /> */}
     </>
   );
 }
