@@ -14,10 +14,10 @@ export default function Contact() {
 
       <section className="w-full flex flex-col gap-20 items-center slideBottom">
         <div className="md:w-4/6">
-          <PhraseSection type={2} phrase={language === 'pt-BR' ? 'Juntos, podemos ir mais longe.' : 'Together, we can go further.'}/>
+          <PhraseSection type={2} phrase={language === 'pt-BR' ? 'Juntos, podemos ir mais longe.' : 'Together, we can go further.'} />
         </div>
         <div>
-          <ContactMe theme={theme}/>
+          <ContactMe theme={theme} />
         </div>
       </section>
 
@@ -28,7 +28,7 @@ export default function Contact() {
             ? `${isResumeOpen ? 'Ocultar' : 'Ver'} currículo`
             : `${isResumeOpen ? 'Hide' : 'View'} resume`}
         />
-        <iframe src="/CV-2024.pdf" frameBorder="0"
+        <iframe src="/CV-EliasEBarao-2024.pdf" frameBorder="0"
           className={`${isResumeOpen ? 'block' : 'hidden'} w-full h-[1000px] max-w-[1500px] my-20`} />
       </section>
 
