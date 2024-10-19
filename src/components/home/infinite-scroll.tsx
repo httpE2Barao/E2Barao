@@ -1,7 +1,5 @@
 const InfiniteScroll = () => {
 
-    // Sempre que adicionar novos items, favor atualizados também no CSS
-
     const listaDeItens = [
         { src: "/images/img-html.png", alt: "HTML" },
         { src: "/images/img-css.png", alt: "CSS" },
@@ -20,14 +18,14 @@ const InfiniteScroll = () => {
         { src: "/images/img-nextjs.png", alt: "NextJS" },
     ];
 
-    const itemProps = "infinite-scroll-item absolute text-white rounded w-32 h-32";
+    const itemProps = "infinite-scroll-item absolute text-white rounded w-32 h-32 max-md:w-24 max-md:h-24"; 
 
     return (
-        <section className="scroll-wrapper relative h-32 w-full mx-auto overflow-hidden">
+        <section className="scroll-wrapper relative h-32 w-full mx-auto overflow-hidden max-md:h-28"> 
             {listaDeItens.map((item, index) => {
                 return (
                     <div key={index} className={`${itemProps} scroll-item-${index}`}>
-                        <img src={item.src} alt={item.alt} className="w-28 h-28" />
+                        <img src={item.src} alt={item.alt} className="w-20 h-20 max-md:w-20 max-md:h-20 max-xl:30" /> 
                     </div>
                 );
             })}

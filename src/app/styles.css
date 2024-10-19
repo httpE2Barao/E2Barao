@@ -10,7 +10,7 @@
   font-family: "Rubik", sans-serif;
   font-weight: 500;
   -webkit-background-clip: text;
-  color: hsla(0, 0%, 0%, 0.80);
+  color: #fff;
 }
 
 .h-abt-0,
@@ -20,7 +20,7 @@
 
 .h-abt-2 {
   color: transparent;
-  background-image: linear-gradient(to bottom, #000000, #00FFFF);
+  background-image: linear-gradient(to bottom, #ffffff, #00FFFF);
   margin-top: .3em;
   font-size: 1.35rem;
 }

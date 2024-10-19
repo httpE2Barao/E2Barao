@@ -1,6 +1,6 @@
 "use client"
 import { useTheme } from "../switchers/switchers";
-import ImagemIntroducao from "./intro-img"
+import ImagemIntroducao from "./intro-img";
 
 const IntroConteiner = () => {
     const { theme } = useTheme();

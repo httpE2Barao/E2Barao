@@ -1,6 +1,4 @@
-import React from 'react';
 import BoxMain from "@/components/home/box-main";
-import IntroConteiner from '@/components/home/intro-main';
 import InfiniteScroll from '@/components/home/infinite-scroll';
 
 export default function Home() {
