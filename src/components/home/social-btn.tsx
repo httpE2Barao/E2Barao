@@ -3,24 +3,24 @@ import Image from "next/image";
 {/* Social Buttons */}
 export const SocialBtns = () => {
     return(       
-    <span className="flex flex-row-reverse justify-center w-[95%] lg:gap-5 hover:cursor-pointer mt-auto mr-auto py-5 max-md:flex-row max-md:items-center max-md:gap-3 overflow-hidden"> {/* Adicionando responsividade */}
+    <span className=" flex flex-row-reverse justify-center w-[95%] lg:gap-5 mt-auto mr-auto py-5 max-md:flex-row max-md:items-center max-md:gap-3 overflow-hidden"> {/* Adicionando responsividade */}
         <div
-        className="invert-color-hover h-16 min-w-16 bg-white rounded-full px-5 max-sm:w-16 lg:w-[100px] lg:h-[100px] flex items-center"
+        className="invert-color-hover rounded-full flex items-center hover:cursor-pointer"
         onClick={() => window.open('https://www.linkedin.com/in/e2barao/', '_blank')}>
             <Image
-                className="content-animation mx-auto"
-                src='/images/icon-linkedin.svg'
+                className="content-animation mx-auto invert-color"
+                src='/images/icon-linkedin.png'
                 alt='Ver meu Linkedin'
-                width={40}
-                height={40}
+                width={80}
+                height={80}
                 />
         </div>
         <div
-        className="invert-color-hover h-16 min-w-16 bg-white rounded-full max-sm:w-16 lg:w-[100px] lg:h-[100px] flex items-center"
+        className="invert-color-hover px-1 rounded-full flex items-center hover:cursor-pointer"
         onClick={() => window.open('https://github.com/httpE2Barao', '_blank')}>
             <Image
-                className="content-animation m-auto pt-4 rounded-full p-2"
-                src='/images/icon-github.svg'
+                className="content-animation m-auto rounded-full max-lg:p-[5px] lg:w-16"
+                src='/images/icon-github.png'
                 alt='Ver meu Github'
                 width={80}
                 height={80}

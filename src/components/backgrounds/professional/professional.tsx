@@ -1,5 +1,4 @@
 
-import React from "react";
 import { Chrono } from "react-chrono";
 import { useTheme } from "../../switchers/switchers";
 import { experiences } from "./experiences";
@@ -58,8 +57,9 @@ export const ProfessionalContent = () => {
         borderLessCards={true}
         timelinePointDimension={30}
         cardHeight={150}
-        slideItemDuration={4000}
+        slideItemDuration={1000}
         slideShow
+        disableToolbar
         fontSizes={{
           title: ".7em",
           cardTitle: "1.2em",

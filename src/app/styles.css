@@ -449,26 +449,26 @@
 }
 
 .invert-color {
+  transition: opacity .2s;
   filter: invert(1);
-  transition: filter .2s;
 }
 
 .invert-color-hover {
-  transition: filter .2s;
+  transition: opacity .2s;
 }
 
 .invert-color-hover:hover {
-  filter: invert(1);
-  transition: filter .2s;
+  opacity: 0.5;
+  transition: opacity .2s;
 }
 
 .invert-color-bg::before {
-  transition: filter .2s;
+  transition: opacity .2s;
 }
 
-.invert-color-bg::before {
-  filter: invert(1);
-  transition: filter .2s;
+.invert-color-bg:hover::before {
+  opacity: 0.5;
+  transition: opacity .2s;
 }
 
 .animate {

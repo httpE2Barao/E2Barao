@@ -3,19 +3,19 @@ import { useTheme } from "../switchers/switchers";
 import { BoxMainPhrase } from "./box-phrase";
 import { SocialBtns } from "./social-btn";
 
-export default function BoxMain() {
+export default function BoxIntro() {
   const { language, theme } = useTheme();
 
   const list = [
     {
       ptBR: [
-        'Olá, sou Elias Barão.',
-        'Eu crio e desenvolvo sites e aplicativos.',
-        'Engenheiro de Software.',
+        'Olá! Sou Elias Barão.',
+        'Designer & Desenvolvedor.',
+        'Engenheiro de Software',
       ],
       enUS: [
-        'My name is Elias Barão.',
-        'I design and develop web applications.',
+        'Hello! I am Elias Barão.',
+        'Designer & Experience Developer.',
         'Software Engineer',
       ]
     }
@@ -31,10 +31,10 @@ export default function BoxMain() {
       </article>
 
       {/* Apresentação */}
-      <div className="flex flex-row-reverse max-md:text-center text-right max-md:flex-col justify-between mt-auto font-extrabold pr-4">
+      <div className="flex flex-row-reverse max-md:text-center text-right max-md:flex-col justify-between mt-auto font-extrabold">
         <span>
           {languageData.map((text, index) => (
-            <p key={index} className={`home-abt h-abt-${index} block slideRightSlow w-[60vw] max-md:w-full`}>
+            <p key={index} className={`home-abt h-abt-${index} block slideRightSlow w-[1000px] max-md:w-full`}>
               {text}
               {index !== languageData.length - 1 && <br />}
             </p>

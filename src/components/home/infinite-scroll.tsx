@@ -1,7 +1,7 @@
 const InfiniteScroll = () => {
 
     const listaDeItens = [
-        { src: "/images/img-html.png", alt: "HTML" },
+        // { src: "/images/img-html.png", alt: "HTML" },
         { src: "/images/img-css.png", alt: "CSS" },
         { src: "/images/img-javascript.png", alt: "JavaScript" },
         { src: "/images/img-figma.png", alt: "Figma" },
@@ -24,7 +24,7 @@ const InfiniteScroll = () => {
         <section className="scroll-wrapper relative h-32 w-full mx-auto overflow-hidden max-md:h-28"> 
             {listaDeItens.map((item, index) => {
                 return (
-                    <div key={index} className={`${itemProps} scroll-item-${index}`}>
+                    <div key={index} className={`${itemProps} scroll-item-${index} invert-color-hover`}>
                         <img src={item.src} alt={item.alt} className="w-20 h-20 max-md:w-20 max-md:h-20 max-xl:30" /> 
                     </div>
                 );

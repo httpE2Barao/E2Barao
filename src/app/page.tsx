@@ -1,4 +1,4 @@
-import BoxMain from "@/components/home/box-main";
+import BoxIntro from '@/components/home/box-intro';
 import InfiniteScroll from '@/components/home/infinite-scroll';
 
 export default function Home() {
@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="px-1.5 md:px-5 pb-5 max-w-[3020px] mx-auto">
       <section className='flex flex-col gap-20'>
-        <BoxMain />
+        <BoxIntro />
         {/* <IntroConteiner /> */}
         <InfiniteScroll />
       </section>
