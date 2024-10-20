@@ -11,8 +11,8 @@ export const SocialBtns = () => {
                 className="content-animation mx-auto invert-color"
                 src='/images/icon-linkedin.png'
                 alt='Ver meu Linkedin'
-                width={80}
-                height={80}
+                width={69}
+                height={69}
                 />
         </div>
         <div
