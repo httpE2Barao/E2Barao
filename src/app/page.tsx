@@ -1,4 +1,3 @@
-import InfiniteScroll from '@/components/home/infinite-scroll';
 
 export default function Home() {
 
@@ -7,7 +6,7 @@ export default function Home() {
       <section className='flex flex-col gap-20'>
         {/* <BoxIntro /> */}
         {/* <IntroConteiner /> */}
-        <InfiniteScroll />
+        {/* <InfiniteScroll /> */}
       </section>
     </main>
   );
