@@ -18,35 +18,20 @@ export default function Backgrounds() {
 
   const handleClick = (targetId: string) => {
     setActiveContent(targetId.replace("#", ""));
-    smoothScroll(targetId);
   };
-
-  const smoothScroll = (targetId: string) => {
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-      targetElement.scrollIntoView({
-        behavior: "smooth",
-      });
-    } else {
-      console.error(`Element with ID ${targetId} not found`);
-    }
-  };
-
+  
   useEffect(() => {
-    const buttonProfessional = document.getElementById("scrollButton-0");
-    const buttonPersonal = document.getElementById("scrollButton-1");
-
-    const personalClickHandler = () => handleClick("#personal");
-    const professionalClickHandler = () => handleClick("#professional");
-
-    buttonPersonal?.addEventListener("click", personalClickHandler);
-    buttonProfessional?.addEventListener("click", professionalClickHandler);
-
-    return () => {
-      buttonPersonal?.removeEventListener("click", personalClickHandler);
-      buttonProfessional?.removeEventListener("click", professionalClickHandler);
-    };
-  }, [handleClick]);
+    if (activeContent) {
+      const targetElement = document.querySelector(`#${activeContent}`);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: "smooth",
+        });
+      } else {
+        console.error(`Element with ID #${activeContent} not found`);
+      }
+    }
+  }, [activeContent]);
 
   return (
     <>

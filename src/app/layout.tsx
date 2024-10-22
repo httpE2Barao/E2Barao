@@ -1,12 +1,12 @@
-import React from "react";
+import { Header } from "@/components/header/header";
+import { MenuNav } from "@/components/header/menu";
+import ThemeProvider from "@/components/switchers/switchers";
+import { ToTheTopButton } from "@/components/to-top-btn";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import React from "react";
 import "./globals.css";
-import "./styles.css"
-import ThemeProvider from "@/components/switchers/switchers";
-import { MenuNav } from "@/components/header/menu";
-import { Header } from "@/components/header/header";
-import { ToTheTopButton } from "@/components/to-top-btn";
+import "./styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

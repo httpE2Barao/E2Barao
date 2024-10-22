@@ -1,6 +1,6 @@
 "use client"
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useTheme } from "./switchers/switchers";
 
 export const ToTheTopButton = () => {
@@ -32,11 +32,11 @@ export const ToTheTopButton = () => {
 
   return (
     <div
-      className={`invert-img z-50 sticky bottom-5 right-5 ml-auto w-fit p-5 bg-azul-claro ring-2 ring-black rounded-full hover:cursor-pointer overflow-hidden
+      className={`invert-img z-50 sticky bottom-5 right-5 ml-auto w-fit p-5 bg-azul-claro ring-2 rounded-full hover:cursor-pointer overflow-hidden
       ${theme==='dark' ? 'ring-black' : 'ring-white'}
       ${isVisible ? 'visible' : 'invisible'}`}
       onClick={scrollToTop}
-      style={{ opacity: isVisible ? 1 : 0, transition: "opacity 0.5s ease-in-out" }}
+      style={{ opacity: isVisible ? 1 : 0, transition: "opacity 0.5s ease-in-out", position: "fixed" }}
     >
       <Image
         src={'/images/icon-down-arrow.png'}

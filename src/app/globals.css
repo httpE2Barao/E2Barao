@@ -5,6 +5,7 @@
 
 :root {
   --font-title: 'Rubik', sans-serif;
+  --font-subtitle: 'adelphi-pe-variable, sans-serif;';
   list-style-type: none;
   --azul-main: #00FFFF;
   --azul-escuro: #0094FF;

@@ -7,20 +7,18 @@
 }
 
 .home-abt {
-  font-family: "Rubik", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
+  font-size: 2rem;
   -webkit-background-clip: text;
-  color: #fff;
 }
 
-.h-abt-0,
 .h-abt-1 {
-  font-size: 2.4rem;
+  font-size: 2rem;
+  font-weight: 500;
 }
 
-.h-abt-2 {
-  color: transparent;
-  background-image: linear-gradient(to bottom, #ffffff, #00FFFF);
+.h-abt-1 {
   margin-top: .3em;
   font-size: 1.35rem;
 }
@@ -110,7 +108,6 @@
 }
 
 @media screen and (max-width: 1024px) {
-
   .home-0,
   .home-1 {
     font-size: 1.4rem;

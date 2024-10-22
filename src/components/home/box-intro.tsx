@@ -1,7 +1,6 @@
 "use client"
+import { PhraseSection } from "../phrase-section";
 import { useTheme } from "../switchers/switchers";
-import { BoxMainPhrase } from "./box-phrase";
-import { SocialBtns } from "./social-btn";
 
 export default function BoxIntro() {
   const { language, theme } = useTheme();
@@ -9,12 +8,10 @@ export default function BoxIntro() {
   const list = [
     {
       ptBR: [
-        'Olá! Sou Elias Barão.',
         'Designer & Desenvolvedor.',
         'Engenheiro de Software',
       ],
       enUS: [
-        'Hello! I am Elias Barão.',
         'Designer & Experience Developer.',
         'Software Engineer',
       ]
@@ -25,16 +22,17 @@ export default function BoxIntro() {
 
   return (
     <>
-      <article className={`${theme === 'dark' ? 'bg-azul-claro' : 'bg-azul-claro'} slideRight
-      flex flex-col w-full row-start-1 row-span-2 col-span-4 rounded-2xl shadow-lg p-4 gap-20 lg:py-7 lg:px-10 lg:col-span-3 2xl:col-span-2`}>        
-        <BoxMainPhrase language={language} />
-      </article>
-
       {/* Apresentação */}
-      <div className="flex flex-row-reverse max-md:text-center text-right max-md:flex-col justify-between mt-auto font-extrabold">
-        <span>
+      <div className="pt-5 flex flex-col text-center max-md:flex-col slideBottom justify-center items-center mt-auto font-extrabold">
+        <span className="flex flex-col items-center justify-center">
+        <PhraseSection phrase="Olá! me chamo Elias Barão."/>
           {languageData.map((text, index) => (
-            <p key={index} className={`home-abt h-abt-${index} block slideRightSlow w-[1000px] max-md:w-full`}>
+            <p
+              key={index}
+              className={`home-abt h-abt-${index} block w-[1000px] max-md:w-full ${
+                theme === 'dark' ? 'text-white' : 'text-black'
+              }`}
+            >
               {text}
               {index !== languageData.length - 1 && <br />}
             </p>
@@ -42,7 +40,7 @@ export default function BoxIntro() {
         </span>
       </div>
 
-      <SocialBtns />
+      {/* <SocialBtns /> */}
 
       {/* <ArrowToDown /> */}
     </>

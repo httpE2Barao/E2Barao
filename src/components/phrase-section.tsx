@@ -15,11 +15,11 @@ export const PhraseSection = (props: SectionProps) => {
   return (
     <>
       <section className={`${props.type == 0 && 'h-[80vh] slideTopSlower'} ${props.type == 1 && 'h-[55vh] slideBottom'} ${props.type == 2 && 'h-[25vh] slideBottom'} ${theme === 'light' ? 'text-black' : 'text-white'}
-       flex flex-col gap-20 mx-auto text-center items-center justify-center p-5 md:p-10 overflow-visible hover:cursor-default`}>
+       flex flex-col gap-20 mx-auto text-center items-center justify-center max-md:pt-10 md:p-10 md:pb-0 overflow-visible hover:cursor-default`}>
 
         <h1 className={`${theme === 'light' ? 'gradient-title-white-2' : 'gradient-title-black-2'} 
-        pb-5 gradient-title font-bold tracking-wider leading-[5rem]
-        text-3xl md:text-5xl 4k:text-7xl ultrawide:text-7xl `}>
+        md:pb-5 gradient-title font-bold tracking-wider leading-[5rem]
+        text-4xl md:text-5xl 4k:text-7xl ultrawide:text-7xl `}>
           {props.phrase}
         </h1>
 

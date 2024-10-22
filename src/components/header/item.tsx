@@ -27,7 +27,7 @@ export const ItemNav = (props: ItemProps) => {
       key={props.index}
       onClick={handleItemClick}
       className={`hover:text-black icon-animation-nav p-3 rounded-lg hover:cursor-pointer
-      ${props.menuStyle && 'p-5' && console.log(props.pageSelected)}
+      ${props.menuStyle && 'p-5'}
       ${props.pageSelected == props.index && (props.theme === 'dark' ? 'bg-white text-black' : 'bg-azul-claro')}
       ${props.menuStyle
         ? (props.pageSelected != props.index && (props.theme === 'dark' && 'text-dark'))

@@ -1,12 +1,11 @@
-import React from "react";
 import { Logo } from "./logo";
-import { Nav } from "./nav";
 import { MenuNav } from "./menu";
+import { Nav } from "./nav";
 
 export const Header = () => {
   return (
-    <header className={`relative p-5 flex items-center justify-between max-w-[3020px] mx-auto`}>
-      <a>
+    <header className={`sticky p-5 py-0 flex items-center justify-between max-w-[3020px] mx-auto`}>
+      <a className="overflow-hidden">
         <Logo />
       </a>
       <Nav />
