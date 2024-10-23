@@ -1,6 +1,6 @@
 "use client"
-import { useTheme } from "../switchers/switchers"
-import { ItemNav } from "./item"
+import { useTheme } from "../switchers/switchers";
+import { ItemNav } from "./item";
 
 interface iOptionsNav {
   menuStyle?: boolean,

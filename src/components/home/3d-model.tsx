@@ -11,7 +11,7 @@ export const Modelo3D = () => {
     };
 
     return (
-        <main className={`flex flex-col items-center justify-center min-h-screen pb-0`}>
+        <main className={`flex flex-col items-center justify-center min-h-screen pb-0 px-4`}>
             <div className='modelo-3d w-full h-[100vh] max-w-6xl rounded-lg overflow-hidden'>
             {isLoading && (
                 <div className="flex items-center justify-center w-full h-full fixed top-20 left-0 z-50">

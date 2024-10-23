@@ -16,6 +16,10 @@
   overflow-x: hidden;
 }
 
+html {
+  min-width: 100%;
+}
+
 @media screen and (max-width: 640px) {
   :root {
     font-size: 80%;

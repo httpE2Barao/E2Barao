@@ -1,7 +1,7 @@
 "use client"
-import { Utils } from "./utils";
 import { useTheme } from "../switchers/switchers";
 import { OptionsNav } from "./options";
+import { Utils } from "./utils";
 
 export const Nav = () => {
   const { theme, toggleTheme, altTheme } = useTheme();

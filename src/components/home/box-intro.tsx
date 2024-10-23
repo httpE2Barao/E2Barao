@@ -23,7 +23,7 @@ export default function BoxIntro() {
   return (
     <>
       {/* Apresentação */}
-      <div className="pt-5 flex flex-col text-center max-md:flex-col slideBottom justify-center items-center mt-auto font-extrabold">
+      <div className="pt-5 flex flex-col text-center slideBottom justify-center items-center mt-auto font-extrabold">
         <span className="flex flex-col items-center justify-center">
         <PhraseSection phrase="Olá! me chamo Elias Barão."/>
           {languageData.map((text, index) => (
