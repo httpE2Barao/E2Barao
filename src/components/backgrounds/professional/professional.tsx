@@ -1,7 +1,7 @@
 
 import { Chrono } from "react-chrono";
 import { useTheme } from "../../switchers/switchers";
-import { experiences } from "./experiences";
+import { listaExperiencias } from "./lista";
 
 export const ProfessionalContent = () => {
   const { theme, language } = useTheme();
@@ -10,7 +10,7 @@ export const ProfessionalContent = () => {
   return (
     <section id="professional" className={`${theme === "dark" ? "text-white" : "text-black"} pt-20 mx-auto max-w-[2500px] animate lg:pt-20`}>
       <Chrono
-        items={experiences.map((item, index) => {
+        items={listaExperiencias.map((item, index) => {
           const title = Array.isArray(item.title)
             ? item.title[0] + item.title[language === "pt-BR" ? 1 : 2]
             : item.title;
@@ -20,15 +20,15 @@ export const ProfessionalContent = () => {
           const cardSubtitle = Array.isArray(item.cardSubtitle)
             ? item.cardSubtitle[language === "pt-BR" ? 0 : 1]
             : item.cardSubtitle;
-          const cardDetailedText = Array.isArray(item.cardDetailedText)
+            const cardDetailedText = Array.isArray(item.cardDetailedText)
             ? (
               <div>
-                <p>
+                <div>
                   <b>Soft Skills:</b> {item.cardDetailedText[cardDatailedTextIndex].softSkills}
-                </p>
-                <p>
+                </div>
+                <div>
                   <b>Hard Skills:</b> {item.cardDetailedText[cardDatailedTextIndex].hardSkills}
-                </p>
+                </div>
                 <br />
                 <ul>
                   {Array.isArray(item.cardDetailedText[cardDatailedTextIndex].description) ? (
@@ -42,7 +42,7 @@ export const ProfessionalContent = () => {
                 <br />
               </div>
             )
-            : item.cardDetailedText;
+            : item.cardDetailedText;          
 
           return {
             title,

@@ -1,9 +1,9 @@
 import { Modelo3D } from "@/components/home/3d-model";
-import BoxIntro from "@/components/home/box-intro";
+import BoxIntro from "@/components/home/apresentacao";
 
 export default function Home() {
   return (
-    <main className="max-md:px-4">
+    <main>
       <BoxIntro />
       <Modelo3D />
     </main>

@@ -2,7 +2,7 @@
 import { Button } from "@/components/buttons";
 import { ContactMe } from "@/components/contact-me";
 import { PhraseSection } from "@/components/phrase-section";
-import { useTheme } from "@/components/switchers/switchers"
+import { useTheme } from "@/components/switchers/switchers";
 import { useState } from "react";
 
 export default function Contact() {

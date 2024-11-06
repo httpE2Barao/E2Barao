@@ -1,28 +1,27 @@
-
-export const experiences = [
+export const listaExperiencias = [
   {
     title: ['2024 - ', 'Atualmente', 'Today'],
-    cardTitle: ['Workana', 'Workana'],
-    cardSubtitle: [`Freelancer como Desenvolvedor Web`, `Freelance Web Developer`],
-    url: 'https://www.workana.com/freelancer/6e69ccc4b97986cda392335af8e005c6',
+    cardTitle: ['Freelancer', 'Freelancer'],
+    cardSubtitle: [`Freelancer como Desenvolvedor Full-Stack`, `Freelancer Full-Stack Developer`],
+    url: 'https://www.linkedin.com/in/e2barao/',
     cardDetailedText: [
       {
         softSkills: 'Resolução de problemas, Pensamento analítico, Comprometimento, Comunicação.',
         hardSkills: 'Linguagens de Programação, Web Design, Bancos de Dados, WordPress',
-        description: [`HTML5, CSS3, SASS, JavaScript, Typescript, React.js, Node.js, PHP, Next.js`,`Design UX/UI`,`Sites Responsivos`,`SEO - Search Engine Optimization`],
+        description: [`HTML5, CSS3, SASS, JavaScript, Typescript, React.js, Node.js, PHP, Next.js, mySQL, Fastify, WordPress, Adobe Dreamweaver.`,`Design UX/UI, Figma, Adobe XD`,`Sites Responsivos`,`SEO - Search Engine Optimization`],
       },
       {
         softSkills: 'Problem solving, Analytical thinking, Commitment, Communication.',
         hardSkills: 'Programming Languages, Web Design, Databases, WordPress',
-        description: [`HTML5, CSS3, SASS, JavaScript, Typescript, React.js, Node.js, PHP, Next.js`,`Design UX/UI`,`Responsive Website`,`SEO - Search Engine Optimization`]
+        description: [`HTML5, CSS3, SASS, JavaScript, Typescript, React.js, Node.js, PHP, Next.js, mySQL, Fastify, WordPress, Adobe Dreamweaver.`,`Design UX/UI, Figma, Adobe XD`,`Responsive Website`,`SEO - Search Engine Optimization`]
       },
     ]
   },
   {
     title: ['2023 - ', 'Atualmente', 'Today'],
-    cardTitle: ['Centro Universitário IBMR', 'IBMR University Center'],
-    cardSubtitle: [`Bacharelado Ciência da Computação (MEC: 4)`, `Bachelor of Computer Science (MEC rating: 4)`],
-    url: 'https://www.ibmr.br/',
+    cardTitle: ['Centro Universitário UniAmérica Descomplica', 'Union of the Americas Descomplica University Center'],
+    cardSubtitle: [`Bacharelado em Engenharia de Software (MEC: 5)`, `Bachelor of Computer Science (MEC rating: 5)`],
+    url: 'https://parceiros.descomplica.com.br/?gti_source=cro_home-ug&gti_medium=header_para-empresas&gti_campaign=ug_para-empresas',
     cardDetailedText: [
       {
         softSkills: 'Resolução de problemas, Pensamento crítico, Trabalho em equipe, Comunicação.',

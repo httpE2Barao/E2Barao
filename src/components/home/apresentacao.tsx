@@ -8,11 +8,11 @@ export default function BoxIntro() {
   const list = [
     {
       ptBR: [
-        'Designer & Desenvolvedor.',
+        'Designer & Desenvolvedor',
         'Engenheiro de Software',
       ],
       enUS: [
-        'Designer & Experience Developer.',
+        'Designer & Experience Developer',
         'Software Engineer',
       ]
     }
@@ -22,14 +22,13 @@ export default function BoxIntro() {
 
   return (
     <>
-      {/* Apresentação */}
       <div className="pt-5 flex flex-col text-center slideBottom justify-center items-center mt-auto font-extrabold">
         <span className="flex flex-col items-center justify-center">
-        <PhraseSection phrase="Olá! me chamo Elias Barão."/>
+        <PhraseSection phrase="Elias Edson Barão"/>
           {languageData.map((text, index) => (
             <p
               key={index}
-              className={`home-abt h-abt-${index} block w-[1000px] max-md:w-full ${
+              className={`home-abt h-abt-${index} block w-[1000px] max-sm:text-center max-md:w-full ${
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}
             >
@@ -39,10 +38,6 @@ export default function BoxIntro() {
           ))}
         </span>
       </div>
-
-      {/* <SocialBtns /> */}
-
-      {/* <ArrowToDown /> */}
     </>
   );
 }

@@ -21,7 +21,7 @@ export default function Backgrounds() {
   };
   
   useEffect(() => {
-    if (activeContent) {
+    if (typeof window !== 'undefined' && activeContent) {
       const targetElement = document.querySelector(`#${activeContent}`);
       if (targetElement) {
         targetElement.scrollIntoView({

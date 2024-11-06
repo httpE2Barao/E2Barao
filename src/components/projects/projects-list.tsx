@@ -17,6 +17,24 @@ export const projectsList = (language: string) => {
 
   return [
     {
+      src: 'patio-monitoramento-capa',
+      tags: ['typescript', 'react', 'nextjs', 'tailwind', 'github', 'figma', 'html', 'css', 'api'], // fastify, prisma, porstgres, pgAdming4
+      site: '',
+      repo: 'https://github.com/httpE2Barao/Patio-Monitoramento/',
+      name: renderText({
+        ptBR: 'Landing de cadastro',
+        enUS: '#'
+      }),
+      alt: renderText({
+        ptBR: 'Cadastro com formulário dinâmico',
+        enUS: '#'
+      }),
+      abt: renderText({
+        ptBR: '#',
+        enUS: '#'
+      })
+    },
+    {
       src: 'space-tourism',
       tags: ['javascript', 'react', 'tailwind', 'github', 'figma', 'html', 'css'],
       site: 'https://turismo-espacial-xi.vercel.app/',
