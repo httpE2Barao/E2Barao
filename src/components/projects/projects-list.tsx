@@ -17,7 +17,7 @@ export const projectsList = (language: string) => {
 
   return [
     {
-      src: 'patio-monitoramento-capa',
+      src: 'patio-monitoramento',
       tags: ['typescript', 'react', 'nextjs', 'tailwind', 'github', 'figma', 'html', 'css', 'api'], // fastify, prisma, porstgres, pgAdming4
       site: '',
       repo: 'https://github.com/httpE2Barao/Patio-Monitoramento/',
@@ -30,10 +30,9 @@ export const projectsList = (language: string) => {
         enUS: 'Registration landing page with dynamic form'
       }),
       abt: renderText({
-        ptBR: 'Este projeto é uma landing page desenvolvida para cadastro de residentes, utilizando um formulário dinâmico que facilita a inserção e atualização de informações pessoais. A aplicação foi construída com tecnologias como React, Next.js, e Tailwind CSS, proporcionando uma interface responsiva e amigável ao usuário. Além disso, a integração com APIs permite a validação automática dos dados inseridos, tornando o processo de registro mais ágil e seguro. O projeto segue boas práticas de desenvolvimento e foco em acessibilidade, garantindo uma experiência eficiente tanto para os residentes quanto para os administradores.',
-        enUS: 'This project is a landing page designed for resident registration, using a dynamic form that facilitates the insertion and updating of personal information. The application was built with technologies such as React, Next.js, and Tailwind CSS, providing a responsive and user-friendly interface. Additionally, API integration allows for automatic validation of the entered data, making the registration process faster and more secure. The project follows good development practices and focuses on accessibility, ensuring an efficient experience for both residents and administrators.'
+        ptBR: 'Este projeto é uma landing page desenvolvida para cadastro de residentes, utilizando um formulário dinâmico que facilita a inserção e atualização de informações pessoais. A aplicação foi construída com tecnologias como React, Next.js, e Tailwind CSS, proporcionando uma interface responsiva e amigável ao usuário. Além disso, a integração com APIs permite a validação automática dos dados inseridos, tornando o processo de registro mais ágil e seguro. O projeto segue boas práticas de desenvolvimento e foco em acessibilidade, garantindo uma experiência eficiente para os residentes.',
+        enUS: 'This project is a landing page designed for resident registration, using a dynamic form that facilitates the insertion and updating of personal information. The application was built with technologies such as React, Next.js, and Tailwind CSS, providing a responsive and user-friendly interface. Additionally, API integration allows for automatic validation of the entered data, making the registration process faster and more secure. The project follows good development practices and focuses on accessibility, ensuring an efficient experience for residents.'
       })
-
     },
     {
       src: 'space-tourism',

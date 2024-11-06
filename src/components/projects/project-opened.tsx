@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { projectInterface } from './projects-list';
 import { MouseEventHandler, useEffect } from 'react';
-import { ProjectInfo } from './project-layout-info';
 import { Button } from '../buttons';
+import { ProjectInfo } from './project-layout-info';
+import { projectInterface } from './projects-list';
 
 interface iOpenedProject {
   theme: string;
@@ -49,7 +49,6 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
           <Image src={`/images/project_${selectedProject.src}.png`} alt={selectedProject.abt} width={1500} height={1000} className='relative z-10 hover:cursor-pointer' 
           onClick={() => window.open(selectedProject.site, '_blank')}/>
         </div>
-
 
       </article>
     </div>
