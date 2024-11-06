@@ -21,7 +21,7 @@ export const listaExperiencias = [
     title: ['2023 - ', 'Atualmente', 'Today'],
     cardTitle: ['Centro Universitário UniAmérica Descomplica', 'Union of the Americas Descomplica University Center'],
     cardSubtitle: [`Bacharelado em Engenharia de Software (MEC: 5)`, `Bachelor of Computer Science (MEC rating: 5)`],
-    url: 'https://parceiros.descomplica.com.br/?gti_source=cro_home-ug&gti_medium=header_para-empresas&gti_campaign=ug_para-empresas',
+    url: 'https://descomplica.com.br/faculdade',
     cardDetailedText: [
       {
         softSkills: 'Resolução de problemas, Pensamento crítico, Trabalho em equipe, Comunicação.',
