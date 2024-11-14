@@ -28,7 +28,7 @@ export default function Contact() {
             ? `${isResumeOpen ? 'Ocultar' : 'Ver'} currículo`
             : `${isResumeOpen ? 'Hide' : 'View'} resume`}
         />
-        <iframe src="/CV-EliasEBarao-2024.pdf" frameBorder="0"
+        <iframe src="/CV-EliasBarao.pdf" frameBorder="0"
           className={`${isResumeOpen ? 'block' : 'hidden'} w-full h-[1000px] max-w-[1500px] my-20`} />
       </section>
 
