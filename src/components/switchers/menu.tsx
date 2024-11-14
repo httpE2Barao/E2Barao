@@ -6,7 +6,6 @@ export const useMenu = () => {
 
   const changeMenuState = () => {
     setMenuActive(!isMenuActive);
-    console.log(`Menu aberto?: ${!isMenuActive}`);
   };
 
   useEffect(() => {
@@ -31,6 +30,7 @@ export const useMenu = () => {
   useEffect(() => {
     if (isClient) {
       const currentPath = window.location.pathname;
+      console.log(currentPath);
       if (currentPath === "/") {
         setMenuActive(true);
       } else {

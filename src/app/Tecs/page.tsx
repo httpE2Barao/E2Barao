@@ -1,11 +1,11 @@
 "use client"
-import { useEffect, useRef } from "react";
-import { useTheme } from "@/components/switchers/switchers";
-import Image from "next/image";
-import VanillaTilt from "vanilla-tilt";
-import { TecsContainer } from "@/components/tecnologies/tecs-container";
-import { PhraseSection } from "@/components/phrase-section";
 import { Button } from "@/components/buttons";
+import { PhraseSection } from "@/components/phrase-section";
+import { useTheme } from "@/components/switchers/switchers";
+import { TecsContainer } from "@/components/tecnologies/tecs-container";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import VanillaTilt from "vanilla-tilt";
 
 export default function HardSkills() {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export default function HardSkills() {
   const { theme } = useTheme();
 
   return (
-    <article className={`max-w-[2500px] mx-auto pb-20`}>
+    <article className={`max-w-[2500px] mx-auto pb-20 px-20 max-xl:px-0`}>
 
       <PhraseSection phrase={mainPhrase} type={1} author={mainPhraseAuthor} />
 

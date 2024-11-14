@@ -12,7 +12,7 @@ export default function BoxIntro() {
         'Engenheiro de Software',
       ],
       enUS: [
-        'Designer & Experience Developer',
+        'Designer & Developer',
         'Software Engineer',
       ]
     }
@@ -22,13 +22,13 @@ export default function BoxIntro() {
 
   return (
     <>
-      <div className="pt-5 flex flex-col text-center slideBottom justify-center items-center mt-auto font-extrabold">
-        <span className="flex flex-col items-center justify-center">
+      <div className="max-xl:pt-5 xl:pb-16 flex flex-col text-center slideBottom justify-center items-center max-lg:mt-auto font-extrabold">
+        <span className="flex flex-col items-start max-xl:items-center max-xl:justify-center">
         <PhraseSection phrase="Elias Edson Barão"/>
           {languageData.map((text, index) => (
             <p
               key={index}
-              className={`home-abt h-abt-${index} block w-[1000px] max-sm:text-center max-md:w-full ${
+              className={`home-abt h-abt-${index} pl-10 max-xl:p-0 block max-lg:w-[1000px] max-xl:text-center max-md:w-full ${
                 theme === 'dark' ? 'text-white' : 'text-black'
               }`}
             >
