@@ -12,7 +12,7 @@ export const ResumeAbt = (props: iResumeAbt) => {
   return (
     <section id="resume-abt" className={`${props.theme === 'dark' ? 'text-white' : 'text-black'}
     text-center font-semibold text-xl px-4 py-10 mx-auto max-w-[2000px]`}>
-      <p>
+      <div>
         {language==='pt-BR' 
         ? (
           <>
@@ -34,7 +34,7 @@ export const ResumeAbt = (props: iResumeAbt) => {
             </p>
           </>
         )}
-      </p>
+      </div>
     </section>
   )
 }

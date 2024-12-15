@@ -58,8 +58,8 @@ export const projectsList = (language: string) => {
       site: 'https://negocicoes.vercel.app/dist/index.html',
       repo: 'https://github.com/httpE2Barao/Negotiation',
       name: renderText({
-        ptBR: 'Negocia',
-        enUS: 'Negotiations'
+        ptBR: 'Negociação API',
+        enUS: 'Negotiations API'
       }),
       alt: renderText({
         ptBR: 'Projeto escalável TypeScript',
@@ -76,8 +76,8 @@ export const projectsList = (language: string) => {
       site: 'https://serenatto-ebon.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto',
       name: renderText({
-        ptBR: 'Serenatto',
-        enUS: 'Serenatto'
+        ptBR: 'Serenatto Café',
+        enUS: 'Serenatto Coffee'
       }),
       alt: renderText({
         ptBR: 'Cafeteria Serenatto',
@@ -148,8 +148,8 @@ export const projectsList = (language: string) => {
       site: 'https://cep-auto-complete.vercel.app/',
       repo: 'https://github.com/httpE2Barao/CEP_auto-complete',
       name: renderText({
-        ptBR: 'Cadastro Inteligente',
-        enUS: 'Smart Registration'
+        ptBR: 'Cadastro Autocomplete',
+        enUS: 'Autocomplete Registration'
       }),
       alt: renderText({
         ptBR: 'Projeto de busca de endereço CEP',
@@ -166,8 +166,8 @@ export const projectsList = (language: string) => {
       site: 'https://books-react-project-a.vercel.app/',
       repo: 'https://github.com/httpE2Barao/Books_react-project',
       name: renderText({
-        ptBR: 'Biblioteca',
-        enUS: 'Library'
+        ptBR: 'E-Biblioteca',
+        enUS: 'E-Library'
       }),
       alt: renderText({
         ptBR: 'Projeto de cadastro com busca de endereço CEP',
@@ -176,24 +176,6 @@ export const projectsList = (language: string) => {
       abt: renderText({
         ptBR: 'Este projeto utiliza JavaScript para criar uma funcionalidade de busca de endereço com base no CEP fornecido pelo usuário. A ideia é permitir que os usuários insiram um CEP e, em seguida, obtenham informações detalhadas sobre o endereço associado a esse CEP. Antes de prosseguir com a consulta, verifica se o usuário é maior de idade. Além disso, valida os dígitos do CPF para garantir que sejam válidos. Isso ajuda a evitar erros e inconsistências nos dados inseridos.',
         enUS: 'This project uses JavaScript to create an address search functionality based on the ZIP code provided by the user. The idea is to allow users to enter a ZIP code and then get detailed information about the address associated with that ZIP code. Before proceeding with the query, it checks that the user is of legal age. It also validates the CPF digits to ensure that they are valid. This helps to avoid errors and inconsistencies in the data entered.'
-      })
-    },
-    {
-      src: 'codechella',
-      tags: ['typescript', 'react', 'html', 'sass', 'css'],
-      site: 'https://code-chella2023-six.vercel.app/',
-      repo: 'https://github.com/httpE2Barao/CodeChella2023',
-      name: renderText({
-        ptBR: 'Festival',
-        enUS: 'Festival'
-      }),
-      alt: renderText({
-        ptBR: 'Projeto react de um evento festival codechella',
-        enUS: 'Codechella festival event project using react'
-      }),
-      abt: renderText({
-        ptBR: 'Este projeto utiliza TypeScript e React para criar interfaces de usuário interativas e dinâmicas. O site oferece a possibilidade de explorar a programação do festival, visualizar os palcos e o mapa do local, consultar perguntas frequentes e adquirir ingressos para diferentes setores.',
-        enUS: 'This project uses TypeScript and React to create interactive and dynamic user interfaces. The site offers the possibility to explore the festival program, view the stages and the venue map, consult frequently asked questions and purchase tickets for different sectors.'
       })
     },
   ];
