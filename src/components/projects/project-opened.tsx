@@ -1,8 +1,8 @@
+import { projectInterface } from '@/data/projects-data';
 import Image from 'next/image';
 import { MouseEventHandler, useEffect } from 'react';
 import { Button } from '../buttons';
 import { ProjectInfo } from './project-layout-info';
-import { projectInterface } from './projects-list';
 
 interface iOpenedProject {
   theme: string;

@@ -14,6 +14,22 @@
   --amarelo: #FFC700;
   --laranja: #FF8A00;
   overflow-x: hidden;
+  /* Cores mais modernas e vibrantes */
+  --primary-blue: #2563eb;
+  --secondary-blue: #3b82f6;
+  --accent-blue: #60a5fa;
+  --success-green: #10b981;
+  --warning-yellow: #f59e0b;
+  --error-red: #ef4444;
+  
+  /* Gradientes modernos */
+  --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+  --gradient-dark: linear-gradient(135deg, #1e293b, #334155);
+  
+  /* Sombras mais suaves */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 html {
@@ -53,4 +69,33 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Animações mais suaves */
+.animate-fade {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Design System consistente */
+.btn {
+  @apply px-4 py-2 rounded-lg transition-all duration-200;
+  background: var(--gradient-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card {
+  @apply p-6 rounded-xl;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }

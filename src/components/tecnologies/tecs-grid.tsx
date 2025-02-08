@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTheme } from '../switchers/switchers';
 import { ButtonToTecs } from '../home/button-link';
+import { tecsList } from "@/data/tecs-list";
 
 interface iTecsGridProps {
   subList: string[];

@@ -1,10 +1,6 @@
-import { Header } from "@/components/header/header";
-import { MenuNav } from "@/components/header/menu";
-import ThemeProvider from "@/components/switchers/switchers";
-import { ToTheTopButton } from "@/components/to-top-btn";
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 import { Inter } from "next/font/google";
-import React from "react";
+import ClientLayout from "./client-layout";
 import "./globals.css";
 import "./styles.css";
 
@@ -18,20 +14,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang={'pt-BR'}>
-      <ThemeProvider>
-        <body className={`${inter.className} relative`}>
-          <Header />
+    <html lang="pt-br" className={inter.className}>
+      <body>
+        <ClientLayout>
           {children}
-          <MenuNav />
-          <ToTheTopButton />
-        </body>
-      </ThemeProvider>
+        </ClientLayout>
+      </body>
     </html>
   );
 }

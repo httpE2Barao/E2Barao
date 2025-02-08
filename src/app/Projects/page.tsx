@@ -1,9 +1,8 @@
 "use client"
-import React from "react";
+import ProjectLayout from "@/components/projects/project-layout";
 import { OpenedProject } from "@/components/projects/project-opened";
 import { useTheme } from "@/components/switchers/switchers";
-import { projectsList } from "@/components/projects/projects-list";
-import { ProjectLayout } from "@/components/projects/project-layout";
+import { projectsList } from "@/data/projects-data";
 
 export default function Projetos() {
     const { theme, language, isProjectOpened, currentProject, handleBack } = useTheme();

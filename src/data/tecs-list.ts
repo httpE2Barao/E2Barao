@@ -11,10 +11,10 @@ export const tecsList = [
       ['Arquitetura de software', 'Software Architecture'],
       ['Arquitetura de Informação', 'Information Architecture'],
       ['Programação Funcional', 'Functional Programming'],
-      ['Experiência e Interface do Usuário', 'User Experience and Interface'],
+      ['UI / UX', 'UI / UX'],
       ['Gerenciamento de estado', 'State Management'],
       ['Renderização no servidor', 'Server Side Render'],
-      ['Banco de Dados Relacional', 'Relational Database'],
+      ['Banco de Dados', 'Relational Database'],
       ['Segurança da Informação', 'Information Security'],
       ['Trabalho em Equipe', 'Teamwork'],
       ['Autogestão', 'Self-Management'],
@@ -23,8 +23,11 @@ export const tecsList = [
   },
   {
     programs: [
-      'Git / Github',
-      'Visual Studio Code',
+      'VS Code',
+      'Git',
+      'GitHub',
+      'NPM',
+      'Yarn',
       'Figma',
       'Sony Vegas',
       'Microsoft 365',
@@ -40,16 +43,23 @@ export const tecsList = [
       'Adobe XD',
       'Adobe Dreamweaver',
       'Adobe Dimension 3D',
+      'Lightroom',
+      'Microsoft 365'
     ]
   },
   {
     tecsSrc: [
+      'img-html.png',
+      'img-css.png',
       'img-javascript.png',
-      'img-react.png',
       'img-typescript.png',
       'img-tailwind.png',
-      'img-nextjs.png',
+      'img-sass.png',
       'img-bootstrap.png',
+      'img-react.png',
+      'img-nextjs.png',
+      'img-api.png',
+      'img-node.png',
       'img-jquery.png',
       'img-github.png',
       'img-figma.png',
@@ -72,4 +82,4 @@ export const tecsList = [
       // 'img-dimension.png',
     ],
   },
-];
+]; 

@@ -1,24 +1,32 @@
-import { useState } from "react";
 import { SelectChangeEvent } from "@mui/material";
+import { useEffect, useState } from "react";
 
-// const getInitialLanguage = () => {
-  // if (typeof window !== 'undefined') {
-  //   const savedLanguage = localStorage.getItem('language');
-  //   return typeof savedLanguage === 'string' ? savedLanguage : 'pt-BR';
-  // }
-  // return 'pt-BR';
-  // };
+const getInitialLanguage = () => {
+  if (typeof window !== 'undefined') {
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage) return savedLanguage;
+    
+    const browserLang = navigator.language;
+    return browserLang.includes('pt') ? 'pt-BR' : 'en-US';
+  }
+  return 'pt-BR';
+};
 
-  export const useLanguage = () => {
-    const [language, setLanguage] = useState('pt-BR');
+export const useLanguage = () => {
+  const [language, setLanguage] = useState(getInitialLanguage);
 
-    const changeLanguage = (event: SelectChangeEvent<string>) => {
-      if (event.target) {
-        const selectedLanguage = event.target.value as string;
-        setLanguage(selectedLanguage);
-        localStorage.setItem('language', selectedLanguage);
-      }
-    };
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedLanguage = localStorage.getItem('language');
+      if (savedLanguage) setLanguage(savedLanguage);
+    }
+  }, []);
 
-    return { language, changeLanguage };
+  const changeLanguage = (event: SelectChangeEvent<string>) => {
+    const newLanguage = event.target.value;
+    setLanguage(newLanguage);
+    localStorage.setItem('language', newLanguage);
   };
+
+  return { language, changeLanguage };
+};

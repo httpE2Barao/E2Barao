@@ -1,11 +1,13 @@
 "use client"
-import React, { createContext, useContext, useEffect } from "react";
 import { SelectChangeEvent } from "@mui/material";
-import { UseSelectedProject } from "./projects";
-import { useLanguage } from "./language";
+import React, { createContext, useContext, useEffect, useState, lazy, Suspense } from "react";
 import { useColors } from "./colors";
-import { usePage } from "./pages";
+import { useLanguage } from "./language";
 import { useMenu } from "./menu";
+import { usePage } from "./pages";
+import { UseSelectedProject } from "./projects";
+import { LoadingSpinner } from "../LoadingSpinner";
+import Image from 'next/image';
 
 interface ThemeContextProps {
   language: string;
@@ -37,24 +39,64 @@ export const useTheme = () => {
   return themeContext;
 };
 
-const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Componente separado para pré-carregamento de imagem
+const PreloadImage = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const imagem = new (window.Image as any)();
+    imagem.src = '/images/rain-nobg.png';
+  }, []);
+
+  if (!isMounted) return null;
+
+  return (
+    <div style={{ display: 'none' }} aria-hidden="true">
+      <Image 
+        src="/images/rain-nobg.png" 
+        alt="preload" 
+        width={1}
+        height={1}
+      />
+    </div>
+  );
+};
+
+// Implementar lazy loading para componentes pesados
+const ProjectLayout = lazy(() => import('../projects/project-layout'));
+const TecsContainer = lazy(() => import('../tecnologies/tecs-container'));
+
+// Adicionar Suspense para melhor UX durante carregamento
+export default function ThemeProvider({ children }: { children: React.ReactNode }) {
   const { isProjectOpened, currentProject, changeProject, handleBack } = UseSelectedProject();
   const { theme, mainTheme, altTheme, toggleTheme } = useColors();
   const { page, pageSelected, changePage } = usePage();
   const { language, changeLanguage } = useLanguage();
   const { isMenuActive, changeMenuState } = useMenu();
 
-  useEffect(() => {
-    const imagem = new Image();
-    imagem.src = '/images/rain-nobg.png';
-  }, []); 
-
   return (
-    <ThemeContext.Provider value={{ page, pageSelected, handleBack, language, theme, mainTheme, altTheme, isMenuActive, isProjectOpened, currentProject, changeProject, toggleTheme, changePage, changeLanguage, changeMenuState }}>
-      {children}
+    <ThemeContext.Provider value={{ 
+      page, 
+      pageSelected, 
+      handleBack,
+      language, 
+      theme, 
+      mainTheme, 
+      altTheme, 
+      isMenuActive, 
+      isProjectOpened, 
+      currentProject, 
+      changeProject, 
+      toggleTheme, 
+      changePage, 
+      changeLanguage, 
+      changeMenuState 
+    }}>
+      <Suspense fallback={<LoadingSpinner />}>
+        <PreloadImage />
+        {children}
+      </Suspense>
     </ThemeContext.Provider>
   );
-};
-
-
-export default ThemeProvider;
+}

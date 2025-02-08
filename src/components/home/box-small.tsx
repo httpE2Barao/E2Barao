@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import Image from "next/image";
 import VanillaTilt from "vanilla-tilt";
-import { TecsContainer } from '../tecnologies/tecs-container';
 import { useTheme } from '../switchers/switchers';
+import TecsContainer from '../tecnologies/tecs-container';
 
 interface BoxProps {
   name: string | string[];

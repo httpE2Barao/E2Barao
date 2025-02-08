@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const InfiniteScroll = () => {
 
     const listaDeItens = [
@@ -25,7 +27,13 @@ const InfiniteScroll = () => {
             {listaDeItens.map((item, index) => {
                 return (
                     <div key={index} className={`${itemProps} scroll-item-${index} invert-color-hover`}>
-                        <img src={item.src} alt={item.alt} className="w-20 h-20 max-md:w-20 max-md:h-20 max-xl:30" /> 
+                        <Image 
+                            src={item.src} 
+                            alt={item.alt} 
+                            width={80}
+                            height={80}
+                            className="w-20 h-20 max-md:w-20 max-md:h-20 max-xl:30" 
+                        />
                     </div>
                 );
             })}

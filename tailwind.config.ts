@@ -20,6 +20,12 @@ const config: Config = {
         '2k': '1440px',
         '4k': '2560px', 
         'ultrawide': '3300px',
+      },
+      maxWidth: {
+        '8xl': '88rem',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       }
     },
   },

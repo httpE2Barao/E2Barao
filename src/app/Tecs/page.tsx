@@ -2,7 +2,7 @@
 import { Button } from "@/components/buttons";
 import { PhraseSection } from "@/components/phrase-section";
 import { useTheme } from "@/components/switchers/switchers";
-import { TecsContainer } from "@/components/tecnologies/tecs-container";
+import TecsContainer from "@/components/tecnologies/tecs-container";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import VanillaTilt from "vanilla-tilt";
@@ -38,7 +38,7 @@ export default function HardSkills() {
       <section className="flex flex-col items-center">
         <TecsContainer type={0} />
         <span className="mt-5">
-          <Button text={`${language === 'pt-BR' ? 'Repositório de estudos' : 'Study repository'}`} index={5} theme={theme} onClick={() => window.open('https://github.com/httpE2Barao/Study-Repo', '_blank')} />
+          <Button text={`${language === 'pt-BR' ? 'Repositório de estudos' : 'Study repository'}`} index={5} theme={theme} onClick={() => window.open('https://glib-quesadilla-c64.notion.site/Faculdade-12b74a78254980f1a40ef1f8ceb105a5?pvs=73', '_blank')} />
         </span>
       </section>
     </article >

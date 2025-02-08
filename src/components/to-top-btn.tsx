@@ -1,4 +1,5 @@
 "use client"
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTheme } from "./switchers/switchers";
@@ -10,42 +11,55 @@ export const ToTheTopButton = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth" 
+      behavior: "smooth"
     });
   };
 
   const handleScroll = () => {
     const currentScrollY = window.scrollY;
-    if (currentScrollY > 100) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
+    setIsVisible(currentScrollY > 300);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div
-      className={`invert-img z-50 bottom-5 right-5 ml-auto w-fit p-5 bg-azul-claro rounded-full hover:cursor-pointer overflow-hidden
-      ${theme==='dark' ? 'ring-black' : 'ring-white'}
-      ${isVisible ? 'visible' : 'invisible'}`}
-      onClick={scrollToTop}
-      style={{ opacity: isVisible ? 1 : 0, transition: "opacity 0.5s ease-in-out", position: "fixed" }}
-    >
-      <Image
-        src={'/images/icon-down-arrow.png'}
-        alt="ir para o topo"
-        width={100}
-        height={50}
-        style={{ transform: 'scaleX(-1)' }}
-        className="seta-animation pt-5 w-10 max-w-20"
-      />
-    </div>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={scrollToTop}
+          className={`
+            fixed z-50 bottom-8 right-8
+            p-6 rounded-full shadow-xl
+            backdrop-blur-sm
+            transition-colors duration-300
+            ${theme === 'dark' 
+              ? 'bg-white/50 hover:bg-white/80' 
+              : 'bg-gray-800/20 hover:bg-gray-800/30'
+            }
+          `}
+          aria-label="Voltar ao topo"
+        >
+          <div className="relative w-8 h-8">
+            <Image
+              src="/images/icon-down-arrow.png"
+              alt="Voltar ao topo"
+              fill
+              className={`
+                transform rotate-180 transition-transform duration-300
+                ${theme === 'dark' ? 'brightness-200' : 'brightness-200 invert'}
+              `}
+            />
+          </div>
+        </motion.button>
+      )}
+    </AnimatePresence>
   );
 };

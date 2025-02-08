@@ -1,20 +1,34 @@
+import { projectInterface } from '@/data/projects-data';
 import { ProjectInfo } from './project-layout-info';
-import { projectInterface } from './projects-list';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
 
-export const ProjectLayout = ({ list }: { list: projectInterface[] }) => {
-
+const ProjectLayout = ({ list }: { list: projectInterface[] }) => {
     return (
-        <section className="slideBottom grid grid-cols-1 xl:grid-cols-2 4k:grid-cols-3 gap-4 px-4">
+        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 p-6">
             {list.map((project, index) => (
-                <figure key={index} className="figure relative">
-
-                    <img src={`/images/project_${project.src}${project.src=='patio-monitoramento'?'-capa':''}.png`} alt={project.alt} className="z-1 h-full object-cover" />
-
-                    <figcaption className="figcaption absolute inset-0 z-2 flex flex-col items-center justify-end px-2 sm:px-10 py-7 text-white max-sm:text-[80%]">
-                        <ProjectInfo project={project} />
-                    </figcaption>
-                </figure>
+                <motion.figure
+                    key={index}
+                    className="group relative overflow-hidden rounded-xl bg-gray-900 aspect-video"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                >
+                    <Image
+                        src={`/images/project_${project.src}.png`}
+                        alt={project.alt}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:opacity-30"
+                        width={500}
+                        height={300}
+                    />
+                    
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <ProjectInfo project={project} variant="preview" />
+                    </div>
+                </motion.figure>
             ))}
         </section>
     );
 };
+
+export default ProjectLayout;

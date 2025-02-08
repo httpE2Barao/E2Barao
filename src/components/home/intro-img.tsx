@@ -11,9 +11,11 @@ const ImagemIntroducao = () => {
 
                 </div>
                 <div className="verso">
-                    <img
+                    <Image
                         src="/images/Foto-perfil_2024.png"
                         alt="Foto minha de perfil sorrindo com uma câmera fotográfica pendurada no pescoço em Times Square."
+                        width={500}
+                        height={500}
                         className={`verso`}
                     />
                 </div>
