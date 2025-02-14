@@ -1,9 +1,8 @@
-import React from "react";
 import { tecsList } from "@/data/tecs-list";
-import { TecsGrid } from "./tecs-grid";
-import { useTheme } from "../switchers/switchers";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTheme } from "../switchers/switchers";
+import { TecsGrid } from "./tecs-grid";
 
 const TecsList = ({ subList }: { subList: string[] }) => (
   <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -56,7 +55,7 @@ const TecsContainer = ({ type }: { type?: number }) => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                   {(item.concepts ? item.concepts : item.programs)?.map((tech, idx) => (
                     <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-white/20 hover:bg-white/50 transition-colors">
-                      <span className="text-xs sm:text-xs md:text-base font-medium">
+                      <span className="text-[1rem] md:text-xs font-medium">
                         {Array.isArray(tech) ? tech[languageIndex] : tech}
                       </span>
                     </div>

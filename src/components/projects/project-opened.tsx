@@ -43,7 +43,7 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
     <div>
       <article className='slideBottom flex flex-col gap-5 items-center px-5 relative'>
 
-        <ProjectInfo project={selectedProject} variant='preview' />
+        <ProjectInfo project={selectedProject} variant='full' />
 
         <span className='flex gap-10 mt-10'>
           <Button text={language === 'pt-BR' ? 'Site' : 'Page'} index={0} theme={theme} onClick={() => window.open(selectedProject.site, '_blank')} />
