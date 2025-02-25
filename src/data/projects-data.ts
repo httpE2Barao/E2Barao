@@ -28,7 +28,7 @@ export const projectsList = (language: string) => {
         enUS: 'Registration landing page with dynamic form'
       }),
       abt: renderText({
-        ptBR: 'Este projeto é uma landing page desenvolvida para cadastro de residentes, utilizando um formulário dinâmico que facilita a inserção e atualização de informações pessoais. A aplicação foi construída com tecnologias como React, Next.js, e Tailwind CSS, proporcionando uma interface responsiva e amigável ao usuário. Além disso, a integração com APIs permite a validação automática dos dados inseridos, tornando o processo de registro mais ágil e seguro. O projeto segue boas práticas de desenvolvimento e foco em acessibilidade, garantindo uma experiência eficiente para os residentes.',
+        ptBR: 'Este projeto foi desenvolvido para Janine Mathias, uma cantora e compositora de música brasileira, com o objetivo de criar um portfólio digital que reflete sua carreira na arte. O projeto inclui uma interface moderna e responsiva que permite aos visitantes explorar seus álbuns diretamente do spotify, visualizar seus próximos shows e navegar por suas redes sociais de forma dinâmica.',
         enUS: 'This project is a landing page designed for resident registration, using a dynamic form that facilitates the insertion and updating of personal information. The application was built with technologies such as React, Next.js, and Tailwind CSS, providing a responsive and user-friendly interface. Additionally, API integration allows for automatic validation of the entered data, making the registration process faster and more secure. The project follows good development practices and focuses on accessibility, ensuring an efficient experience for residents.'
       })
     },

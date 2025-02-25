@@ -1,6 +1,7 @@
 import { projectInterface } from "@/data/projects-data";
 import Image from "next/image";
 import { useTheme } from "../switchers/switchers";
+import { PhraseSection } from "../phrase-section";
 
 interface ProjectInfoProps {
   project: projectInterface;
@@ -14,7 +15,7 @@ export const ProjectInfo = ({ project, variant }: ProjectInfoProps) => {
     return (
       <div className="w-full h-full flex flex-col justify-end p-6 items-center"
       onClick={() => changeProject(project.src)}>
-        <h3 className="text-2xl font-bold mb-4 text-white hover:text-azul-pastel transition-colors cursor-pointer">
+        <h3 className="text-3xl font-bold mb-4 text-white hover:text-azul-pastel transition-colors cursor-pointer">
           {project.name}
         </h3>
 
@@ -41,9 +42,7 @@ export const ProjectInfo = ({ project, variant }: ProjectInfoProps) => {
   return (
     <>
       <div className="uppercase z-10 flex flex-col items-center gap-5 font-bold max-md:tracking-wider">
-        <h3 className="text-5xl hover:cursor-default font-bold text-shadow my-10 p-2 rounded bg-azul-pastel text-black text-center max-sm:text-xl md:text-4xl">
-          {project.name}
-        </h3>
+        <PhraseSection phrase={`${project.name}`} />
       </div>
 
       <div className="flex">
