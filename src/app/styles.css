@@ -525,8 +525,12 @@
 }
 
 .gradient-title {
+  background-clip: text;
+  background-repeat: no-repeat;
   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: transparent;
+  /* background-position: 50% 10%;  */
 }
 
 .flex-conteiner {

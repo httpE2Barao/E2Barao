@@ -41,13 +41,19 @@ export const PersonalContent = () => {
         <div
           key={languageConverted + index}
           ref={index === 0 ? ref0 : index === 1 ? ref1 : ref2}
-          className={`flex-conteiner g-container-${index} mb-52 mx-auto xl:pb-32 ${addAnimationClass(index)}
+          className={`overflow-visible flex-conteiner g-container-${index} mb-52 mx-auto xl:pb-32 ${addAnimationClass(index)}
           `}
         >
-          <h1 className={`gradient-title ${theme==='dark' ? `gradient-title-black-${index}` : `gradient-title-white-${index}` } 
-          text-3xl pb-5 md:text-4xl lg:text-6xl lg:pb-8 tracking-wider leading-loose
-          `}
-          >{item[0]}</h1>
+          <h1
+            className={`
+              gradient-title
+              ${theme === 'dark' ? `gradient-title-black-${index}` : `gradient-title-white-${index}`} 
+              text-3xl pb-5 md:text-4xl lg:text-6xl lg:pb-8 tracking-wider
+              leading-lg 
+            `}
+          >
+            {item[0]}
+          </h1>
 
           {index === 0
             && <p className="grid-span pb-4 md:text-left md:text-base lg:text-lg xl:text-lg 2xl:text-xl">
