@@ -48,7 +48,7 @@ export const ChoicesContainer = (props: iChoicesContainer) => {
 
       {/* Renderização Condicional dos Componentes */}
       <div className="w-full mt-10">
-        {selected === "#professional" && (
+        {/* {selected === "#professional" && (
           <div id="professional">
             <h2 className="text-center font-bold text-2xl">
               {props.language === "pt-BR"
@@ -61,7 +61,7 @@ export const ChoicesContainer = (props: iChoicesContainer) => {
                 : "Professional content goes here."}
             </p>
           </div>
-        )}
+        )} */}
 
         {selected === "#personal" && (
           <div id="personal">
