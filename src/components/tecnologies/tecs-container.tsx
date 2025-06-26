@@ -1,73 +1,57 @@
+"use client";
 import { tecsList } from "@/data/tecs-list";
-import { motion } from "framer-motion";
-import Image from "next/image";
 import { useTheme } from "../switchers/switchers";
-import { TecsGrid } from "./tecs-grid";
+import { motion } from "framer-motion";
+import TecsGrid from "./tecs-grid";
 
-const TecsList = ({ subList }: { subList: string[] }) => (
-  <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-    {subList.map((tech, index) => (
-      <motion.li
-        key={index}
-        className="card flex items-center gap-2 p-4"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: index * 0.1 }}
-      >
-        <Image
-          src={`/images/${tech}`}
-          alt={tech}
-          width={40}
-          height={40}
-          className="rounded-lg"
-        />
-        <span className="text-sm font-medium">{tech}</span>
-      </motion.li>
-    ))}
-  </ul>
+const SkillPill = ({ name, index }: { name: string, index: number }) => (
+    <motion.div
+        className="border rounded-lg p-3 text-center text-sm font-medium transition-all cursor-pointer bg-slate-100 dark:bg-slate-800/60 border-slate-300 dark:border-slate-700 text-black dark:text-white hover:border-[#8FFFFF] hover:bg-[#8FFFFF]/40 hover:text-black hover:font-black"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.04 }}
+        viewport={{ once: true }}
+    >
+        {name}
+    </motion.div>
 );
 
-const TecsContainer = ({ type }: { type?: number }) => {
-  const { language, theme } = useTheme();
-  const languageIndex = language === 'pt-BR' ? 0 : 1;
+// CORRIGIDO: O componente agora recebe 'theme' como propriedade.
+export const TecsContainer = ({ theme }: { theme: 'light' | 'dark' }) => {
+    const { language } = useTheme(); 
+    const languageIndex = language === 'pt-BR' ? 0 : 1;
 
-  return (
-    <section className={`${type == 1 ? 'col-span-3 grid-rows-1' : 'grid-cols-2 gap-4'}
-      grid px-2 items-center`}>
-      {tecsList.map((item, index) => {
-        if (type && !('tecsSrc' in item)) {
-          return null;
-        }
+    const concepts = tecsList.find(item => 'concepts' in item)?.concepts || [];
+    const programs = tecsList.find(item => 'programs' in item)?.programs || [];
+    const technologies = tecsList.find(item => 'tecsSrc' in item)?.tecsSrc || [];
 
-        return (
-          <div key={index} className={`
-            ${type != 1 && !('tecsSrc' in item) && 'slideTopSlower bg-azul-claro/80 max-md:col-span-2'} 
-            ${'tecsSrc' in item && 'col-span-2'}
-            p-5 rounded-lg hover:cursor-default
-          `}>
-            {('tecsSrc' in item && item.tecsSrc) ? (
-              <TecsGrid subList={item.tecsSrc} type={type}/>
-            ) : (
-              <div className="space-y-6">
-                <h2 className="text-xl font-semibold tracking-wide">
-                  {item.concepts ? 'Concepts' : 'Programs'}
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {(item.concepts ? item.concepts : item.programs)?.map((tech, idx) => (
-                    <div key={idx} className="flex items-center gap-2 p-2 rounded-lg bg-white/20 hover:bg-white/50 transition-colors">
-                      <span className="md:text-xs font-medium">
-                        {Array.isArray(tech) ? tech[languageIndex] : tech}
-                      </span>
+    return (
+        <section className="my-10 space-y-16 w-full max-xl:px-10">
+            <div className="flex flex-col lg:flex-row flex-wrap justify-center gap-8">
+                <div className="bg-slate-50 dark:bg-gray-800/40 shadow-lg shadow-slate-300/60 dark:shadow-none border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 flex-1 min-w-[300px] lg:max-w-[48%]">
+                    <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-200' : 'text-black'}`}>{language === 'pt-BR' ? 'Conceitos' : 'Concepts'}</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {concepts.map((tech, idx) => (
+                            <SkillPill key={idx} name={Array.isArray(tech) ? tech[languageIndex] : tech} index={idx} />
+                        ))}
                     </div>
-                  ))}
                 </div>
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </section>
-  );
+                <div className="bg-slate-50 dark:bg-gray-800/40 shadow-lg shadow-slate-300/60 dark:shadow-none border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 flex-1 min-w-[300px] lg:max-w-[48%]">
+                    <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-200' : 'text-black'}`}>{language === 'pt-BR' ? 'Programas' : 'Programs'}</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {programs.map((tech, idx) => (
+                            <SkillPill key={idx} name={Array.isArray(tech) ? tech[languageIndex] : tech} index={idx} />
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="text-center">
+                <h2 className={`text-3xl font-bold mb-8 ${theme === 'dark' ? 'text-gray-200' : 'text-black'}`}>{language === 'pt-BR' ? 'Tecnologias' : 'Technologies'}</h2>
+                {/* O 'theme' é agora passado para o TecsGrid */}
+                <TecsGrid subList={technologies} theme={theme} />
+            </div>
+        </section>
+    );
 };
 
 export default TecsContainer;

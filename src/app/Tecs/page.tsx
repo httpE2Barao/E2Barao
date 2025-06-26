@@ -6,6 +6,8 @@ import TecsContainer from "@/components/tecnologies/tecs-container";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import VanillaTilt from "vanilla-tilt";
+import SkillsEvolutionChart from "@/components/tecnologies/tecs-chart";
+
 
 export default function HardSkills() {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -25,18 +27,16 @@ export default function HardSkills() {
 
       <PhraseSection phrase={mainPhrase} type={1} author={mainPhraseAuthor} />
 
-      <section className={`${theme === 'dark' ? 'text-white' : 'text-black'} slideTopSlow`}>
-        <h1 className="px-4 text-3xl font-bold tracking-wide text-left">Overview</h1>
-        <Image
-          src={`${theme === 'light' ? '/images/timeline-dark.svg' : '/images/timeline-main.svg'}`}
-          alt='html5 css3 sass javascript typescript bootstrap react tailwind next.js jquery mysql'
-          width={2500} height={1700}
-          className={`mx-auto pt-4 pr-2`}
-        />
+      <section className={`${theme === 'dark' ? 'text-white' : 'text-black'} slideTopSlow my-16`}>
+        <h1 className="px-10 text-3xl font-bold tracking-wide mb-8 text-center">Evolução de Habilidades</h1>
+        <div className="w-full max-w-5xl mx-auto bg-white/50 dark:bg-gray-800/0 rounded-2xl p-6 md:p-8">
+          {/* 3. Renderize o componente do gráfico, passando o tema atual */}
+          <SkillsEvolutionChart theme={theme} />
+        </div>
       </section>
 
       <section className="flex flex-col items-center">
-        <TecsContainer type={0} />
+        <TecsContainer theme={theme}/>
         <span className="mt-5">
           <Button text={`${language === 'pt-BR' ? 'Repositório de estudos' : 'Study repository'}`} index={5} theme={theme} onClick={() => window.open('https://glib-quesadilla-c64.notion.site/Faculdade-12b74a78254980f1a40ef1f8ceb105a5?pvs=73', '_blank')} />
         </span>

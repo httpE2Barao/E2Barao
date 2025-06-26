@@ -1,62 +1,38 @@
-import React, { useState, useEffect } from 'react';
+"use client";
+import React from 'react';
 import Image from 'next/image';
 import { useTheme } from '../switchers/switchers';
-import { ButtonToTecs } from '../home/button-link';
-import { tecsList } from "@/data/tecs-list";
+import { motion } from 'framer-motion';
 
-interface iTecsGridProps {
+interface TecsGridProps {
   subList: string[];
-  type?: number;
+  theme: 'light' | 'dark';
 }
 
-export const TecsGrid = ({ subList, type }: iTecsGridProps) => {
-  const { theme, page } = useTheme();
-  const [flashingDivs, setFlashingDivs] = useState<number[]>([]);
-  const numberOfFlashingDivs = 7;
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const divsToFlash: number[] = [];
-  //     while (divsToFlash.length < numberOfFlashingDivs) {
-  //       const randomIndex = Math.floor(Math.random() * subList.length);
-  //       if (!divsToFlash.includes(randomIndex)) {
-  //         divsToFlash.push(randomIndex);
-  //       }
-  //     }
-  //     setFlashingDivs(divsToFlash);
-  //   }, 500);
-
-  //   return () => clearInterval(interval);
-  // }, [subList]);
-
-  const isFlashing = (index: number) => flashingDivs.includes(index);
-  const maxItems = type === 1 ? 12 : subList.length;
-
+const TecsGrid = ({ subList, theme }: TecsGridProps) => {
   return (
-    <>
-      {
-        page === '/Tecs' && <h1 className={`text-3xl font-bold tracking-wide text-center mb-10 mt-5 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Tecnologias</h1>
-      }
-      <ul
-        className={`${type == 1 ? '' : '4k:py-10'} flex flex-wrap my-auto gap-5 items-center justify-center`}>
-        {subList.slice(0, maxItems).map((subItem: string, j: number) => (
-          <li key={j}>
-            <Image
-              src={`/images/${subItem}`}
-              alt={subItem}
-              width={500}
-              height={500}
-              className={`rounded-lg w-20 hover:opacity-100
-            ${type == 1 && `${isFlashing(j) && 'flash'} opacity-30 transition-opacity`}
-            ${theme === 'light' && 'invert-color'}
-          `}/>
-          </li>
-        ))}
-      </ul>
-      {type == 1 &&
-        <ButtonToTecs />
-      }
-    </>
+    <ul className="flex flex-wrap my-auto gap-4 md:gap-6 items-center justify-center">
+      {subList.map((imageName: string, index: number) => (
+        <motion.li
+          // CORRIGIDO: A chave agora usa o nome e o índice para garantir que seja única.
+          key={`${imageName}-${index}`}
+          title={imageName.split('.')[0]}
+          className={`bg-slate-200 dark:bg-slate-700/60 rounded-full h-20 w-20 md:h-24 md:w-24 flex items-center justify-center p-4 transition-all hover:scale-110 hover:shadow-lg cursor-pointer ${theme === 'light' ? 'hover:shadow-[#0000]/60' : 'hover:shadow-[#8FFFFF]/60'}`} initial={{ opacity: 0, scale: 0.5 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ delay: index * 0.1, type: "spring", stiffness: 120 }}
+          viewport={{ once: true }}
+        >
+          <Image
+            src={`/images/${imageName}`}
+            alt={imageName}
+            width={55}
+            height={55}
+            className={`object-contain transition-all duration-300 ${theme === 'light' ? 'invert' : ''}`}
+          />
+        </motion.li>
+      ))}
+    </ul>
   );
 };
 
+export default TecsGrid;
