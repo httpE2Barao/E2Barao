@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 interface TecsGridProps {
   subList: string[];
-  theme: 'light' | 'dark';
+  theme: string;
 }
 
 const TecsGrid = ({ subList, theme }: TecsGridProps) => {

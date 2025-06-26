@@ -1,32 +1,33 @@
 "use client";
 import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useTheme } from '../switchers/switchers';
 
-// --- ÁREAS DE CONHECIMENTO (SEM ALTERAÇÃO) ---
+// --- ÁREAS DE CONHECIMENTO (AGORA COM TRADUÇÕES) ---
 const technologies = [
-  { name: 'Desenvolvimento Web', color: '#3b82f6' },
-  { name: 'Banco de Dados', color: '#16a34a' },
-  { name: 'Design & Arquitetura de Software', color: '#f97316' },
-  { name: 'Lógica de Programação', color: '#c026d3' },
-  { name: 'UX (Experiência do Usuário)', color: '#8b5cf6' },
-  { name: 'Inteligência Artificial', color: '#e11d48' },
-  { name: 'DevOps & Quality Assurance', color: '#0891b2' },
+  { id: 'webDevelopment', name: { 'pt-BR': 'Desenvolvimento Web', 'en-US': 'Web Development' }, color: '#3b82f6' },
+  { id: 'database', name: { 'pt-BR': 'Banco de Dados', 'en-US': 'Database' }, color: '#16a34a' },
+  { id: 'softwareDesign', name: { 'pt-BR': 'Design & Arquitetura de Software', 'en-US': 'Software Design & Architecture' }, color: '#f97316' },
+  { id: 'programmingLogic', name: { 'pt-BR': 'Lógica de Programação', 'en-US': 'Programming Logic' }, color: '#c026d3' },
+  { id: 'userExperience', name: { 'pt-BR': 'UX (Experiência do Usuário)', 'en-US': 'UX (User Experience)' }, color: '#8b5cf6' },
+  { id: 'artificialIntelligence', name: { 'pt-BR': 'Inteligência Artificial', 'en-US': 'Artificial Intelligence' }, color: '#e11d48' },
+  { id: 'devOpsQA', name: { 'pt-BR': 'DevOps & Quality Assurance', 'en-US': 'DevOps & Quality Assurance' }, color: '#0891b2' },
 ];
 
-// --- DADOS DA EVOLUÇÃO (AJUSTADOS CONFORME SOLICITADO) ---
+// --- DADOS DA EVOLUÇÃO (AGORA USANDO IDs ESTÁVEIS) ---
 const evolutionData = [
-  { date: '2022-06', 'Desenvolvimento Web': 20, 'Lógica de Programação': 15 },
-  { date: '2022-12', 'Desenvolvimento Web': 40, 'Lógica de Programação': 30 },
-  { date: '2023-06', 'Desenvolvimento Web': 70, 'Lógica de Programação': 50, 'Design & Arquitetura de Software': 20 },
-  { date: '2023-12', 'Desenvolvimento Web': 80, 'Lógica de Programação': 60, 'Design & Arquitetura de Software': 25 },
-  { date: '2024-10', 'Desenvolvimento Web': 85, 'Lógica de Programação': 100, 'Design & Arquitetura de Software': 40 },
-  { date: '2025-03', 'Desenvolvimento Web': 90, 'Lógica de Programação': 100, 'Design & Arquitetura de Software': 70, 'Banco de Dados': 30, 'UX (Experiência do Usuário)': 40 },
-  { date: '2025-06', 'Desenvolvimento Web': 95, 'Banco de Dados': 70, 'Design & Arquitetura de Software': 75, 'Lógica de Programação': 100, 'UX (Experiência do Usuário)': 70, 'Inteligência Artificial': 40, 'DevOps & Quality Assurance': 50 },
+  { date: '2022-06', webDevelopment: 20, programmingLogic: 15 },
+  { date: '2022-12', webDevelopment: 40, programmingLogic: 30 },
+  { date: '2023-06', webDevelopment: 70, programmingLogic: 50, softwareDesign: 20 },
+  { date: '2023-12', webDevelopment: 80, programmingLogic: 60, softwareDesign: 25 },
+  { date: '2024-10', webDevelopment: 85, programmingLogic: 100, softwareDesign: 40 },
+  { date: '2025-03', webDevelopment: 90, programmingLogic: 100, softwareDesign: 70, database: 30, userExperience: 40 },
+  { date: '2025-06', webDevelopment: 95, database: 70, softwareDesign: 75, programmingLogic: 100, userExperience: 70, artificialIntelligence: 40, devOpsQA: 50 },
 ];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    const relevantPayload = payload.filter(p => p.value != null);
+    const relevantPayload = payload.filter((p:any) => p.value != null);
     return (
       <div className="p-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 shadow-lg max-xl:px-10">
         <p className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2">{label}</p>
@@ -43,11 +44,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-interface SkillsEvolutionChartProps {
-    theme: 'light' | 'dark';
-}
 
-export default function SkillsEvolutionChart({ theme }: SkillsEvolutionChartProps) {
+export default function SkillsEvolutionChart() {
+  const { language, theme } = useTheme(); 
+
+  // Define um tipo para garantir que o idioma seja uma chave válida
+  const currentLanguage: 'pt-BR' | 'en-US' = language === 'pt-BR' ? 'pt-BR' : 'en-US';
+
   const tickColor = theme === 'dark' ? '#A1A1AA' : '#71717A';
   const gridColor = theme === 'dark' ? '#3F3F46' : '#E5E7EB';
 
@@ -67,15 +70,17 @@ export default function SkillsEvolutionChart({ theme }: SkillsEvolutionChartProp
         />
         {technologies.map(tech => (
           <Area 
-            key={tech.name} 
+            // AJUSTE: Usando o ID estável para a key e dataKey
+            key={tech.id} 
+            dataKey={tech.id} 
             type="monotone" 
-            dataKey={tech.name} 
             stackId="1" 
             stroke={tech.color} 
             fill={tech.color} 
             fillOpacity={0.8} 
-            name={tech.name} 
             connectNulls
+            // AJUSTE: Usando o nome traduzido para exibição
+            name={tech.name[currentLanguage]} 
           />
         ))}
       </AreaChart>
