@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "../buttons";
 import { useTheme } from "../switchers/switchers";
 import { experiencesTranslations } from "@/data/translations/experiences";
