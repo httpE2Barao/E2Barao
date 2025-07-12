@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter } from "next/font/google";
+import { Rubik } from "next/font/google"; // Importe a fonte
 import ClientLayout from "./client-layout";
 import "./globals.css";
 import "./styles.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// Configure a fonte
+const rubik = Rubik({ 
+  subsets: ["latin"],
+  display: 'swap', 
+  variable: '--font-rubik' 
+});
 
 export const metadata: Metadata = {
   title: "Elias - Dev. Web",
@@ -18,7 +23,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-br" className={inter.className}>
+    // Aplique a classe da fonte ao HTML
+    <html lang="pt-br" className={rubik.className}>
       <body>
         <ClientLayout>
           {children}

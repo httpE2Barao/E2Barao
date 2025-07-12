@@ -16,12 +16,13 @@ const ProjectLayout = ({ list }: { list: projectInterface[] }) => {
                     transition={{ delay: index * 0.1 }}
                 >
                     <Image
-                        src={`/images/project_${project.src}.png`}
-                        alt={project.alt}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:opacity-30"
-                        width={500}
-                        height={300}
-                    />
+                         src={`/images/project_${project.src}.png`}
+                         alt={project.alt}
+                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:opacity-30"
+                         width={500}
+                         height={300}
+                         sizes="(max-width: 1024px) 100vw, (max-width: 1536px) 50vw, 33vw"
+                     />
                     
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <ProjectInfo project={project} variant="preview" />

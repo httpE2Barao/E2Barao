@@ -35,6 +35,7 @@ export const ToTheTopButton = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
+          aria-label="Voltar ao topo"
           className={`
             fixed z-50 bottom-8 right-8
             p-6 rounded-full shadow-xl
@@ -45,7 +46,6 @@ export const ToTheTopButton = () => {
               : 'bg-gray-800/20 hover:bg-gray-800/30'
             }
           `}
-          aria-label="Voltar ao topo"
         >
           <div className="relative w-8 h-8">
             <Image

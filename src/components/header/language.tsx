@@ -20,8 +20,11 @@ export default function LanguageSelector() {
           }
         }}
       >
-        <MenuItem value="pt-BR">Pt</MenuItem>
-        <MenuItem value="en-US">En</MenuItem>
+        <MenuItem value="pt">PT</MenuItem>
+        <MenuItem value="en">EN</MenuItem>
+        <MenuItem value="es">ES</MenuItem>
+        <MenuItem value="fr">FR</MenuItem>
+        <MenuItem value="zh">ZH</MenuItem>
       </Select>
     </FormControl>
   );

@@ -25,17 +25,30 @@ export const ItemNav = (props: ItemProps) => {
   return (
     <li
       key={props.index}
-      onClick={handleItemClick}
-      className={`hover:text-black icon-animation-nav p-3 rounded-lg hover:cursor-pointer
-      ${props.menuStyle && 'p-5'}
-      ${props.pageSelected == props.index && (props.theme === 'dark' ? 'bg-white text-black' : 'bg-azul-claro')}
-      ${props.menuStyle
-        ? (props.pageSelected != props.index && (props.theme === 'dark' && 'text-dark'))
-        : (props.pageSelected != props.index && (props.theme === 'dark' ? 'text-white' : 'text-dark'))
-      }`}>
-      <p className="content-animation-nav">
-        {props.item}
-      </p>
+      className={`
+        p-1 rounded-lg
+        ${props.pageSelected == props.index && (props.theme === 'dark' ? 'bg-white' : 'bg-azul-claro')}
+      `}
+    >
+      <button
+        onClick={handleItemClick}
+        // Desabilitado enquanto o projeto é resetado para evitar cliques duplos
+        disabled={isResetting}
+        className={`
+          w-full text-left icon-animation-nav p-2 rounded-md hover:cursor-pointer
+          ${props.menuStyle && 'p-4'}
+          ${props.pageSelected == props.index
+            ? (props.theme === 'dark' ? 'text-black' : '')
+            : (props.theme === 'dark' ? 'text-white' : 'text-dark')
+          }
+          hover:text-black focus:text-black
+          focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-azul-claro
+        `}
+      >
+        <p className="content-animation-nav">
+          {props.item}
+        </p>
+      </button>
     </li>
   );
 };
