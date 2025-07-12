@@ -4,10 +4,9 @@ import { put } from '@vercel/blob';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const lang = searchParams.get('lang') || 'pt'; // Default 'pt'
+  const lang = searchParams.get('lang') || 'pt';
 
   try {
-    // 1. Busca todas as colunas de idioma do banco de dados
     const { rows } = await sql`
       SELECT 
         id, src, site_url, repo_url, image_urls, tags, created_at,
@@ -18,14 +17,9 @@ export async function GET(request: Request) {
       ORDER BY created_at DESC;
     `;
 
-    // 2. Processa os resultados no JavaScript para escolher o idioma correto
     const projects = rows.map(row => {
-      // Função auxiliar para escolher o texto do idioma correto, com fallback para inglês ou português
       const getText = (field: string) => {
-        const fieldForLang = `${field}_${lang}`; // ex: name_es
-        const fieldForEn = `${field}_en`;     // ex: name_en
-        const fieldForPt = `${field}_pt`;     // ex: name_pt
-        return row[fieldForLang] || row[fieldForEn] || row[fieldForPt];
+        return row[`${field}_${lang}`] || row[`${field}_en`] || row[`${field}_pt`];
       };
       
       return {
@@ -34,7 +28,6 @@ export async function GET(request: Request) {
         repo: row.repo_url,
         tags: row.tags,
         imageUrls: row.image_urls,
-        // Usa a função auxiliar para cada campo de texto
         name: getText('name'),
         alt: getText('alt'),
         abt: getText('abt'),
@@ -53,45 +46,36 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData();
     const images = formData.getAll('images') as File[];
-    
-    // ... (extração dos outros campos) ...
-    const name_pt = formData.get('name_pt') as string;
-    const name_en = formData.get('name_en') as string;
 
     if (!images || images.length === 0) {
       return NextResponse.json({ message: 'Pelo menos uma imagem é obrigatória.' }, { status: 400 });
     }
 
     const blobUploads = await Promise.all(
-      images.map((image) =>
-        put(image.name, image, { access: 'public' })
-      )
+      images.map((image) => put(image.name, image, { access: 'public' }))
     );
 
     const imageUrls = blobUploads.map((blob) => blob.url);
     const tags = formData.getAll('tags[]') as string[];
-
-    // --- A CORREÇÃO ESTÁ AQUI ---
-    // Formatamos ambos os arrays para o formato do Postgres
     const tagsForDb = `{${tags.join(',')}}`;
     const imageUrlsForDb = `{${imageUrls.join(',')}}`;
 
     await sql`
       INSERT INTO projects (
         src, site_url, repo_url, image_urls, tags, 
-        name_pt, name_en, alt_pt, alt_en, abt_pt, abt_en
-        -- Adicione aqui os outros campos de idioma (es, fr, zh)
+        name_pt, name_en, name_es, name_fr, name_zh,
+        abt_pt, abt_en, abt_es, abt_fr, abt_zh,
+        alt_pt, alt_en, alt_es, alt_fr, alt_zh
       )
       VALUES (
         ${formData.get('src') as string}, 
         ${formData.get('site') as string}, 
         ${formData.get('repo') as string}, 
-        ${imageUrlsForDb},  -- Usando a variável formatada
+        ${imageUrlsForDb}, 
         ${tagsForDb}, 
-        ${name_pt}, ${name_en}, 
-        ${formData.get('alt_pt') as string}, ${formData.get('alt_en') as string},
-        ${formData.get('abt_pt') as string}, ${formData.get('abt_en') as string}
-        -- Adicione aqui os outros campos de idioma
+        ${formData.get('name_pt') as string}, ${formData.get('name_en') as string}, ${formData.get('name_es') as string}, ${formData.get('name_fr') as string}, ${formData.get('name_zh') as string},
+        ${formData.get('abt_pt') as string}, ${formData.get('abt_en') as string}, ${formData.get('abt_es') as string}, ${formData.get('abt_fr') as string}, ${formData.get('abt_zh') as string},
+        ${formData.get('alt_pt') as string}, ${formData.get('alt_en') as string}, ${formData.get('alt_es') as string}, ${formData.get('alt_fr') as string}, ${formData.get('alt_zh') as string}
       )
       ON CONFLICT (src) DO NOTHING;
     `;
@@ -100,7 +84,6 @@ export async function POST(request: Request) {
 
   } catch (error) {
     console.error("Erro ao adicionar projeto:", error);
-    // ... (seu tratamento de erro) ...
     return NextResponse.json({ message: 'Erro interno do servidor.' }, { status: 500 });
   }
 }
