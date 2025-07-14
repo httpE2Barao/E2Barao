@@ -1,7 +1,9 @@
-import { NextResponse } from 'next/server'; 
+import { NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { put } from '@vercel/blob';
+import fs from 'fs/promises'; // Usado para interagir com o sistema de arquivos
+import path from 'path'; // Usado para criar caminhos de arquivo corretamente
 
+// A função GET continua a mesma, não precisa de alteração.
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const lang = searchParams.get('lang') || 'pt';
@@ -42,6 +44,7 @@ export async function GET(request: Request) {
   }
 }
 
+// A função POST é a que vamos alterar drasticamente.
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -51,11 +54,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Pelo menos uma imagem é obrigatória.' }, { status: 400 });
     }
 
-    const blobUploads = await Promise.all(
-      images.map((image) => put(image.name, image, { access: 'public' }))
-    );
+    const imageUrls: string[] = [];
 
-    const imageUrls = blobUploads.map((blob) => blob.url);
+    // Loop para salvar cada imagem na pasta /public/images
+    for (const image of images) {
+      // Converte a imagem para um buffer que pode ser escrito no disco
+      const buffer = Buffer.from(await image.arrayBuffer());
+      // Define o caminho onde a imagem será salva
+      const filePath = path.join(process.cwd(), 'public', 'images', image.name);
+      
+      // Escreve o arquivo no disco
+      await fs.writeFile(filePath, buffer);
+
+      // Cria a URL pública para a imagem (que será salva no banco)
+      const imageUrl = `/images/${image.name}`;
+      imageUrls.push(imageUrl);
+    }
+
+    // O resto da lógica para salvar no banco de dados continua igual,
+    // mas agora usando as URLs locais.
     const tags = formData.getAll('tags[]') as string[];
     const tagsForDb = `{${tags.join(',')}}`;
     const imageUrlsForDb = `{${imageUrls.join(',')}}`;
@@ -80,7 +97,7 @@ export async function POST(request: Request) {
       ON CONFLICT (src) DO NOTHING;
     `;
 
-    return NextResponse.json({ message: 'Projeto adicionado com sucesso!', urls: imageUrls }, { status: 201 });
+    return NextResponse.json({ message: 'Projeto adicionado com sucesso! Imagens salvas localmente.', urls: imageUrls }, { status: 201 });
 
   } catch (error) {
     console.error("Erro ao adicionar projeto:", error);
