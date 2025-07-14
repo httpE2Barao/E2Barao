@@ -13,7 +13,7 @@ export default function HardSkills() {
   const t = (key: keyof typeof technologiesTranslations) => {
     const section = technologiesTranslations[key];
     if (typeof section === 'string') return section;
-    return section[language as keyof typeof section] || section.en;
+    return section[language as keyof typeof section];
   };
 
   return (
