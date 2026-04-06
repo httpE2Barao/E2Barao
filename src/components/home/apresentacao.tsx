@@ -8,7 +8,7 @@ const translations = {
     en: "Elias Edson Barão",
     es: "Elias Edson Barão",
     fr: "Elias Edson Barão",
-    zh: "以利亚 爱迪生 男爵", 
+    zh: "以利亚 爱迪生 巴朗", 
   },
   subtitles: {
     pt: ['Designer & Desenvolvedor', 'Engenheiro de Software'],

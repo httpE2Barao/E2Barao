@@ -3,6 +3,7 @@ import { Header } from '@/components/header/header';
 import ThemeProvider from '@/components/switchers/switchers';
 import { ToTheTopButton } from '@/components/to-top-btn';
 import { useEffect, useState } from "react";
+import { usePathname } from 'next/navigation';
 
 export default function ClientLayout({
   children,
@@ -10,6 +11,8 @@ export default function ClientLayout({
   children: React.ReactNode
 }) {
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const isV2 = pathname?.startsWith('/v2');
 
   useEffect(() => {
     setMounted(true);
@@ -19,9 +22,9 @@ export default function ClientLayout({
 
   return (
     <ThemeProvider>
-      <Header />
+      {!isV2 && <Header />}
       {children}
-      <ToTheTopButton />
+      {!isV2 && <ToTheTopButton />}
     </ThemeProvider>
   );
 }

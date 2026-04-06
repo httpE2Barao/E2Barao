@@ -1,18 +1,20 @@
 "use client"
 import Spline from "@splinetool/react-spline";
 import { useState } from "react";
-import { useInView } from "react-intersection-observer"; 
+import { useInView } from "react-intersection-observer";
+import { useWelcomeAudio } from "@/hooks/use-welcome-audio";
 
 export const Modelo3D = () => {
     const [isLoading, setIsLoading] = useState(true);
-    // Setup do Intersection Observer
+    const { playWelcome } = useWelcomeAudio();
     const { ref, inView } = useInView({
-        triggerOnce: true, 
-        threshold: 0.1, 
+        triggerOnce: true,
+        threshold: 0.1,
     });
 
     const handleLoad = () => {
         setIsLoading(false);
+        playWelcome();
     };
 
     return (

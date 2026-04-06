@@ -1,14 +1,32 @@
 import { NextResponse } from 'next/server';
-import { sql } from '@vercel/postgres';
-import fs from 'fs/promises'; // Usado para interagir com o sistema de arquivos
-import path from 'path'; // Usado para criar caminhos de arquivo corretamente
+import fs from 'fs/promises';
+import path from 'path';
 
-// A função GET continua a mesma, não precisa de alteração.
+const PROJECTS_JSON_PATH = path.join(process.cwd(), 'public', 'data', 'projects.json');
+
+async function getProjectsFromJSON() {
+  try {
+    const data = await fs.readFile(PROJECTS_JSON_PATH, 'utf-8');
+    const parsed = JSON.parse(data);
+    return parsed.projects || [];
+  } catch (err) {
+    console.error('Erro ao ler projects.json:', err);
+    return [];
+  }
+}
+
+async function saveProjectsToJSON(projects: any[]) {
+  await fs.writeFile(PROJECTS_JSON_PATH, JSON.stringify({ projects }, null, 2), 'utf-8');
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const lang = searchParams.get('lang') || 'pt';
+  const langParam = searchParams.get('lang') || 'pt';
+  const lang = langParam === 'pt-BR' ? 'ptBR' : langParam === 'en-US' ? 'enUS' : langParam;
 
   try {
+    // Try Vercel Postgres first
+    const { sql } = await import('@vercel/postgres');
     const { rows } = await sql`
       SELECT 
         id, src, site_url, repo_url, image_urls, tags, created_at,
@@ -19,7 +37,7 @@ export async function GET(request: Request) {
       ORDER BY created_at DESC;
     `;
 
-    const projects = rows.map(row => {
+    const projects = (rows as any[]).map((row: any) => {
       const getText = (field: string) => {
         return row[`${field}_${lang}`] || row[`${field}_en`] || row[`${field}_pt`];
       };
@@ -37,14 +55,33 @@ export async function GET(request: Request) {
     });
     
     return NextResponse.json(projects);
+  } catch (dbError) {
+    // Fallback to JSON file
+    console.log('[Projects API] Vercel Postgres indisponível, usando JSON fallback');
+    
+    try {
+      const projects = await getProjectsFromJSON();
+      
+      const formatted = projects.map((p: any) => ({
+        id: p.id,
+        src: p.src,
+        site: p.site || '',
+        repo: p.repo || '',
+        tags: p.tags || [],
+        name: p.name?.[lang] || p.name?.ptBR || p.name?.enUS || '',
+        alt: p.alt?.[lang] || p.alt?.ptBR || p.alt?.enUS || '',
+        abt: p.abt?.[lang] || p.abt?.ptBR || p.abt?.enUS || '',
+        featured: p.featured || false,
+      }));
 
-  } catch (error) {
-    console.error("Erro ao buscar projetos do banco de dados:", error);
-    return NextResponse.json({ message: 'Erro interno do servidor' }, { status: 500 });
+      return NextResponse.json(formatted);
+    } catch (jsonError) {
+      console.error('Erro ao buscar projetos (JSON fallback também falhou):', jsonError);
+      return NextResponse.json({ message: 'Erro interno do servidor' }, { status: 500 });
+    }
   }
 }
 
-// A função POST é a que vamos alterar drasticamente.
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -56,51 +93,89 @@ export async function POST(request: Request) {
 
     const imageUrls: string[] = [];
 
-    // Loop para salvar cada imagem na pasta /public/images
     for (const image of images) {
-      // Converte a imagem para um buffer que pode ser escrito no disco
       const buffer = Buffer.from(await image.arrayBuffer());
-      // Define o caminho onde a imagem será salva
-      const filePath = path.join(process.cwd(), 'public', 'images', image.name);
+      const fileName = `${Date.now()}-${image.name.replace(/\s+/g, '-').toLowerCase()}`;
+      const filePath = path.join(process.cwd(), 'public', 'images', fileName);
       
-      // Escreve o arquivo no disco
       await fs.writeFile(filePath, buffer);
-
-      // Cria a URL pública para a imagem (que será salva no banco)
-      const imageUrl = `/images/${image.name}`;
-      imageUrls.push(imageUrl);
+      imageUrls.push(`/images/${fileName}`);
     }
 
-    // O resto da lógica para salvar no banco de dados continua igual,
-    // mas agora usando as URLs locais.
     const tags = formData.getAll('tags[]') as string[];
-    const tagsForDb = `{${tags.join(',')}}`;
-    const imageUrlsForDb = `{${imageUrls.join(',')}}`;
+    const src = formData.get('src') as string;
 
-    await sql`
-      INSERT INTO projects (
-        src, site_url, repo_url, image_urls, tags, 
-        name_pt, name_en, name_es, name_fr, name_zh,
-        abt_pt, abt_en, abt_es, abt_fr, abt_zh,
-        alt_pt, alt_en, alt_es, alt_fr, alt_zh
-      )
-      VALUES (
-        ${formData.get('src') as string}, 
-        ${formData.get('site') as string}, 
-        ${formData.get('repo') as string}, 
-        ${imageUrlsForDb}, 
-        ${tagsForDb}, 
-        ${formData.get('name_pt') as string}, ${formData.get('name_en') as string}, ${formData.get('name_es') as string}, ${formData.get('name_fr') as string}, ${formData.get('name_zh') as string},
-        ${formData.get('abt_pt') as string}, ${formData.get('abt_en') as string}, ${formData.get('abt_es') as string}, ${formData.get('abt_fr') as string}, ${formData.get('abt_zh') as string},
-        ${formData.get('alt_pt') as string}, ${formData.get('alt_en') as string}, ${formData.get('alt_es') as string}, ${formData.get('alt_fr') as string}, ${formData.get('alt_zh') as string}
-      )
-      ON CONFLICT (src) DO NOTHING;
-    `;
+    // Try Vercel Postgres first
+    try {
+      const { sql } = await import('@vercel/postgres');
+      const tagsForDb = `{${tags.join(',')}}`;
+      const imageUrlsForDb = `{${imageUrls.join(',')}}`;
 
-    return NextResponse.json({ message: 'Projeto adicionado com sucesso! Imagens salvas localmente.', urls: imageUrls }, { status: 201 });
+      await sql`
+        INSERT INTO projects (
+          src, site_url, repo_url, image_urls, tags, 
+          name_pt, name_en, name_es, name_fr, name_zh,
+          abt_pt, abt_en, abt_es, abt_fr, abt_zh,
+          alt_pt, alt_en, alt_es, alt_fr, alt_zh
+        )
+        VALUES (
+          ${src}, 
+          ${formData.get('site') as string}, 
+          ${formData.get('repo') as string}, 
+          ${imageUrlsForDb}, 
+          ${tagsForDb}, 
+          ${formData.get('name_pt') as string}, ${formData.get('name_en') as string}, ${formData.get('name_es') as string}, ${formData.get('name_fr') as string}, ${formData.get('name_zh') as string},
+          ${formData.get('abt_pt') as string}, ${formData.get('abt_en') as string}, ${formData.get('abt_es') as string}, ${formData.get('abt_fr') as string}, ${formData.get('abt_zh') as string},
+          ${formData.get('alt_pt') as string}, ${formData.get('alt_en') as string}, ${formData.get('alt_es') as string}, ${formData.get('alt_fr') as string}, ${formData.get('alt_zh') as string}
+        )
+        ON CONFLICT (src) DO NOTHING;
+      `;
 
+      return NextResponse.json({ message: 'Projeto adicionado com sucesso!', urls: imageUrls }, { status: 201 });
+    } catch {
+      // Fallback to JSON file
+      console.log('[Projects API] Vercel Postgres indisponível, salvando em JSON');
+      
+      const projects = await getProjectsFromJSON();
+      const maxId = projects.reduce((max: number, p: any) => Math.max(max, p.id || 0), 0);
+
+      const newProject = {
+        id: maxId + 1,
+        src,
+        featured: formData.get('featured') === 'true',
+        site: formData.get('site') as string,
+        repo: formData.get('repo') as string,
+        name: {
+          ptBR: formData.get('name_pt') as string,
+          enUS: formData.get('name_en') as string,
+          es: formData.get('name_es') as string,
+          fr: formData.get('name_fr') as string,
+          zh: formData.get('name_zh') as string,
+        },
+        alt: {
+          ptBR: formData.get('alt_pt') as string,
+          enUS: formData.get('alt_en') as string,
+          es: formData.get('alt_es') as string,
+          fr: formData.get('alt_fr') as string,
+          zh: formData.get('alt_zh') as string,
+        },
+        abt: {
+          ptBR: formData.get('abt_pt') as string,
+          enUS: formData.get('abt_en') as string,
+          es: formData.get('abt_es') as string,
+          fr: formData.get('abt_fr') as string,
+          zh: formData.get('abt_zh') as string,
+        },
+        tags,
+      };
+
+      projects.push(newProject);
+      await saveProjectsToJSON(projects);
+
+      return NextResponse.json({ message: 'Projeto adicionado com sucesso! (JSON fallback)', urls: imageUrls }, { status: 201 });
+    }
   } catch (error) {
-    console.error("Erro ao adicionar projeto:", error);
+    console.error('Erro ao adicionar projeto:', error);
     return NextResponse.json({ message: 'Erro interno do servidor.' }, { status: 500 });
   }
 }

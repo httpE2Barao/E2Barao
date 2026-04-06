@@ -1,6 +1,6 @@
 "use client"
 import { SelectChangeEvent } from "@mui/material";
-import React, { createContext, useContext, useEffect, useState, lazy, Suspense } from "react";
+import React, { createContext, useContext, useEffect, useState, Suspense } from "react";
 import { useColors } from "./colors";
 import { useLanguage } from "./language";
 import { useMenu } from "./menu";
@@ -62,10 +62,6 @@ const PreloadImage = () => {
     </div>
   );
 };
-
-// Implementar lazy loading para componentes pesados
-const ProjectLayout = lazy(() => import('../projects/project-layout'));
-const TecsContainer = lazy(() => import('../tecnologies/tecs-container'));
 
 // Adicionar Suspense para melhor UX durante carregamento
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {

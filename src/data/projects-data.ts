@@ -17,207 +17,276 @@ interface RawProjectData {
   name: { ptBR: string; enUS: string };
   alt: { ptBR: string; enUS: string };
   abt: { ptBR: string; enUS: string };
+  featured?: boolean; // Para V2 - apenas projetos destaque
 }
 
 export const rawProjectsData: RawProjectData[] = [
     {
-      src: 'janine-mathias',
-      tags: ['typescript', 'vite', 'tailwind', 'github', 'figma', 'html', 'css', 'api'], 
-      site: 'https://janine-mathias.vercel.app',
-      repo: 'https://github.com/httpE2Barao/Janine-Mathias/',
+      src: 'platera',
+      tags: ['typescript', 'nextjs', 'prisma', 'postgresql', 'tailwind', 'shadcn', 'ai', 'openai', 'gemini', 'mercadopago', 'lalamove', 'focusnfe', 'pusher', 'leaflet', 'saas'],
+      site: '',
+      repo: '',
+      featured: true,
       name: {
-        ptBR: 'Cantora Janine Mathias',
-        enUS: 'Singer Janine Mathias'
+        ptBR: 'Platera',
+        enUS: 'Platera'
       },
       alt: {
-        ptBR: 'Landing page de cadastro com formulário dinâmico',
-        enUS: 'Registration landing page with dynamic form'
+        ptBR: 'Sistema operacional completo para restaurantes modernos com IA',
+        enUS: 'Complete operating system for modern restaurants with AI'
       },
       abt: {
-        ptBR: 'Este projeto foi desenvolvido para Janine Mathias, uma cantora e compositora de música brasileira, com o objetivo de criar um portfólio digital que reflete sua carreira na arte. O projeto inclui uma interface moderna e responsiva que permite aos visitantes explorar seus álbuns diretamente do spotify, visualizar seus próximos shows e navegar por suas redes sociais de forma dinâmica.',
-        enUS: 'This project is a landing page designed for resident registration, using a dynamic form that facilitates the insertion and updating of personal information. The application was built with technologies such as React, Next.js, and Tailwind CSS, providing a responsive and user-friendly interface. Additionally, API integration allows for automatic validation of the entered data, making the registration process faster and more secure. The project follows good development practices and focuses on accessibility, ensuring an efficient experience for residents.'
+        ptBR: 'Platera é um Sistema Operacional completo para restaurantes modernos. Projetado para escalar do food truck à franquia, unifica todos os aspectos da operação — do pedido à entrega, do estoque ao lucro — em uma interface elegante impulsionada por Inteligência Artificial. Possui chatbot com IA para atendimento automático via WhatsApp e Web 24/7, omnichannel (delivery próprio, QR Code mesa, totens, retirada, social commerce), integração com Lalamove e iFood, fichas técnicas dinâmicas com CMV em tempo real, KDS, POS, emissão fiscal NFC-e, pagamentos Mercado Pago, heatmaps de delivery, dashboard com AI Insights, gamificação e cashback.',
+        enUS: 'Platera is a complete Operating System for modern restaurants. Designed to scale from food truck to franchise, it unifies all aspects of operations — from order to delivery, inventory to profit — in an elegant interface powered by Artificial Intelligence. Features AI chatbot for automated WhatsApp and Web ordering 24/7, omnichannel (own delivery, QR Code table ordering, kiosks, takeaway, social commerce), Lalamove and iFood integration, dynamic recipe cards with real-time CMV, KDS, POS, NFC-e fiscal emission, Mercado Pago payments, delivery heatmaps, AI Insights dashboard, gamification and cashback.'
       }
     },
     {
-        src: 'patio-monitoramento',
-        tags: ['typescript', 'react', 'nextjs', 'tailwind', 'github', 'figma', 'html', 'css', 'api'], // fastify, prisma, porstgres, pgAdming4
-        site: '',
-        repo: 'https://github.com/httpE2Barao/Patio-Monitoramento/',
-        name: {
-          ptBR: 'Cadastro residêncial',
-          enUS: 'Residential Registration'
-        },
-        alt: {
-          ptBR: 'Landing page de cadastro com formulário dinâmico',
-          enUS: 'Registration landing page with dynamic form'
-        },
-        abt: {
-          ptBR: 'Este projeto é uma landing page desenvolvida para cadastro de residentes, utilizando um formulário dinâmico que facilita a inserção e atualização de informações pessoais. A aplicação foi construída com tecnologias como React, Next.js, e Tailwind CSS, proporcionando uma interface responsiva e amigável ao usuário. Além disso, a integração com APIs permite a validação automática dos dados inseridos, tornando o processo de registro mais ágil e seguro. O projeto segue boas práticas de desenvolvimento e foco em acessibilidade, garantindo uma experiência eficiente para os residentes.',
-          enUS: 'This project is a landing page designed for resident registration, using a dynamic form that facilitates the insertion and updating of personal information. The application was built with technologies such as React, Next.js, and Tailwind CSS, providing a responsive and user-friendly interface. Additionally, API integration allows for automatic validation of the entered data, making the registration process faster and more secure. The project follows good development practices and focuses on accessibility, ensuring an efficient experience for residents.'
-        }
+      src: 'digital-acceleration-christopher-columbus-museum',
+      tags: ['wordpress', 'tainacan', 'museu', 'patrimonio', 'cultura', 'digitalizacao'],
+      site: '',
+      repo: '',
+      featured: true,
+      name: {
+        ptBR: 'Museu Cristóforo Colombo',
+        enUS: 'Cristóforo Colombo Museum'
       },
-      {
-        src: 'thiago-battista',
-        tags: ['typescript', 'react', 'nextjs', 'tailwind', 'github', 'figma', 'html', 'css', 'nodejs', 'vite'], 
-        site: 'https://thiagobattista.vercel.app',
-        repo: 'https://github.com/httpE2Barao/webfolio-thiago_battista',
-        name: {
-          ptBR: 'Fotografo Thiago Battista',
-          enUS: 'Photographer Thiago Battista'
-        },
-        alt: {
-          ptBR: 'Landing page de cadastro com formulário dinâmico',
-          enUS: 'Registration landing page with dynamic form'
-        },
-        abt: {
-          ptBR: 'Este projeto é uma landing page desenvolvida para cadastro de residentes, utilizando um formulário dinâmico que facilita a inserção e atualização de informações pessoais. A aplicação foi construída com tecnologias como React, Next.js, e Tailwind CSS, proporcionando uma interface responsiva e amigável ao usuário. Além disso, a integração com APIs permite a validação automática dos dados inseridos, tornando o processo de registro mais ágil e seguro. O projeto segue boas práticas de desenvolvimento e foco em acessibilidade, garantindo uma experiência eficiente para os residentes.',
-          enUS: 'This project is a landing page designed for resident registration, using a dynamic form that facilitates the insertion and updating of personal information. The application was built with technologies such as React, Next.js, and Tailwind CSS, providing a responsive and user-friendly interface. Additionally, API integration allows for automatic validation of the entered data, making the registration process faster and more secure. The project follows good development practices and focuses on accessibility, ensuring an efficient experience for residents.'
-        }
+      alt: {
+        ptBR: 'Digitalização do acervo do Museu Municipal Cristóforo Colombo',
+        enUS: 'Digital archive of the Municipal Museum Cristóforo Colombo'
       },
-      {
-        src: 'space-tourism',
-        tags: ['javascript', 'react', 'tailwind', 'github', 'figma', 'html', 'css'],
-        site: 'https://turismo-espacial-xi.vercel.app/',
-        repo: 'https://github.com/httpE2Barao/SpaceTourism',
-        name: {
-          ptBR: 'Turismo Espacial',
-          enUS: 'Space Tourism'
-        },
-        alt: {
-          ptBR: 'Site sobre um turismo no espaço',
-          enUS: 'Website about space tourism'
-        },
-        abt: {
-          ptBR: 'Este projeto é uma aplicação web que apresenta informações sobre uma missão espacial. Utilizando o React e o Tailwind CSS, ele oferece uma interface do usuário moderna e responsiva. Possui recursos avançados do React, como os Hooks, para gerenciar o estado e os efeitos colaterais. Além disso, utiliza técnicas de otimização, como a pré-renderização de imagens, para garantir um carregamento rápido e uma experiência fluida. O código segue boas práticas de organização e estruturação, tornando-o fácil de entender e dar manutenção.',
-          enUS: 'This project is a web application that presents information about a space mission. Using React and Tailwind CSS, it offers a modern and responsive user interface. It has advanced React features, such as Hooks, to manage state and side effects. It also uses optimization techniques, such as image pre-rendering, to ensure fast loading and a fluid experience. The code follows good organization and structuring practices, making it easy to understand and maintain.'
-        }
+      abt: {
+        ptBR: 'Modernização e digitalização do acervo do Museu Municipal Cristóforo Colombo através de um sistema robusto em WordPress integrado com Tainacan. Preservação, catalogação e disponibilização pública do patrimônio cultural do museu utilizando plataforma open-source que garante flexibilidade e sustentabilidade para gestão de coleções museológicas.',
+        enUS: 'Modernization and digitization of the Cristóforo Colombo Municipal Museum archive through a robust WordPress system integrated with Tainacan. Preservation, cataloging, and public accessibility of the museum cultural heritage using an open-source platform that ensures flexibility and sustainability for managing museum collections.'
+      }
+    },
+    {
+      src: 'janine-mathias',
+      tags: ['typescript', 'vite', 'tailwind', 'spotify-api', 'figma'],
+      site: 'https://janine-mathias.vercel.app',
+      repo: 'https://github.com/httpE2Barao/Janine-Mathias/',
+      featured: true,
+      name: {
+        ptBR: 'Janine Mathias',
+        enUS: 'Janine Mathias'
       },
-      {
-        src: 'negociacoes',
-        tags: ['typescript', 'github', 'api', 'html', 'css'],
-        site: 'https://negocicoes.vercel.app/dist/index.html',
-        repo: 'https://github.com/httpE2Barao/Negotiation',
-        name: {
-          ptBR: 'Negociação API',
-          enUS: 'Negotiations API'
-        },
-        alt: {
-          ptBR: 'Projeto escalável TypeScript',
-          enUS: 'Scalable TypeScript project'
-        },
-        abt: {
-          ptBR: 'Este é um projeto que consome uma API externa e aplica as boas práticas do Typescript. Ele garante a qualidade do código durante a compilação, não permite a geração de código com erros, usa typagem estática e orientação a objeto. Ele também utiliza decorators para adicionar funcionalidades extras às classes, métodos e propriedades. Além disso, ele trata os possíveis erros da API com um micro framework que facilita o gerenciamento de rotas, requisições e respostas.',
-          enUS: 'This is a project that consumes an external API and applies the good practices of Typescript. It guarantees the quality of the code during compilation, does not allow the generation of code with errors, uses static typing and object orientation. It also uses decorators to add extra functionality to classes, methods and properties. In addition, it handles possible API errors with a micro-framework that facilitates the management of routes, requests and responses.'
-        }
+      alt: {
+        ptBR: 'Portfólio digital para cantora e compositora',
+        enUS: 'Digital portfolio for singer and songwriter'
       },
-      {
-        src: 'serenatto-cafe',
-        tags: ['javascript', 'bootstrap', 'css', 'github'],
-        site: 'https://serenatto-ebon.vercel.app/',
-        repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto',
-        name: {
-          ptBR: 'Serenatto Café',
-          enUS: 'Serenatto Coffee'
-        },
-        alt: {
-          ptBR: 'Cafeteria Serenatto',
-          enUS: 'Coffee shop website'
-        },
-        abt: {
-          ptBR: 'O projeto é um site informativo e elegante sobre a cafeteria Serenatto, usando e aprimorando minhas habilidades com o framework Bootstrap. O site consiste na apresentação dos produtos da cafeteria, como cafés especiais, bolos, salgados e vitaminas. Também possui um botão para alternar entre o tema claro e o modo escuro, criando uma atmosfera mais aconchegante e intimista. O objetivo é oferecer uma experiência única e diferenciada para os clientes.',
-          enUS: "The project is an informative and elegant website about the Serenatto coffee shop, using and improving my skills with the Bootstrap framework. The site consists of a presentation of the coffee shop's products, such as specialty coffees, cakes, snacks and smoothies. It also has a button to switch between a light and dark theme, creating a more cozy and intimate atmosphere. The aim is to offer a unique and distinctive experience for customers."
-        }
+      abt: {
+        ptBR: 'Portfólio digital para Janine Mathias, cantora e compositora de música brasileira. Interface moderna e responsiva que permite explorar álbuns diretamente do Spotify, visualizar próximos shows e navegar por redes sociais de forma dinâmica.',
+        enUS: 'Digital portfolio for Janine Mathias, a Brazilian music singer and songwriter. Modern and responsive interface that allows visitors to explore her albums directly from Spotify, view upcoming shows, and browse her social media dynamically.'
+      }
+    },
+    {
+      src: 'thiago-battista',
+      tags: ['typescript', 'react', 'nextjs', 'tailwind', 'fotografia'],
+      site: 'https://thiagobattista.vercel.app',
+      repo: 'https://github.com/httpE2Barao/webfolio-thiago_battista',
+      featured: true,
+      name: {
+        ptBR: 'Thiago Battista',
+        enUS: 'Thiago Battista'
       },
-      {
-        src: 'typing-challenge',
-        tags: ['javascript', 'html', 'css', 'tailwind', 'jquery', 'api', 'github'],
-        site: 'https://typing-challenge-theta.vercel.app/',
-        repo: 'https://github.com/httpE2Barao/typing-challenge',
-        name: {
-          ptBR: 'Desafio de Digitação',
-          enUS: 'Typing Challenge'
-        },
-        alt: {
-          ptBR: 'Desafio de Digitação - palavras por minuto',
-          enUS: 'Typing Challenge - words per minute'
-        },
-        abt: {
-          ptBR: 'Este projeto combina jQuery e Tailwind CSS para criar um desafio de digitação simples. Com um contador regressivo, ele monitora o tempo de digitação e fornece feedback em tempo real sobre erros. O jQuery gerencia interações do usuário, como iniciar e reiniciar o cronômetro. Ele consume uma API externa, apresentando frases aleatórias para digitação e exibe mensagens de erro se necessário. Ao final, registra o desempenho do usuário em um placar, incluindo média de palavras por minuto e número de acertos e erros, permitindo que acompanhe seu progresso.',
-          enUS: "This project combines jQuery and Tailwind CSS to create a simple typing challenge. With a countdown timer, it monitors typing time and provides real-time feedback on errors. jQuery manages user interactions such as starting and restarting the timer. By consuming an external API, it presents random phrases for typing and displays error messages if necessary. At the end, it records the user's performance on a scoreboard, including the average number of words per minute and the number of hits and misses, allowing them to track their progress"
-        }
+      alt: {
+        ptBR: 'Portfólio fotográfico profissional',
+        enUS: 'Professional photography portfolio'
       },
-      {
-        src: 'stopwatch',
-        tags: ['typescript', 'sass', 'html', 'css', 'github'],
-        site: 'https://stopwatch-react-app0.vercel.app/',
-        repo: 'https://github.com/httpE2Barao/Stopwatch-react-app',
-        name: {
-          ptBR: 'Temporizador',
-          enUS: 'Stopwatch'
-        },
-        alt: {
-          ptBR: 'Site sobre modelo de negociação',
-          enUS: 'Website about negotiation model'
-        },
-        abt: {
-          ptBR: 'Este projeto utiliza as tecnologias React, Typescript e Sass para oferecer uma experiência robusta e personalizável. Através de componentes reutilizáveis e gerenciamento de estado eficiente com hooks, o projeto garante flexibilidade e facilidade de manutenção. A tipagem estática do Typescript previne erros e garante a confiabilidade do código, enquanto o Sass permite estilização avançada com variáveis e adaptação a diferentes dispositivos.',
-          enUS: "This project leverages React, TypeScript, and Sass to deliver a robust and customizable user experience. By utilizing reusable components and efficient state management with hooks, the project ensures flexibility and maintainability. TypeScript's static typing prevents errors and guarantees code reliability, while Sass empowers advanced styling with variables and device-agnostic adaptation."
-        }
+      abt: {
+        ptBR: 'Portfólio fotográfico profissional com galeria interativa, navegação fluida e design minimalista que destaca o trabalho visual. Construído com React, Next.js e Tailwind CSS.',
+        enUS: 'Professional photography portfolio with interactive gallery, fluid navigation, and minimalist design that highlights visual work. Built with React, Next.js, and Tailwind CSS.'
+      }
+    },
+    {
+      src: 'patio-monitoramento',
+      tags: ['typescript', 'react', 'nextjs', 'tailwind', 'autenticacao', 'formularios'],
+      site: '',
+      repo: 'https://github.com/httpE2Barao/Patio-Monitoramento/',
+      featured: true,
+      name: {
+        ptBR: 'Pátio Monitoramento',
+        enUS: 'Patio Monitoring'
       },
-      {
-        src: 'moni-bank',
-        tags: ['javascript', 'html', 'css'],
-        site: 'https://moni-bank-omega.vercel.app/',
-        repo: 'https://github.com/httpE2Barao/MoniBank',
-        name: {
-          ptBR: 'Banco digital',
-          enUS: 'Digital bank'
-        },
-        alt: {
-          ptBR: 'Projeto de cadastro em um banco digital',
-          enUS: 'Digital Bank Account Sign-Up Project'
-        },
-        abt: {
-          ptBR: 'O projeto usa Javascript para criar uma conta em um site de banco. Utiliza boas práticas de validação de formulários, como verificar se o usuário é maior de idade, se o CPF tem os dígitos válidos e com a funcionalidade de tirar foto pelo webcam. Ele também trata os erros que podem ocorrer com dados inválidos. O projeto é simples, e mostra como usar a lógica de programação para fazer uma aplicação web de cadastro.',
-          enUS: 'The project uses Javascript to create an account on a bank website. It uses good form validation practices, such as checking that the user is of legal age, that the CPF has valid digits and with the functionality to take a photo via the webcam. It also handles errors that can occur with invalid data. The project is simple and shows how to use programming logic to make a registration web application.'
-        }
+      alt: {
+        ptBR: 'Sistema de cadastro residencial com autenticação',
+        enUS: 'Residential registration system with authentication'
       },
-      {
-        src: 'cadastro-inteligente',
-        tags: ['javascript', 'html', 'css', 'api'],
-        site: 'https://cep-auto-complete.vercel.app/',
-        repo: 'https://github.com/httpE2Barao/CEP_auto-complete',
-        name: {
-          ptBR: 'Cadastro Autocomplete',
-          enUS: 'Autocomplete Registration'
-        },
-        alt: {
-          ptBR: 'Projeto de busca de endereço CEP',
-          enUS: 'Zip code address search project'
-        },
-        abt: {
-          ptBR: 'Este projeto utiliza JavaScript para criar uma funcionalidade de busca de endereço com base no CEP fornecido pelo usuário. A ideia é permitir que os usuários insiram um CEP e, em seguida, obtenham informações detalhadas sobre o endereço associado a esse CEP. Antes de prosseguir com a consulta, verifica se o usuário é maior de idade. Além disso, valida os dígitos do CPF para garantir que sejam válidos. Isso ajuda a evitar erros e inconsistências nos dados inseridos.',
-          enUS: 'This project uses JavaScript to create an address search functionality based on the ZIP code provided by the user. The idea is to allow users to enter a ZIP code and then get detailed information about the address associated with that ZIP code. Before proceeding with the query, it checks that the user is of legal age. It also validates the CPF digits to ensure that they are valid. This helps to avoid errors and inconsistencies in the data entered.'
-        }
+      abt: {
+        ptBR: 'Aplicação React com autenticação e formulário inteligente para cadastro de residentes. Interface responsiva com validação automática de dados via API, focada em acessibilidade e eficiência.',
+        enUS: 'React application with authentication and smart form for resident registration. Responsive interface with automatic data validation via API, focused on accessibility and efficiency.'
+      }
+    },
+    {
+      src: 'space-tourism',
+      tags: ['javascript', 'react', 'tailwind', 'space'],
+      site: 'https://turismo-espacial-xi.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/SpaceTourism',
+      featured: true,
+      name: {
+        ptBR: 'Turismo Espacial',
+        enUS: 'Space Tourism'
       },
-      {
-        src: 'books-react',
-        tags: ['javascript', 'html', 'css', 'api'],
-        site: 'https://books-react-project-a.vercel.app/',
-        repo: 'https://github.com/httpE2Barao/Books_react-project',
-        name: {
-          ptBR: 'E-Biblioteca',
-          enUS: 'E-Library'
-        },
-        alt: {
-          ptBR: 'Projeto de cadastro com busca de endereço CEP',
-          enUS: 'Registration project with ZIP code address search'
-        },
-        abt: {
-          ptBR: 'Este projeto utiliza JavaScript para criar uma funcionalidade de busca de endereço com base no CEP fornecido pelo usuário. A ideia é permitir que os usuários insiram um CEP e, em seguida, obtenham informações detalhadas sobre o endereço associado a esse CEP. Antes de prosseguir com a consulta, verifica se o usuário é maior de idade. Além disso, valida os dígitos do CPF para garantir que sejam válidos. Isso ajuda a evitar erros e inconsistências nos dados inseridos.',
-          enUS: 'This project uses JavaScript to create an address search functionality based on the ZIP code provided by the user. The idea is to allow users to enter a ZIP code and then get detailed information about the address associated with that ZIP code. Before proceeding with the query, it checks that the user is of legal age. It also validates the CPF digits to ensure that they are valid. This helps to avoid errors and inconsistencies in the data entered.'
-        }
+      alt: {
+        ptBR: 'Aplicação web sobre missões espaciais',
+        enUS: 'Web application about space missions'
       },
+      abt: {
+        ptBR: 'Aplicação web com informações sobre missões espaciais. Interface moderna e responsiva utilizando React e Tailwind CSS, com hooks avançados para gerenciamento de estado e otimização de performance.',
+        enUS: 'Web application presenting information about space missions. Modern and responsive interface using React and Tailwind CSS, with advanced hooks for state management and performance optimization.'
+      }
+    },
+    {
+      src: 'negociacoes',
+      tags: ['typescript', 'oop', 'decorators', 'api'],
+      site: 'https://negocicoes.vercel.app/dist/index.html',
+      repo: 'https://github.com/httpE2Barao/Negotiation',
+      featured: false,
+      name: {
+        ptBR: 'Negociações API',
+        enUS: 'Negotiations API'
+      },
+      alt: {
+        ptBR: 'Projeto TypeScript com OOP e decorators',
+        enUS: 'TypeScript project with OOP and decorators'
+      },
+      abt: {
+        ptBR: 'Projeto que consome API externa aplicando boas práticas de TypeScript: tipagem estática, orientação a objetos, decorators e micro-framework para gerenciamento de rotas.',
+        enUS: 'Project consuming external API applying TypeScript best practices: static typing, object orientation, decorators, and micro-framework for route management.'
+      }
+    },
+    {
+      src: 'moni-bank',
+      tags: ['javascript', 'html', 'css', 'webcam', 'validacao'],
+      site: 'https://moni-bank-omega.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/MoniBank',
+      featured: false,
+      name: {
+        ptBR: 'MoniBank',
+        enUS: 'MoniBank'
+      },
+      alt: {
+        ptBR: 'Cadastro em banco digital com webcam',
+        enUS: 'Digital bank registration with webcam'
+      },
+      abt: {
+        ptBR: 'Aplicação de cadastro para banco digital com validação de CPF, verificação de maioridade e captura de foto por webcam.',
+        enUS: 'Digital bank registration application with CPF validation, age verification, and webcam photo capture.'
+      }
+    },
+    {
+      src: 'cadastro-inteligente',
+      tags: ['javascript', 'html', 'css', 'api', 'cep'],
+      site: 'https://cep-auto-complete.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/CEP_auto-complete',
+      featured: false,
+      name: {
+        ptBR: 'Cadastro Autocomplete',
+        enUS: 'Autocomplete Registration'
+      },
+      alt: {
+        ptBR: 'Busca de endereço por CEP com validação',
+        enUS: 'ZIP code address search with validation'
+      },
+      abt: {
+        ptBR: 'Funcionalidade de busca de endereço por CEP com validação de CPF e verificação de maioridade.',
+        enUS: 'ZIP code address search functionality with CPF validation and age verification.'
+      }
+    },
+    {
+      src: 'typing-challenge',
+      tags: ['javascript', 'tailwind', 'jquery', 'api'],
+      site: 'https://typing-challenge-theta.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/typing-challenge',
+      featured: false,
+      name: {
+        ptBR: 'Desafio de Digitação',
+        enUS: 'Typing Challenge'
+      },
+      alt: {
+        ptBR: 'Teste de velocidade de digitação',
+        enUS: 'Typing speed test'
+      },
+      abt: {
+        ptBR: 'Desafio de digitação com cronômetro, feedback em tempo real e placar de performance (palavras por minuto).',
+        enUS: 'Typing challenge with timer, real-time feedback, and performance scoreboard (words per minute).'
+      }
+    },
+    {
+      src: 'serenatto-cafe',
+      tags: ['javascript', 'bootstrap'],
+      site: 'https://serenatto-ebon.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto',
+      featured: false,
+      name: {
+        ptBR: 'Serenatto Café',
+        enUS: 'Serenatto Coffee'
+      },
+      alt: {
+        ptBR: 'Site de cafeteria',
+        enUS: 'Coffee shop website'
+      },
+      abt: {
+        ptBR: 'Site elegante para cafeteria com apresentação de produtos e alternância de tema claro/escuro.',
+        enUS: 'Elegant coffee shop website with product showcase and light/dark theme toggle.'
+      }
+    },
+    {
+      src: 'stopwatch',
+      tags: ['typescript', 'react', 'sass'],
+      site: 'https://stopwatch-react-app0.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/Stopwatch-react-app',
+      featured: false,
+      name: {
+        ptBR: 'Cronômetro',
+        enUS: 'Stopwatch'
+      },
+      alt: {
+        ptBR: 'Aplicação de cronômetro',
+        enUS: 'Stopwatch application'
+      },
+      abt: {
+        ptBR: 'Cronômetro com React, TypeScript e Sass. Componentes reutilizáveis e tipagem estática.',
+        enUS: 'Stopwatch with React, TypeScript, and Sass. Reusable components and static typing.'
+      }
+    },
+    {
+      src: 'books-react',
+      tags: ['javascript', 'react', 'api'],
+      site: 'https://books-react-project-a.vercel.app/',
+      repo: 'https://github.com/httpE2Barao/Books_react-project',
+      featured: false,
+      name: {
+        ptBR: 'E-Biblioteca',
+        enUS: 'E-Library'
+      },
+      alt: {
+        ptBR: 'Biblioteca de livros em React',
+        enUS: 'React book library'
+      },
+      abt: {
+        ptBR: 'Aplicação de biblioteca de livros com React e integração com API externa.',
+        enUS: 'Book library application with React and external API integration.'
+      }
+    },
+    {
+      src: 'generador-pdf',
+      tags: ['javascript', 'pdf'],
+      site: '',
+      repo: '',
+      featured: false,
+      name: {
+        ptBR: 'Generador PDF',
+        enUS: 'PDF Generator'
+      },
+      alt: {
+        ptBR: 'Gerador de PDF',
+        enUS: 'PDF generator tool'
+      },
+      abt: {
+        ptBR: 'Ferramenta para geração de documentos PDF.',
+        enUS: 'Tool for generating PDF documents.'
+      }
+    },
   ];
 
   export const projectsList = (language: string): projectInterface[] => {
@@ -231,4 +300,19 @@ export const rawProjectsData: RawProjectData[] = [
     alt: renderText(project.alt),
     abt: renderText(project.abt),
   }));
+};
+
+export const featuredProjectsList = (language: string): projectInterface[] => {
+  const renderText = (textObj: { ptBR: string; enUS:string }) => {
+    return language === 'pt-BR' ? textObj.ptBR : textObj.enUS;
+  };
+
+  return rawProjectsData
+    .filter(project => project.featured)
+    .map(project => ({
+      ...project,
+      name: renderText(project.name),
+      alt: renderText(project.alt),
+      abt: renderText(project.abt),
+    }));
 };
