@@ -1,0 +1,554 @@
+{
+  "skills": [
+    {
+      "id": 1,
+      "name": "HTML5",
+      "category": "tech",
+      "level": 95,
+      "color": "",
+      "icon_src": "img-html.png",
+      "display_order": 1,
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "CSS3",
+      "category": "tech",
+      "level": 93,
+      "color": "",
+      "icon_src": "img-css.png",
+      "display_order": 2,
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "JavaScript",
+      "category": "tech",
+      "level": 92,
+      "color": "",
+      "icon_src": "img-javascript.png",
+      "display_order": 3,
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "TypeScript",
+      "category": "tech",
+      "level": 90,
+      "color": "",
+      "icon_src": "img-typescript.png",
+      "display_order": 4,
+      "active": true
+    },
+    {
+      "id": 5,
+      "name": "React",
+      "category": "tech",
+      "level": 92,
+      "color": "",
+      "icon_src": "img-react.png",
+      "display_order": 5,
+      "active": true
+    },
+    {
+      "id": 6,
+      "name": "Next.js",
+      "category": "tech",
+      "level": 90,
+      "color": "",
+      "icon_src": "img-nextjs.png",
+      "display_order": 6,
+      "active": true
+    },
+    {
+      "id": 7,
+      "name": "Tailwind CSS",
+      "category": "tech",
+      "level": 88,
+      "color": "",
+      "icon_src": "img-tailwind.png",
+      "display_order": 7,
+      "active": true
+    },
+    {
+      "id": 8,
+      "name": "Node.js",
+      "category": "tech",
+      "level": 78,
+      "color": "",
+      "icon_src": "img-nodejs.png",
+      "display_order": 8,
+      "active": true
+    },
+    {
+      "id": 9,
+      "name": "Python",
+      "category": "tech",
+      "level": 70,
+      "color": "",
+      "icon_src": "img-python.png",
+      "display_order": 9,
+      "active": true
+    },
+    {
+      "id": 10,
+      "name": "PHP",
+      "category": "tech",
+      "level": 65,
+      "color": "",
+      "icon_src": "img-php.png",
+      "display_order": 10,
+      "active": true
+    },
+    {
+      "id": 11,
+      "name": "PostgreSQL",
+      "category": "tech",
+      "level": 72,
+      "color": "",
+      "icon_src": "",
+      "display_order": 11,
+      "active": true
+    },
+    {
+      "id": 12,
+      "name": "Prisma ORM",
+      "category": "tech",
+      "level": 75,
+      "color": "",
+      "icon_src": "",
+      "display_order": 12,
+      "active": true
+    },
+    {
+      "id": 13,
+      "name": "REST APIs",
+      "category": "tech",
+      "level": 82,
+      "color": "",
+      "icon_src": "img-api.png",
+      "display_order": 13,
+      "active": true
+    },
+    {
+      "id": 14,
+      "name": "Git",
+      "category": "tech",
+      "level": 85,
+      "color": "",
+      "icon_src": "img-github.png",
+      "display_order": 14,
+      "active": true
+    },
+    {
+      "id": 15,
+      "name": "Docker",
+      "category": "tech",
+      "level": 68,
+      "color": "",
+      "icon_src": "img-docker.png",
+      "display_order": 15,
+      "active": true
+    },
+    {
+      "id": 16,
+      "name": "Figma",
+      "category": "tech",
+      "level": 80,
+      "color": "",
+      "icon_src": "img-figma.png",
+      "display_order": 16,
+      "active": true
+    },
+    {
+      "id": 17,
+      "name": "WordPress",
+      "category": "tech",
+      "level": 75,
+      "color": "",
+      "icon_src": "img-wordpress.png",
+      "display_order": 17,
+      "active": true
+    },
+    {
+      "id": 18,
+      "name": "Vite",
+      "category": "tech",
+      "level": 78,
+      "color": "",
+      "icon_src": "img-vite.png",
+      "display_order": 18,
+      "active": true
+    },
+    {
+      "id": 19,
+      "name": "SASS",
+      "category": "tech",
+      "level": 85,
+      "color": "",
+      "icon_src": "img-sass.png",
+      "display_order": 19,
+      "active": true
+    },
+    {
+      "id": 20,
+      "name": "Bootstrap",
+      "category": "tech",
+      "level": 80,
+      "color": "",
+      "icon_src": "img-bootstrap.png",
+      "display_order": 20,
+      "active": true
+    },
+    {
+      "id": 21,
+      "name": "jQuery",
+      "category": "tech",
+      "level": 70,
+      "color": "",
+      "icon_src": "img-jquery.png",
+      "display_order": 21,
+      "active": true
+    },
+    {
+      "id": 22,
+      "name": "Styled Components",
+      "category": "tech",
+      "level": 75,
+      "color": "",
+      "icon_src": "img-styledcomponents.png",
+      "display_order": 22,
+      "active": true
+    },
+    {
+      "id": 23,
+      "name": "Clean Code",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 23,
+      "active": true
+    },
+    {
+      "id": 24,
+      "name": "Mobile First",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 24,
+      "active": true
+    },
+    {
+      "id": 25,
+      "name": "Object Orientation",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 25,
+      "active": true
+    },
+    {
+      "id": 26,
+      "name": "Functional Programming",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 26,
+      "active": true
+    },
+    {
+      "id": 27,
+      "name": "UI / UX Design",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 27,
+      "active": true
+    },
+    {
+      "id": 28,
+      "name": "Accessibility",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 28,
+      "active": true
+    },
+    {
+      "id": 29,
+      "name": "Software Architecture",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 29,
+      "active": true
+    },
+    {
+      "id": 30,
+      "name": "Information Architecture",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 30,
+      "active": true
+    },
+    {
+      "id": 31,
+      "name": "State Management",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 31,
+      "active": true
+    },
+    {
+      "id": 32,
+      "name": "Server Side Rendering",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 32,
+      "active": true
+    },
+    {
+      "id": 33,
+      "name": "Relational Database",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 33,
+      "active": true
+    },
+    {
+      "id": 34,
+      "name": "Information Security",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 34,
+      "active": true
+    },
+    {
+      "id": 35,
+      "name": "Agile Development",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 35,
+      "active": true
+    },
+    {
+      "id": 36,
+      "name": "SEO",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 36,
+      "active": true
+    },
+    {
+      "id": 37,
+      "name": "Performance Optimization",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 37,
+      "active": true
+    },
+    {
+      "id": 38,
+      "name": "Continuous Learning",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 38,
+      "active": true
+    },
+    {
+      "id": 39,
+      "name": "Analytical Thinking",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 39,
+      "active": true
+    },
+    {
+      "id": 40,
+      "name": "Code Versioning",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 40,
+      "active": true
+    },
+    {
+      "id": 41,
+      "name": "Teamwork",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 41,
+      "active": true
+    },
+    {
+      "id": 42,
+      "name": "Self-Management",
+      "category": "concept",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 42,
+      "active": true
+    },
+    {
+      "id": 43,
+      "name": "VS Code",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-visualcode.png",
+      "display_order": 43,
+      "active": true
+    },
+    {
+      "id": 44,
+      "name": "GitHub",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-github.png",
+      "display_order": 44,
+      "active": true
+    },
+    {
+      "id": 45,
+      "name": "Figma",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-figma.png",
+      "display_order": 45,
+      "active": true
+    },
+    {
+      "id": 46,
+      "name": "PostgreSQL",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 46,
+      "active": true
+    },
+    {
+      "id": 47,
+      "name": "Docker",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-docker.png",
+      "display_order": 47,
+      "active": true
+    },
+    {
+      "id": 48,
+      "name": "Notion",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 48,
+      "active": true
+    },
+    {
+      "id": 49,
+      "name": "Photoshop",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-photoshop.png",
+      "display_order": 49,
+      "active": true
+    },
+    {
+      "id": 50,
+      "name": "Premiere Pro",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 50,
+      "active": true
+    },
+    {
+      "id": 51,
+      "name": "Lightroom",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-lightroom.png",
+      "display_order": 51,
+      "active": true
+    },
+    {
+      "id": 52,
+      "name": "Adobe XD",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 52,
+      "active": true
+    },
+    {
+      "id": 53,
+      "name": "WordPress",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-wordpress.png",
+      "display_order": 53,
+      "active": true
+    },
+    {
+      "id": 54,
+      "name": "n8n",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "",
+      "display_order": 54,
+      "active": true
+    },
+    {
+      "id": 55,
+      "name": "Microsoft 365",
+      "category": "program",
+      "level": 0,
+      "color": "",
+      "icon_src": "img-microsoft365.png",
+      "display_order": 55,
+      "active": true
+    }
+  ]
+}

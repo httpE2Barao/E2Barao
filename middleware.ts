@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Define quais rotas serão protegidas por este middleware
 export const config = {
-  matcher: '/admin',
+  matcher: ['/admin', '/admin/v2/:path*'],
 };
 
 export function middleware(req: NextRequest) {

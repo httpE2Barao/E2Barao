@@ -1,0 +1,64 @@
+{
+  "contact": [
+    {
+      "id": 1,
+      "label": "LinkedIn",
+      "value": "https://www.linkedin.com/in/e2barao/",
+      "icon": "linkedin",
+      "description_pt": "Conexão profissional",
+      "description_en": "Professional connection",
+      "description_es": "Conexión profesional",
+      "description_fr": "Connexion professionnelle",
+      "description_zh": "职业联系",
+      "visible": true,
+      "display_order": 1,
+      "created_at": "2026-04-06T19:07:55.970Z",
+      "updated_at": "2026-04-06T19:07:55.970Z"
+    },
+    {
+      "id": 2,
+      "label": "GitHub",
+      "value": "https://github.com/httpE2Barao",
+      "icon": "github",
+      "description_pt": "Veja meu código",
+      "description_en": "Check out my code",
+      "description_es": "Mira mi código",
+      "description_fr": "Voir mon code",
+      "description_zh": "查看我的代码",
+      "visible": true,
+      "display_order": 2,
+      "created_at": "2026-04-06T19:07:55.970Z",
+      "updated_at": "2026-04-06T19:07:55.970Z"
+    },
+    {
+      "id": 3,
+      "label": "Email",
+      "value": "e2barao@hotmail.com",
+      "icon": "email",
+      "description_pt": "Envie uma mensagem",
+      "description_en": "Send a message",
+      "description_es": "Enviar un mensaje",
+      "description_fr": "Envoyer un message",
+      "description_zh": "发送消息",
+      "visible": true,
+      "display_order": 3,
+      "created_at": "2026-04-06T19:07:55.970Z",
+      "updated_at": "2026-04-06T19:07:55.970Z"
+    },
+    {
+      "id": 4,
+      "label": "WhatsApp",
+      "value": "+55 41 99804-6755",
+      "icon": "whatsapp",
+      "description_pt": "Converse comigo",
+      "description_en": "Chat with me",
+      "description_es": "Chatea conmigo",
+      "description_fr": "Discutez avec moi",
+      "description_zh": "与我聊天",
+      "visible": true,
+      "display_order": 4,
+      "created_at": "2026-04-06T19:07:55.970Z",
+      "updated_at": "2026-04-06T19:07:55.970Z"
+    }
+  ]
+}
