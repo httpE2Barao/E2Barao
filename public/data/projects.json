@@ -3,408 +3,449 @@
     {
       "id": 1,
       "src": "platera",
+      "site_url": "",
+      "repo_url": "",
+      "image_urls": [],
+      "tags": [
+        "typescript",
+        "nextjs",
+        "prisma",
+        "postgresql",
+        "tailwind",
+        "shadcn",
+        "ai",
+        "openai",
+        "gemini",
+        "mercadopago",
+        "lalamove",
+        "focusnfe",
+        "pusher",
+        "leaflet",
+        "saas"
+      ],
+      "name_pt": "Platera",
+      "name_en": "Platera",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Platera é um Sistema Operacional completo para restaurantes modernos. Projetado para escalar do food truck à franquia, unifica todos os aspectos da operação — do pedido à entrega, do estoque ao lucro — em uma interface elegante impulsionada por Inteligência Artificial. Possui chatbot com IA para atendimento automático via WhatsApp e Web 24/7, omnichannel (delivery próprio, QR Code mesa, totens, retirada, social commerce), integração com Lalamove e iFood, fichas técnicas dinâmicas com CMV em tempo real, KDS, POS, emissão fiscal NFC-e, pagamentos Mercado Pago, heatmaps de delivery, dashboard com AI Insights, gamificação e cashback.",
+      "abt_en": "Platera is a complete Operating System for modern restaurants. Designed to scale from food truck to franchise, it unifies all aspects of operations — from order to delivery, inventory to profit — in an elegant interface powered by Artificial Intelligence. Features AI chatbot for automated WhatsApp and Web ordering 24/7, omnichannel (own delivery, QR Code table ordering, kiosks, takeaway, social commerce), Lalamove and iFood integration, dynamic recipe cards with real-time CMV, KDS, POS, NFC-e fiscal emission, Mercado Pago payments, delivery heatmaps, AI Insights dashboard, gamification and cashback.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Sistema operacional completo para restaurantes modernos com IA",
+      "alt_en": "Complete operating system for modern restaurants with AI",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": true,
-      "site": "",
-      "repo": "",
-      "name": {
-        "ptBR": "Platera",
-        "enUS": "Platera",
-        "es": "Platera",
-        "fr": "Platera",
-        "zh": "Platera"
-      },
-      "alt": {
-        "ptBR": "Sistema operacional completo para restaurantes modernos com IA",
-        "enUS": "Complete operating system for modern restaurants with AI",
-        "es": "Sistema operativo completo para restaurantes modernos con IA",
-        "fr": "Système d'exploitation complet pour restaurants modernes avec IA",
-        "zh": "配备AI的现代餐厅完整操作系统"
-      },
-      "abt": {
-        "ptBR": "Platera é um Sistema Operacional completo para restaurantes modernos. Projetado para escalar do food truck à franquia, unifica todos os aspectos da operação — do pedido à entrega, do estoque ao lucro — em uma interface elegante impulsionada por Inteligência Artificial. Possui chatbot com IA para atendimento automático via WhatsApp e Web 24/7, omnichannel (delivery próprio, QR Code mesa, totens, retirada, social commerce), integração com Lalamove e iFood, fichas técnicas dinâmicas com CMV em tempo real, KDS, POS, emissão fiscal NFC-e, pagamentos Mercado Pago, heatmaps de delivery, dashboard com AI Insights, gamificação e cashback.",
-        "enUS": "Platera is a complete Operating System for modern restaurants. Designed to scale from food truck to franchise, it unifies all aspects of operations — from order to delivery, inventory to profit — in an elegant interface powered by Artificial Intelligence. Features AI chatbot for automated WhatsApp and Web ordering 24/7, omnichannel (own delivery, QR Code table ordering, kiosks, takeaway, social commerce), Lalamove and iFood integration, dynamic recipe cards with real-time CMV, KDS, POS, NFC-e fiscal emission, Mercado Pago payments, delivery heatmaps, AI Insights dashboard, gamification and cashback.",
-        "es": "Platera es un Sistema Operativo completo para restaurantes modernos. Diseñado para escalar desde food truck hasta franquicia, unifica todos los aspectos de la operación — del pedido a la entrega, del inventario al lucro — en una interfaz elegante impulsada por Inteligencia Artificial.",
-        "fr": "Platera est un Système d'Exploitation complet pour restaurants modernes. Conçu pour évoluer du food truck à la franchise, il unifie tous les aspects de l'opération — de la commande à la livraison, de l'inventaire au profit — dans une interface élégante propulsée par l'Intelligence Artificielle.",
-        "zh": "Platera是一个面向现代餐厅的完整操作系统。旨在从餐车扩展到特许经营，它将运营的各个方面——从订单到交付、从库存到利润——统一在一个由人工智能驱动的优雅界面中。"
-      },
-      "tags": ["typescript", "nextjs", "prisma", "postgresql", "tailwind", "shadcn", "ai", "openai", "gemini", "mercadopago", "lalamove", "focusnfe", "pusher", "leaflet", "saas"]
+      "display_order": 0,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 2,
       "src": "digital-acceleration-christopher-columbus-museum",
+      "site_url": "",
+      "repo_url": "",
+      "image_urls": [],
+      "tags": [
+        "wordpress",
+        "tainacan",
+        "museu",
+        "patrimonio",
+        "cultura",
+        "digitalizacao"
+      ],
+      "name_pt": "Museu Cristóforo Colombo",
+      "name_en": "Cristóforo Colombo Museum",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Modernização e digitalização do acervo do Museu Municipal Cristóforo Colombo através de um sistema robusto em WordPress integrado com Tainacan. Preservação, catalogação e disponibilização pública do patrimônio cultural do museu utilizando plataforma open-source que garante flexibilidade e sustentabilidade para gestão de coleções museológicas.",
+      "abt_en": "Modernization and digitization of the Cristóforo Colombo Municipal Museum archive through a robust WordPress system integrated with Tainacan. Preservation, cataloging, and public accessibility of the museum cultural heritage using an open-source platform that ensures flexibility and sustainability for managing museum collections.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Digitalização do acervo do Museu Municipal Cristóforo Colombo",
+      "alt_en": "Digital archive of the Municipal Museum Cristóforo Colombo",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": true,
-      "site": "",
-      "repo": "",
-      "name": {
-        "ptBR": "Museu Cristóforo Colombo",
-        "enUS": "Cristóforo Colombo Museum",
-        "es": "Museo Cristóforo Colombo",
-        "fr": "Musée Cristóforo Colombo",
-        "zh": "克里斯托弗·哥伦布博物馆"
-      },
-      "alt": {
-        "ptBR": "Digitalização do acervo do Museu Municipal Cristóforo Colombo",
-        "enUS": "Digital archive of the Municipal Museum Cristóforo Colombo",
-        "es": "Digitalización del acervo del Museo Municipal Cristóforo Colombo",
-        "fr": "Numérisation des collections du Musée Municipal Cristóforo Colombo",
-        "zh": "克里斯托弗·哥伦布市立博物馆的数字档案"
-      },
-      "abt": {
-        "ptBR": "Modernização e digitalização do acervo do Museu Municipal Cristóforo Colombo através de um sistema robusto em WordPress integrado com Tainacan. Preservação, catalogação e disponibilização pública do patrimônio cultural do museu utilizando plataforma open-source que garante flexibilidade e sustentabilidade para gestão de coleções museológicas.",
-        "enUS": "Modernization and digitization of the Cristóforo Colombo Municipal Museum archive through a robust WordPress system integrated with Tainacan. Preservation, cataloging, and public accessibility of the museum cultural heritage using an open-source platform that ensures flexibility and sustainability for managing museum collections.",
-        "es": "Modernización y digitalización del acervo del Museo Municipal Cristóforo Colombo a través de un sistema robusto en WordPress integrado con Tainacan.",
-        "fr": "Modernisation et numérisation des collections du Musée Municipal Cristóforo Colombo via un système WordPress robuste intégré à Tainacan.",
-        "zh": "通过WordPress集成Tainacan系统，实现克里斯托弗·哥伦布市立博物馆馆藏的现代化和数字化。"
-      },
-      "tags": ["wordpress", "tainacan", "museu", "patrimonio", "cultura", "digitalizacao"]
+      "display_order": 1,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 3,
       "src": "janine-mathias",
+      "site_url": "https://janine-mathias.vercel.app",
+      "repo_url": "https://github.com/httpE2Barao/Janine-Mathias/",
+      "image_urls": [],
+      "tags": [
+        "typescript",
+        "vite",
+        "tailwind",
+        "spotify-api",
+        "figma"
+      ],
+      "name_pt": "Janine Mathias",
+      "name_en": "Janine Mathias",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Portfólio digital para Janine Mathias, cantora e compositora de música brasileira. Interface moderna e responsiva que permite explorar álbuns diretamente do Spotify, visualizar próximos shows e navegar por redes sociais de forma dinâmica.",
+      "abt_en": "Digital portfolio for Janine Mathias, a Brazilian music singer and songwriter. Modern and responsive interface that allows visitors to explore her albums directly from Spotify, view upcoming shows, and browse her social media dynamically.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Portfólio digital para cantora e compositora",
+      "alt_en": "Digital portfolio for singer and songwriter",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": true,
-      "site": "https://janine-mathias.vercel.app",
-      "repo": "https://github.com/httpE2Barao/Janine-Mathias/",
-      "name": {
-        "ptBR": "Janine Mathias",
-        "enUS": "Janine Mathias",
-        "es": "Janine Mathias",
-        "fr": "Janine Mathias",
-        "zh": "Janine Mathias"
-      },
-      "alt": {
-        "ptBR": "Portfólio digital para cantora e compositora",
-        "enUS": "Digital portfolio for singer and songwriter",
-        "es": "Portafolio digital para cantante y compositora",
-        "fr": "Portfolio numérique pour chanteuse et compositrice",
-        "zh": "歌手兼作曲家的数字作品集"
-      },
-      "abt": {
-        "ptBR": "Portfólio digital para Janine Mathias, cantora e compositora de música brasileira. Interface moderna e responsiva que permite explorar álbuns diretamente do Spotify, visualizar próximos shows e navegar por redes sociais de forma dinâmica.",
-        "enUS": "Digital portfolio for Janine Mathias, a Brazilian music singer and songwriter. Modern and responsive interface that allows visitors to explore her albums directly from Spotify, view upcoming shows, and browse her social media dynamically.",
-        "es": "Portafolio digital para Janine Mathias, cantante y compositora de música brasileña. Interfaz moderna y responsiva que permite explorar álbumes directamente de Spotify.",
-        "fr": "Portfolio numérique pour Janine Mathias, chanteuse et compositrice de musique brésilienne. Interface moderne et responsive permettant d'explorer ses albums directement depuis Spotify.",
-        "zh": "巴西音乐歌手兼作曲家Janine Mathias的数字作品集。现代响应式界面，允许访客直接从Spotify探索她的专辑。"
-      },
-      "tags": ["typescript", "vite", "tailwind", "spotify-api", "figma"]
+      "display_order": 2,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 4,
       "src": "thiago-battista",
+      "site_url": "https://thiagobattista.vercel.app",
+      "repo_url": "https://github.com/httpE2Barao/webfolio-thiago_battista",
+      "image_urls": [],
+      "tags": [
+        "typescript",
+        "react",
+        "nextjs",
+        "tailwind",
+        "fotografia"
+      ],
+      "name_pt": "Thiago Battista",
+      "name_en": "Thiago Battista",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Portfólio fotográfico profissional com galeria interativa, navegação fluida e design minimalista que destaca o trabalho visual. Construído com React, Next.js e Tailwind CSS.",
+      "abt_en": "Professional photography portfolio with interactive gallery, fluid navigation, and minimalist design that highlights visual work. Built with React, Next.js, and Tailwind CSS.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Portfólio fotográfico profissional",
+      "alt_en": "Professional photography portfolio",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": true,
-      "site": "https://thiagobattista.vercel.app",
-      "repo": "https://github.com/httpE2Barao/webfolio-thiago_battista",
-      "name": {
-        "ptBR": "Thiago Battista",
-        "enUS": "Thiago Battista",
-        "es": "Thiago Battista",
-        "fr": "Thiago Battista",
-        "zh": "Thiago Battista"
-      },
-      "alt": {
-        "ptBR": "Portfólio fotográfico profissional",
-        "enUS": "Professional photography portfolio",
-        "es": "Portafolio fotográfico profesional",
-        "fr": "Portfolio photographique professionnel",
-        "zh": "专业摄影作品集"
-      },
-      "abt": {
-        "ptBR": "Portfólio fotográfico profissional com galeria interativa, navegação fluida e design minimalista que destaca o trabalho visual. Construído com React, Next.js e Tailwind CSS.",
-        "enUS": "Professional photography portfolio with interactive gallery, fluid navigation, and minimalist design that highlights visual work. Built with React, Next.js, and Tailwind CSS.",
-        "es": "Portafolio fotográfico profesional con galería interactiva, navegación fluida y diseño minimalista que destaca el trabajo visual.",
-        "fr": "Portfolio photographique professionnel avec galerie interactive, navigation fluide et design minimaliste qui met en valeur le travail visuel.",
-        "zh": "专业摄影作品集，具有互动画廊、流畅导航和极简设计，突出视觉作品。使用React、Next.js和Tailwind CSS构建。"
-      },
-      "tags": ["typescript", "react", "nextjs", "tailwind", "fotografia"]
+      "display_order": 3,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 5,
       "src": "patio-monitoramento",
+      "site_url": "",
+      "repo_url": "https://github.com/httpE2Barao/Patio-Monitoramento/",
+      "image_urls": [],
+      "tags": [
+        "typescript",
+        "react",
+        "nextjs",
+        "tailwind",
+        "autenticacao",
+        "formularios"
+      ],
+      "name_pt": "Pátio Monitoramento",
+      "name_en": "Patio Monitoring",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Aplicação React com autenticação e formulário inteligente para cadastro de residentes. Interface responsiva com validação automática de dados via API, focada em acessibilidade e eficiência.",
+      "abt_en": "React application with authentication and smart form for resident registration. Responsive interface with automatic data validation via API, focused on accessibility and efficiency.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Sistema de cadastro residencial com autenticação",
+      "alt_en": "Residential registration system with authentication",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": true,
-      "site": "",
-      "repo": "https://github.com/httpE2Barao/Patio-Monitoramento/",
-      "name": {
-        "ptBR": "Pátio Monitoramento",
-        "enUS": "Patio Monitoring",
-        "es": "Monitoreo del Patio",
-        "fr": "Surveillance du Patio",
-        "zh": "庭院监控"
-      },
-      "alt": {
-        "ptBR": "Sistema de cadastro residencial com autenticação",
-        "enUS": "Residential registration system with authentication",
-        "es": "Sistema de registro residencial con autenticación",
-        "fr": "Système d'enregistrement résidentiel avec authentification",
-        "zh": "带身份验证的住宅注册系统"
-      },
-      "abt": {
-        "ptBR": "Aplicação React com autenticação e formulário inteligente para cadastro de residentes. Interface responsiva com validação automática de dados via API, focada em acessibilidade e eficiência.",
-        "enUS": "React application with authentication and smart form for resident registration. Responsive interface with automatic data validation via API, focused on accessibility and efficiency.",
-        "es": "Aplicación React con autenticación y formulario inteligente para registro de residentes.",
-        "fr": "Application React avec authentification et formulaire intelligent pour l'enregistrement des résidents.",
-        "zh": "带身份验证和智能表单的React应用程序，用于居民注册。响应式界面，通过API自动验证数据，专注于可访问性和效率。"
-      },
-      "tags": ["typescript", "react", "nextjs", "tailwind", "autenticacao", "formularios"]
+      "display_order": 4,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 6,
       "src": "space-tourism",
+      "site_url": "https://turismo-espacial-xi.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/SpaceTourism",
+      "image_urls": [],
+      "tags": [
+        "javascript",
+        "react",
+        "tailwind",
+        "space"
+      ],
+      "name_pt": "Turismo Espacial",
+      "name_en": "Space Tourism",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Aplicação web com informações sobre missões espaciais. Interface moderna e responsiva utilizando React e Tailwind CSS, com hooks avançados para gerenciamento de estado e otimização de performance.",
+      "abt_en": "Web application presenting information about space missions. Modern and responsive interface using React and Tailwind CSS, with advanced hooks for state management and performance optimization.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Aplicação web sobre missões espaciais",
+      "alt_en": "Web application about space missions",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": true,
-      "site": "https://turismo-espacial-xi.vercel.app/",
-      "repo": "https://github.com/httpE2Barao/SpaceTourism",
-      "name": {
-        "ptBR": "Turismo Espacial",
-        "enUS": "Space Tourism",
-        "es": "Turismo Espacial",
-        "fr": "Tourisme Spatial",
-        "zh": "太空旅游"
-      },
-      "alt": {
-        "ptBR": "Aplicação web sobre missões espaciais",
-        "enUS": "Web application about space missions",
-        "es": "Aplicación web sobre misiones espaciales",
-        "fr": "Application web sur les missions spatiales",
-        "zh": "关于太空任务的Web应用程序"
-      },
-      "abt": {
-        "ptBR": "Aplicação web com informações sobre missões espaciais. Interface moderna e responsiva utilizando React e Tailwind CSS, com hooks avançados para gerenciamento de estado e otimização de performance.",
-        "enUS": "Web application presenting information about space missions. Modern and responsive interface using React and Tailwind CSS, with advanced hooks for state management and performance optimization.",
-        "es": "Aplicación web con información sobre misiones espaciales. Interfaz moderna y responsiva usando React y Tailwind CSS.",
-        "fr": "Application web présentant des informations sur les missions spatiales. Interface moderne et responsive utilisant React et Tailwind CSS.",
-        "zh": "提供太空任务信息的Web应用程序。使用React和Tailwind CSS的现代响应式界面，具有高级hooks用于状态管理和性能优化。"
-      },
-      "tags": ["javascript", "react", "tailwind", "space"]
+      "display_order": 5,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 7,
       "src": "negociacoes",
+      "site_url": "https://negocicoes.vercel.app/dist/index.html",
+      "repo_url": "https://github.com/httpE2Barao/Negotiation",
+      "image_urls": [],
+      "tags": [
+        "typescript",
+        "oop",
+        "decorators",
+        "api"
+      ],
+      "name_pt": "Negociações API",
+      "name_en": "Negotiations API",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Projeto que consome API externa aplicando boas práticas de TypeScript: tipagem estática, orientação a objetos, decorators e micro-framework para gerenciamento de rotas.",
+      "abt_en": "Project consuming external API applying TypeScript best practices: static typing, object orientation, decorators, and micro-framework for route management.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Projeto TypeScript com OOP e decorators",
+      "alt_en": "TypeScript project with OOP and decorators",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "https://negocicoes.vercel.app/dist/index.html",
-      "repo": "https://github.com/httpE2Barao/Negotiation",
-      "name": {
-        "ptBR": "Negociações API",
-        "enUS": "Negotiations API",
-        "es": "API de Negociaciones",
-        "fr": "API de Négociations",
-        "zh": "谈判API"
-      },
-      "alt": {
-        "ptBR": "Projeto TypeScript com OOP e decorators",
-        "enUS": "TypeScript project with OOP and decorators",
-        "es": "Proyecto TypeScript con OOP y decoradores",
-        "fr": "Projet TypeScript avec POO et décorateurs",
-        "zh": "使用OOP和装饰器的TypeScript项目"
-      },
-      "abt": {
-        "ptBR": "Projeto que consome API externa aplicando boas práticas de TypeScript: tipagem estática, orientação a objetos, decorators e micro-framework para gerenciamento de rotas.",
-        "enUS": "Project consuming external API applying TypeScript best practices: static typing, object orientation, decorators, and micro-framework for route management.",
-        "es": "Proyecto que consume API externa aplicando buenas prácticas de TypeScript.",
-        "fr": "Projet consommant une API externe appliquant les bonnes pratiques TypeScript.",
-        "zh": "消费外部API的项目，应用TypeScript最佳实践：静态类型、面向对象、装饰器和微框架用于路由管理。"
-      },
-      "tags": ["typescript", "oop", "decorators", "api"]
+      "display_order": 6,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 8,
       "src": "moni-bank",
+      "site_url": "https://moni-bank-omega.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/MoniBank",
+      "image_urls": [],
+      "tags": [
+        "javascript",
+        "html",
+        "css",
+        "webcam",
+        "validacao"
+      ],
+      "name_pt": "MoniBank",
+      "name_en": "MoniBank",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Aplicação de cadastro para banco digital com validação de CPF, verificação de maioridade e captura de foto por webcam.",
+      "abt_en": "Digital bank registration application with CPF validation, age verification, and webcam photo capture.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Cadastro em banco digital com webcam",
+      "alt_en": "Digital bank registration with webcam",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "https://moni-bank-omega.vercel.app/",
-      "repo": "https://github.com/httpE2Barao/MoniBank",
-      "name": {
-        "ptBR": "MoniBank",
-        "enUS": "MoniBank",
-        "es": "MoniBank",
-        "fr": "MoniBank",
-        "zh": "MoniBank"
-      },
-      "alt": {
-        "ptBR": "Cadastro em banco digital com webcam",
-        "enUS": "Digital bank registration with webcam",
-        "es": "Registro en banco digital con webcam",
-        "fr": "Inscription en banque numérique avec webcam",
-        "zh": "带网络摄像头的数字银行注册"
-      },
-      "abt": {
-        "ptBR": "Aplicação de cadastro para banco digital com validação de CPF, verificação de maioridade e captura de foto por webcam.",
-        "enUS": "Digital bank registration application with CPF validation, age verification, and webcam photo capture.",
-        "es": "Aplicación de registro para banco digital con validación de CPF y captura de foto por webcam.",
-        "fr": "Application d'inscription pour banque numérique avec validation CPF et capture photo par webcam.",
-        "zh": "数字银行注册应用程序，具有CPF验证、年龄验证和网络摄像头照片捕获。"
-      },
-      "tags": ["javascript", "html", "css", "webcam", "validacao"]
+      "display_order": 7,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 9,
       "src": "cadastro-inteligente",
+      "site_url": "https://cep-auto-complete.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/CEP_auto-complete",
+      "image_urls": [],
+      "tags": [
+        "javascript",
+        "html",
+        "css",
+        "api",
+        "cep"
+      ],
+      "name_pt": "Cadastro Autocomplete",
+      "name_en": "Autocomplete Registration",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Funcionalidade de busca de endereço por CEP com validação de CPF e verificação de maioridade.",
+      "abt_en": "ZIP code address search functionality with CPF validation and age verification.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Busca de endereço por CEP com validação",
+      "alt_en": "ZIP code address search with validation",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "https://cep-auto-complete.vercel.app/",
-      "repo": "https://github.com/httpE2Barao/CEP_auto-complete",
-      "name": {
-        "ptBR": "Cadastro Autocomplete",
-        "enUS": "Autocomplete Registration",
-        "es": "Registro Autocompletado",
-        "fr": "Inscription Autocomplétée",
-        "zh": "自动完成注册"
-      },
-      "alt": {
-        "ptBR": "Busca de endereço por CEP com validação",
-        "enUS": "ZIP code address search with validation",
-        "es": "Búsqueda de dirección por código postal con validación",
-        "fr": "Recherche d'adresse par code postal avec validation",
-        "zh": "带验证的邮政编码地址搜索"
-      },
-      "abt": {
-        "ptBR": "Funcionalidade de busca de endereço por CEP com validação de CPF e verificação de maioridade.",
-        "enUS": "ZIP code address search functionality with CPF validation and age verification.",
-        "es": "Funcionalidad de búsqueda de dirección por código postal con validación de CPF.",
-        "fr": "Fonctionnalité de recherche d'adresse par code postal avec validation CPF.",
-        "zh": "带CPF验证和年龄验证的邮政编码地址搜索功能。"
-      },
-      "tags": ["javascript", "html", "css", "api", "cep"]
+      "display_order": 8,
+      "created_at": "2026-04-06T19:07:55.968Z"
     },
     {
       "id": 10,
       "src": "typing-challenge",
+      "site_url": "https://typing-challenge-theta.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/typing-challenge",
+      "image_urls": [],
+      "tags": [
+        "javascript",
+        "tailwind",
+        "jquery",
+        "api"
+      ],
+      "name_pt": "Desafio de Digitação",
+      "name_en": "Typing Challenge",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Desafio de digitação com cronômetro, feedback em tempo real e placar de performance (palavras por minuto).",
+      "abt_en": "Typing challenge with timer, real-time feedback, and performance scoreboard (words per minute).",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Teste de velocidade de digitação",
+      "alt_en": "Typing speed test",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "https://typing-challenge-theta.vercel.app/",
-      "repo": "https://github.com/httpE2Barao/typing-challenge",
-      "name": {
-        "ptBR": "Desafio de Digitação",
-        "enUS": "Typing Challenge",
-        "es": "Desafío de Escritura",
-        "fr": "Défi de Frappe",
-        "zh": "打字挑战"
-      },
-      "alt": {
-        "ptBR": "Teste de velocidade de digitação",
-        "enUS": "Typing speed test",
-        "es": "Prueba de velocidad de escritura",
-        "fr": "Test de vitesse de frappe",
-        "zh": "打字速度测试"
-      },
-      "abt": {
-        "ptBR": "Desafio de digitação com cronômetro, feedback em tempo real e placar de performance (palavras por minuto).",
-        "enUS": "Typing challenge with timer, real-time feedback, and performance scoreboard (words per minute).",
-        "es": "Desafío de escritura con cronómetro, retroalimentación en tiempo real y marcador de rendimiento.",
-        "fr": "Défi de frappe avec chronomètre, feedback en temps réel et tableau de bord de performance.",
-        "zh": "带计时器、实时反馈和性能记分板的打字挑战（每分钟字数）。"
-      },
-      "tags": ["javascript", "tailwind", "jquery", "api"]
+      "display_order": 9,
+      "created_at": "2026-04-06T19:07:55.969Z"
     },
     {
       "id": 11,
       "src": "serenatto-cafe",
+      "site_url": "https://serenatto-ebon.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto",
+      "image_urls": [],
+      "tags": [
+        "javascript",
+        "bootstrap"
+      ],
+      "name_pt": "Serenatto Café",
+      "name_en": "Serenatto Coffee",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Site elegante para cafeteria com apresentação de produtos e alternância de tema claro/escuro.",
+      "abt_en": "Elegant coffee shop website with product showcase and light/dark theme toggle.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Site de cafeteria",
+      "alt_en": "Coffee shop website",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "https://serenatto-ebon.vercel.app/",
-      "repo": "https://github.com/httpE2Barao/Study-Repo/tree/main/Front%20End/Bootstrap/Projeto_Serenatto",
-      "name": {
-        "ptBR": "Serenatto Café",
-        "enUS": "Serenatto Coffee",
-        "es": "Serenatto Café",
-        "fr": "Serenatto Café",
-        "zh": "Serenatto咖啡"
-      },
-      "alt": {
-        "ptBR": "Site de cafeteria",
-        "enUS": "Coffee shop website",
-        "es": "Sitio web de cafetería",
-        "fr": "Site web de café",
-        "zh": "咖啡店网站"
-      },
-      "abt": {
-        "ptBR": "Site elegante para cafeteria com apresentação de produtos e alternância de tema claro/escuro.",
-        "enUS": "Elegant coffee shop website with product showcase and light/dark theme toggle.",
-        "es": "Sitio web elegante para cafetería con presentación de productos y cambio de tema claro/oscuro.",
-        "fr": "Site web élégant pour café avec présentation de produits et basculement de thème clair/sombre.",
-        "zh": "优雅的咖啡店网站，具有产品展示和明暗主题切换。"
-      },
-      "tags": ["javascript", "bootstrap"]
+      "display_order": 10,
+      "created_at": "2026-04-06T19:07:55.969Z"
     },
     {
       "id": 12,
       "src": "stopwatch",
+      "site_url": "https://stopwatch-react-app0.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/Stopwatch-react-app",
+      "image_urls": [],
+      "tags": [
+        "typescript",
+        "react",
+        "sass"
+      ],
+      "name_pt": "Cronômetro",
+      "name_en": "Stopwatch",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Cronômetro com React, TypeScript e Sass. Componentes reutilizáveis e tipagem estática.",
+      "abt_en": "Stopwatch with React, TypeScript, and Sass. Reusable components and static typing.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Aplicação de cronômetro",
+      "alt_en": "Stopwatch application",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "https://stopwatch-react-app0.vercel.app/",
-      "repo": "https://github.com/httpE2Barao/Stopwatch-react-app",
-      "name": {
-        "ptBR": "Cronômetro",
-        "enUS": "Stopwatch",
-        "es": "Cronómetro",
-        "fr": "Chronomètre",
-        "zh": "秒表"
-      },
-      "alt": {
-        "ptBR": "Aplicação de cronômetro",
-        "enUS": "Stopwatch application",
-        "es": "Aplicación de cronómetro",
-        "fr": "Application de chronomètre",
-        "zh": "秒表应用程序"
-      },
-      "abt": {
-        "ptBR": "Cronômetro com React, TypeScript e Sass. Componentes reutilizáveis e tipagem estática.",
-        "enUS": "Stopwatch with React, TypeScript, and Sass. Reusable components and static typing.",
-        "es": "Cronómetro con React, TypeScript y Sass. Componentes reutilizables y tipado estático.",
-        "fr": "Chronomètre avec React, TypeScript et Sass. Composants réutilisables et typage statique.",
-        "zh": "使用React、TypeScript和Sass的秒表。可复用组件和静态类型。"
-      },
-      "tags": ["typescript", "react", "sass"]
+      "display_order": 11,
+      "created_at": "2026-04-06T19:07:55.969Z"
     },
     {
       "id": 13,
       "src": "books-react",
+      "site_url": "https://books-react-project-a.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/Books_react-project",
+      "image_urls": [],
+      "tags": [
+        "javascript",
+        "react",
+        "api"
+      ],
+      "name_pt": "E-Biblioteca",
+      "name_en": "E-Library",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Aplicação de biblioteca de livros com React e integração com API externa.",
+      "abt_en": "Book library application with React and external API integration.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Biblioteca de livros em React",
+      "alt_en": "React book library",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "https://books-react-project-a.vercel.app/",
-      "repo": "https://github.com/httpE2Barao/Books_react-project",
-      "name": {
-        "ptBR": "E-Biblioteca",
-        "enUS": "E-Library",
-        "es": "E-Biblioteca",
-        "fr": "E-Bibliothèque",
-        "zh": "电子图书馆"
-      },
-      "alt": {
-        "ptBR": "Biblioteca de livros em React",
-        "enUS": "React book library",
-        "es": "Biblioteca de libros en React",
-        "fr": "Bibliothèque de livres en React",
-        "zh": "React图书库"
-      },
-      "abt": {
-        "ptBR": "Aplicação de biblioteca de livros com React e integração com API externa.",
-        "enUS": "Book library application with React and external API integration.",
-        "es": "Aplicación de biblioteca de libros con React e integración con API externa.",
-        "fr": "Application de bibliothèque de livres avec React et intégration d'API externe.",
-        "zh": "使用React和外部API集成的图书库应用程序。"
-      },
-      "tags": ["javascript", "react", "api"]
+      "display_order": 12,
+      "created_at": "2026-04-06T19:07:55.969Z"
     },
     {
       "id": 14,
       "src": "generador-pdf",
+      "site_url": "",
+      "repo_url": "",
+      "image_urls": [],
+      "tags": [
+        "javascript",
+        "pdf"
+      ],
+      "name_pt": "Generador PDF",
+      "name_en": "PDF Generator",
+      "name_es": "",
+      "name_fr": "",
+      "name_zh": "",
+      "abt_pt": "Ferramenta para geração de documentos PDF.",
+      "abt_en": "Tool for generating PDF documents.",
+      "abt_es": "",
+      "abt_fr": "",
+      "abt_zh": "",
+      "alt_pt": "Gerador de PDF",
+      "alt_en": "PDF generator tool",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
       "featured": false,
-      "site": "",
-      "repo": "",
-      "name": {
-        "ptBR": "Generador PDF",
-        "enUS": "PDF Generator",
-        "es": "Generador de PDF",
-        "fr": "Générateur PDF",
-        "zh": "PDF生成器"
-      },
-      "alt": {
-        "ptBR": "Gerador de PDF",
-        "enUS": "PDF generator tool",
-        "es": "Herramienta generadora de PDF",
-        "fr": "Outil de génération PDF",
-        "zh": "PDF生成工具"
-      },
-      "abt": {
-        "ptBR": "Ferramenta para geração de documentos PDF.",
-        "enUS": "Tool for generating PDF documents.",
-        "es": "Herramienta para generación de documentos PDF.",
-        "fr": "Outil de génération de documents PDF.",
-        "zh": "用于生成PDF文档的工具。"
-      },
-      "tags": ["javascript", "pdf"]
+      "display_order": 13,
+      "created_at": "2026-04-06T19:07:55.969Z"
     }
   ]
 }

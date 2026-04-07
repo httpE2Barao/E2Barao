@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server"
 import { rawProjectsData } from "@/data/projects-data"
+import { NextResponse } from "next/server"
 
 const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 const MODEL = "meta/llama-3.1-70b-instruct"
@@ -56,7 +56,7 @@ function getSystemPrompt(lang: string): string {
   const projectsContext = buildProjectsContext(lang)
 
   const prompts: Record<string, string> = {
-    pt: `Você é o Cógnis, assistente de IA do portfólio digital de Elias Barão, um desenvolvedor web e engenheiro de software baseado em Curitiba, Paraná, Brasil.
+    pt: `Você é o Cógnis, assistente de IA do portfólio digital de Elias Barão, um desenvolvedor web e engenheiro de software atualmente reside em Curitiba, Paraná, Brasil.
 
 SOBRE ELIAS:
 - Nome completo: Elias Edson Barão

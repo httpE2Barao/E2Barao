@@ -8,9 +8,12 @@ export function V2SmoothScroll({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.1,
+      lerp: 0.08,
       smoothWheel: true,
       autoRaf: true,
+      overscroll: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1,
     })
 
     lenisRef.current = lenis

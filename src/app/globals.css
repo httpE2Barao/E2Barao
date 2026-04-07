@@ -80,6 +80,11 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.animate-spin {
+  will-change: transform;
+  animation: fadeIn 0.5s ease-out, spin 1s linear infinite;
+}
+
 /* Design System consistente */
 .btn {
   @apply px-4 py-2 rounded-lg transition-all duration-200;

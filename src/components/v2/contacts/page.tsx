@@ -1,7 +1,7 @@
 "use client"
-import { useState, useRef } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
 import { useTheme } from "@/components/switchers/switchers"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
 
 const contactLinks = [
   {
@@ -26,7 +26,7 @@ const contactLinks = [
   },
   {
     label: "Email",
-    href: "mailto:contact@e2barao.dev",
+    href: "mailto:e2barao@hotmail.com",
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -44,7 +44,7 @@ function ContactCard({ link, index }: { link: typeof contactLinks[0]; index: num
 
   const handleClick = () => {
     if (link.label === "Email") {
-      navigator.clipboard?.writeText("contact@e2barao.dev")
+      navigator.clipboard?.writeText("e2barao@hotmail.com")
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
@@ -284,6 +284,16 @@ export function V2ContactsPage() {
   })
 
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -150])
+  const [cvUrl, setCvUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch("/api/cv/download")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.url) setCvUrl(data.url)
+      })
+      .catch(() => setCvUrl(null))
+  }, [])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textSubtle = isDark ? "text-white/20" : "text-black/20"
@@ -305,10 +315,10 @@ export function V2ContactsPage() {
   const cvFormat = language === "pt" ? "Formato PDF" : language === "es" ? "Formato PDF" : language === "fr" ? "Format PDF" : language === "zh" ? "PDF格式" : "PDF format"
 
   return (
-    <section ref={ref} className={`min-h-screen pt-[5rem] pb-12 sm:pb-16 relative ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section ref={ref} className={`min-h-screen pt-[5rem] pb-12 sm:pb-16 relative overflow-visible ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       <motion.div
         style={{ y: bgY }}
-        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none`}
+        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none -translate-y-20`}
       />
 
       <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16 relative z-10">
@@ -344,7 +354,7 @@ export function V2ContactsPage() {
             </div>
 
             <motion.a
-              href="/CV-EliasBarao.pdf"
+              href={cvUrl || "/CV-EliasBarao.pdf"}
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 15 }}

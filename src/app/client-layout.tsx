@@ -13,6 +13,7 @@ export default function ClientLayout({
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const isV2 = pathname?.startsWith('/v2');
+  const isAdmin = pathname?.startsWith('/admin');
 
   useEffect(() => {
     setMounted(true);
@@ -22,9 +23,9 @@ export default function ClientLayout({
 
   return (
     <ThemeProvider>
-      {!isV2 && <Header />}
+      {!isV2 && !isAdmin && <Header />}
       {children}
-      {!isV2 && <ToTheTopButton />}
+      {!isV2 && !isAdmin && <ToTheTopButton />}
     </ThemeProvider>
   );
 }

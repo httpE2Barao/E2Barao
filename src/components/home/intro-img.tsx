@@ -17,6 +17,7 @@ const ImagemIntroducao = () => {
                         width={500}
                         height={500}
                         className={`verso`}
+                        priority
                     />
                 </div>
             </div>

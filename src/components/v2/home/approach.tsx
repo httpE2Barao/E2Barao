@@ -1,6 +1,6 @@
 "use client"
 import { useRef } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import Image from "next/image"
 import { useTheme } from "@/components/switchers/switchers"
 
@@ -55,8 +55,11 @@ function ApproachCard({ section, index, language }: { section: typeof approachSe
   const { theme } = useTheme()
   const isDark = theme === "dark"
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100])
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
+  const springProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 20, restDelta: 0.001 })
+
+  const y = useTransform(springProgress, [0, 0.5, 1], [80, 0, -80])
+  const opacity = useTransform(springProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0])
+  const scale = useTransform(springProgress, [0, 0.15, 0.85, 1], [0.95, 1, 1, 0.95])
 
   const textMuted = isDark ? "text-white/50" : "text-black/50"
   const textSubtle = isDark ? "text-white/40" : "text-black/40"
@@ -70,19 +73,21 @@ function ApproachCard({ section, index, language }: { section: typeof approachSe
   return (
     <motion.div
       ref={ref}
-      style={{ y, opacity }}
+      style={{ y, opacity, scale }}
       className="relative group"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[80vh] py-20">
         <div className={`relative overflow-hidden rounded-2xl aspect-[4/3] ${index % 2 === 1 ? "lg:order-2" : ""}`}>
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"
+          />
           <Image
             src={section.image}
             alt={section.title}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="absolute bottom-6 left-6 right-6">
+          <div className="absolute bottom-6 left-6 right-6 z-20">
             <div className="flex flex-wrap gap-2">
               {section.tags.map((tag) => (
                 <span
@@ -96,7 +101,12 @@ function ApproachCard({ section, index, language }: { section: typeof approachSe
           </div>
         </div>
 
-        <div className="px-4">
+        <motion.div
+          style={{ 
+            x: useTransform(springProgress, [0, 0.5, 1], [30, 0, -30]),
+          }}
+          className="px-4"
+        >
           <p className={`${accentColor} text-sm uppercase tracking-[0.3em] mb-4 font-mono`}>
             {section.subtitle}
           </p>
@@ -106,7 +116,7 @@ function ApproachCard({ section, index, language }: { section: typeof approachSe
           <p className={`${textMuted} text-lg leading-relaxed max-w-lg`}>
             {desc}
           </p>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   )
@@ -127,8 +137,14 @@ export function V2Approach() {
 
   return (
     <section id="approach" className={`relative ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
-      <div className="h-screen flex items-center justify-center relative">
-        <div className="text-center px-8">
+      <div className="h-screen flex items-center justify-center relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true }}
+          className="text-center px-8"
+        >
           <p className={`${accentColor} text-sm uppercase tracking-[0.3em] mb-6 font-mono`}>
             {whatIDo}
           </p>
@@ -138,17 +154,15 @@ export function V2Approach() {
             <span className={textSubtle}>pixels</span>
             <span className={accentColor}>.</span>
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className={`w-6 h-10 ${borderColor} border-2 rounded-full flex justify-center pt-2`}
-          >
-            <div className={`w-1 h-2 ${dotInner} rounded-full`} />
-          </motion.div>
-        </div>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className={`w-6 h-10 ${borderColor} border-2 rounded-full flex justify-center pt-2`}
+        >
+          <div className={`w-1 h-2 ${dotInner} rounded-full`} />
+        </motion.div>
       </div>
 
       <div className="max-w-[1800px] mx-auto px-8">

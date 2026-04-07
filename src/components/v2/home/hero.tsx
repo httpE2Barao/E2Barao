@@ -1,19 +1,43 @@
 "use client"
 import { useTheme } from "@/components/switchers/switchers"
-import Spline from "@splinetool/react-spline"
+import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { useWelcomeAudio, useSpeech } from "@/hooks/use-welcome-audio"
 
-const MUTE_KEY = "e2barao-audio-muted"
+const Spline = dynamic(() => import("@splinetool/react-spline/dist/react-spline-next"), {
+  ssr: false,
+  loading: () => null
+})
 
-const robotPhrases = [
-  { pt: "Olá! Eu sou o Cógnis.", en: "Hi! I'm Cógnis.", es: "¡Hola! Soy Cógnis.", fr: "Salut ! Je suis Cógnis.", zh: "你好！我是 Cógnis。" },
-  { pt: "Assistente de IA do Elias Barão.", en: "Elias Barão's AI assistant.", es: "Asistente de IA de Elias Barão.", fr: "Assistant IA d'Elias Barão.", zh: "Elias Barão 的 AI 助手。" },
-  { pt: "Pergunte-me sobre projetos, skills ou experiências.", en: "Ask me about projects, skills or experience.", es: "Pregúntame sobre proyectos, habilidades o experiencia.", fr: "Demandez-moi des projets, compétences ou expériences.", zh: "问我关于项目、技能或经验的问题。" },
-  { pt: "Interaja comigo — estou aqui para ajudar.", en: "Interact with me — I'm here to help.", es: "Interactúa conmigo — estoy aquí para ayudar.", fr: "Interagissez avec moi — je suis là pour aider.", zh: "与我互动——我在这里帮助您。" },
-]
+const MUTE_KEY = "e2barao-audio-muted"
+const PLAYED_KEY = "e2barao-audio-played"
+
+const loadingPhrases = {
+  pt: ["Pensando", "Processando", "Analisando", "Buscando", "Calculando"],
+  en: ["Thinking", "Processing", "Analyzing", "Searching", "Calculating"],
+  es: ["Pensando", "Procesando", "Analizando", "Buscando", "Calculando"],
+  fr: ["Réflexion", "Traitement", "Analyse", "Recherche", "Calcul"],
+  zh: ["思考中", "处理中", "分析中", "搜索中", "计算中"],
+}
+
+const welcomePhrases = {
+  first: {
+    pt: ["Olá! Eu sou o Cógnis.", "Assistente de IA do Elias Barão.", "Pergunte-me sobre projetos, skills ou experiências.", "Interaja comigo — estou aqui para ajudar."],
+    en: ["Hi! I'm Cógnis.", "Elias Barão's AI assistant.", "Ask me about projects, skills or experience.", "Interact with me — I'm here to help."],
+    es: ["¡Hola! Soy Cógnis.", "Asistente de IA de Elias Barão.", "Pregúntame sobre proyectos, habilidades o experiencia.", "Interactúa conmigo — estoy aquí para ayudar."],
+    fr: ["Salut ! Je suis Cógnis.", "Assistant IA d'Elias Barão.", "Demandez-moi des projets, compétences ou expériences.", "Interagissez avec moi — je suis là pour aider."],
+    zh: ["你好！我是 Cógnis。", "Elias Barão 的 AI 助手。", "问我关于项目、技能或经验的问题。", "与我互动——我在这里帮助您。"],
+  },
+  returning: {
+    pt: ["Oi de novo!", "Fico feliz em te ver de volta!", "Sobrou alguma dúvida?", "Em que posso ajudar?"],
+    en: ["Hi again!", "Happy to see you back!", "Any questions?", "How can I help?"],
+    es: ["¡Hola de nuevo!", "¡Me alegra verte de vuelta!", "¿Tienes alguna duda?", "¿En qué puedo ayudar?"],
+    fr: ["Salut encore!", "Content de te revoir!", "Des questions?", "Comment puis-je aider?"],
+    zh: ["你好 again!", "很高兴见到你回来!", "有什么问题吗?", "我能帮你什么?"],
+  },
+}
 
 export function V2HomeHero() {
   const { theme, language } = useTheme()
@@ -22,13 +46,6 @@ export function V2HomeHero() {
   const [isTyping, setIsTyping] = useState(false)
   const [currentPhrase, setCurrentPhrase] = useState(0)
   const [showInput, setShowInput] = useState(true)
-  const { preload, playWelcome } = useWelcomeAudio(language)
-  const { speak, stopAudio } = useSpeech()
-  const [chatResponse, setChatResponse] = useState("")
-  const [showResponse, setShowResponse] = useState(false)
-  const [isResponding, setIsResponding] = useState(false)
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [isMuted, setIsMuted] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem(MUTE_KEY)
@@ -36,6 +53,21 @@ export function V2HomeHero() {
     }
     return true
   })
+  const [hasPlayedBefore, setHasPlayedBefore] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(PLAYED_KEY) === "true"
+    }
+    return false
+  })
+  const { preload, playWelcome, stopAudio: stopWelcomeAudio } = useWelcomeAudio(language, hasPlayedBefore)
+  const { speak, stopAudio } = useSpeech()
+  const [chatResponse, setChatResponse] = useState("")
+  const [showResponse, setShowResponse] = useState(false)
+  const [isResponding, setIsResponding] = useState(false)
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [hasUnmutedOnce, setHasUnmutedOnce] = useState(false)
+  const [loadingPhraseIndex, setLoadingPhraseIndex] = useState(0)
 
   useEffect(() => {
     const textarea = textareaRef.current
@@ -62,18 +94,27 @@ export function V2HomeHero() {
   const toggleMute = useCallback(async () => {
     if (!isMuted) {
       stopAudio()
+      stopWelcomeAudio()
+      setIsMuted(true)
+      localStorage.setItem(MUTE_KEY, "true")
+      return
     }
-    setIsMuted((prev) => {
-      const newValue = !prev
-      localStorage.setItem(MUTE_KEY, String(newValue))
-      return newValue
-    })
-    if (isMuted) {
-      await preload()
-      hasInteracted.current = true
-      playWelcome()
+    setIsMuted(false)
+    localStorage.setItem(MUTE_KEY, "false")
+    if (!hasUnmutedOnce) {
+      setHasUnmutedOnce(true)
     }
-  }, [isMuted, preload, playWelcome, stopAudio])
+    localStorage.setItem(PLAYED_KEY, "true")
+    setHasPlayedBefore(true)
+    await preload()
+    hasInteracted.current = true
+    playWelcome()
+  }, [isMuted, preload, playWelcome, stopAudio, stopWelcomeAudio, hasUnmutedOnce])
+
+  // Preload audio on mount
+  useEffect(() => {
+    preload()
+  }, [preload])
 
   const handleLoad = () => {
     setIsLoading(false)
@@ -89,13 +130,16 @@ export function V2HomeHero() {
     playWelcome()
   }, [playWelcome, isMuted])
 
+  const phrases = hasPlayedBefore ? welcomePhrases.returning[language as keyof typeof welcomePhrases.returning] : welcomePhrases.first[language as keyof typeof welcomePhrases.first]
+  const currentPhrases = phrases || welcomePhrases.first.en
+
   // Auto-cycle robot phrases
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentPhrase((prev) => (prev + 1) % robotPhrases.length)
+      setCurrentPhrase((prev) => (prev + 1) % currentPhrases.length)
     }, 4000)
     return () => clearInterval(interval)
-  }, [])
+  }, [currentPhrases.length])
 
   // Show input after phrases cycle once
   useEffect(() => {
@@ -121,9 +165,23 @@ export function V2HomeHero() {
     }
   }, [handleFirstInteraction])
 
+  // Cycle loading phrases
+  useEffect(() => {
+    if (!isResponding) {
+      setLoadingPhraseIndex(0)
+      return
+    }
+    const interval = setInterval(() => {
+      setLoadingPhraseIndex((prev) => (prev + 1) % loadingPhrases[language as keyof typeof loadingPhrases].length)
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [isResponding, language])
+
   // When user unmutes, preload and play audio
   useEffect(() => {
     if (!isMuted && !hasInteracted.current) {
+      localStorage.setItem(PLAYED_KEY, "true")
+      setHasPlayedBefore(true)
       preload().then(() => {
         hasInteracted.current = true
         playWelcome()
@@ -163,7 +221,10 @@ export function V2HomeHero() {
       setIsResponding(false)
       setChatResponse(reply)
       setShowResponse(true)
-      speak(reply, language)
+      speak(reply, language, () => {
+        setShowResponse(false)
+        setChatResponse("")
+      })
     } catch (err) {
       console.error("[Chat] Erro:", err)
       setIsTyping(false)
@@ -179,7 +240,10 @@ export function V2HomeHero() {
         : "Sorry, I'm having trouble right now. Try again."
       setChatResponse(fallbackReply)
       setShowResponse(true)
-      speak(fallbackReply, language)
+      speak(fallbackReply, language, () => {
+        setShowResponse(false)
+        setChatResponse("")
+      })
     }
   }
 
@@ -273,20 +337,20 @@ export function V2HomeHero() {
         {/* Mute button - centered on robot */}
         <button
           onClick={toggleMute}
-          className={`absolute z-20 p-4 rounded-full border ${btnOutline} transition-all hover:scale-110 active:scale-95 ${
+          className={`absolute z-20 rounded-full border transition-all hover:scale-110 active:scale-95 ${
             isMuted ? "opacity-70" : "opacity-90"
-          }`}
-          style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
+          } ${!hasPlayedBefore && isMuted ? "p-4" : "p-2.5"}`}
+          style={!hasPlayedBefore && isMuted ? { top: "50%", left: "50%", transform: "translate(-50%, -50%)" } : { top: "12%", left: "8%" }}
           title={isMuted ? (language === "pt" ? "Ativar áudio" : language === "es" ? "Activar audio" : language === "fr" ? "Activer l'audio" : language === "zh" ? "开启音频" : "Enable audio") : (language === "pt" ? "Silenciar" : language === "es" ? "Silenciar" : language === "fr" ? "Couper le son" : language === "zh" ? "静音" : "Mute")}
         >
           {isMuted ? (
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width={!hasPlayedBefore && isMuted ? "28" : "18"} height={!hasPlayedBefore && isMuted ? "28" : "18"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M11 5L6 9H2v6h4l5 4V5z" />
               <line x1="23" y1="9" x2="17" y2="15" />
               <line x1="17" y1="9" x2="23" y2="15" />
             </svg>
           ) : (
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width={!hasPlayedBefore && isMuted ? "28" : "18"} height={!hasPlayedBefore && isMuted ? "28" : "18"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M11 5L6 9H2v6h4l5 4V5z" />
               <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
             </svg>
@@ -305,6 +369,7 @@ export function V2HomeHero() {
               scene="./scene.splinecode"
               onLoad={handleLoad}
               className="w-full h-full"
+              style={{ background: "transparent" }}
             />
           )}
         </div>
@@ -321,19 +386,22 @@ export function V2HomeHero() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.4 }}
-                  className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-3 text-center relative`}
+                  className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2.5 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <div className="flex justify-center gap-1.5">
-                    {[0, 1, 2].map((i) => (
-                      <motion.div
-                        key={i}
-                        className={`w-2 h-2 rounded-full ${accentColor.replace("text-", "bg-")}`}
-                        animate={{ y: ["0%", "-6px", "0%"] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
-                      />
-                    ))}
-                  </div>
+                  <p className={`text-[11px] sm:text-xs ${textMuted} flex items-center justify-center gap-2`}>
+                    {loadingPhrases[language as keyof typeof loadingPhrases][loadingPhraseIndex]}...
+                    <span className="flex gap-0.5">
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className={`w-1.5 h-1.5 rounded-full ${accentColor.replace("text-", "bg-")}`}
+                          animate={{ opacity: [0.3, 1, 0.3] }}
+                          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                        />
+                      ))}
+                    </span>
+                  </p>
                 </motion.div>
               ) : showResponse ? (
                 <motion.div
@@ -360,10 +428,10 @@ export function V2HomeHero() {
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
                   <p className={`text-[11px] sm:text-xs ${textMuted} leading-relaxed`}>
-                    {language === "pt" ? robotPhrases[currentPhrase].pt : language === "es" ? robotPhrases[currentPhrase].es : language === "fr" ? robotPhrases[currentPhrase].fr : language === "zh" ? robotPhrases[currentPhrase].zh : robotPhrases[currentPhrase].en}
+                    {currentPhrases[currentPhrase]}
                   </p>
                   <div className="flex justify-center gap-1 mt-1.5">
-                    {robotPhrases.map((_, i) => (
+                    {currentPhrases.map((_, i) => (
                       <div
                         key={i}
                         className={`w-1 h-1 rounded-full transition-colors ${
@@ -435,13 +503,17 @@ export function V2HomeHero() {
         className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
         <span className={`text-[8px] uppercase tracking-[0.3em] ${scrollText}`}>Scroll</span>
-        <div className={`w-px h-6 bg-gradient-to-b ${scrollBar} to-transparent relative overflow-hidden`}>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className={`w-5 h-8 ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1.5`}
+        >
           <motion.div
-            className={`w-full h-2 ${scrollDot}`}
-            animate={{ y: ["-100%", "200%"] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className={`w-1 h-1.5 ${scrollDot} rounded-full`}
+            animate={{ opacity: [1, 0.3, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   )

@@ -1,13 +1,21 @@
 "use client"
 
-import { useRef, useCallback, useState } from "react"
+import { useRef, useCallback, useState, useEffect } from "react"
 
 const WELCOME_TEXTS: Record<string, string> = {
-  pt: "Bem vindo ao portfólio digital do Elias Barão. Me chamo Cógnis, fique à vontade para interagir comigo!",
-  en: "Welcome to Elias Barão's digital portfolio. My name is Cógnis, feel free to interact with me!",
-  es: "Bienvenido al portafolio digital de Elias Barão. Me llamo Cógnis, siéntete libre de interactuar conmigo!",
-  fr: "Bienvenue sur le portfolio numérique d'Elias Barão. Je m'appelle Cógnis, n'hésitez pas à interagir avec moi!",
-  zh: "欢迎来到 Elias Barão 的数字作品集。我叫 Cógnis，请随意与我互动！",
+  pt: "Olá! Sou o Cógnis. Posso te ajudar com projetos, skills e experiências do Elias. Vamos conversar?",
+  en: "Hi! I'm Cógnis. I can help with projects, skills and Elias's experience. Let's talk?",
+  es: "¡Hola! Soy Cógnis. Puedo ayudarte con proyectos, habilidades y experiencias. ¿Hablamos?",
+  fr: "Salut! Je suis Cógnis. Je peux aider avec projets, compétences et expériences. Parlons?",
+  zh: "你好！我是 Cógnis。我可以帮你了解项目、技能和经验。聊聊？",
+}
+
+const RETURNING_TEXTS: Record<string, string> = {
+  pt: "Olá de volta! Posso te ajudar com projetos, skills ou experiências do Elias?",
+  en: "Welcome back! Can I help with projects, skills or Elias's experience?",
+  es: "¡Hola de nuevo! ¿Puedo ayudarte con proyectos o experiencias?",
+  fr: "Content de revoir! Puis-je aider avec projets ou expériences?",
+  zh: "欢迎回来！我可以帮你了解项目或经验吗？",
 }
 
 const VOICE_MAP: Record<string, string> = {
@@ -34,7 +42,7 @@ async function fetchTTSBlob(text: string, lang: string): Promise<{ url: string; 
   const res = await fetch("/api/tts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text, voice, rate: "+0%", pitch: "+0Hz" }),
+    body: JSON.stringify({ text, voice, rate: "+30%", pitch: "+0Hz" }),
   })
 
   if (!res.ok) throw new Error(`TTS API failed: ${res.status}`)
@@ -50,7 +58,7 @@ function speakNative(text: string, lang: string) {
   window.speechSynthesis.cancel()
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = LANG_MAP[lang] || "en-US"
-  utterance.rate = 0.95
+  utterance.rate = 1.3
   utterance.pitch = 0.9
   const voices = window.speechSynthesis.getVoices()
   const targetLang = LANG_MAP[lang] || "en"
@@ -62,17 +70,37 @@ function speakNative(text: string, lang: string) {
   window.speechSynthesis.speak(utterance)
 }
 
-export function useWelcomeAudio(language = "pt") {
+export function useWelcomeAudio(language = "pt", isReturning = false) {
   const hasSpoken = useRef(false)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const cleanupRef = useRef<(() => void) | null>(null)
   const [isPreloaded, setIsPreloaded] = useState(false)
   const preloadPromise = useRef<Promise<void> | null>(null)
+  const [userInteracted, setUserInteracted] = useState(false)
 
-  const welcomeText = WELCOME_TEXTS[language] || WELCOME_TEXTS["en"]
+  const welcomeText = isReturning 
+    ? (RETURNING_TEXTS[language] || RETURNING_TEXTS["en"])
+    : (WELCOME_TEXTS[language] || WELCOME_TEXTS["en"])
+
+  useEffect(() => {
+    const handleInteraction = () => {
+      if (!userInteracted) {
+        setUserInteracted(true)
+        preload()
+      }
+    }
+    window.addEventListener('click', handleInteraction, { once: true })
+    window.addEventListener('scroll', handleInteraction, { once: true })
+    window.addEventListener('keydown', handleInteraction, { once: true })
+    return () => {
+      window.removeEventListener('click', handleInteraction)
+      window.removeEventListener('scroll', handleInteraction)
+      window.removeEventListener('keydown', handleInteraction)
+    }
+  }, [userInteracted])
 
   const preload = useCallback(async () => {
-    if (isPreloaded || preloadPromise.current) return
+    if (preloadPromise.current) return
     preloadPromise.current = (async () => {
       console.log("[TTS] Pré-carregando audio...")
       try {
@@ -86,10 +114,19 @@ export function useWelcomeAudio(language = "pt") {
       }
     })()
     await preloadPromise.current
-  }, [isPreloaded, welcomeText, language])
+  }, [welcomeText, language])
+
+  const stopAudio = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+    hasSpoken.current = false
+    console.log("[TTS] Audio pausado")
+  }, [])
 
   const playWelcome = useCallback(async () => {
-    if (hasSpoken.current) return
+    if (hasSpoken.current || !userInteracted) return
     hasSpoken.current = true
     console.log("[TTS] === Iniciando boas-vindas ===")
 
@@ -116,9 +153,9 @@ export function useWelcomeAudio(language = "pt") {
     } catch (err) {
       console.error("[TTS] Tudo falhou, sem fallback:", err)
     }
-  }, [welcomeText, language])
+  }, [welcomeText, language, userInteracted])
 
-  return { preload, playWelcome, isPreloaded }
+  return { preload, playWelcome, isPreloaded, stopAudio }
 }
 
 export function useSpeech() {
@@ -142,7 +179,7 @@ export function useSpeech() {
     isSpeaking.current = false
   }, [])
 
-  const speak = useCallback(async (text: string, lang = "pt") => {
+  const speak = useCallback(async (text: string, lang = "pt", onEnd?: () => void) => {
     if (isSpeaking.current) return
     isSpeaking.current = true
 
@@ -152,11 +189,12 @@ export function useSpeech() {
       currentAudio.current = audio
       currentCleanup.current = cleanup
       await audio.play()
-      audio.onended = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null }
-      audio.onerror = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null; speakNative(text, lang) }
+      audio.onended = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null; onEnd?.() }
+      audio.onerror = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null; onEnd?.(); speakNative(text, lang) }
     } catch (err) {
       console.error("[TTS] FreeTTS falhou, ativando fallback nativo:", err)
       speakNative(text, lang)
+      onEnd?.()
       isSpeaking.current = false
     }
   }, [])

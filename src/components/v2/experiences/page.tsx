@@ -286,12 +286,20 @@ function EducationItem({ edu, index, language }: { edu: typeof education[0]; ind
 
 export function V2ExperiencesPage() {
   const [activeTab, setActiveTab] = useState<"experience" | "education">("experience")
+  const ref = useRef<HTMLDivElement>(null)
   const { theme, language } = useTheme()
   const isDark = theme === "dark"
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  })
+
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -150])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textSubtle = isDark ? "text-white/20" : "text-black/20"
   const textMuted = isDark ? "text-white/30" : "text-black/30"
+  const bgGlow = isDark ? "bg-cyan-400/5" : "bg-blue-600/5"
   const bgTab = isDark ? "bg-white/5" : "bg-black/5"
   const textTab = isDark ? "text-white/50" : "text-black/50"
   const hoverTab = isDark ? "hover:text-white hover:bg-white/10" : "hover:text-black hover:bg-black/10"
@@ -305,8 +313,13 @@ export function V2ExperiencesPage() {
   const educationTab = language === "pt" ? "Educação" : language === "es" ? "Educación" : language === "fr" ? "Formation" : language === "zh" ? "教育" : "Education"
 
   return (
-    <section className={`min-h-screen pt-[5rem] pb-10 sm:pb-14 ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
-      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16">
+    <section ref={ref} className={`min-h-screen pt-[5rem] pb-10 sm:pb-14 relative overflow-visible ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+      <motion.div
+        style={{ y: bgY }}
+        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none -translate-y-20`}
+      />
+
+      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}

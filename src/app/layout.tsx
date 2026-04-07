@@ -7,8 +7,9 @@ import "./styles.css";
 // Configure a fonte
 const rubik = Rubik({ 
   subsets: ["latin"],
-  display: 'swap', 
-  variable: '--font-rubik' 
+  display: 'swap',
+  preload: false,
+  variable: '--font-rubik'
 });
 
 export const metadata: Metadata = {

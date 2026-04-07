@@ -1,6 +1,6 @@
 "use client"
-import Link from "next/link"
 import { useTheme } from "@/components/switchers/switchers"
+import Link from "next/link"
 
 const footerLinks = {
   home: { pt: "Início", en: "Home", es: "Inicio", fr: "Accueil", zh: "首页" },
@@ -79,7 +79,7 @@ export function V2Footer() {
                 </a>
               ))}
               <a
-                href="mailto:contact@e2barao.dev"
+                href="mailto:e2barao@hotmail.com"
                 className={`${textLink} transition-colors text-lg`}
               >
                 Email

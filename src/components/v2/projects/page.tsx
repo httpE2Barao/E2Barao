@@ -1,6 +1,6 @@
 "use client"
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useRef } from "react"
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 import { useTheme } from "@/components/switchers/switchers"
 import { rawProjectsData, featuredProjectsList } from "@/data/projects-data"
@@ -151,13 +151,21 @@ function ProjectCard({ project, index }: { project: typeof rawProjectsData[0]; i
 }
 
 export function V2ProjectsPage() {
+  const ref = useRef<HTMLDivElement>(null)
   const { theme, language } = useTheme()
   const isDark = theme === "dark"
   const featuredProjects = featuredProjectsList(language)
   const allProjects = rawProjectsData
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  })
+
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -150])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textMuted = isDark ? "text-white/40" : "text-black/40"
+  const bgGlow = isDark ? "bg-cyan-400/5" : "bg-blue-600/5"
 
   const title = language === "pt" ? "Projetos" : language === "es" ? "Proyectos" : language === "fr" ? "Projets" : language === "zh" ? "项目" : "Projects"
   const subtitle = language === "pt" ? "Trabalhos Selecionados" : language === "es" ? "Trabajos Seleccionados" : language === "fr" ? "Travaux Sélectionnés" : language === "zh" ? "精选作品" : "Selected Work"
@@ -169,8 +177,13 @@ export function V2ProjectsPage() {
   const allUniqueTags = [...new Set(allProjects.flatMap(p => p.tags || []))]
 
   return (
-    <section className={`min-h-screen pt-[5rem] pb-16 sm:pb-24 ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
-      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16">
+    <section ref={ref} className={`min-h-screen pt-[5rem] pb-16 sm:pb-24 relative overflow-visible ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+      <motion.div
+        style={{ y: bgY }}
+        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none -translate-y-20`}
+      />
+
+      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

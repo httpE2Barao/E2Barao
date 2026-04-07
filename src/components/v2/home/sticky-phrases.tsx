@@ -129,19 +129,22 @@ function AnimatedWord({ text, accent, scrollProgress, index, total }: {
 
   const progressPerItem = 1 / total
   const startFadeIn = index * progressPerItem
-  const endFadeIn = startFadeIn + progressPerItem * 0.2
-  const startFadeOut = startFadeIn + progressPerItem * 0.8
+  const endFadeIn = startFadeIn + progressPerItem * 0.3
+  const startFadeOut = startFadeIn + progressPerItem * 0.7
   const endFadeOut = startFadeIn + progressPerItem
 
-  const opacity = useTransform(scrollProgress, [startFadeIn, endFadeIn, startFadeOut, endFadeOut], [0, 1, 1, 0])
-  const y = useTransform(scrollProgress, [startFadeIn, endFadeIn], [60, 0])
-  const scale = useTransform(scrollProgress, [startFadeIn, endFadeIn], [0.8, 1])
-  const blur = useTransform(scrollProgress, [startFadeIn, endFadeIn], [10, 0])
+  const opacity = useTransform(scrollProgress, [startFadeIn - 0.1, startFadeIn, endFadeIn, startFadeOut, endFadeOut], [0, 1, 1, 1, 0])
+  const y = useTransform(scrollProgress, [startFadeIn - 0.1, startFadeIn, endFadeIn, startFadeOut], [40, 0, 0, -20])
+  const scale = useTransform(scrollProgress, [startFadeIn - 0.1, startFadeIn, endFadeIn], [0.92, 1, 1])
+  const blur = useTransform(scrollProgress, [startFadeIn - 0.1, startFadeIn], [6, 0])
 
-  const glowOpacity = useTransform(scrollProgress, [startFadeIn, endFadeIn, startFadeOut, endFadeOut], [0, 0.6, 0.6, 0])
-  const glowFilter = useTransform(scrollProgress, [startFadeIn, endFadeIn], [20, 0])
+  const glowOpacity = useTransform(scrollProgress, [startFadeIn, endFadeIn, startFadeOut], [0, 0.5, 0])
+  const glowBlur = useTransform(scrollProgress, [startFadeIn, endFadeIn], [15, 0])
 
   const glowColor = isDark ? "rgba(34, 211, 238," : "rgba(37, 99, 235,"
+
+  const blurFilter = useTransform(blur, (v) => `blur(${v}px)`)
+  const glowBlurFilter = useTransform(glowBlur, (v) => `blur(${v}px)`)
 
   const sizeClass = accent
     ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter"
@@ -151,19 +154,19 @@ function AnimatedWord({ text, accent, scrollProgress, index, total }: {
     <div className="relative mb-3 sm:mb-4">
       {accent && (
         <motion.div
-          style={{ opacity: glowOpacity, y, scale, filter: glowFilter }}
+          style={{ opacity: glowOpacity, y, scale, filter: glowBlurFilter }}
           className="absolute inset-0 flex items-center justify-center"
         >
           <span
             className={`${sizeClass} blur-xl`}
-            style={{ color: `${glowColor}0.3)` }}
+            style={{ color: `${glowColor}0.25)` }}
           >
             {text}
           </span>
         </motion.div>
       )}
       <motion.div
-        style={{ opacity, y, scale, filter: blur }}
+        style={{ opacity, y, scale, filter: blurFilter }}
         className={`relative ${sizeClass} ${accent ? "" : isDark ? "text-white/90" : "text-black/90"}`}
       >
         {accent ? (
@@ -194,22 +197,30 @@ function StickyPhraseBlock({ phrases }: { phrases: { text: string; accent: boole
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   })
 
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
+  const smoothProgress = useSpring(scrollYProgress, { 
+    stiffness: 60, 
+    damping: 20, 
+    restDelta: 0.001,
+    restSpeed: 0.001
+  })
 
-  const bgOpacity = useTransform(smoothProgress, [0, 0.3, 0.7, 1], [0, 0.03, 0.03, 0])
+  const bgOpacity = useTransform(smoothProgress, [0, 0.25, 0.5, 0.75, 1], [0, 0.04, 0.06, 0.04, 0])
   const bgGradient = useTransform(
     smoothProgress,
     [0, 0.5, 1],
     isDark
-      ? ["radial-gradient(ellipse at center, transparent 0%, black 70%)", "radial-gradient(ellipse at center, rgba(34,211,238,0.03) 0%, black 70%)", "radial-gradient(ellipse at center, transparent 0%, black 70%)"]
-      : ["radial-gradient(ellipse at center, transparent 0%, white 70%)", "radial-gradient(ellipse at center, rgba(37,99,235,0.03) 0%, white 70%)", "radial-gradient(ellipse at center, transparent 0%, white 70%)"]
+      ? ["radial-gradient(ellipse at center, transparent 0%, black 70%)", "radial-gradient(ellipse at center, rgba(34,211,238,0.04) 0%, black 70%)", "radial-gradient(ellipse at center, transparent 0%, black 70%)"]
+      : ["radial-gradient(ellipse at center, transparent 0%, white 70%)", "radial-gradient(ellipse at center, rgba(37,99,235,0.04) 0%, white 70%)", "radial-gradient(ellipse at center, transparent 0%, white 70%)"]
   )
 
+  const containerY = useTransform(smoothProgress, [0, 0.5, 1], [30, 0, -30])
+  const containerOpacity = useTransform(smoothProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0])
+
   return (
-    <div ref={ref} className="relative h-[300vh]">
+    <div ref={ref} className="relative h-[280vh]">
       <motion.div
         className="sticky top-0 h-screen flex items-center justify-center overflow-hidden"
         style={{ background: bgGradient }}
@@ -230,7 +241,10 @@ function StickyPhraseBlock({ phrases }: { phrases: { text: string; accent: boole
           <div className={`absolute top-0 bottom-0 left-3/4 w-px ${isDark ? "bg-white/[0.03]" : "bg-black/[0.03]"}`} />
         </div>
 
-        <div className="relative z-10 text-center px-6 sm:px-10 w-full max-w-5xl mx-auto">
+        <motion.div
+          style={{ y: containerY, opacity: containerOpacity }}
+          className="relative z-10 text-center px-6 sm:px-10 w-full max-w-5xl mx-auto"
+        >
           {phrases.map((phrase, i) => (
             <AnimatedWord
               key={phrase.text + i}
@@ -241,11 +255,11 @@ function StickyPhraseBlock({ phrases }: { phrases: { text: string; accent: boole
               total={phrases.length}
             />
           ))}
-        </div>
+        </motion.div>
 
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2 w-32 h-px overflow-hidden"
-          style={{ opacity: useTransform(smoothProgress, [0, 0.1], [0, 0.3]) }}
+          style={{ opacity: useTransform(smoothProgress, [0, 0.1], [0, 0.2]) }}
         >
           <motion.div
             className={`h-full ${isDark ? "bg-cyan-400" : "bg-blue-600"}`}
@@ -267,19 +281,19 @@ export function V2StickyPhrases() {
     <section className={`relative ${isDark ? "bg-black" : "bg-white"}`}>
       <div className={`h-px bg-gradient-to-r from-transparent ${dividerColor} to-transparent`} />
 
-      <div className="h-[50vh]" />
+      <div className="h-[40vh]" />
 
       <StickyPhraseBlock phrases={phraseSets.block1[lang]} />
 
-      <div className="h-[50vh]" />
+      <div className="h-[40vh]" />
 
       <StickyPhraseBlock phrases={phraseSets.block2[lang]} />
 
-      <div className="h-[50vh]" />
+      <div className="h-[40vh]" />
 
       <StickyPhraseBlock phrases={phraseSets.block3[lang]} />
 
-      <div className="h-[50vh]" />
+      <div className="h-[40vh]" />
 
       <div className={`h-px bg-gradient-to-r from-transparent ${dividerColor} to-transparent`} />
 
