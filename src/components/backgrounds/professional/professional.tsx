@@ -87,7 +87,6 @@ export const ProfessionalContent = () => {
           titleColor: `${theme === "dark" ? "white" : "black"}`,
           cardTitleColor: "#00a5a5",
           cardBgColor: "white",
-          cardForeColor: "#00FFFF",
           titleColorActive: `${theme === "dark" ? "black" : "white"}`,
           cardDetailsColor: "black",
         }}

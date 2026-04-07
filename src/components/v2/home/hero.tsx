@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { useWelcomeAudio, useSpeech } from "@/hooks/use-welcome-audio"
 
-const Spline = dynamic(() => import("@splinetool/react-spline/dist/react-spline-next"), {
+const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
   loading: () => null
 })

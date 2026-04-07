@@ -2,8 +2,12 @@ import { NextRequest, NextResponse } from "next/server"
 import { sql } from "@vercel/postgres"
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "e2barao@hotmail.com"
+
+function getResend() {
+  if (!process.env.RESEND_API_KEY) return null
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 function isValidEmail(email: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -69,18 +73,21 @@ export async function POST(request: NextRequest) {
     `
 
     if (process.env.RESEND_API_KEY) {
-      await resend.emails.send({
-        from: "Portfolio <onboarding@resend.dev>",
-        to: [CONTACT_EMAIL],
-        subject: `Nova mensagem de ${name.trim()}`,
-        html: `
-          <h2>Nova mensagem do portfólio</h2>
-          <p><strong>Nome:</strong> ${name.trim()}</p>
-          <p><strong>Email:</strong> ${email.trim()}</p>
-          <p><strong>Mensagem:</strong></p>
-          <p>${message.trim()}</p>
-        `,
-      })
+      const resend = getResend()
+      if (resend) {
+        await resend.emails.send({
+          from: "Portfolio <onboarding@resend.dev>",
+          to: [CONTACT_EMAIL],
+          subject: `Nova mensagem de ${name.trim()}`,
+          html: `
+            <h2>Nova mensagem do portfólio</h2>
+            <p><strong>Nome:</strong> ${name.trim()}</p>
+            <p><strong>Email:</strong> ${email.trim()}</p>
+            <p><strong>Mensagem:</strong></p>
+            <p>${message.trim()}</p>
+          `,
+        })
+      }
     }
 
     return NextResponse.json(

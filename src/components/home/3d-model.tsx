@@ -3,7 +3,7 @@ import dynamic from "next/dynamic"
 import { useState, Suspense } from "react"
 import { useWelcomeAudio } from "@/hooks/use-welcome-audio";
 
-const Spline = dynamic(() => import("@splinetool/react-spline/dist/react-spline-next"), {
+const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
   loading: () => null
 })
