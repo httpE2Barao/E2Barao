@@ -16,12 +16,19 @@ interface Project {
   created_at: string;
 }
 
+interface ProjectImage {
+  name: string;
+  url: string;
+}
+
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Project | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [projectImages, setProjectImages] = useState<ProjectImage[]>([]);
+  const [imagesLoading, setImagesLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     src: "",
@@ -47,8 +54,79 @@ export default function ProjectsPage() {
     display_order: 0,
   });
 
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !formData.src) {
+      setMessage({ type: "error", text: "É preciso definir o src do projeto primeiro" });
+      setTimeout(() => setMessage(null), 3000);
+      return;
+    }
+
+    setUploading(true);
+    setUploadProgress(0);
+
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', file);
+      formDataUpload.append('projectSrc', formData.src);
+
+      const res = await fetch('/api/admin/projects/upload', {
+        method: 'POST',
+        body: formDataUpload,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setMessage({ type: "success", text: `Imagem uploadada: ${data.fileName}` });
+      } else {
+        const error = await res.json();
+        setMessage({ type: "error", text: error.error || "Erro ao fazer upload" });
+      }
+    } catch (error) {
+      setMessage({ type: "error", text: "Erro ao fazer upload" });
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
+  const handleDeleteImage = async (fileName: string) => {
+    if (!confirm(`Excluir imagem ${fileName}?`)) return;
+
+    try {
+      const res = await fetch(`/api/admin/projects/upload?fileName=${encodeURIComponent(fileName)}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        setMessage({ type: "success", text: "Imagem excluída!" });
+      } else {
+        setMessage({ type: "error", text: "Erro ao excluir imagem" });
+      }
+    } catch {
+      setMessage({ type: "error", text: "Erro ao excluir imagem" });
+    }
+    setTimeout(() => setMessage(null), 3000);
+  };
+
+  const fetchProjectImages = async () => {
+    try {
+      const res = await fetch('/api/admin/projects/upload');
+      const data = await res.json();
+      setProjectImages(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Failed to fetch images:', error);
+    } finally {
+      setImagesLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchProjects();
+    fetchProjectImages();
   }, []);
 
   const fetchProjects = async () => {
@@ -68,7 +146,7 @@ export default function ProjectsPage() {
     setLoading(true);
 
     try {
-      const url = editing ? "/api/projects" : "/api/projects";
+      const url = editing ? "/api/admin/projects" : "/api/admin/projects";
       const method = editing ? "PUT" : "POST";
 
       const body = editing
@@ -85,6 +163,7 @@ export default function ProjectsPage() {
         setMessage({ type: "success", text: editing ? "Projeto atualizado!" : "Projeto criado!" });
         resetForm();
         fetchProjects();
+        fetchProjectImages();
       } else {
         const data = await res.json();
         setMessage({ type: "error", text: data.error || "Erro ao salvar projeto" });
@@ -101,7 +180,7 @@ export default function ProjectsPage() {
     if (!confirm("Tem certeza que deseja excluir este projeto?")) return;
 
     try {
-      const res = await fetch(`/api/projects?id=${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/projects?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         setMessage({ type: "success", text: "Projeto excluído!" });
         fetchProjects();
@@ -221,6 +300,35 @@ export default function ProjectsPage() {
                   className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm"
                   placeholder="react, nextjs, typescript"
                 />
+              </div>
+            </div>
+
+            <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-cyan-400 mb-3">Upload de Imagem do Projeto</h3>
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 cursor-pointer bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg text-sm transition-colors border border-cyan-500/30">
+                  {uploading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+                      Enviando...
+                    </span>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                      Selecionar Imagem
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                    onChange={handleImageUpload}
+                    disabled={uploading}
+                    className="hidden"
+                  />
+                </label>
+                <span className="text-xs text-gray-500">PNG, JPG, WebP, GIF (max 5MB). O nome será: project_{formData.src || '[src]'}.png</span>
               </div>
             </div>
 
@@ -364,6 +472,36 @@ export default function ProjectsPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 className="text-lg font-semibold mb-4">Imagens dos Projetos</h2>
+        {imagesLoading ? (
+          <div className="flex items-center justify-center h-32">
+            <div className="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : projectImages.length === 0 ? (
+          <p className="text-gray-500 text-sm">Nenhuma imagem encontrada</p>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {projectImages.map((img) => (
+              <div key={img.name} className="relative group">
+                <div className="aspect-video bg-gray-800 rounded-lg overflow-hidden">
+                  <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
+                </div>
+                <p className="text-xs text-gray-400 mt-1 truncate">{img.name}</p>
+                <button
+                  onClick={() => handleDeleteImage(img.name)}
+                  className="absolute top-1 right-1 bg-red-500/80 hover:bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

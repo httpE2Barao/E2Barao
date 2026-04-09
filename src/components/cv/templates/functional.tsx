@@ -1,11 +1,11 @@
-import { Document, Page, Text, View, StyleSheet, Font } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 
 Font.register({
   family: "Inter",
   fonts: [
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCo3FwrK3iLTcviYwY.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_fHQtZ6.woff2", fontWeight: 600 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_fHQtZ6.woff2", fontWeight: 700 },
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 400 },
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCT3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 600 },
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCZ3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 700 },
   ],
 });
 
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 11, color: "#64748b", marginBottom: 8 },
   contactRow: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 12, fontSize: 9, color: "#475569" },
   contactItem: { flexDirection: "row", alignItems: "center", gap: 4 },
+  contactLink: { color: "#2563eb", textDecoration: "none" },
   section: { marginBottom: 14 },
   sectionTitle: { fontSize: 12, fontWeight: 700, color: "#0f172a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8, borderBottomWidth: 1, borderBottomColor: "#e2e8f0", paddingBottom: 4 },
   skillCategory: { marginBottom: 10 },
@@ -61,11 +62,11 @@ export function FunctionalCV({ data }: { data: CVData }) {
           <Text style={styles.name}>{data.name}</Text>
           <Text style={styles.title}>{data.title}</Text>
           <View style={styles.contactRow}>
-            {data.email && <Text style={styles.contactItem}>{data.email}</Text>}
-            {data.phone && <Text style={styles.contactItem}>{data.phone}</Text>}
+            {data.email && <Link href={`mailto:${data.email}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.email}</Text></Link>}
+            {data.phone && <Link href={`tel:${data.phone}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.phone}</Text></Link>}
             {data.location && <Text style={styles.contactItem}>{data.location}</Text>}
-            {data.linkedin && <Text style={styles.contactItem}>{data.linkedin}</Text>}
-            {data.github && <Text style={styles.contactItem}>{data.github}</Text>}
+            {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text style={styles.contactItem}>LinkedIn</Text></Link>}
+            {data.github && <Link href={data.github} style={styles.contactLink}><Text style={styles.contactItem}>GitHub</Text></Link>}
           </View>
         </View>
 

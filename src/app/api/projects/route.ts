@@ -19,6 +19,18 @@ async function saveProjectsToJSON(projects: any[]) {
   await fs.writeFile(PROJECTS_JSON_PATH, JSON.stringify({ projects }, null, 2), 'utf-8');
 }
 
+interface Project {
+  id: number;
+  src: string;
+  featured?: boolean;
+  display_order?: number;
+  tags?: string[];
+  name?: Record<string, string>;
+  alt?: Record<string, string>;
+  abt?: Record<string, string>;
+  [key: string]: any;
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const langParam = searchParams.get('lang') || 'pt';
@@ -183,21 +195,33 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: NextRequest) {
+  let body;
   try {
-    const body = await request.json();
-    const { id, ...fields } = body;
+    body = await request.json();
+  } catch (e) {
+    const text = await request.text();
+    console.error('[PUT] Failed to parse JSON:', e, 'text:', text);
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
+  
+  const { id, ...fields } = body;
 
-    if (!id) {
-      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-    }
+  if (!id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+  }
 
+  if (!id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+  }
+
+  const textFields = ['src', 'site_url', 'repo_url', 'name_pt', 'name_en', 'name_es', 'name_fr', 'name_zh', 'abt_pt', 'abt_en', 'abt_es', 'abt_fr', 'abt_zh', 'alt_pt', 'alt_en', 'alt_es', 'alt_fr', 'alt_zh'];
+
+  try {
     const { sql } = await import('@vercel/postgres');
 
     const setClauses: string[] = [];
     const values: any[] = [];
     let paramIndex = 1;
-
-    const textFields = ['src', 'site_url', 'repo_url', 'name_pt', 'name_en', 'name_es', 'name_fr', 'name_zh', 'abt_pt', 'abt_en', 'abt_es', 'abt_fr', 'abt_zh', 'alt_pt', 'alt_en', 'alt_es', 'alt_fr', 'alt_zh'];
 
     for (const field of textFields) {
       if (fields[field] !== undefined) {
@@ -238,9 +262,41 @@ export async function PUT(request: NextRequest) {
     }
 
     return NextResponse.json(rows[0]);
-  } catch (error) {
-    console.error('Failed to update project:', error);
-    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
+  } catch (dbError) {
+    console.log('[Projects API] Vercel Postgres erro, usando JSON fallback:', dbError);
+    try {
+      const projects = await getProjectsFromJSON();
+      const index = projects.findIndex((p: any) => p.id === id);
+      
+      if (index === -1) {
+        return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+      }
+      
+      for (const field of textFields) {
+        if (fields[field] !== undefined) {
+          const [base, lang] = field.split('_');
+          const langKey = lang === 'pt' ? 'ptBR' : lang === 'en' ? 'enUS' : lang;
+          if (!projects[index][base]) projects[index][base] = {};
+          projects[index][base][langKey] = fields[field];
+        }
+      }
+      
+      if (fields.tags !== undefined) {
+        projects[index].tags = fields.tags;
+      }
+      if (fields.featured !== undefined) {
+        projects[index].featured = fields.featured;
+      }
+      if (fields.display_order !== undefined) {
+        projects[index].display_order = fields.display_order;
+      }
+      
+      await saveProjectsToJSON(projects);
+      return NextResponse.json(projects[index]);
+    } catch (jsonError) {
+      console.error('JSON fallback error:', jsonError);
+      return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
+    }
   }
 }
 

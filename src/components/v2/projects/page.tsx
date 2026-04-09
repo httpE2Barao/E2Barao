@@ -14,6 +14,9 @@ function ProjectCard({ project, index }: { project: typeof rawProjectsData[0]; i
   const name = language === "pt" ? project.name.ptBR : project.name.enUS
   const abt = language === "pt" ? project.abt.ptBR : project.abt.enUS
 
+  const hasGif = project.gif === true
+  const imageSrc = `/images/project_${project.src}.png`
+
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textMuted = isDark ? "text-white/60" : "text-black/60"
   const borderLight = isDark ? "border-white/10" : "border-black/10"
@@ -24,6 +27,45 @@ function ProjectCard({ project, index }: { project: typeof rawProjectsData[0]; i
   const overlayBg = isDark ? "bg-black/90" : "bg-white/90"
   const modalBg = isDark ? "bg-neutral-900 border-white/10" : "bg-neutral-50 border-black/10"
   const tagBgExpanded = isDark ? "bg-cyan-400/10 text-cyan-400" : "bg-blue-600/10 text-blue-600"
+
+  const ProjectImage = ({ fillImg = false, className = "" }: { fillImg?: boolean; className?: string }) => {
+    if (hasGif) {
+      if (fillImg) {
+        return (
+          <img
+            src={imageSrc}
+            alt={name}
+            className={`object-cover ${className}`}
+          />
+        )
+      }
+      return (
+        <img
+          src={imageSrc}
+          alt={name}
+          className={`object-cover ${className}`}
+        />
+      )
+    }
+    if (fillImg) {
+      return (
+        <Image
+          src={imageSrc}
+          alt={name}
+          fill
+          className={className}
+        />
+      )
+    }
+    return (
+      <Image
+        src={imageSrc}
+        alt={name}
+        fill
+        className={className}
+      />
+    )
+  }
 
   return (
     <>
@@ -39,12 +81,7 @@ function ProjectCard({ project, index }: { project: typeof rawProjectsData[0]; i
         whileHover={{ y: -8 }}
       >
         <div className={`relative aspect-[16/10] overflow-hidden rounded-2xl ${bgCard} border ${borderLight}`}>
-          <Image
-            src={`/images/project_${project.src}.png`}
-            alt={name}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-          />
+          <ProjectImage className="transition-transform duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <motion.div
@@ -100,12 +137,7 @@ function ProjectCard({ project, index }: { project: typeof rawProjectsData[0]; i
               </button>
 
               <div className="relative aspect-[16/9]">
-                <Image
-                  src={`/images/project_${project.src}.png`}
-                  alt={name}
-                  fill
-                  className="object-cover"
-                />
+                <ProjectImage className="object-cover" />
               </div>
 
               <div className="p-6 sm:p-8">

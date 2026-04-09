@@ -7,24 +7,27 @@ interface V2ThemeContextType {
 }
 
 const V2ThemeContext = createContext<V2ThemeContextType>({
-  theme: "dark",
+  theme: "light",
   toggleTheme: () => {},
 })
 
 export const useV2Theme = () => useContext(V2ThemeContext)
 
 export function V2ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark")
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem("v2-theme") as "dark" | "light" | null
+      return saved || "light"
+    }
+    return "light"
+  })
 
   useEffect(() => {
-    const saved = localStorage.getItem("v2-theme") as "dark" | "light" | null
-    if (saved) setTheme(saved)
-  }, [])
+    localStorage.setItem("v2-theme", theme)
+  }, [theme])
 
   const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark"
-    setTheme(next)
-    localStorage.setItem("v2-theme", next)
+    setTheme(prev => prev === "dark" ? "light" : "dark")
   }
 
   return (

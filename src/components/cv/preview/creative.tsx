@@ -25,11 +25,11 @@ export function CreativePreview({ data }: { data: CVData }) {
 
         <div className="mb-4">
           <h3 className="text-[9px] font-bold uppercase tracking-wider text-amber-400 mb-2 pb-1 border-b border-amber-400">Contact</h3>
-          {data.email && <p className="text-[8px] text-slate-300 mb-1">{data.email}</p>}
-          {data.phone && <p className="text-[8px] text-slate-300 mb-1">{data.phone}</p>}
+          {data.email && <a href={`mailto:${data.email}`} className="text-[8px] text-amber-400 hover:underline block mb-1">{data.email}</a>}
+          {data.phone && <a href={`tel:${data.phone}`} className="text-[8px] text-amber-400 hover:underline block mb-1">{data.phone}</a>}
           {data.location && <p className="text-[8px] text-slate-300 mb-1">{data.location}</p>}
-          {data.linkedin && <p className="text-[8px] text-slate-300 mb-1">{data.linkedin}</p>}
-          {data.github && <p className="text-[8px] text-slate-300 mb-1">{data.github}</p>}
+          {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-[8px] text-amber-400 hover:underline block mb-1">LinkedIn</a>}
+          {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-[8px] text-amber-400 hover:underline block mb-1">GitHub</a>}
         </div>
 
         <div className="mb-4">

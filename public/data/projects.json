@@ -23,18 +23,18 @@
         "leaflet",
         "saas"
       ],
-      "name_pt": "Platera",
+      "name_pt": "Test",
       "name_en": "Platera",
       "name_es": "",
       "name_fr": "",
       "name_zh": "",
-      "abt_pt": "Platera é um Sistema Operacional completo para restaurantes modernos. Projetado para escalar do food truck à franquia, unifica todos os aspectos da operação — do pedido à entrega, do estoque ao lucro — em uma interface elegante impulsionada por Inteligência Artificial. Possui chatbot com IA para atendimento automático via WhatsApp e Web 24/7, omnichannel (delivery próprio, QR Code mesa, totens, retirada, social commerce), integração com Lalamove e iFood, fichas técnicas dinâmicas com CMV em tempo real, KDS, POS, emissão fiscal NFC-e, pagamentos Mercado Pago, heatmaps de delivery, dashboard com AI Insights, gamificação e cashback.",
-      "abt_en": "Platera is a complete Operating System for modern restaurants. Designed to scale from food truck to franchise, it unifies all aspects of operations — from order to delivery, inventory to profit — in an elegant interface powered by Artificial Intelligence. Features AI chatbot for automated WhatsApp and Web ordering 24/7, omnichannel (own delivery, QR Code table ordering, kiosks, takeaway, social commerce), Lalamove and iFood integration, dynamic recipe cards with real-time CMV, KDS, POS, NFC-e fiscal emission, Mercado Pago payments, delivery heatmaps, AI Insights dashboard, gamification and cashback.",
+      "abt_pt": "",
+      "abt_en": "",
       "abt_es": "",
       "abt_fr": "",
       "abt_zh": "",
-      "alt_pt": "Sistema operacional completo para restaurantes modernos com IA",
-      "alt_en": "Complete operating system for modern restaurants with AI",
+      "alt_pt": "",
+      "alt_en": "",
       "alt_es": "",
       "alt_fr": "",
       "alt_zh": "",
@@ -446,6 +446,19 @@
       "featured": false,
       "display_order": 13,
       "created_at": "2026-04-06T19:07:55.969Z"
+    },
+    {
+      "id": 15,
+      "src": "novo-projeto",
+      "name_pt": "Novo Projeto",
+      "name_en": "New Project",
+      "site_url": "https://novo-site.com",
+      "repo_url": "https://github.com/novo",
+      "tags": [
+        "test"
+      ],
+      "featured": false,
+      "created_at": "2026-04-07T15:19:40.593Z"
     }
   ]
 }

@@ -17,7 +17,8 @@ interface RawProjectData {
   name: { ptBR: string; enUS: string };
   alt: { ptBR: string; enUS: string };
   abt: { ptBR: string; enUS: string };
-  featured?: boolean; // Para V2 - apenas projetos destaque
+  featured?: boolean;
+  gif?: boolean;
 }
 
 export const rawProjectsData: RawProjectData[] = [
@@ -27,6 +28,7 @@ export const rawProjectsData: RawProjectData[] = [
       site: '',
       repo: '',
       featured: true,
+      gif: true,
       name: {
         ptBR: 'Platera',
         enUS: 'Platera'

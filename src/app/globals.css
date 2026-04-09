@@ -61,7 +61,7 @@ html {
 
 body {
   transition: all .4s;
-  background: #000;
+  background: #fff;
 }
 
 @layer utilities {

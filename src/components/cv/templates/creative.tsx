@@ -1,11 +1,11 @@
-import { Document, Page, Text, View, StyleSheet, Font } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
 
 Font.register({
   family: "Inter",
   fonts: [
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCo3FwrK3iLTcviYwY.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_fHQtZ6.woff2", fontWeight: 600 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcC73FwrK3iLTeHuS_fHQtZ6.woff2", fontWeight: 700 },
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 400 },
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCT3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 600 },
+    { src: "https://fonts.gstatic.com/s/inter/v13/UcCZ3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 700 },
   ],
 });
 
@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   sidebarSection: { marginBottom: 16 },
   sidebarSectionTitle: { fontSize: 9, fontWeight: 700, color: accentColor, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, borderBottomWidth: 1, borderBottomColor: accentColor, paddingBottom: 3 },
   sidebarText: { fontSize: 8, color: "#cbd5e1", marginBottom: 3, lineHeight: 1.4 },
+  sidebarLink: { fontSize: 8, color: accentColor, marginBottom: 3, lineHeight: 1.4 },
   sidebarSkill: { fontSize: 8, color: "#e2e8f0", marginBottom: 2 },
   name: { fontSize: 22, fontWeight: 700, color: "#0f172a", marginBottom: 2 },
   title: { fontSize: 11, color: "#64748b", marginBottom: 12 },
@@ -62,11 +63,11 @@ export function CreativeCV({ data }: { data: CVData }) {
 
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarSectionTitle}>Contact</Text>
-            {data.email && <Text style={styles.sidebarText}>{data.email}</Text>}
-            {data.phone && <Text style={styles.sidebarText}>{data.phone}</Text>}
+            {data.email && <Link href={`mailto:${data.email}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.email}</Text></Link>}
+            {data.phone && <Link href={`tel:${data.phone}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.phone}</Text></Link>}
             {data.location && <Text style={styles.sidebarText}>{data.location}</Text>}
-            {data.linkedin && <Text style={styles.sidebarText}>{data.linkedin}</Text>}
-            {data.github && <Text style={styles.sidebarText}>{data.github}</Text>}
+            {data.linkedin && <Link href={data.linkedin} style={styles.sidebarLink}><Text style={styles.sidebarLink}>LinkedIn</Text></Link>}
+            {data.github && <Link href={data.github} style={styles.sidebarLink}><Text style={styles.sidebarLink}>GitHub</Text></Link>}
           </View>
 
           <View style={styles.sidebarSection}>

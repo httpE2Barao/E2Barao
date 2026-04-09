@@ -34,11 +34,11 @@ export function FunctionalPreview({ data }: { data: CVData }) {
         <h1 className="text-xl font-bold text-gray-900">{data.name}</h1>
         <p className="text-[11px] text-gray-500 mb-2">{data.title}</p>
         <div className="flex flex-wrap justify-center gap-3 text-[9px] text-gray-600">
-          {data.email && <span>{data.email}</span>}
-          {data.phone && <span>{data.phone}</span>}
+          {data.email && <a href={`mailto:${data.email}`} className="text-blue-600 hover:underline">{data.email}</a>}
+          {data.phone && <a href={`tel:${data.phone}`} className="text-blue-600 hover:underline">{data.phone}</a>}
           {data.location && <span>{data.location}</span>}
-          {data.linkedin && <span>{data.linkedin}</span>}
-          {data.github && <span>{data.github}</span>}
+          {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">LinkedIn</a>}
+          {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">GitHub</a>}
         </div>
       </div>
 

@@ -287,13 +287,13 @@ export function V2ContactsPage() {
   const [cvUrl, setCvUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    fetch("/api/cv/download")
+    fetch(`/api/cv/download?language=${language}`)
       .then((r) => r.json())
       .then((data) => {
         if (data.url) setCvUrl(data.url)
       })
       .catch(() => setCvUrl(null))
-  }, [])
+  }, [language])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textSubtle = isDark ? "text-white/20" : "text-black/20"

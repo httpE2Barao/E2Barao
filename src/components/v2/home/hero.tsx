@@ -324,7 +324,7 @@ export function V2HomeHero() {
             {language === "pt" ? "Descubra mais" : language === "es" ? "Descubra más" : language === "fr" ? "Découvrir plus" : language === "zh" ? "了解更多" : "Discover more"}
           </a>
           <a
-            href="/v2/projects"
+            href="/v2.1/projects"
             className={`px-4 py-2 border ${btnOutline} rounded-full transition-colors text-[11px] sm:text-xs uppercase tracking-wider`}
           >
             {language === "pt" ? "Ver projetos" : language === "es" ? "Ver proyectos" : language === "fr" ? "Voir les projets" : language === "zh" ? "查看项目" : "View projects"}

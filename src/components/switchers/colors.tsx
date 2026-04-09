@@ -9,7 +9,13 @@ import { useEffect, useState } from "react";
 // };
 
 export const useColors = () => {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      return savedTheme || 'light';
+    }
+    return 'light';
+  });
 
   useEffect(() => {
     const body = document.querySelector('body');
@@ -19,8 +25,11 @@ export const useColors = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-    localStorage.setItem('theme', theme);
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      return newTheme;
+    });
   };
 
   const mainTheme = theme === 'light' ? 'white' : 'black';

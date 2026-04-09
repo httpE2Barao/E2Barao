@@ -1,10 +1,11 @@
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Link } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
   page: { padding: 40, fontFamily: "Helvetica", fontSize: 10, color: "#000" },
   header: { marginBottom: 20, borderBottomWidth: 1, borderBottomColor: "#000", paddingBottom: 12 },
   name: { fontSize: 20, fontWeight: "bold", marginBottom: 4, letterSpacing: 0.5 },
   contactRow: { flexDirection: "row", flexWrap: "wrap", gap: 16, fontSize: 9, color: "#333" },
+  contactLink: { color: "#0000ee", textDecoration: "none" },
   section: { marginBottom: 16 },
   sectionTitle: { fontSize: 11, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8, paddingBottom: 3, borderBottomWidth: 0.5, borderBottomColor: "#ccc" },
   entry: { marginBottom: 8 },
@@ -42,9 +43,11 @@ export function MinimalCV({ data }: { data: CVData }) {
           <Text style={styles.name}>{data.name}</Text>
           <Text style={{ fontSize: 10, color: "#444", marginBottom: 6 }}>{data.title}</Text>
           <View style={styles.contactRow}>
-            {data.email && <Text>{data.email}</Text>}
-            {data.phone && <Text>{data.phone}</Text>}
+            {data.email && <Link href={`mailto:${data.email}`} style={styles.contactLink}><Text>{data.email}</Text></Link>}
+            {data.phone && <Link href={`tel:${data.phone}`} style={styles.contactLink}><Text>{data.phone}</Text></Link>}
             {data.location && <Text>{data.location}</Text>}
+            {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text>LinkedIn</Text></Link>}
+            {data.github && <Link href={data.github} style={styles.contactLink}><Text>GitHub</Text></Link>}
           </View>
         </View>
 

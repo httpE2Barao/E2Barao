@@ -33,28 +33,31 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+  const text = await request.text();
+  let body;
   try {
-    const body = await request.json();
-    const { id, ...fields } = body;
-
-    if (!id) {
-      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
-    }
-
-    const projects = await readArrayFromJson('projects.json', 'projects', v1Data.projects);
-    const index = projects.findIndex((p: any) => p.id === id);
-
-    if (index === -1) {
-      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
-    }
-
-    projects[index] = { ...projects[index], ...fields };
-    await writeJsonFile('projects.json', { projects });
-
-    return NextResponse.json(projects[index]);
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
+    body = JSON.parse(text);
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
   }
+
+  const { id, ...fields } = body;
+
+  if (!id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+  }
+
+  const projects: any[] = await readArrayFromJson<any>('projects.json', 'projects', []);
+  const index = projects.findIndex((p) => p.id === id);
+
+  if (index === -1) {
+    return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+  }
+
+  projects[index] = { ...projects[index], ...fields };
+  await writeJsonFile('projects.json', { projects });
+
+  return NextResponse.json(projects[index]);
 }
 
 export async function DELETE(request: NextRequest) {
