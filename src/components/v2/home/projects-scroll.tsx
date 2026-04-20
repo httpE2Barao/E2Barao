@@ -1,22 +1,44 @@
 "use client"
 import { useTheme } from "@/components/switchers/switchers"
-import { featuredProjectsList } from "@/data/projects-data"
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useRef, useState } from "react"
 
-const projectImages: Record<string, string> = {
-  platera: "/images/project_sincronario.png",
-  "digital-acceleration-christopher-columbus-museum": "/images/project_digital-acceleration-christopher-columbus-museum-full.png",
-  "janine-mathias": "/images/project_janine-mathias-full.png",
-  "thiago-battista": "/images/project_thiago-battista.png",
-  "patio-monitoramento": "/images/project_patio-monitoramento-full.png",
-  "space-tourism": "/images/project_space-tourism.png",
+interface ProjectFromAPI {
+  id: number;
+  src: string;
+  site: string;
+  repo: string;
+  tags: string[];
+  name: string;
+  alt: string;
+  abt: string;
+  featured: boolean;
+  imageUrls: string[];
 }
 
-function getProjectImage(src: string): string {
-  return projectImages[src] || "/images/project_sincronario.png"
+async function fetchFeaturedProjects(lang: string): Promise<ProjectFromAPI[]> {
+  try {
+    const res = await fetch(`/api/projects?lang=${lang}`)
+    const data = await res.json()
+    return data.filter((p: ProjectFromAPI) => p.featured)
+  } catch (err) {
+    console.error('Erro ao buscar projetos:', err)
+    return []
+  }
+}
+
+function getProjectImage(project: ProjectFromAPI): string {
+  if (project.imageUrls && project.imageUrls.length > 0) {
+    return project.imageUrls[0]
+  }
+  return `/images/project_${project.src}.png`
+}
+
+function hasGif(project: ProjectFromAPI): boolean {
+  const img = getProjectImage(project)
+  return img.toLowerCase().endsWith('.gif')
 }
 
 function ProjectCard({
@@ -26,7 +48,7 @@ function ProjectCard({
   carouselRotation,
   onClick,
 }: {
-  project: { src: string; name: string; abt: string; tags?: string[]; site: string; repo: string }
+  project: ProjectFromAPI
   index: number
   total: number
   carouselRotation: number
@@ -64,13 +86,21 @@ function ProjectCard({
           transform: `rotateY(${-currentAngle}deg)`,
         }}
       >
-        <Image
-          src={getProjectImage(project.src)}
-          alt={project.name}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 260px, 340px"
-        />
+        {hasGif(project) ? (
+          <img
+            src={getProjectImage(project)}
+            alt={project.name}
+            className="object-cover"
+          />
+        ) : (
+          <Image
+            src={getProjectImage(project)}
+            alt={project.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 260px, 340px"
+          />
+        )}
 
         <div className={`absolute inset-0 ${isDark ? "bg-gradient-to-t from-black/95 via-black/40 to-transparent" : "bg-gradient-to-t from-white/95 via-white/40 to-transparent"}`} />
 
@@ -97,7 +127,7 @@ function ProjectModal({
   index,
   onClose,
 }: {
-  project: { src: string; name: string; abt: string; tags?: string[]; site: string; repo: string }
+  project: ProjectFromAPI
   index: number
   onClose: () => void
 }) {
@@ -143,14 +173,22 @@ function ProjectModal({
         </button>
 
         <div className="relative w-full h-[50vh] md:h-[65vh]">
-          <Image
-            src={getProjectImage(project.src)}
-            alt={project.name}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
+          {hasGif(project) ? (
+            <img
+              src={getProjectImage(project)}
+              alt={project.name}
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <Image
+              src={getProjectImage(project)}
+              alt={project.name}
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+          )}
           <div className={`absolute inset-0 ${isDark ? "bg-gradient-to-t from-black via-black/40 to-transparent" : "bg-gradient-to-t from-white via-white/40 to-transparent"}`} />
         </div>
 
@@ -225,6 +263,19 @@ export function V2ProjectsScroll() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
   const [carouselRotation, setCarouselRotation] = useState(0)
+  const [projects, setProjects] = useState<ProjectFromAPI[]>([])
+
+  const lang = language === "pt-BR" ? "pt" : language === "en-US" ? "en" : language
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchFeaturedProjects(lang).then((data) => {
+      setProjects(data)
+      setLoading(false)
+    })
+  }, [lang])
+
+  const total = projects.length
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -236,9 +287,6 @@ export function V2ProjectsScroll() {
     damping: 25,
     restDelta: 0.001,
   })
-
-  const projects = featuredProjectsList(language === "pt-BR" ? "pt" : "en")
-  const total = projects.length
 
   useEffect(() => {
     const unsubscribe = smoothProgress.on("change", (v) => {

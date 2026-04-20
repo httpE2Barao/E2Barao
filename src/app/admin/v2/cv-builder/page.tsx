@@ -49,6 +49,12 @@ interface CVData {
   skills: LocalizedString[];
   projects: Array<{ name: LocalizedString; description: LocalizedString }>;
   languages: LocalizedString[];
+  additionalInfo: LocalizedString;
+  includeExperience: boolean;
+  includeEducation: boolean;
+  includeSkills: boolean;
+  includeProjects: boolean;
+  includeLanguages: boolean;
 }
 
 const templates = [
@@ -89,6 +95,12 @@ export default function CVBuilderPage() {
       { pt: "Inglês (Fluente)", en: "English (Fluent)", es: "Inglés (Fluido)" },
       { pt: "Espanhol (Conversacional)", en: "Spanish (Conversational)", es: "Español (Conversacional)" },
     ],
+    additionalInfo: { pt: "", en: "", es: "" },
+    includeExperience: true,
+    includeEducation: true,
+    includeSkills: true,
+    includeProjects: true,
+    includeLanguages: true,
   });
 
   const getLocalizedValue = (obj: LocalizedString | undefined, lang: Language): string => {
@@ -127,6 +139,12 @@ export default function CVBuilderPage() {
       description: getLocalizedValue(p.description, lang),
     })),
     languages: cvData.languages.map((l) => getLocalizedValue(l, lang)),
+    additionalInfo: getLocalizedValue(cvData.additionalInfo, lang),
+    includeExperience: cvData.includeExperience,
+    includeEducation: cvData.includeEducation,
+    includeSkills: cvData.includeSkills,
+    includeProjects: cvData.includeProjects,
+    includeLanguages: cvData.includeLanguages,
   });
 
   useEffect(() => {
@@ -428,6 +446,67 @@ export default function CVBuilderPage() {
                   className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm"
                 />
               </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">Informações Adicionais ({language.toUpperCase()})</label>
+                <textarea
+                  value={cvData.additionalInfo[language] || ""}
+                  onChange={(e) => handleFieldChange("additionalInfo", language, e.target.value)}
+                  rows={3}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm resize-none"
+                  placeholder={language === "pt" ? "Certificações, cursos, prêmios..." : language === "en" ? "Certifications, courses, awards..." : "Certificaciones, cursos, premios..."}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+            <h3 className="text-sm font-semibold mb-3">Seções do CV</h3>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={cvData.includeExperience}
+                  onChange={(e) => setCvData({ ...cvData, includeExperience: e.target.checked })}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                />
+                <span className="text-sm text-gray-300">Experiência Profissional</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={cvData.includeEducation}
+                  onChange={(e) => setCvData({ ...cvData, includeEducation: e.target.checked })}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                />
+                <span className="text-sm text-gray-300">Educação</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={cvData.includeSkills}
+                  onChange={(e) => setCvData({ ...cvData, includeSkills: e.target.checked })}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                />
+                <span className="text-sm text-gray-300">Skills</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={cvData.includeProjects}
+                  onChange={(e) => setCvData({ ...cvData, includeProjects: e.target.checked })}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                />
+                <span className="text-sm text-gray-300">Projetos</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={cvData.includeLanguages}
+                  onChange={(e) => setCvData({ ...cvData, includeLanguages: e.target.checked })}
+                  className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                />
+                <span className="text-sm text-gray-300">Idiomas</span>
+              </label>
             </div>
           </div>
 

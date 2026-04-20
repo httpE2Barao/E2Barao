@@ -45,6 +45,12 @@ interface CVData {
   skills: string[];
   projects: Array<{ name: string; description: string }>;
   languages: string[];
+  additionalInfo: string;
+  includeExperience: boolean;
+  includeEducation: boolean;
+  includeSkills: boolean;
+  includeProjects: boolean;
+  includeLanguages: boolean;
 }
 
 export function ChronologicalCV({ data }: { data: CVData }) {
@@ -70,44 +76,50 @@ export function ChronologicalCV({ data }: { data: CVData }) {
           </View>
         )}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Work Experience</Text>
-          {data.experience.map((exp, i) => (
-            <View key={i} style={styles.entry}>
-              <View style={styles.entryHeader}>
-                <Text style={styles.entryRole}>{exp.role}</Text>
-                <Text style={styles.entryPeriod}>{exp.period}</Text>
+        {data.includeExperience && data.experience.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Work Experience</Text>
+            {data.experience.map((exp, i) => (
+              <View key={i} style={styles.entry}>
+                <View style={styles.entryHeader}>
+                  <Text style={styles.entryRole}>{exp.role}</Text>
+                  <Text style={styles.entryPeriod}>{exp.period}</Text>
+                </View>
+                <Text style={styles.entryCompany}>{exp.company}</Text>
+                <Text style={styles.entryDesc}>{exp.description}</Text>
               </View>
-              <Text style={styles.entryCompany}>{exp.company}</Text>
-              <Text style={styles.entryDesc}>{exp.description}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Education</Text>
-          {data.education.map((edu, i) => (
-            <View key={i} style={styles.entry}>
-              <View style={styles.entryHeader}>
-                <Text style={styles.entryRole}>{edu.degree}</Text>
-                <Text style={styles.entryPeriod}>{edu.period}</Text>
-              </View>
-              <Text style={styles.entryCompany}>{edu.school}</Text>
-              {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Skills</Text>
-          <View style={styles.skillRow}>
-            {data.skills.map((skill, i) => (
-              <Text key={i} style={styles.skillTag}>{skill}</Text>
             ))}
           </View>
-        </View>
+        )}
 
-        {data.projects.length > 0 && (
+        {data.includeEducation && data.education.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Education</Text>
+            {data.education.map((edu, i) => (
+              <View key={i} style={styles.entry}>
+                <View style={styles.entryHeader}>
+                  <Text style={styles.entryRole}>{edu.degree}</Text>
+                  <Text style={styles.entryPeriod}>{edu.period}</Text>
+                </View>
+                <Text style={styles.entryCompany}>{edu.school}</Text>
+                {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
+              </View>
+            ))}
+          </View>
+        )}
+
+        {data.includeSkills && data.skills.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Skills</Text>
+            <View style={styles.skillRow}>
+              {data.skills.map((skill, i) => (
+                <Text key={i} style={styles.skillTag}>{skill}</Text>
+              ))}
+            </View>
+          </View>
+        )}
+
+        {data.includeProjects && data.projects.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Key Projects</Text>
             {data.projects.map((project, i) => (
@@ -119,10 +131,17 @@ export function ChronologicalCV({ data }: { data: CVData }) {
           </View>
         )}
 
-        {data.languages.length > 0 && (
+        {data.includeLanguages && data.languages.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Languages</Text>
             <Text style={{ fontSize: 10, color: "#334155" }}>{data.languages.join(" • ")}</Text>
+          </View>
+        )}
+
+        {data.additionalInfo && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Additional Information</Text>
+            <Text style={{ fontSize: 10, color: "#334155", lineHeight: 1.6 }}>{data.additionalInfo}</Text>
           </View>
         )}
       </Page>

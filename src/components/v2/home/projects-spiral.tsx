@@ -1,22 +1,47 @@
 "use client"
 import { useTheme } from "@/components/switchers/switchers"
-import { featuredProjectsList } from "@/data/projects-data"
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-const projectImages: Record<string, string> = {
-  platera: "/images/project_sincronario.png",
-  "digital-acceleration-christopher-columbus-museum": "/images/project_digital-acceleration-christopher-columbus-museum-full.png",
-  "janine-mathias": "/images/project_janine-mathias-full.png",
-  "thiago-battista": "/images/project_thiago-battista.png",
-  "patio-monitoramento": "/images/project_patio-monitoramento-full.png",
-  "space-tourism": "/images/project_space-tourism.png",
+interface ProjectFromAPI {
+  id: number;
+  src: string;
+  site: string;
+  repo: string;
+  tags: string[];
+  name: string;
+  alt: string;
+  abt: string;
+  featured: boolean;
+  imageUrls: string[];
 }
 
-function getProjectImage(src: string): string {
-  return projectImages[src] || "/images/project_sincronario.png"
+async function fetchFeaturedProjects(lang: string): Promise<ProjectFromAPI[]> {
+  try {
+    const res = await fetch(`/api/projects?lang=${lang}`)
+    const data = await res.json()
+    return data.filter((p: ProjectFromAPI) => p.featured).map((p: any) => ({
+      ...p,
+      imageUrls: typeof p.imageUrls === 'string' ? JSON.parse(p.imageUrls || '[]') : (p.imageUrls || [])
+    }))
+  } catch (err) {
+    console.error('Erro ao buscar projetos:', err)
+    return []
+  }
+}
+
+function getProjectImage(project: ProjectFromAPI): string {
+  if (project.imageUrls && project.imageUrls.length > 0) {
+    return project.imageUrls[0]
+  }
+  return `/images/project_${project.src}.png`
+}
+
+function hasGif(project: ProjectFromAPI): boolean {
+  const img = getProjectImage(project)
+  return img.toLowerCase().endsWith('.gif')
 }
 
 function SpiralProjectCard({
@@ -30,7 +55,7 @@ function SpiralProjectCard({
   cardW,
   cardH,
 }: {
-  project: { src: string; name: string; abt: string; tags?: string[]; site: string; repo: string }
+  project: ProjectFromAPI
   index: number
   total: number
   rotation: number
@@ -97,14 +122,22 @@ function SpiralProjectCard({
         <div
           className={`absolute inset-0 rounded-xl overflow-hidden ${isDark ? "shadow-2xl shadow-black/70" : "shadow-2xl shadow-black/20"}`}
         >
-          <Image
-            src={getProjectImage(project.src)}
-            alt={project.name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 320px, 480px"
-            quality={90}
-          />
+          {hasGif(project) ? (
+            <img
+              src={getProjectImage(project)}
+              alt={project.name}
+              className="object-cover"
+            />
+          ) : (
+            <Image
+              src={getProjectImage(project)}
+              alt={project.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 320px, 480px"
+              quality={90}
+            />
+          )}
           <div className={`absolute inset-0 transition-opacity duration-300 ${isDark ? "bg-black/30 group-hover:bg-black/60" : "bg-white/20 group-hover:bg-black/50"}`} />
         </div>
       </div>
@@ -132,7 +165,7 @@ function SpiralProjectCard({
       >
         <div style={{ width: "100%" }}>
           <h3
-            className={`text-lg font-bold tracking-tight ${isDark ? "text-white" : "text-black"}`}
+            className="text-lg font-bold tracking-tight text-white"
             style={{
               textShadow: "0 2px 12px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,1)",
             }}
@@ -141,7 +174,7 @@ function SpiralProjectCard({
           </h3>
 
           <div
-            className="overflow-hidden transition-all duration-300 max-h-0 opacity-0 group-hover:max-h-24 group-hover:opacity-100 mt-1"
+            className="mt-1"
             style={{ transform: "translateZ(50px)" }}
           >
             <p className={`text-[10px] font-mono tracking-[0.3em] uppercase mb-1 ${isDark ? "text-cyan-400" : "text-blue-400"}`}>
@@ -166,7 +199,7 @@ function ProjectModal({
   total,
   onClose,
 }: {
-  project: { src: string; name: string; abt: string; tags?: string[]; site: string; repo: string }
+  project: ProjectFromAPI
   index: number
   total: number
   onClose: () => void
@@ -213,15 +246,23 @@ function ProjectModal({
         </button>
 
         <div className="relative w-full h-[50vh] md:h-[60vh]">
-          <Image
-            src={getProjectImage(project.src)}
-            alt={project.name}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-            quality={95}
-          />
+          {hasGif(project) ? (
+            <img
+              src={getProjectImage(project)}
+              alt={project.name}
+              className="object-cover w-full h-full"
+            />
+          ) : (
+            <Image
+              src={getProjectImage(project)}
+              alt={project.name}
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+              quality={95}
+            />
+          )}
           <div className={`absolute inset-0 ${isDark ? "bg-gradient-to-t from-black via-black/40 to-transparent" : "bg-gradient-to-t from-white via-white/40 to-transparent"}`} />
         </div>
 
@@ -299,8 +340,18 @@ export function V2ProjectsSpiral() {
   const [cameraY, setCameraY] = useState(0)
   const [cameraYMax, setCameraYMax] = useState<number>(0)
   const [progress, setProgress] = useState(0)
+  const [projects, setProjects] = useState<ProjectFromAPI[]>([])
 
-  const projects = useMemo(() => featuredProjectsList(language === "pt-BR" ? "pt" : "en"), [language])
+  const lang = language === "pt-BR" ? "pt" : language === "en-US" ? "en" : language
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchFeaturedProjects(lang).then((data) => {
+      setProjects(data)
+      setLoading(false)
+    })
+  }, [lang])
+
   const total = projects.length
  
   // Responsive layout state
@@ -308,7 +359,7 @@ export function V2ProjectsSpiral() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    offset: ["start end", "end start"],
   })
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -350,7 +401,6 @@ export function V2ProjectsSpiral() {
 
   useEffect(() => {
     const updateCameraBounds = () => {
-      // Allow some bottom margin so the last item isn't clipped and travel a bit further
       const max = totalHeight + cameraBottomPadding
       setCameraYMax(Math.max(0, max))
     }
@@ -361,20 +411,22 @@ export function V2ProjectsSpiral() {
 
   useEffect(() => {
     const unsubscribe = smoothProgress.on("change", (v) => {
+      if (total <= 1) return
       setRotation(-v * (total - 1) * (360 / total))
       const travelHeight = totalHeight + cameraBottomPadding
       const target = v * travelHeight
       const clamped = Math.max(0, Math.min(cameraYMax, target))
-      // Debug: monitor camera values during scroll
-      // console.debug("ProjectsSpiral camera", { v, target, clamped, cameraYMax })
       setCameraY(clamped)
       setProgress(v)
     })
     return () => unsubscribe()
-  }, [smoothProgress, totalHeight, total, cameraYMax])
+  }, [smoothProgress, totalHeight, total, cameraYMax, cameraBottomPadding])
 
   const sectionTitle = language === "pt-BR" ? "Projetos" : language === "es" ? "Proyectos" : language === "fr" ? "Projets" : language === "zh" ? "项目" : "Projects"
   const sectionSubtitle = language === "pt-BR" ? "Clique para explorar" : language === "es" ? "Haz clic para explorar" : language === "fr" ? "Cliquez pour explorer" : language === "zh" ? "点击探索" : "Click to explore"
+
+  const scrollIndicatorOpacity = useTransform(smoothProgress, [0, 0.05], [1, 0])
+  const scrollIndicatorStyle = useMemo(() => ({ opacity: scrollIndicatorOpacity }), [scrollIndicatorOpacity])
 
   const handleSelectProject = useCallback((index: number) => {
     setSelectedProject(index)
@@ -386,13 +438,30 @@ export function V2ProjectsSpiral() {
 
   const currentProjectIndex = Math.min(Math.floor(progress * total), total - 1)
 
+  const sectionHeight = useMemo(() => {
+    if (total <= 1) return "100vh"
+    const minScrollPerProject = 400
+    const calculatedHeight = total * minScrollPerProject
+    return `${calculatedHeight}vh`
+  }, [total])
+
+  if (loading || projects.length === 0) {
+    return (
+      <section className={`relative ${isDark ? "bg-black" : "bg-white"}`} style={{ height: "100vh" }}>
+        <div className="sticky top-0 h-screen flex items-center justify-center">
+          <div className={`text-lg ${isDark ? "text-white/50" : "text-black/50"}`}>Loading...</div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <>
       <section
         id="projects"
         ref={containerRef}
         className={`relative ${isDark ? "bg-black" : "bg-white"}`}
-        style={{ height: "800vh" }}
+        style={{ height: sectionHeight }}
       >
         <div
           className="sticky top-0 h-screen overflow-hidden"
@@ -447,9 +516,7 @@ export function V2ProjectsSpiral() {
 
           <motion.div
             className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 ${isDark ? "text-white/20" : "text-black/20"}`}
-            style={{
-              opacity: useTransform(smoothProgress, [0, 0.05], [1, 0]),
-            }}
+            style={scrollIndicatorStyle}
           >
             <svg className="w-4 h-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />

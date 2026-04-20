@@ -279,13 +279,12 @@ export default function TechOrbital3D({ activeCategory }: TechSphereProps) {
           activeCategory={activeCategory}
           onHover={handleHover}
         />
+        <AnimatePresence>
+          {hoveredTech && (
+            <TechHoverCard key={hoveredTech.name} tech={hoveredTech} />
+          )}
+        </AnimatePresence>
       </Canvas>
-      
-      <AnimatePresence>
-        {hoveredTech && (
-          <TechHoverCard key={hoveredTech.name} tech={hoveredTech} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
