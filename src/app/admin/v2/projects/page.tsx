@@ -100,8 +100,34 @@ const [formData, setFormData] = useState({
     fetchProjectImages();
   }, []);
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const addTag = (tag: string) => {
+    const trimmed = tag.trim();
+    if (trimmed && !formData.tags.includes(trimmed)) {
+      setFormData({ ...formData, tags: [...formData.tags, trimmed] });
+      if (!allTags.includes(trimmed)) {
+        setAllTags([...allTags, trimmed].sort());
+      }
+    }
+    setTagInput("");
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setFormData({ ...formData, tags: formData.tags.filter((t) => t !== tagToRemove) });
+  };
+
+  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addTag(tagInput);
+    } else if (e.key === "Backspace" && !tagInput && formData.tags.length > 0) {
+      removeTag(formData.tags[formData.tags.length - 1]);
+    }
+  };
+
+const filteredTags = allTags.filter((t) => t.toLowerCase().includes(tagInput.toLowerCase()) && !formData.tags.includes(t));
+
+const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+const file = e.target.files?.[0];
     if (!file || !formData.src) {
       setMessage({ type: "error", text: "É preciso definir o src do projeto primeiro" });
       setTimeout(() => setMessage(null), 3000);
@@ -117,9 +143,8 @@ const [formData, setFormData] = useState({
         const data = await res.json();
         setMessage({ type: "success", text: `Imagem uploadada: ${data.fileName}` });
       }
-    } catch { setMessage({ type: "error", text: "Erro ao fazer upload" }); }
-    setUploading(false);
-    setTimeout(() => setMessage(null), 3000);
+} catch { setMessage({ type: "error", text: "Erro ao fazer upload" }); }
+finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
   };
 
   const handleDeleteImage = async (fileName: string) => {
@@ -135,7 +160,7 @@ const [formData, setFormData] = useState({
     e.preventDefault();
     setLoading(true);
     try {
-      const body = { ...formData, tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean) };
+      const body = { ...formData };
       const res = await fetch("/api/admin/projects", {
         method: editing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -167,7 +192,7 @@ const [formData, setFormData] = useState({
       name_pt: project.name_pt || "", name_en: project.name_en || "", name_es: project.name_es || "", name_fr: project.name_fr || "", name_zh: project.name_zh || "",
       abt_pt: project.abt_pt || "", abt_en: project.abt_en || "", abt_es: project.abt_es || "", abt_fr: project.abt_fr || "", abt_zh: project.abt_zh || "",
       alt_pt: project.alt_pt || "", alt_en: project.alt_en || "", alt_es: project.alt_es || "", alt_fr: project.alt_fr || "", alt_zh: project.alt_zh || "",
-      tags: Array.isArray(project.tags) ? project.tags.join(", ") : "",
+      tags: Array.isArray(project.tags) ? project.tags : [],
       featured: project.featured || false, display_order: project.display_order || 0,
     });
     setShowForm(true);
@@ -181,8 +206,9 @@ const [formData, setFormData] = useState({
       name_pt: "", name_en: "", name_es: "", name_fr: "", name_zh: "",
       abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
       alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
-      tags: "", featured: false, display_order: 0,
+      tags: [], featured: false, display_order: 0,
     });
+    setTagInput("");
   };
 
   if (loading && projects.length === 0) {
@@ -222,10 +248,50 @@ const [formData, setFormData] = useState({
                 <label className={`block text-sm ${colors.textMuted} mb-1`}>Src (slug)*</label>
                 <input type="text" value={formData.src} onChange={(e) => setFormData({ ...formData, src: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required />
               </div>
-              <div>
-                <label className={`block text-sm ${colors.textMuted} mb-1`}>Tags</label>
-                <input type="text" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} placeholder="react, nextjs" />
+<div>
+              <label className={`block text-sm ${colors.textMuted} mb-1`}>Tags</label>
+              <div className={`relative`}>
+                <div className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text} min-h-[42px] flex flex-wrap gap-1 items-center`}>
+                  {formData.tags.map((tag) => (
+                    <span key={tag} className={`flex items-center gap-1 ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded text-xs`}>
+                      {tag}
+                      <button type="button" onClick={() => removeTag(tag)} className="hover:opacity-70">×</button>
+                    </span>
+                  ))}
+                  <input
+                    type="text"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={handleTagKeyDown}
+                    placeholder={formData.tags.length === 0 ? "Digite para buscar ou criar tags" : ""}
+                    className={`flex-1 min-w-[120px] bg-transparent outline-none ${colors.text} placeholder:${colors.textSubtle}`}
+                    list="tags-list"
+                  />
+                  <datalist id="tags-list">
+                    {filteredTags.map((t) => (
+                      <option key={t} value={t} />
+                    ))}
+                  </datalist>
+                </div>
+                {tagInput && filteredTags.length > 0 && (
+                  <div className={`absolute z-10 w-full mt-1 ${colors.card} border ${colors.border} rounded-lg shadow-lg max-h-40 overflow-auto`}>
+                    {filteredTags.map((t) => (
+                      <button key={t} type="button" onClick={() => addTag(t)} className={`w-full text-left px-3 py-2 text-sm ${colors.text} hover:${colors.cardBgAlt} transition-colors`}>
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {tagInput && !filteredTags.some(t => t.toLowerCase() === tagInput.toLowerCase()) && (
+                  <div className={`absolute z-10 w-full mt-1 ${colors.card} border ${colors.border} rounded-lg shadow-lg`}>
+                    <button type="button" onClick={() => addTag(tagInput)} className={`w-full text-left px-3 py-2 text-sm ${colors.text} hover:${colors.cardBgAlt} transition-colors flex items-center gap-2`}>
+                      <span className={`text-xs ${colors.accent}`}>+ Criar:</span> {tagInput}
+                    </button>
+                  </div>
+                )}
               </div>
+              <p className={`text-xs ${colors.textSubtle} mt-1`}>Pressione Enter para adicionar ou clique em uma opção</p>
+            </div>
             </div>
 
             <div className={`${colors.cardBgAlt} border ${colors.border} rounded-lg p-4`}>

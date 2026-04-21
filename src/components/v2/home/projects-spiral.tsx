@@ -397,7 +397,7 @@ export function V2ProjectsSpiral() {
   const cardH = layout.cardH
   const cameraBottomPadding = layout.cameraBottomPadding
   const radiusAll = layout.radius
-  const totalHeight = (total - 1) * verticalGap
+  const totalHeight = (projects.length - 1) * verticalGap
 
   useEffect(() => {
     const updateCameraBounds = () => {
@@ -411,19 +411,18 @@ export function V2ProjectsSpiral() {
 
   useEffect(() => {
     const unsubscribe = smoothProgress.on("change", (v) => {
-      if (projects.length === 0) return
-      const projectCount = projects.length || total
+      const projectCount = projects.length
       const travelHeight = totalHeight + cameraBottomPadding
-      if (travelHeight <= 0) return
       const padding = totalHeight * 0.4
-      const clamped = padding + v * (travelHeight - padding * 2)
-      setCameraY(clamped)
+      const targetY = padding + v * (travelHeight - padding * 2)
+      setCameraY(targetY)
       setProgress(v)
-      if (projectCount <= 1) return
-      setRotation(-v * (projectCount - 1) * (360 / projectCount))
+      if (projectCount > 1) {
+        setRotation(-v * (projectCount - 1) * (360 / projectCount))
+      }
     })
     return () => unsubscribe()
-  }, [smoothProgress, totalHeight, total, cameraYMax, cameraBottomPadding, projects.length])
+  }, [smoothProgress, cameraBottomPadding, projects])
 
   const sectionTitle = language === "pt-BR" ? "Projetos" : language === "es" ? "Proyectos" : language === "fr" ? "Projets" : language === "zh" ? "项目" : "Projects"
   const sectionSubtitle = language === "pt-BR" ? "Clique para explorar" : language === "es" ? "Haz clic para explorar" : language === "fr" ? "Cliquez pour explorer" : language === "zh" ? "点击探索" : "Click to explore"
