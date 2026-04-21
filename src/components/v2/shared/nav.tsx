@@ -7,10 +7,10 @@ import LanguageSelector from "@/components/header/language"
 
 const navLinks = [
   { label: { pt: "Início", en: "Home", es: "Inicio", fr: "Accueil", zh: "首页" }, href: "/" },
-  { label: { pt: "Projetos", en: "Projects", es: "Proyectos", fr: "Projets", zh: "项目" }, href: "/v2/projects" },
-  { label: { pt: "Experiências", en: "Experiences", es: "Experiencias", fr: "Expériences", zh: "经验" }, href: "/v2/experiences" },
-  { label: { pt: "Tecnologias", en: "Techs", es: "Tecnologías", fr: "Technologies", zh: "技术" }, href: "/v2/tecs" },
-  { label: { pt: "Contatos", en: "Contacts", es: "Contactos", fr: "Contacts", zh: "联系" }, href: "/v2/contacts" },
+  { label: { pt: "Projetos", en: "Projects", es: "Proyectos", fr: "Projets", zh: "项目" }, href: "/projects" },
+  { label: { pt: "Experiências", en: "Experiences", es: "Experiencias", fr: "Expériences", zh: "经验" }, href: "/experiences" },
+  { label: { pt: "Tecnologias", en: "Techs", es: "Tecnologías", fr: "Technologies", zh: "技术" }, href: "/tecs" },
+  { label: { pt: "Contatos", en: "Contacts", es: "Contactos", fr: "Contacts", zh: "联系" }, href: "/contacts" },
 ]
 
 export function V2Nav() {

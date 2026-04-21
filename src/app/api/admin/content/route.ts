@@ -9,11 +9,13 @@ export async function GET(request: NextRequest) {
 
     const content = await readArrayFromJson('content.json', 'content', v1Data.content);
     
+    const contentWithIds = content.map((c: any, i: number) => ({ ...c, id: i + 1 }));
+
     if (section) {
-      return NextResponse.json(content.filter((c: any) => c.section === section));
+      return NextResponse.json(contentWithIds.filter((c: any) => c.section === section));
     }
     
-    return NextResponse.json(content);
+    return NextResponse.json(contentWithIds);
   } catch (error) {
     return NextResponse.json(v1Data.content);
   }
@@ -22,14 +24,14 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, ...fields } = body;
+    const { id, section, key, ...fields } = body;
 
-    if (!id) {
-      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    if (!section || !key) {
+      return NextResponse.json({ error: 'section and key are required' }, { status: 400 });
     }
 
     const content = await readArrayFromJson('content.json', 'content', v1Data.content);
-    const index = content.findIndex((c: any) => c.id === id);
+    const index = content.findIndex((c: any) => c.section === section && c.key === key);
 
     if (index === -1) {
       return NextResponse.json({ error: 'Content not found' }, { status: 404 });
@@ -38,7 +40,7 @@ export async function PUT(request: NextRequest) {
     content[index] = { ...content[index], ...fields, updated_at: new Date().toISOString() };
     await writeJsonFile('content.json', { content });
 
-    return NextResponse.json(content[index]);
+    return NextResponse.json({ ...content[index], id: index + 1 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update content' }, { status: 500 });
   }

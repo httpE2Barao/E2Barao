@@ -42,22 +42,6 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const toV2: Record<string, string> = {
-    '/projects': '/v2/projects',
-    '/Projects': '/v2/projects',
-    '/experiences': '/v2/experiences',
-    '/Experiences': '/v2/experiences',
-    '/tecs': '/v2/tecs',
-    '/Tecs': '/v2/tecs',
-    '/contacts': '/v2/contacts',
-    '/Contacts': '/v2/contacts',
-  };
-
-  const redirectPath = toV2[pathname];
-  if (redirectPath) {
-    return NextResponse.redirect(new URL(redirectPath, req.url), 308);
-  }
-
   return NextResponse.next();
 }
 

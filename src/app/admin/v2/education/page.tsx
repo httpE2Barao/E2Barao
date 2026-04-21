@@ -45,7 +45,8 @@ export default function EducationPage() {
     const fetchEducation = async () => {
       try {
         const res = await fetch("/api/admin/education");
-        setEducation(Array.isArray(await res.json()) ? await res.json() : []);
+        const data = await res.json();
+        setEducation(Array.isArray(data) ? data : []);
       } catch { setEducation([]); }
       setLoading(false);
     };

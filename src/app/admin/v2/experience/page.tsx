@@ -46,7 +46,8 @@ export default function ExperiencePage() {
     const fetchExperiences = async () => {
       try {
         const res = await fetch("/api/admin/experience");
-        setExperiences(Array.isArray(await res.json()) ? await res.json() : []);
+        const data = await res.json();
+        setExperiences(Array.isArray(data) ? data : []);
       } catch { setExperiences([]); }
       setLoading(false);
     };

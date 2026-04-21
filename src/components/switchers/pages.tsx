@@ -31,16 +31,16 @@ export const usePage = () => {
         newPageString = '/';
         break;
       case 1:
-        newPageString = '/v2/projects';
+        newPageString = '/projects';
         break;
       case 2:
-        newPageString = '/v2/experiences';
+        newPageString = '/experiences';
         break;
       case 3:
-        newPageString = '/v2/tecs';
+        newPageString = '/tecs';
         break;
       case 4:
-        newPageString = '/v2/contacts';
+        newPageString = '/contacts';
         break;
       default:
         newPageString = '';

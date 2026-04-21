@@ -7,10 +7,10 @@ import { useTheme } from "@/components/switchers/switchers"
 import LanguageSelector from "@/components/header/language"
 
 const navLinks = [
-  { href: "/v2/projects", pt: "Projetos", en: "Projects", es: "Proyectos", fr: "Projets", zh: "项目" },
-  { href: "/v2/experiences", pt: "Experiências", en: "Experiences", es: "Experiencias", fr: "Expériences", zh: "经验" },
-  { href: "/v2/tecs", pt: "Tecnologias", en: "Hard-skills", es: "Habilidades", fr: "Compétences", zh: "技能" },
-  { href: "/v2/contacts", pt: "Contatos", en: "Contacts", es: "Contactos", fr: "Contacts", zh: "联系" },
+  { href: "/projects", pt: "Projetos", en: "Projects", es: "Proyectos", fr: "Projets", zh: "项目" },
+  { href: "/experiences", pt: "Experiências", en: "Experiences", es: "Experiencias", fr: "Expériences", zh: "经验" },
+  { href: "/tecs", pt: "Tecnologias", en: "Hard-skills", es: "Habilidades", fr: "Compétences", zh: "技能" },
+  { href: "/contacts", pt: "Contatos", en: "Contacts", es: "Contactos", fr: "Contacts", zh: "联系" },
 ]
 
 function NavItem({ href, label, isActive, theme, isMobile }: { href: string; label: string; isActive: boolean; theme: string; isMobile?: boolean }) {

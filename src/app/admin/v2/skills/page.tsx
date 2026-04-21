@@ -49,7 +49,8 @@ export default function SkillsPage() {
     const fetchSkills = async () => {
       try {
         const res = await fetch("/api/admin/skills");
-        setSkills(Array.isArray(await res.json()) ? await res.json() : []);
+        const data = await res.json();
+        setSkills(Array.isArray(data) ? data : []);
       } catch { setSkills([]); }
       setLoading(false);
     };

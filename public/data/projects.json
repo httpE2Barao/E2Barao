@@ -23,11 +23,11 @@
         "leaflet",
         "saas"
       ],
-      "name_pt": "Test",
+      "name_pt": "Platera",
       "name_en": "Platera",
-      "name_es": "",
-      "name_fr": "",
-      "name_zh": "",
+      "name_es": "Platera",
+      "name_fr": "Platera",
+      "name_zh": "Platera",
       "abt_pt": "",
       "abt_en": "",
       "abt_es": "",
@@ -446,19 +446,6 @@
       "featured": false,
       "display_order": 13,
       "created_at": "2026-04-06T19:07:55.969Z"
-    },
-    {
-      "id": 15,
-      "src": "novo-projeto",
-      "name_pt": "Novo Projeto",
-      "name_en": "New Project",
-      "site_url": "https://novo-site.com",
-      "repo_url": "https://github.com/novo",
-      "tags": [
-        "test"
-      ],
-      "featured": false,
-      "created_at": "2026-04-07T15:19:40.593Z"
     }
   ]
 }

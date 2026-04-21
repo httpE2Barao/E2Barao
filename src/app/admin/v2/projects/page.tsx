@@ -12,6 +12,19 @@ interface Project {
   tags: string[];
   name_pt: string;
   name_en: string;
+  name_es: string;
+  name_fr: string;
+  name_zh: string;
+  abt_pt: string;
+  abt_en: string;
+  abt_es: string;
+  abt_fr: string;
+  abt_zh: string;
+  alt_pt: string;
+  alt_en: string;
+  alt_es: string;
+  alt_fr: string;
+  alt_zh: string;
   featured: boolean;
   display_order: number;
   created_at: string;
@@ -32,6 +45,8 @@ export default function ProjectsPage() {
   const [projectImages, setProjectImages] = useState<ProjectImage[]>([]);
   const [imagesLoading, setImagesLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [allTags, setAllTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
 
   const colors = {
     card: isDark ? "bg-gray-900" : "bg-white",
@@ -48,13 +63,13 @@ export default function ProjectsPage() {
     spinner: isDark ? "border-cyan-400" : "border-blue-600",
   };
 
-  const [formData, setFormData] = useState({
-    src: "", site_url: "", repo_url: "",
-    name_pt: "", name_en: "", name_es: "", name_fr: "", name_zh: "",
-    abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
-    alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
-    tags: "", featured: false, display_order: 0,
-  });
+const [formData, setFormData] = useState({
+  src: "", site_url: "", repo_url: "",
+  name_pt: "", name_en: "", name_es: "", name_fr: "", name_zh: "",
+  abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
+  alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
+  tags: [] as string[], featured: false, display_order: 0,
+});
 
   const fetchProjectImages = async () => {
     try {
@@ -68,7 +83,16 @@ export default function ProjectsPage() {
     const fetchProjects = async () => {
       try {
         const res = await fetch("/api/admin/projects");
-        setProjects(Array.isArray(await res.json()) ? await res.json() : []);
+        const data = await res.json();
+        const projectsData = Array.isArray(data) ? data : [];
+        setProjects(projectsData);
+        const tags = new Set<string>();
+        projectsData.forEach((p: Project) => {
+          if (Array.isArray(p.tags)) {
+            p.tags.forEach((t: string) => tags.add(t));
+          }
+        });
+        setAllTags(Array.from(tags).sort());
       } catch { setProjects([]); }
       setLoading(false);
     };

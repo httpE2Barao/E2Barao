@@ -40,7 +40,8 @@ export default function ContactPage() {
     const fetchContacts = async () => {
       try {
         const res = await fetch("/api/admin/contact");
-        setContacts(Array.isArray(await res.json()) ? await res.json() : []);
+        const data = await res.json();
+        setContacts(Array.isArray(data) ? data : []);
       } catch { setContacts([]); }
       setLoading(false);
     };

@@ -411,16 +411,19 @@ export function V2ProjectsSpiral() {
 
   useEffect(() => {
     const unsubscribe = smoothProgress.on("change", (v) => {
-      if (total <= 1) return
-      setRotation(-v * (total - 1) * (360 / total))
+      if (projects.length === 0) return
+      const projectCount = projects.length || total
       const travelHeight = totalHeight + cameraBottomPadding
-      const padding = travelHeight * 0.35
+      if (travelHeight <= 0) return
+      const padding = totalHeight * 0.4
       const clamped = padding + v * (travelHeight - padding * 2)
       setCameraY(clamped)
       setProgress(v)
+      if (projectCount <= 1) return
+      setRotation(-v * (projectCount - 1) * (360 / projectCount))
     })
     return () => unsubscribe()
-  }, [smoothProgress, totalHeight, total, cameraYMax, cameraBottomPadding])
+  }, [smoothProgress, totalHeight, total, cameraYMax, cameraBottomPadding, projects.length])
 
   const sectionTitle = language === "pt-BR" ? "Projetos" : language === "es" ? "Proyectos" : language === "fr" ? "Projets" : language === "zh" ? "项目" : "Projects"
   const sectionSubtitle = language === "pt-BR" ? "Clique para explorar" : language === "es" ? "Haz clic para explorar" : language === "fr" ? "Cliquez pour explorer" : language === "zh" ? "点击探索" : "Click to explore"

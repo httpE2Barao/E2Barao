@@ -45,7 +45,8 @@ export default function ContentPage() {
   const fetchContent = async () => {
     try {
       const res = await fetch(`/api/admin/content?section=${activeSection}`);
-      setContent(Array.isArray(await res.json()) ? await res.json() : []);
+      const data = await res.json();
+      setContent(Array.isArray(data) ? data : []);
     } catch { setContent([]); }
     setLoading(false);
   };
