@@ -359,7 +359,7 @@ export function V2ProjectsSpiral() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   })
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -414,8 +414,8 @@ export function V2ProjectsSpiral() {
       if (total <= 1) return
       setRotation(-v * (total - 1) * (360 / total))
       const travelHeight = totalHeight + cameraBottomPadding
-      const target = v * travelHeight
-      const clamped = Math.max(0, Math.min(cameraYMax, target))
+      const padding = travelHeight * 0.35
+      const clamped = padding + v * (travelHeight - padding * 2)
       setCameraY(clamped)
       setProgress(v)
     })
@@ -440,7 +440,7 @@ export function V2ProjectsSpiral() {
 
   const sectionHeight = useMemo(() => {
     if (total <= 1) return "100vh"
-    const minScrollPerProject = 400
+    const minScrollPerProject = 150
     const calculatedHeight = total * minScrollPerProject
     return `${calculatedHeight}vh`
   }, [total])
@@ -467,7 +467,7 @@ export function V2ProjectsSpiral() {
           className="sticky top-0 h-screen overflow-hidden"
           style={{ perspective: "2000px" }}
         >
-          <div className="absolute top-16 md:top-20 left-6 md:left-16 z-10">
+          <div className="absolute top-24 md:top-28 left-6 md:left-16 z-10">
             <p className={`text-[10px] md:text-xs font-mono tracking-[0.3em] uppercase mb-1 ${isDark ? "text-cyan-400" : "text-blue-600"}`}>
               {sectionTitle}
             </p>
@@ -476,7 +476,7 @@ export function V2ProjectsSpiral() {
             </p>
           </div>
 
-          <div className={`absolute top-16 md:top-20 right-6 md:right-16 z-10 text-5xl md:text-7xl font-black tracking-tighter ${isDark ? "text-white/40" : "text-black/10"}`}>
+          <div className={`absolute top-24 md:top-28 right-6 md:right-16 z-10 text-5xl md:text-7xl font-black tracking-tighter ${isDark ? "text-white/40" : "text-black/10"}`}>
             {String(currentProjectIndex + 1).padStart(2, "0")}
           </div>
 

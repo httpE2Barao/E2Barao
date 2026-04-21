@@ -22,10 +22,12 @@ interface LocalizedString {
 }
 
 interface Experience {
+  id: number;
   role: LocalizedString;
   company: LocalizedString;
   period: string;
   description: LocalizedString;
+  selected?: boolean;
 }
 
 interface Education {
@@ -33,6 +35,13 @@ interface Education {
   school: LocalizedString;
   period: string;
   description: LocalizedString;
+}
+
+interface AdditionalData {
+  willingnessToTravel: LocalizedString;
+  willingnessToRelocate: LocalizedString;
+  driverLicense: LocalizedString;
+  vehicleType: LocalizedString;
 }
 
 interface CVData {
@@ -50,11 +59,13 @@ interface CVData {
   projects: Array<{ name: LocalizedString; description: LocalizedString }>;
   languages: LocalizedString[];
   additionalInfo: LocalizedString;
+  additionalData: AdditionalData;
   includeExperience: boolean;
   includeEducation: boolean;
   includeSkills: boolean;
   includeProjects: boolean;
   includeLanguages: boolean;
+  selectedExperienceIds: number[];
 }
 
 const templates = [
@@ -77,6 +88,9 @@ export default function CVBuilderPage() {
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [defaultCV, setDefaultCV] = useState<any>(null);
+  const [cvHistory, setCvHistory] = useState<any[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   const [cvData, setCvData] = useState<CVData>({
     name: { pt: "Elias Edson Barao", en: "Elias Edson Barao", es: "Elias Edson Barao" },
     title: { pt: "Engenheiro de Software & Desenvolvedor Full-Stack", en: "Software Engineer & Full-Stack Developer", es: "Ingeniero de Software & Desarrollador Full-Stack" },
@@ -96,11 +110,18 @@ export default function CVBuilderPage() {
       { pt: "Espanhol (Conversacional)", en: "Spanish (Conversational)", es: "Español (Conversacional)" },
     ],
     additionalInfo: { pt: "", en: "", es: "" },
+    additionalData: {
+      willingnessToTravel: { pt: "Sim", en: "Yes", es: "Sí" },
+      willingnessToRelocate: { pt: "Sim", en: "Yes", es: "Sí" },
+      driverLicense: { pt: "B", en: "B", es: "B" },
+      vehicleType: { pt: "Carro particular", en: "Personal car", es: "Coche particular" },
+    },
     includeExperience: true,
     includeEducation: true,
     includeSkills: true,
     includeProjects: true,
     includeLanguages: true,
+    selectedExperienceIds: [],
   });
 
   const getLocalizedValue = (obj: LocalizedString | undefined, lang: Language): string => {
@@ -112,7 +133,12 @@ export default function CVBuilderPage() {
     setCvData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const getLocalizedCVData = (lang: Language): any => ({
+  const getLocalizedCVData = (lang: Language): any => {
+    const selectedExp = cvData.selectedExperienceIds.length > 0
+      ? cvData.experience.filter(exp => cvData.selectedExperienceIds.includes(exp.id))
+      : cvData.experience;
+    
+    return ({
     name: getLocalizedValue(cvData.name, lang),
     title: getLocalizedValue(cvData.title, lang),
     email: cvData.email,
@@ -121,7 +147,7 @@ export default function CVBuilderPage() {
     linkedin: cvData.linkedin,
     github: cvData.github,
     summary: getLocalizedValue(cvData.summary, lang),
-    experience: cvData.experience.map((exp) => ({
+    experience: selectedExp.map((exp) => ({
       role: getLocalizedValue(exp.role, lang),
       company: getLocalizedValue(exp.company, lang),
       period: exp.period,
@@ -140,16 +166,40 @@ export default function CVBuilderPage() {
     })),
     languages: cvData.languages.map((l) => getLocalizedValue(l, lang)),
     additionalInfo: getLocalizedValue(cvData.additionalInfo, lang),
+    additionalData: {
+      willingnessToTravel: getLocalizedValue(cvData.additionalData.willingnessToTravel, lang),
+      willingnessToRelocate: getLocalizedValue(cvData.additionalData.willingnessToRelocate, lang),
+      driverLicense: getLocalizedValue(cvData.additionalData.driverLicense, lang),
+      vehicleType: getLocalizedValue(cvData.additionalData.vehicleType, lang),
+    },
     includeExperience: cvData.includeExperience,
     includeEducation: cvData.includeEducation,
     includeSkills: cvData.includeSkills,
     includeProjects: cvData.includeProjects,
     includeLanguages: cvData.includeLanguages,
-  });
+    language: lang,
+  });};
 
   useEffect(() => {
     fetchAllData();
+    fetchDefaultCV();
   }, []);
+
+  const fetchDefaultCV = async () => {
+    try {
+      const [defaultRes, historyRes] = await Promise.all([
+        fetch('/api/admin/cv/save'),
+        fetch('/api/admin/cv/save?history=true'),
+      ]);
+      const defaultData = await defaultRes.json();
+      const historyData = await historyRes.json();
+      
+      setDefaultCV(defaultData);
+      setCvHistory(Array.isArray(historyData) ? historyData : []);
+    } catch (error) {
+      console.error("Failed to fetch CV data:", error);
+    }
+  };
 
   const fetchAllData = async () => {
     try {
@@ -175,12 +225,14 @@ export default function CVBuilderPage() {
         ...prev,
         experience: Array.isArray(exp)
           ? exp.map((e: any) => ({
+              id: e.id,
               role: localizeField(e.role_pt, e.role_en, e.role_es),
               company: localizeField(e.company_pt, e.company_en, e.company_es),
               period: `${e.period_start} - ${e.period_end || "Atual"}`,
               description: localizeField(e.description_pt, e.description_en, e.description_es),
             }))
           : [],
+        selectedExperienceIds: Array.isArray(exp) ? exp.map((e: any) => e.id) : [],
         education: Array.isArray(edu)
           ? edu.map((e: any) => ({
               degree: localizeField(e.degree_pt, e.degree_en, e.degree_es),
@@ -223,12 +275,21 @@ export default function CVBuilderPage() {
       const localizedData = getLocalizedCVData(language);
       const blob = await pdf(<Component data={localizedData} />).toBlob();
 
-      const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-${language}.pdf`;
-      
+const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-${language}.pdf`;
+       
       const formData = new FormData();
       formData.append('pdf', blob, fileName);
       formData.append('templateId', selectedTemplate);
       formData.append('language', language);
+      formData.append('config', JSON.stringify({
+        selectedExperienceIds: cvData.selectedExperienceIds,
+        additionalData: cvData.additionalData,
+        includeExperience: cvData.includeExperience,
+        includeEducation: cvData.includeEducation,
+        includeSkills: cvData.includeSkills,
+        includeProjects: cvData.includeProjects,
+        includeLanguages: cvData.includeLanguages,
+      }));
 
       await fetch('/api/admin/cv/save', {
         method: 'POST',
@@ -286,8 +347,31 @@ export default function CVBuilderPage() {
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">CV Builder</h1>
           <p className="text-gray-400 mt-1">Selecione um template, configure e gere seu currículo em PDF</p>
+          {defaultCV && (
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-xs text-green-400 flex items-center gap-1">
+                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                {language === "pt" ? "CV padrão atual" : language === "en" ? "Current default CV" : "CV predeterminado actual"}
+              </span>
+              <span className="text-xs text-gray-500">
+                {defaultCV.template_id} • {defaultCV.language?.toUpperCase()} • {new Date(defaultCV.created_at).toLocaleDateString()}
+              </span>
+            </div>
+          )}
         </div>
-        <button
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            className="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-300 font-semibold px-4 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            {language === "pt" ? "Histórico" : language === "en" ? "History" : "Historial"}
+          </button>
+          <button
           onClick={generatePDF}
           disabled={generating}
           className="bg-cyan-500 hover:bg-cyan-400 disabled:bg-gray-600 text-black font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2"
@@ -460,6 +544,111 @@ export default function CVBuilderPage() {
           </div>
 
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+            <h3 className="text-sm font-semibold mb-3">Dados Complementares ({language.toUpperCase()})</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">
+                  {language === "pt" ? "Disponibilidade para viajar" : language === "en" ? "Willingness to travel" : "Disponibilidad para viajar"}
+                </label>
+                <select
+                  value={cvData.additionalData.willingnessToTravel[language] || ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCvData((prev) => ({
+                      ...prev,
+                      additionalData: {
+                        ...prev.additionalData,
+                        willingnessToTravel: { ...prev.additionalData.willingnessToTravel, [language]: value },
+                      },
+                    }));
+                  }}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
+                  <option value={language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}>{language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}</option>
+                  <option value={language === "pt" ? "Não" : language === "en" ? "No" : "No"}>{language === "pt" ? "Não" : language === "en" ? "No" : "No"}</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">
+                  {language === "pt" ? "Disponibilidade para mudar de residência" : language === "en" ? "Willingness to relocate" : "Disponibilidad para mudarse"}
+                </label>
+                <select
+                  value={cvData.additionalData.willingnessToRelocate[language] || ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCvData((prev) => ({
+                      ...prev,
+                      additionalData: {
+                        ...prev.additionalData,
+                        willingnessToRelocate: { ...prev.additionalData.willingnessToRelocate, [language]: value },
+                      },
+                    }));
+                  }}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
+                  <option value={language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}>{language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}</option>
+                  <option value={language === "pt" ? "Não" : language === "en" ? "No" : "No"}>{language === "pt" ? "Não" : language === "en" ? "No" : "No"}</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">
+                  {language === "pt" ? "Carteira de Habilitação" : language === "en" ? "Driver's License" : "Licencia de Conducir"}
+                </label>
+                <select
+                  value={cvData.additionalData.driverLicense[language] || ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCvData((prev) => ({
+                      ...prev,
+                      additionalData: {
+                        ...prev.additionalData,
+                        driverLicense: { ...prev.additionalData.driverLicense, [language]: value },
+                      },
+                    }));
+                  }}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
+                  <option value={language === "pt" ? "Não tenho" : language === "en" ? "I don't have" : "No tengo"}>{language === "pt" ? "Não tenho" : language === "en" ? "I don't have" : "No tengo"}</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1">
+                  {language === "pt" ? "Tipo de Veículo" : language === "en" ? "Vehicle Type" : "Tipo de Vehículo"}
+                </label>
+                <select
+                  value={cvData.additionalData.vehicleType[language] || ""}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCvData((prev) => ({
+                      ...prev,
+                      additionalData: {
+                        ...prev.additionalData,
+                        vehicleType: { ...prev.additionalData.vehicleType, [language]: value },
+                      },
+                    }));
+                  }}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
+                  <option value={language === "pt" ? "Carro particular" : language === "en" ? "Personal car" : "Coche particular"}>{language === "pt" ? "Carro particular" : language === "en" ? "Personal car" : "Coche particular"}</option>
+                  <option value={language === "pt" ? "Moto" : language === "en" ? "Motorcycle" : "Motocicleta"}>{language === "pt" ? "Moto" : language === "en" ? "Motorcycle" : "Motocicleta"}</option>
+                  <option value={language === "pt" ? "Caminhão" : language === "en" ? "Truck" : "Camión"}>{language === "pt" ? "Caminhão" : language === "en" ? "Truck" : "Camión"}</option>
+                  <option value={language === "pt" ? "Van / Utilitário" : language === "en" ? "Van / Utility" : "Furgoneta"}>{language === "pt" ? "Van / Utilitário" : language === "en" ? "Van / Utility" : "Furgoneta"}</option>
+                  <option value={language === "pt" ? "Não tenho" : language === "en" ? "I don't have" : "No tengo"}>{language === "pt" ? "Não tenho" : language === "en" ? "I don't have" : "No tengo"}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Seções do CV</h3>
             <div className="space-y-2">
               <label className="flex items-center gap-2 cursor-pointer">
@@ -510,12 +699,61 @@ export default function CVBuilderPage() {
             </div>
           </div>
 
+          {cvData.includeExperience && (
+            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+              <h3 className="text-sm font-semibold mb-3">Selecionar Experiências</h3>
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {cvData.experience.map((exp) => (
+                  <label key={exp.id} className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={cvData.selectedExperienceIds.includes(exp.id)}
+                      onChange={(e) => {
+                        const ids = e.target.checked
+                          ? [...cvData.selectedExperienceIds, exp.id]
+                          : cvData.selectedExperienceIds.filter((id) => id !== exp.id);
+                        setCvData({ ...cvData, selectedExperienceIds: ids });
+                      }}
+                      className="w-4 h-4 mt-0.5 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                    />
+                    <div className="text-xs">
+                      <span className="text-gray-300 block font-medium">
+                        {getLocalizedValue(exp.role, language)}
+                      </span>
+                      <span className="text-gray-500">
+                        {getLocalizedValue(exp.company, language)} • {exp.period}
+                      </span>
+                    </div>
+                  </label>
+                ))}
+                {cvData.experience.length === 0 && (
+                  <p className="text-xs text-gray-500">Nenhuma experiência encontrada</p>
+                )}
+              </div>
+              <div className="mt-3 pt-3 border-t border-gray-700 flex gap-2">
+                <button
+                  onClick={() => setCvData({ ...cvData, selectedExperienceIds: cvData.experience.map(e => e.id) })}
+                  className="text-xs text-cyan-400 hover:text-cyan-300"
+                >
+                  Selecionar todas
+                </button>
+                <span className="text-gray-600">|</span>
+                <button
+                  onClick={() => setCvData({ ...cvData, selectedExperienceIds: [] })}
+                  className="text-xs text-gray-400 hover:text-gray-300"
+                >
+                  Limpar seleção
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Resumo</h3>
             <div className="space-y-2 text-xs text-gray-400">
               <div className="flex justify-between">
                 <span>Experiências</span>
-                <span className="text-white">{cvData.experience.length}</span>
+                <span className="text-white">{cvData.selectedExperienceIds.length} / {cvData.experience.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Educação</span>
@@ -548,6 +786,75 @@ export default function CVBuilderPage() {
           </div>
         </div>
       </div>
+
+      {showHistory && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-900 border border-gray-800 rounded-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
+            <div className="p-4 border-b border-gray-800 flex items-center justify-between">
+              <h2 className="text-lg font-semibold">
+                {language === "pt" ? "Histórico de CVs" : language === "en" ? "CV History" : "Historial de CVs"}
+              </h2>
+              <button
+                onClick={() => setShowHistory(false)}
+                className="text-gray-400 hover:text-white"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+            <div className="overflow-y-auto max-h-[calc(80vh-80px)] p-4">
+              {cvHistory.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">
+                  {language === "pt" ? "Nenhum CV encontrado" : language === "en" ? "No CV found" : "No se encontró ningún CV"}
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {cvHistory.map((cv, index) => (
+                    <div
+                      key={cv.id}
+                      className={`p-4 rounded-lg border ${
+                        index === 0 ? "bg-cyan-500/10 border-cyan-500/30" : "bg-gray-800 border-gray-700"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-white">{cv.template_id || "Template"}</span>
+                            <span className="text-xs bg-gray-700 px-2 py-0.5 rounded text-gray-300">{cv.language?.toUpperCase()}</span>
+                            {index === 0 && (
+                              <span className="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded">
+                                {language === "pt" ? "Padrão" : language === "en" ? "Default" : "Predeterminado"}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(cv.created_at).toLocaleString()}
+                          </p>
+                        </div>
+                        <a
+                          href={cv.blob_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-cyan-400 hover:text-cyan-300 text-sm flex items-center gap-1"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                          </svg>
+                          {language === "pt" ? "Baixar" : language === "en" ? "Download" : "Descargar"}
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -6,11 +6,11 @@ import { useTheme } from "@/components/switchers/switchers"
 import LanguageSelector from "@/components/header/language"
 
 const navLinks = [
-  { label: { pt: "Início", en: "Home", es: "Inicio", fr: "Accueil", zh: "首页" }, href: "/v2.1" },
-  { label: { pt: "Projetos", en: "Projects", es: "Proyectos", fr: "Projets", zh: "项目" }, href: "/v2.1/projects" },
-  { label: { pt: "Experiências", en: "Experiences", es: "Experiencias", fr: "Expériences", zh: "经验" }, href: "/v2.1/experiences" },
-  { label: { pt: "Tecnologias", en: "Techs", es: "Tecnologías", fr: "Technologies", zh: "技术" }, href: "/v2.1/tecs" },
-  { label: { pt: "Contatos", en: "Contacts", es: "Contactos", fr: "Contacts", zh: "联系" }, href: "/v2.1/contacts" },
+  { label: { pt: "Início", en: "Home", es: "Inicio", fr: "Accueil", zh: "首页" }, href: "/" },
+  { label: { pt: "Projetos", en: "Projects", es: "Proyectos", fr: "Projets", zh: "项目" }, href: "/v2/projects" },
+  { label: { pt: "Experiências", en: "Experiences", es: "Experiencias", fr: "Expériences", zh: "经验" }, href: "/v2/experiences" },
+  { label: { pt: "Tecnologias", en: "Techs", es: "Tecnologías", fr: "Technologies", zh: "技术" }, href: "/v2/tecs" },
+  { label: { pt: "Contatos", en: "Contacts", es: "Contactos", fr: "Contacts", zh: "联系" }, href: "/v2/contacts" },
 ]
 
 export function V2Nav() {
@@ -48,7 +48,7 @@ export function V2Nav() {
     >
       <div className="max-w-[1800px] mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
         {/* Logo — reutiliza V1 logo */}
-        <Link href="/v2.1" className="flex-shrink-0">
+        <Link href="/" className="flex-shrink-0">
           <Image
             src={`/images/icon-logo${theme === "dark" ? "-dark-clean" : ""}.png`}
             alt="Logo EB"

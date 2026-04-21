@@ -40,11 +40,24 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
   education: Array<{ degree: string; school: string; period: string; description: string }>;
   skills: string[];
   projects: Array<{ name: string; description: string }>;
   languages: string[];
+  additionalInfo: string;
+  additionalData: {
+    willingnessToTravel: string;
+    willingnessToRelocate: string;
+    driverLicense: string;
+    vehicleType: string;
+  };
+  includeExperience: boolean;
+  includeEducation: boolean;
+  includeSkills: boolean;
+  includeProjects: boolean;
+  includeLanguages: boolean;
 }
 
 export function FunctionalCV({ data }: { data: CVData }) {
@@ -126,6 +139,18 @@ export function FunctionalCV({ data }: { data: CVData }) {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Languages</Text>
             <Text style={{ fontSize: 10, color: "#334155" }}>{data.languages.join(" • ")}</Text>
+          </View>
+        )}
+
+        {(data.additionalData?.willingnessToTravel || data.additionalData?.willingnessToRelocate || data.additionalData?.driverLicense || data.additionalData?.vehicleType) && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Additional Data</Text>
+            <View style={{ fontSize: 10, color: "#334155", lineHeight: 1.6 }}>
+              {data.additionalData.willingnessToTravel && <Text>• Willingness to travel: {data.additionalData.willingnessToTravel}</Text>}
+              {data.additionalData.willingnessToRelocate && <Text>• Willingness to relocate: {data.additionalData.willingnessToRelocate}</Text>}
+              {data.additionalData.driverLicense && <Text>• Driver's License: {data.additionalData.driverLicense}</Text>}
+              {data.additionalData.vehicleType && <Text>• Vehicle: {data.additionalData.vehicleType}</Text>}
+            </View>
           </View>
         )}
       </Page>

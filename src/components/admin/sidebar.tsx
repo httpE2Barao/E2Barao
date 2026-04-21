@@ -71,8 +71,17 @@ const iconMap: Record<string, JSX.Element> = {
   ),
 };
 
-export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export function AdminSidebar({ isOpen, onClose, theme = "dark" }: { isOpen: boolean; onClose: () => void; theme?: "dark" | "light" }) {
   const pathname = usePathname();
+  const isDark = theme === "dark";
+  
+  const bgSidebar = isDark ? "bg-gray-900" : "bg-white";
+  const borderColor = isDark ? "border-gray-800" : "border-gray-200";
+  const textTitle = isDark ? "text-white" : "text-gray-900";
+  const textMuted = isDark ? "text-gray-400" : "text-gray-500";
+  const textItem = isDark ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100";
+  const activeItem = isDark ? "bg-cyan-500/10 text-cyan-400" : "bg-blue-500/10 text-blue-600";
+  const buttonItem = isDark ? "text-gray-400 hover:text-white hover:bg-gray-800" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100";
 
   return (
     <>
@@ -84,14 +93,14 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
       )}
 
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 border-r border-gray-800 z-50 transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 left-0 h-full w-64 ${bgSidebar} border-r ${borderColor} z-50 transform transition-transform duration-300 lg:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="p-6 border-b border-gray-800">
-            <h1 className="text-xl font-bold text-white">Admin Panel</h1>
-            <p className="text-xs text-gray-400 mt-1">Portfolio & CV Manager</p>
+          <div className={`p-6 border-b ${borderColor}`}>
+            <h1 className={`text-xl font-bold ${textTitle}`}>Admin Panel</h1>
+            <p className={`text-xs ${textMuted} mt-1`}>Portfolio & CV Manager</p>
           </div>
 
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -104,8 +113,8 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
                   onClick={onClose}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-cyan-500/10 text-cyan-400"
-                      : "text-gray-400 hover:text-white hover:bg-gray-800"
+                      ? activeItem
+                      : textItem
                   }`}
                 >
                   {iconMap[item.icon]}
@@ -115,10 +124,10 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             })}
           </nav>
 
-          <div className="p-4 border-t border-gray-800">
+          <div className={`p-4 border-t ${borderColor}`}>
             <Link
               href="/"
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${buttonItem}`}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />

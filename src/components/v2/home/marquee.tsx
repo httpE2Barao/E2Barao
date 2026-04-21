@@ -82,7 +82,7 @@ export function V2Marquee() {
   const techStackLabel = language === "pt" ? "Stack Tecnológico" : language === "es" ? "Stack Tecnológico" : language === "fr" ? "Stack Technique" : language === "zh" ? "技术栈" : "Tech Stack"
 
   return (
-    <section className={`py-20 overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section id="skills" className={`py-20 overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       <div className="px-8 mb-12">
         <p className={`text-xs uppercase tracking-[0.3em] ${textMuted} mb-4`}>{techStackLabel}</p>
         <h2 className={`text-3xl md:text-5xl font-bold tracking-tighter`}>

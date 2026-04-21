@@ -54,11 +54,11 @@ export function V2Footer() {
               {navLabel}
             </h4>
             <div className="flex flex-col gap-3">
-              <Link href="/v2.1" className={`${textLink} transition-colors text-lg`}>{footerLinks.home[language as keyof typeof footerLinks.home] || footerLinks.home.en}</Link>
-              <Link href="/v2.1/projects" className={`${textLink} transition-colors text-lg`}>{footerLinks.projects[language as keyof typeof footerLinks.projects] || footerLinks.projects.en}</Link>
-              <Link href="/v2.1/experiences" className={`${textLink} transition-colors text-lg`}>{footerLinks.experiences[language as keyof typeof footerLinks.experiences] || footerLinks.experiences.en}</Link>
-              <Link href="/v2.1/tecs" className={`${textLink} transition-colors text-lg`}>{footerLinks.techs[language as keyof typeof footerLinks.techs] || footerLinks.techs.en}</Link>
-              <Link href="/v2.1/contacts" className={`${textLink} transition-colors text-lg`}>{footerLinks.contacts[language as keyof typeof footerLinks.contacts] || footerLinks.contacts.en}</Link>
+              <Link href="/" className={`${textLink} transition-colors text-lg`}>{footerLinks.home[language as keyof typeof footerLinks.home] || footerLinks.home.en}</Link>
+              <Link href="/v2/projects" className={`${textLink} transition-colors text-lg`}>{footerLinks.projects[language as keyof typeof footerLinks.projects] || footerLinks.projects.en}</Link>
+              <Link href="/v2/experiences" className={`${textLink} transition-colors text-lg`}>{footerLinks.experiences[language as keyof typeof footerLinks.experiences] || footerLinks.experiences.en}</Link>
+              <Link href="/v2/tecs" className={`${textLink} transition-colors text-lg`}>{footerLinks.techs[language as keyof typeof footerLinks.techs] || footerLinks.techs.en}</Link>
+              <Link href="/v2/contacts" className={`${textLink} transition-colors text-lg`}>{footerLinks.contacts[language as keyof typeof footerLinks.contacts] || footerLinks.contacts.en}</Link>
             </div>
           </div>
 

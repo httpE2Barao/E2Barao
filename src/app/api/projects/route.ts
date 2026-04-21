@@ -78,15 +78,32 @@ export async function GET(request: Request) {
     try {
       const projects = await getProjectsFromJSON();
       
+      const langMap: Record<string, string[]> = {
+        'pt': ['pt'],
+        'en': ['en'],
+        'es': ['es'],
+        'fr': ['fr'],
+        'zh': ['zh'],
+      };
+      
+      const getLocalizedField = (p: any, baseField: string): string => {
+        const langs = langMap[lang] || langMap['en'];
+        for (const l of langs) {
+          const value = p[`${baseField}_${l}`];
+          if (value) return value;
+        }
+        return '';
+      };
+      
       const formatted = projects.map((p: any) => ({
         id: p.id,
         src: p.src,
-        site: p.site || '',
-        repo: p.repo || '',
+        site: p.site_url || p.site || '',
+        repo: p.repo_url || p.repo || '',
         tags: p.tags || [],
-        name: p.name?.[lang] || p.name?.ptBR || p.name?.enUS || '',
-        alt: p.alt?.[lang] || p.alt?.ptBR || p.alt?.enUS || '',
-        abt: p.abt?.[lang] || p.abt?.ptBR || p.abt?.enUS || '',
+        name: getLocalizedField(p, 'name'),
+        alt: getLocalizedField(p, 'alt'),
+        abt: getLocalizedField(p, 'abt'),
         featured: p.featured || false,
       }));
 

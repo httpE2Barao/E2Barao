@@ -38,6 +38,7 @@ export async function POST(req: Request) {
       headers: {
         "Content-Type": "audio/mpeg",
         "Cache-Control": "public, max-age=3600",
+        "X-Audio-Duration": audioBuffer.byteLength.toString(),
       },
     })
   } catch (err) {

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --font-title: 'Rubik', sans-serif;
   --font-subtitle: 'adelphi-pe-variable, sans-serif;';

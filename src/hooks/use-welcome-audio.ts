@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useCallback, useState, useEffect } from "react"
+import { trimAudioEnd } from "./use-audio-trimmer"
 
 const WELCOME_TEXTS: Record<string, string> = {
   pt: "Olá! Sou o Cógnis. Posso te ajudar com projetos, skills e experiências do Elias. Vamos conversar?",
@@ -48,7 +49,8 @@ async function fetchTTSBlob(text: string, lang: string): Promise<{ url: string; 
   if (!res.ok) throw new Error(`TTS API failed: ${res.status}`)
 
   const blob = await res.blob()
-  const url = URL.createObjectURL(blob)
+  const trimmedBlob = await trimAudioEnd(blob, 2.7)
+  const url = URL.createObjectURL(trimmedBlob)
   return { url, cleanup: () => URL.revokeObjectURL(url) }
 }
 

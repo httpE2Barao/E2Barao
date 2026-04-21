@@ -78,6 +78,7 @@ export function V2IntroText() {
   return (
     <section
       ref={ref}
+      id="intro"
       className={`relative h-[200vh] ${isDark ? "bg-black" : "bg-white"}`}
     >
       <motion.div
