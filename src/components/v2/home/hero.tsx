@@ -30,7 +30,7 @@ const welcomePhrases = {
     fr: ["Salut ! Je suis Cógnis.", "Assistant IA d'Elias Barão.", "Demandez-moi des projets, compétences ou expériences.", "Interagissez avec moi — je suis là pour aider."],
     zh: ["你好！我是 Cógnis。", "Elias Barão 的 AI 助手。", "问我关于项目、技能或经验的问题。", "与我互动——我在这里帮助您。"],
   },
-  returning: {
+returning: {
     pt: ["Oi de novo!", "Fico feliz em te ver de volta!", "Sobrou alguma dúvida?", "Em que posso ajudar?"],
     en: ["Hi again!", "Happy to see you back!", "Any questions?", "How can I help?"],
     es: ["¡Hola de nuevo!", "¡Me alegra verte de vuelta!", "¿Tienes alguna duda?", "¿En qué puedo ayudar?"],
@@ -69,6 +69,14 @@ export function V2HomeHero() {
   const [hasUnmutedOnce, setHasUnmutedOnce] = useState(false)
   const [loadingPhraseIndex, setLoadingPhraseIndex] = useState(0)
 
+  const getResponseFontSize = (text: string) => {
+    const len = text.length
+    if (len > 300) return "text-xs sm:text-xs"
+    if (len > 200) return "text-xs sm:text-sm"
+    if (len > 100) return "text-sm sm:text-base"
+    return "text-base sm:text-lg"
+  }
+
   useEffect(() => {
     const textarea = textareaRef.current
     if (!textarea) return
@@ -80,14 +88,14 @@ export function V2HomeHero() {
 
   const subtitles =
     language === "pt"
-      ? ["Designer & Desenvolvedor", "Engenheiro de Software"]
+      ? ["Designer & Desenvolvedor", "Desenvolvedor Full-Stack"]
       : language === "es"
-      ? ["Diseñador & Desarrollador", "Ingeniero de Software"]
+      ? ["Diseñador & Desarrollador", "Desarrollador Full-Stack"]
       : language === "fr"
-      ? ["Designer & Développeur", "Ingénieur Logiciel"]
+      ? ["Designer & Développeur", "Développeur Full-Stack"]
       : language === "zh"
-      ? ["设计师 & 开发者", "软件工程师"]
-      : ["Designer & Developer", "Software Engineer"]
+      ? ["设计师 & 开发者", "全栈开发者"]
+      : ["Designer & Developer", "Full-Stack Developer"]
 
   const hasInteracted = useRef(false)
 
@@ -221,10 +229,7 @@ export function V2HomeHero() {
       setIsResponding(false)
       setChatResponse(reply)
       setShowResponse(true)
-      speak(reply, language, () => {
-        setShowResponse(false)
-        setChatResponse("")
-      })
+      speak(reply, language)
     } catch (err) {
       console.error("[Chat] Erro:", err)
       setIsTyping(false)
@@ -240,10 +245,7 @@ export function V2HomeHero() {
         : "Sorry, I'm having trouble right now. Try again."
       setChatResponse(fallbackReply)
       setShowResponse(true)
-      speak(fallbackReply, language, () => {
-        setShowResponse(false)
-        setChatResponse("")
-      })
+      speak(fallbackReply, language)
     }
   }
 
@@ -319,6 +321,14 @@ export function V2HomeHero() {
         >
           <a
             href="#approach"
+            onClick={(e) => {
+              e.preventDefault()
+              const element = document.getElementById("approach")
+              if (element) {
+                const y = element.getBoundingClientRect().top + window.scrollY
+                window.scrollTo({ top: y, behavior: "smooth" })
+              }
+            }}
             className={`px-4 py-2 ${btnBg} font-semibold rounded-full transition-colors text-[11px] sm:text-xs uppercase tracking-wider`}
           >
             {language === "pt" ? "Descubra mais" : language === "es" ? "Descubra más" : language === "fr" ? "Découvrir plus" : language === "zh" ? "了解更多" : "Discover more"}
@@ -328,6 +338,12 @@ export function V2HomeHero() {
             className={`px-4 py-2 border ${btnOutline} rounded-full transition-colors text-[11px] sm:text-xs uppercase tracking-wider`}
           >
             {language === "pt" ? "Ver projetos" : language === "es" ? "Ver proyectos" : language === "fr" ? "Voir les projets" : language === "zh" ? "查看项目" : "View projects"}
+          </a>
+          <a
+            href="/contacts"
+            className={`px-4 py-2 border ${btnOutline} rounded-full transition-colors text-[11px] sm:text-xs uppercase tracking-wider`}
+          >
+            Contato & CV
           </a>
         </motion.div>
       </div>
@@ -389,7 +405,7 @@ export function V2HomeHero() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2.5 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`text-[11px] sm:text-xs ${textMuted} flex items-center justify-center gap-2`}>
+                  <p className={`text-sm sm:text-base ${textMuted} flex items-center justify-center gap-2`}>
                     {loadingPhrases[language as keyof typeof loadingPhrases][loadingPhraseIndex]}...
                     <span className="flex gap-0.5">
                       {[0, 1, 2].map((i) => (
@@ -413,7 +429,7 @@ export function V2HomeHero() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`text-[11px] sm:text-xs ${textPrimary} leading-relaxed max-h-24 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent`}>
+                  <p className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-24 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent`}>
                     {chatResponse}
                   </p>
                 </motion.div>
@@ -427,7 +443,7 @@ export function V2HomeHero() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`text-[11px] sm:text-xs ${textMuted} leading-relaxed`}>
+                  <p className={`text-sm sm:text-base ${textMuted} leading-relaxed`}>
                     {currentPhrases[currentPhrase]}
                   </p>
                   <div className="flex justify-center gap-1 mt-1.5">

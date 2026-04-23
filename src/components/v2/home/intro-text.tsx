@@ -14,9 +14,9 @@ export function V2IntroText() {
   })
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 25,
-    restDelta: 0.001,
+    stiffness: 50,
+    damping: 20,
+    restDelta: 0.0001,
   })
 
   const opacity = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
@@ -36,38 +36,37 @@ export function V2IntroText() {
   const ctaY = useTransform(smoothProgress, [0.5, 0.7], [20, 0])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
-  const textSubtle = isDark ? "text-white/20" : "text-black/20"
   const textMuted = isDark ? "text-white/60" : "text-black/60"
 
   const lines = {
     pt: {
-      line1: "Full-Stack Developer",
-      line2: "que cria soluções escaláveis",
-      line3: "com código limpo e resultados reais.",
+      tagline: "Construir & Escalar",
+      line1: "Você tem uma ideia.",
+      line2: "Eu construo o sistema que faz ela escalar.",
       cta: "Explore meu trabalho",
     },
     en: {
-      line1: "Full-Stack Developer",
-      line2: "who builds scalable solutions",
-      line3: "with clean code and real results.",
+      tagline: "Build & Scale",
+      line1: "You have an idea.",
+      line2: "I build the system that makes it scale.",
       cta: "Explore my work",
     },
     es: {
-      line1: "Desarrollador Full-Stack",
-      line2: "que crea soluciones escalables",
-      line3: "con código limpio y resultados reales.",
+      tagline: "Construir & Escalar",
+      line1: "Tienes una idea.",
+      line2: "Yo construyo el sistema que la hace escalar.",
       cta: "Explora mi trabajo",
     },
     fr: {
-      line1: "Développeur Full-Stack",
-      line2: "qui crée des solutions évolutives",
-      line3: "avec du code propre et des résultats concrets.",
+      tagline: "Construire & Faire Évoluer",
+      line1: "Tu as une idée.",
+      line2: "Je construis le système qui la fait évoluer.",
       cta: "Explorez mon travail",
     },
     zh: {
-      line1: "全栈开发者",
-      line2: "打造可扩展的解决方案",
-      line3: "用干净的代码和真实的结果。",
+      tagline: "构建 & 扩展",
+      line1: "你有一个想法。",
+      line2: "我构建让它扩展的系统。",
       cta: "探索我的作品",
     },
   }
@@ -87,24 +86,24 @@ export function V2IntroText() {
       >
         <div className="text-center px-6 sm:px-10 max-w-4xl mx-auto">
           <motion.p
-            className={`text-xs sm:text-sm font-mono tracking-[0.3em] uppercase mb-6 ${accentColor}`}
+            className={`text-xs sm:text-sm font-mono tracking-[0.3em] uppercase mb-8 ${accentColor}`}
             style={{ opacity: line1Opacity, y: line1Y }}
           >
-            {content.line1}
+            {content.tagline}
           </motion.p>
 
           <motion.h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight mb-4 ${isDark ? "text-white" : "text-black"}`}
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight mb-2 ${isDark ? "text-white" : "text-black"}`}
             style={{ opacity: line2Opacity, y: line2Y }}
           >
-            {content.line2}
+            {content.line1}
           </motion.h2>
 
           <motion.h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight mb-12 ${textSubtle}`}
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight mb-12 ${isDark ? "text-white/80" : "text-black/80"}`}
             style={{ opacity: line3Opacity, y: line3Y }}
           >
-            {content.line3}
+            {content.line2}
           </motion.h2>
 
           <motion.div

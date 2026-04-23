@@ -15,6 +15,11 @@ interface Project {
   name_es: string;
   name_fr: string;
   name_zh: string;
+  subtitle_pt: string;
+  subtitle_en: string;
+  subtitle_es: string;
+  subtitle_fr: string;
+  subtitle_zh: string;
   abt_pt: string;
   abt_en: string;
   abt_es: string;
@@ -66,6 +71,7 @@ export default function ProjectsPage() {
 const [formData, setFormData] = useState({
   src: "", site_url: "", repo_url: "",
   name_pt: "", name_en: "", name_es: "", name_fr: "", name_zh: "",
+  subtitle_pt: "", subtitle_en: "", subtitle_es: "", subtitle_fr: "", subtitle_zh: "",
   abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
   alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
   tags: [] as string[], featured: false, display_order: 0,
@@ -125,6 +131,64 @@ const [formData, setFormData] = useState({
   };
 
 const filteredTags = allTags.filter((t) => t.toLowerCase().includes(tagInput.toLowerCase()) && !formData.tags.includes(t));
+
+  const [translatingName, setTranslatingName] = useState(false);
+  const [translatingDesc, setTranslatingDesc] = useState(false);
+
+  const translateText = async (text: string, targetLang: string): Promise<string> => {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, targetLang }),
+    });
+    if (!res.ok) throw new Error('Translation failed');
+    const data = await res.json();
+    return data.translatedText;
+  };
+
+  const translateName = async () => {
+    if (!formData.name_pt) return;
+    setTranslatingName(true);
+    const langs = ['en', 'es', 'fr', 'zh'] as const;
+    try {
+      const results = await Promise.all(
+        langs.map(async (lang) => ({ lang, text: await translateText(formData.name_pt, lang) }))
+      );
+      setFormData(prev => ({
+        ...prev,
+        name_en: results.find(r => r.lang === 'en')?.text || prev.name_en,
+        name_es: results.find(r => r.lang === 'es')?.text || prev.name_es,
+        name_fr: results.find(r => r.lang === 'fr')?.text || prev.name_fr,
+        name_zh: results.find(r => r.lang === 'zh')?.text || prev.name_zh,
+      }));
+    } catch (err) {
+      console.error('Erro ao traduzir nome:', err);
+    } finally {
+      setTranslatingName(false);
+    }
+  };
+
+  const translateDesc = async () => {
+    if (!formData.abt_pt) return;
+    setTranslatingDesc(true);
+    const langs = ['en', 'es', 'fr', 'zh'] as const;
+    try {
+      const results = await Promise.all(
+        langs.map(async (lang) => ({ lang, text: await translateText(formData.abt_pt, lang) }))
+      );
+      setFormData(prev => ({
+        ...prev,
+        abt_en: results.find(r => r.lang === 'en')?.text || prev.abt_en,
+        abt_es: results.find(r => r.lang === 'es')?.text || prev.abt_es,
+        abt_fr: results.find(r => r.lang === 'fr')?.text || prev.abt_fr,
+        abt_zh: results.find(r => r.lang === 'zh')?.text || prev.abt_zh,
+      }));
+    } catch (err) {
+      console.error('Erro ao traduzir descrição:', err);
+    } finally {
+      setTranslatingDesc(false);
+    }
+  };
 
 const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 const file = e.target.files?.[0];
@@ -190,6 +254,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
     setFormData({
       src: project.src || "", site_url: project.site_url || "", repo_url: project.repo_url || "",
       name_pt: project.name_pt || "", name_en: project.name_en || "", name_es: project.name_es || "", name_fr: project.name_fr || "", name_zh: project.name_zh || "",
+      subtitle_pt: project.subtitle_pt || "", subtitle_en: project.subtitle_en || "", subtitle_es: project.subtitle_es || "", subtitle_fr: project.subtitle_fr || "", subtitle_zh: project.subtitle_zh || "",
       abt_pt: project.abt_pt || "", abt_en: project.abt_en || "", abt_es: project.abt_es || "", abt_fr: project.abt_fr || "", abt_zh: project.abt_zh || "",
       alt_pt: project.alt_pt || "", alt_en: project.alt_en || "", alt_es: project.alt_es || "", alt_fr: project.alt_fr || "", alt_zh: project.alt_zh || "",
       tags: Array.isArray(project.tags) ? project.tags : [],
@@ -204,6 +269,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
     setFormData({
       src: "", site_url: "", repo_url: "",
       name_pt: "", name_en: "", name_es: "", name_fr: "", name_zh: "",
+      subtitle_pt: "", subtitle_en: "", subtitle_es: "", subtitle_fr: "", subtitle_zh: "",
       abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
       alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
       tags: [], featured: false, display_order: 0,
@@ -314,19 +380,92 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
             </div>
 
             <div className={`border-t ${colors.border} pt-4`}>
-              <h3 className={`text-sm font-semibold ${colors.accent} mb-3`}>Nomes por Idioma</h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={`text-sm font-semibold ${colors.accent}`}>Nomes por Idioma</h3>
+                <button
+                  type="button"
+                  onClick={translateName}
+                  disabled={translatingName || !formData.name_pt}
+                  className={`text-xs px-3 py-1.5 rounded transition-colors flex items-center gap-2 ${translatingName ? 'opacity-50 cursor-not-allowed' : ''} ${colors.accentBg} ${colors.accent} border ${colors.accentBorder} hover:${colors.cardBgAlt}`}
+                >
+                  {translatingName ? (
+                    <><span className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin" />Traduzindo...</>
+                  ) : (
+                    <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.003 7M10 21V7m-4 14a2 2 0 100-4 2 2 0 000 4z" /></svg>Traduzir Nome</>
+                  )}
+                </button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {(["pt", "en", "es", "fr", "zh"] as const).map((lang) => (
                   <div key={lang}>
-                    <label className={`block text-xs ${colors.textMuted} mb-1`}>Nome ({lang.toUpperCase()}){lang === "pt" || lang === "en" ? "*" : ""}</label>
-                    <input type="text" value={formData[`name_${lang}`]} onChange={(e) => setFormData({ ...formData, [`name_${lang}`]: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required={lang === "pt" || lang === "en"} />
+                    <label className={`block text-xs ${colors.textMuted} mb-1`}>Nome ({lang.toUpperCase()}){lang === "pt" ? "*" : ""}</label>
+                    <input type="text" value={formData[`name_${lang}`]} onChange={(e) => setFormData({ ...formData, [`name_${lang}`]: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required={lang === "pt"} />
                   </div>
                 ))}
               </div>
             </div>
 
             <div className={`border-t ${colors.border} pt-4`}>
-              <h3 className={`text-sm font-semibold ${colors.accent} mb-3`}>Descrições por Idioma</h3>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={`text-sm font-semibold ${colors.accent}`}>Subtítulos por Idioma</h3>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!formData.subtitle_pt || translatingDesc) return;
+                    setTranslatingDesc(true);
+                    const langs = ['en', 'es', 'fr', 'zh'] as const;
+                    try {
+                      const results = await Promise.all(
+                        langs.map(async (lang) => ({ lang, text: await translateText(formData.subtitle_pt, lang) }))
+                      );
+                      setFormData(prev => ({
+                        ...prev,
+                        subtitle_en: results.find(r => r.lang === 'en')?.text || prev.subtitle_en,
+                        subtitle_es: results.find(r => r.lang === 'es')?.text || prev.subtitle_es,
+                        subtitle_fr: results.find(r => r.lang === 'fr')?.text || prev.subtitle_fr,
+                        subtitle_zh: results.find(r => r.lang === 'zh')?.text || prev.subtitle_zh,
+                      }));
+                    } catch (err) {
+                      console.error('Erro ao traduzir subtitles:', err);
+                    }
+                    setTranslatingDesc(false);
+                  }}
+                  disabled={translatingDesc || !formData.subtitle_pt}
+                  className={`text-xs px-3 py-1.5 rounded transition-colors flex items-center gap-2 ${translatingDesc ? 'opacity-50 cursor-not-allowed' : ''} ${colors.accentBg} ${colors.accent} border ${colors.accentBorder} hover:${colors.cardBgAlt}`}
+                >
+                  {translatingDesc ? (
+                    <><span className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin" />Traduzindo...</>
+                  ) : (
+                    <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.003 7M10 21V7m-4 14a2 2 0 100-4 2 2 0 000 4z" /></svg>Traduzir Subtítulo</>
+                  )}
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {(["pt", "en", "es", "fr", "zh"] as const).map((lang) => (
+                  <div key={lang}>
+                    <label className={`block text-xs ${colors.textMuted} mb-1`}>Subtítulo ({lang.toUpperCase()})</label>
+                    <input type="text" value={formData[`subtitle_${lang}`]} onChange={(e) => setFormData({ ...formData, [`subtitle_${lang}`]: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={`border-t ${colors.border} pt-4`}>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className={`text-sm font-semibold ${colors.accent}`}>Descrições por Idioma</h3>
+                <button
+                  type="button"
+                  onClick={translateDesc}
+                  disabled={translatingDesc || !formData.abt_pt}
+                  className={`text-xs px-3 py-1.5 rounded transition-colors flex items-center gap-2 ${translatingDesc ? 'opacity-50 cursor-not-allowed' : ''} ${colors.accentBg} ${colors.accent} border ${colors.accentBorder} hover:${colors.cardBgAlt}`}
+                >
+                  {translatingDesc ? (
+                    <><span className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin" />Traduzindo...</>
+                  ) : (
+                    <><svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.003 7M10 21V7m-4 14a2 2 0 100-4 2 2 0 000 4z" /></svg>Traduzir Descrição</>
+                  )}
+                </button>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {(["pt", "en", "es", "fr", "zh"] as const).map((lang) => (
                   <div key={lang}>

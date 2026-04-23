@@ -69,6 +69,14 @@ export function V2HomeHeroV2() {
   const [hasUnmutedOnce, setHasUnmutedOnce] = useState(false)
   const [loadingPhraseIndex, setLoadingPhraseIndex] = useState(0)
 
+  const getResponseFontSize = (text: string) => {
+    const len = text.length
+    if (len > 300) return "text-xs"
+    if (len > 200) return "text-xs sm:text-sm"
+    if (len > 100) return "text-sm sm:text-base"
+    return "text-base"
+  }
+
   useEffect(() => {
     const textarea = textareaRef.current
     if (!textarea) return
@@ -80,15 +88,15 @@ export function V2HomeHeroV2() {
 
   const fullName = "Elias Edson Barão"
   
-  const title = language === "pt" 
-    ? "Software &\nAutomation Engineer" 
+  const title = language === "pt"
+    ? "Desenvolvedor\nFull-Stack"
     : language === "es"
-    ? "Ingeniero de Software"
+    ? "Desarrollador\nFull-Stack"
     : language === "fr"
-    ? "Ingénieur Logiciel"
+    ? "Développeur\nFull-Stack"
     : language === "zh"
-    ? "软件工程师"
-    : "Software &\nEngineer"
+    ? "全栈\n开发者"
+    : "Full-Stack\nDeveloper"
 
   const hasInteracted = useRef(false)
 
@@ -215,10 +223,7 @@ export function V2HomeHeroV2() {
       setIsResponding(false)
       setChatResponse(reply)
       setShowResponse(true)
-      speak(reply, language, () => {
-        setShowResponse(false)
-        setChatResponse("")
-      })
+      speak(reply, language)
     } catch (err) {
       console.error("[Chat] Erro:", err)
       setIsTyping(false)
@@ -234,10 +239,7 @@ export function V2HomeHeroV2() {
         : "Sorry, I'm having trouble right now. Try again."
       setChatResponse(fallbackReply)
       setShowResponse(true)
-      speak(fallbackReply, language, () => {
-        setShowResponse(false)
-        setChatResponse("")
-      })
+      speak(fallbackReply, language)
     }
   }
 
@@ -324,19 +326,50 @@ export function V2HomeHeroV2() {
         )}
       </button>
 
-      {/* Action Buttons - Right side, vertical */}
-<div className="absolute z-30 right-2 sm:right-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 sm:gap-3 pointer-events-auto">
-        <a
-          href="#intro"
-          className={`${btnBg} font-semibold rounded-full transition-colors text-[10px] sm:text-xs uppercase tracking-wider px-3 py-2 sm:px-4 sm:py-2 block text-center cursor-pointer pointer-events-auto`}
+{/* Action Buttons - Right side, vertical */}
+      <div className="absolute z-30 right-2 sm:right-4 top-1/2 -translate-y-1/2 flex flex-col gap-2 sm:gap-3 pointer-events-auto">
+<button
+          type="button"
+          onClick={() => {
+            const element = document.getElementById("intro")
+            if (element) {
+              const headerHeight = 80
+              const elementPosition = element.getBoundingClientRect().top + window.scrollY
+              const targetPosition = elementPosition - headerHeight
+              const startPosition = window.scrollY
+              const distance = targetPosition - startPosition
+              const duration = 800
+              let startTime: number | null = null
+
+              const step = (currentTime: number) => {
+                if (startTime === null) startTime = currentTime
+                const elapsed = currentTime - startTime
+                const progress = Math.min(elapsed / duration, 1)
+                const easeProgress = 1 - Math.pow(1 - progress, 3)
+                window.scrollTo(0, startPosition + distance * easeProgress)
+                if (progress < 1) {
+                  requestAnimationFrame(step)
+                }
+              }
+
+              requestAnimationFrame(step)
+            }
+          }}
+          className={`${btnBg} font-semibold rounded-full transition-colors text-[10px] sm:text-xs uppercase tracking-wider px-3 py-2 sm:px-4 sm:py-2 block text-center cursor-pointer`}
         >
-          {language === "pt" ? "Descubra" : language === "es" ? "Descubra" : language === "fr" ? "Découvrir" : language === "zh" ? "了解" : "Discover"}
-        </a>
+            {language === "pt" ? "Descubra" : language === "es" ? "Descubra" : language === "fr" ? "Découvrir" : language === "zh" ? "了解" : "Discover"}
+          </button>
         <a
           href="#projects"
           className={`border ${btnOutline} rounded-full transition-colors text-[10px] sm:text-xs uppercase tracking-wider px-3 py-2 sm:px-4 sm:py-2 block text-center cursor-pointer pointer-events-auto`}
         >
           {language === "pt" ? "Projetos" : language === "es" ? "Proyectos" : language === "fr" ? "Projets" : language === "zh" ? "项目" : "Projects"}
+        </a>
+        <a
+          href="/contacts"
+          className={`border ${btnOutline} rounded-full transition-colors text-[10px] sm:text-xs uppercase tracking-wider px-3 py-2 sm:px-4 sm:py-2 block text-center cursor-pointer pointer-events-auto`}
+        >
+          Contato & CV
         </a>
       </div>
 
@@ -356,7 +389,7 @@ export function V2HomeHeroV2() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`text-[11px] ${bubbleText} flex items-center justify-center gap-2`}>
+                  <p className={`text-sm ${bubbleText} flex items-center justify-center gap-2`}>
                     {loadingPhrases[language as keyof typeof loadingPhrases][loadingPhraseIndex]}...
                     <span className="flex gap-0.5">
                       {[0, 1, 2].map((i) => (
@@ -380,7 +413,7 @@ export function V2HomeHeroV2() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`text-[11px] ${bubbleText} leading-relaxed max-h-16 overflow-y-auto`}>
+                  <p className={`${getResponseFontSize(chatResponse)} ${bubbleText} leading-relaxed max-h-16 overflow-y-auto`}>
                     {chatResponse}
                   </p>
                 </motion.div>
@@ -394,7 +427,7 @@ export function V2HomeHeroV2() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`text-[11px] ${bubbleText} leading-relaxed`}>
+                  <p className={`text-sm ${bubbleText} leading-relaxed`}>
                     {currentPhrases[currentPhrase]}
                   </p>
                   <div className="flex justify-center gap-1 mt-1">

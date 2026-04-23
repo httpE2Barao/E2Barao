@@ -18,6 +18,8 @@ export function V2SmoothScroll({ children }: { children: React.ReactNode }) {
 
     lenisRef.current = lenis
 
+    ;(window as unknown as { lenis: Lenis }).lenis = lenis
+
     return () => {
       lenis.destroy()
     }

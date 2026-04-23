@@ -2,6 +2,7 @@
 import { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useTheme } from "@/components/switchers/switchers"
+import Link from "next/link"
 
 interface Experience {
   id: number;
@@ -24,6 +25,13 @@ interface Experience {
   description_zh: string;
   highlight: boolean;
   display_order: number;
+  github_repos?: string[];
+}
+
+interface ExperienceStats {
+  repos_count: number;
+  total_lines_estimate: number;
+  by_language: { language: string; percentage: number; lines_estimate: number }[];
 }
 
 interface Education {
@@ -48,7 +56,7 @@ interface Education {
   display_order: number;
 }
 
-function TimelineItem({ exp, index, isLast, language }: { exp: Experience; index: number; isLast: boolean; language: string }) {
+function TimelineItem({ exp, index, isLast, language, stats }: { exp: Experience; index: number; isLast: boolean; language: string; stats?: ExperienceStats }) {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -88,30 +96,61 @@ function TimelineItem({ exp, index, isLast, language }: { exp: Experience; index
       style={{ opacity, x }}
       className="relative flex gap-8 mb-16 md:mb-24"
     >
-{!isLast && (
-  <div className={`absolute left-0 md:left-1/2 top-2 bottom-0 w-px ${lineBg}`}>
-    <motion.div
-      className={`w-full ${lineActive} origin-top`}
-      style={{ scaleY: scrollYProgress }}
-    />
-  </div>
-)}
-
-      <div className={`relative z-10 flex-shrink-0 w-4 h-4 rounded-full border-2 ${exp.highlight ? `${dotHighlightBorder} ${dotHighlightBg}` : `${dotBorder} ${dotBg}`} mt-2 md:mt-1 md:-ml-2`}>
-        {exp.highlight && (
-          <motion.div
-            className={`absolute inset-0 rounded-full ${dotPulse}`}
-            animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
+      <div className="relative flex-shrink-0 w-4">
+        {!isLast && (
+          <div className={`absolute left-1/2 top-3 -translate-x-1/2 w-px h-full ${lineBg}`}>
+            <motion.div
+              className={`w-full ${lineActive} origin-top`}
+              style={{ scaleY: scrollYProgress }}
+            />
+          </div>
         )}
+        <div className={`relative z-10 w-4 h-4 rounded-full border-2 ${exp.highlight ? `${dotHighlightBorder} ${dotHighlightBg}` : `${dotBorder} ${dotBg}`}`}>
+          {exp.highlight && (
+            <motion.div
+              className={`absolute inset-0 rounded-full ${dotPulse}`}
+              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          )}
+        </div>
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 pt-0.5">
         <p className={`${accentColor} text-sm font-mono mb-2`}>{period}</p>
         <h3 className={`text-2xl md:text-3xl font-bold tracking-tight mb-1 ${textPrimary}`}>{roleLabel}</h3>
         <p className={`${textCompany} text-sm uppercase tracking-wider mb-4`}>{companyLabel}</p>
-        <p className={`${textDesc} leading-relaxed max-w-2xl`}>{descLabel}</p>
+        <p className={`${textDesc} leading-relaxed max-w-2xl mb-4`}>{descLabel}</p>
+        
+        {stats && stats.by_language.length > 0 && (
+          <div className={`mt-4 p-4 rounded-xl ${isDark ? "bg-white/5" : "bg-black/5"}`}>
+            <p className={`text-xs font-mono mb-3 ${textCompany}`}>
+              {language === "pt" ? "~" : ""}{stats.total_lines_estimate.toLocaleString()} {language === "pt" ? "linhas de código" : "lines of code"}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {stats.by_language.slice(0, 4).map((lang, i) => (
+                <div key={lang.language} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${isDark ? "bg-white/10" : "bg-black/10"}`}>
+                  <span className={`w-2 h-2 rounded-full ${lang.language === "TypeScript" ? "bg-blue-500" : lang.language === "JavaScript" ? "bg-yellow-500" : lang.language === "CSS" ? "bg-pink-500" : lang.language === "Python" ? "bg-green-500" : "bg-gray-500"}`} />
+                  <span className={`text-xs ${textPrimary}`}>{lang.language}</span>
+                  <span className={`text-xs ${textCompany}`}>{lang.percentage}%</span>
+                </div>
+              ))}
+            </div>
+            {stats.repos_count > 0 && (
+              <Link
+                href={`https://github.com/httpE2Barao?tab=repositories`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex items-center gap-1 mt-3 text-xs ${accentColor} hover:underline`}
+              >
+                {stats.repos_count} {stats.repos_count === 1 ? "repo" : "repos"} GitHub
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </motion.div>
   )
@@ -164,6 +203,7 @@ export function V2ExperiencesPage() {
   const [activeTab, setActiveTab] = useState<"experience" | "education">("experience")
   const [experiences, setExperiences] = useState<Experience[]>([])
   const [education, setEducation] = useState<Education[]>([])
+  const [expStats, setExpStats] = useState<Record<number, ExperienceStats>>({})
   const [loading, setLoading] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
   const { theme, language } = useTheme()
@@ -202,6 +242,30 @@ export function V2ExperiencesPage() {
         const eduData = await eduRes.json()
         setExperiences(Array.isArray(expData) ? expData.sort((a: Experience, b: Experience) => a.display_order - b.display_order) : [])
         setEducation(Array.isArray(eduData) ? eduData.sort((a: Education, b: Education) => a.display_order - b.display_order) : [])
+
+        if (Array.isArray(expData)) {
+          for (const exp of expData) {
+            if (exp.github_repos && exp.github_repos.length > 0) {
+              try {
+                const reposParam = exp.github_repos.join(',')
+                const statsRes = await fetch(`/api/github/experience-stats?repos=${encodeURIComponent(reposParam)}`)
+                if (statsRes.ok) {
+                  const stats = await statsRes.json()
+                  setExpStats(prev => ({
+                    ...prev,
+                    [exp.id]: {
+                      repos_count: stats.repos_count,
+                      total_lines_estimate: stats.total_lines_estimate,
+                      by_language: stats.by_language.slice(0, 5),
+                    }
+                  }))
+                }
+              } catch {
+                console.error("Failed to fetch stats for experience", exp.id)
+              }
+            }
+          }
+        }
       } catch (error) {
         console.error("Failed to fetch experiences:", error)
       } finally {
@@ -282,7 +346,7 @@ export function V2ExperiencesPage() {
                   <p className={`${textMuted}`}>No experiences found.</p>
                 ) : (
                   experiences.map((exp, i) => (
-                    <TimelineItem key={exp.id} exp={exp} index={i} isLast={i === experiences.length - 1} language={language} />
+                    <TimelineItem key={exp.id} exp={exp} index={i} isLast={i === experiences.length - 1} language={language} stats={expStats[exp.id]} />
                   ))
                 )}
               </motion.div>

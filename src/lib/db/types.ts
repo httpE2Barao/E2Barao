@@ -32,6 +32,7 @@ export interface ExperienceEntry {
   description_zh: string;
   highlight: boolean;
   display_order: number;
+  github_repos: string[];
   created_at: string;
   updated_at: string;
 }

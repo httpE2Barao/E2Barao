@@ -42,6 +42,7 @@ export async function GET(request: Request) {
       SELECT 
         id, src, site_url, repo_url, image_urls, tags, created_at, featured, display_order,
         name_pt, name_en, name_es, name_fr, name_zh,
+        subtitle_pt, subtitle_en, subtitle_es, subtitle_fr, subtitle_zh,
         abt_pt, abt_en, abt_es, abt_fr, abt_zh,
         alt_pt, alt_en, alt_es, alt_fr, alt_zh
       FROM projects 
@@ -64,6 +65,7 @@ export async function GET(request: Request) {
         tags: row.tags,
         imageUrls: row.image_urls,
         name: getText('name'),
+        subtitle: getText('subtitle'),
         alt: getText('alt'),
         abt: getText('abt'),
         featured: row.featured,

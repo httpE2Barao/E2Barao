@@ -14,12 +14,14 @@ import { CombinationPreview } from "@/components/cv/preview/combination";
 import { MinimalPreview } from "@/components/cv/preview/minimal";
 import { CreativePreview } from "@/components/cv/preview/creative";
 
-type Language = "pt" | "en" | "es";
+type Language = "pt" | "en" | "es" | "fr" | "zh";
 
 interface LocalizedString {
   pt: string;
   en: string;
   es: string;
+  fr?: string;
+  zh?: string;
 }
 
 interface Experience {
@@ -109,7 +111,7 @@ export default function CVBuilderPage() {
   const [showHistory, setShowHistory] = useState(false);
   const [cvData, setCvData] = useState<CVData>({
     name: { pt: "Elias Edson Barao", en: "Elias Edson Barao", es: "Elias Edson Barao" },
-    title: { pt: "Engenheiro de Software & Desenvolvedor Full-Stack", en: "Software Engineer & Full-Stack Developer", es: "Ingeniero de Software & Desarrollador Full-Stack" },
+    title: { pt: "Desenvolvedor Full-Stack", en: "Full-Stack Developer", es: "Desarrollador Full-Stack", fr: "Développeur Full-Stack", zh: "全栈开发者" },
     email: "e2barao@hotmail.com",
     phone: "+55 41 99804-6755",
     location: { pt: "Curitiba, Paraná, Brasil", en: "Curitiba, Paraná, Brazil", es: "Curitiba, Paraná, Brasil" },

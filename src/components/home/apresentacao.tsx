@@ -11,11 +11,11 @@ const translations = {
     zh: "以利亚 爱迪生 巴朗", 
   },
   subtitles: {
-    pt: ['Designer & Desenvolvedor', 'Engenheiro de Software'],
-    en: ['Designer & Developer', 'Software Engineer'],
-    es: ['Diseñador & Desarrollador', 'Ingeniero de Software'],
-    fr: ['Designer & Développeur', 'Ingénieur Logiciel'],
-    zh: ['设计师 & 开发者', '软件工程师'],
+    pt: ['Designer & Desenvolvedor', 'Desenvolvedor Full-Stack'],
+    en: ['Designer & Developer', 'Full-Stack Developer'],
+    es: ['Diseñador & Desarrollador', 'Desarrollador Full-Stack'],
+    fr: ['Designer & Développeur', 'Développeur Full-Stack'],
+    zh: ['设计师 & 开发者', '全栈开发者'],
   }
 };
 

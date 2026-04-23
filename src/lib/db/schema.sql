@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS experience_entries (
   description_zh TEXT,
   highlight BOOLEAN DEFAULT false,
   display_order INTEGER DEFAULT 0,
+  github_repos TEXT[] DEFAULT '{}',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -113,6 +114,11 @@ CREATE TABLE IF NOT EXISTS projects (
   name_es TEXT,
   name_fr TEXT,
   name_zh TEXT,
+  subtitle_pt TEXT,
+  subtitle_en TEXT,
+  subtitle_es TEXT,
+  subtitle_fr TEXT,
+  subtitle_zh TEXT,
   abt_pt TEXT,
   abt_en TEXT,
   abt_es TEXT,

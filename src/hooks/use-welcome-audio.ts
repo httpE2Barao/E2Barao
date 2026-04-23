@@ -35,7 +35,7 @@ const LANG_MAP: Record<string, string> = {
   zh: "zh-CN",
 }
 
-async function fetchTTSBlob(text: string, lang: string): Promise<{ url: string; cleanup: () => void }> {
+async function fetchTTSBlob(text: string, lang: string, useNative = false): Promise<{ url: string; cleanup: () => void; native?: boolean }> {
   const voice = VOICE_MAP[lang] || VOICE_MAP["en"]
 
   console.log(`[TTS] Gerando áudio: voice=${voice}, lang=${lang}`)
@@ -46,7 +46,11 @@ async function fetchTTSBlob(text: string, lang: string): Promise<{ url: string; 
     body: JSON.stringify({ text, voice, rate: "+30%", pitch: "+0Hz" }),
   })
 
-  if (!res.ok) throw new Error(`TTS API failed: ${res.status}`)
+  if (!res.ok) {
+    if (useNative) throw new Error(`TTS API failed: ${res.status}`)
+    console.warn(`[TTS] API falhou (${res.status}), usando fallback nativo`)
+    return { url: "", cleanup: () => {}, native: true }
+  }
 
   const blob = await res.blob()
   const trimmedBlob = await trimAudioEnd(blob, 2.7)
@@ -186,7 +190,14 @@ export function useSpeech() {
     isSpeaking.current = true
 
     try {
-      const { url, cleanup } = await fetchTTSBlob(text, lang)
+      const ttsResult = await fetchTTSBlob(text, lang, true)
+      if (ttsResult.native) {
+        speakNative(text, lang)
+        isSpeaking.current = false
+        onEnd?.()
+        return
+      }
+      const { url, cleanup } = ttsResult
       const audio = new Audio(url)
       currentAudio.current = audio
       currentCleanup.current = cleanup
