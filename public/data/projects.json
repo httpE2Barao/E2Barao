@@ -44,7 +44,7 @@
     },
     {
       "id": 2,
-      "src": "digital-acceleration-christopher-columbus-museum",
+      "src": "mmcc",
       "site_url": "",
       "repo_url": "",
       "image_urls": [],
@@ -446,6 +446,41 @@
       "featured": false,
       "display_order": 13,
       "created_at": "2026-04-06T19:07:55.969Z"
+    },
+    {
+      "id": 15,
+      "src": "gabinete-digital",
+      "site_url": "https://gabinete-digital-tan.vercel.app/",
+      "repo_url": "https://github.com/httpE2Barao/Gabinete-Digital",
+      "name_pt": "Gabinete Digital CRM",
+      "name_en": "Digital Cabinet CRM",
+      "name_es": "Gabinete Digital CRM",
+      "name_fr": "Cabinet Numérique CRM",
+      "name_zh": "数字内阁 CRM",
+      "abt_pt": "Gabinete Digital é uma plataforma GovTech em Next.js para gestão de mandatos parlamentares, projetada para aproximar o cidadão do poder legislativo através de transparência e inteligência de dados. O sistema abrange desde um site institucional com vitrine legislativa e captura de demandas, até um CRM interno com Kanban de protocolos e integração WhatsApp, evoluindo para uma solução de GovTech com IA para triagem automatizada e mapas de calor territoriais via PostGIS. Construído com Next.js 16, React 19, Tailwind CSS e PostgreSQL, o projeto demonstra expertise em arquiteturas fullstack escaláveis e design de sistemas que transformam processos governamentais através da tecnologia.",
+      "abt_en": "I developed the Gabinete Digital, a GovTech platform in Next.js for parliamentary mandate management, designed to bring citizens closer to the legislative power through transparency and data intelligence. The system ranges from an institutional website with a legislative showcase and demand capture, to an internal CRM with Kanban protocols and WhatsApp integration, evolving into a GovTech solution with AI for automated triage and territorial heat maps via PostGIS. Built with Next.js 16, React 19, Tailwind CSS, and PostgreSQL, the project demonstrates expertise in scalable fullstack architectures and system design that transform governmental processes through technology.",
+      "abt_es": "Desarrollé el Gabinete Digital, una plataforma GovTech en Next.js para la gestión de mandatos parlamentares, diseñada para aproximar al ciudadano al poder legislativo a través de transparencia e inteligencia de datos. El sistema abarca desde un sitio web institucional con escaparate legislativo y captura de demandas, hasta un CRM interno con Kanban de protocolos e integración WhatsApp, evolucionando hacia una solución GovTech con IA para triaje automatizado y mapas de calor territoriales vía PostGIS. Construido con Next.js 16, React 19, Tailwind CSS y PostgreSQL, el proyecto demuestra experiencia en arquitecturas fullstack escalables y diseño de sistemas que transforman procesos gubernamentales a través de la tecnología.",
+      "abt_fr": "J'ai développé le Gabinete Digital, une plateforme GovTech en Next.js pour la gestion des mandats parliamentaires, conçue pour rapprocher le citoyen du pouvoir législatif grâce à la transparence et à l'intelligence des données. Le système va d'un site web institutionnel avec vitrine législative et capture des demandes, à un CRM interne avec Kanban de protocoles et intégration WhatsApp, évoluant vers une solution GovTech avec IA pour le triage automatisé et les cartes de chaleur territoriales via PostGIS. Construit avec Next.js 16, React 19, Tailwind CSS et PostgreSQL, le projet démontre une expertise en architectures fullstack évolutives et en conception de systèmes qui transforment les processus gouvernementaux grâce à la technologie.",
+      "abt_zh": "我开发了 Gabinete Digital，这是一个基于 Next.js 的 GovTech 平台，用于管理议会授权，旨在通过透明度和数据智能将公民与立法权力紧密联系起来。该系统涵盖从带有立法展示和需求捕获的机构网站，到带有看板协议和 WhatsApp 集成功能的内部 CRM，最终演变为具有 AI 自动分类和通过 PostGIS 实现的热力图的 GovTech 解决方案。项目采用 Next.js 16、React 19、Tailwind CSS 和 PostgreSQL 构建，展示了可扩展的全栈架构和系统设计方面的专业知识，这些系统通过技术改变政府流程。",
+      "alt_pt": "",
+      "alt_en": "",
+      "alt_es": "",
+      "alt_fr": "",
+      "alt_zh": "",
+      "tags": [
+        "nextjs",
+        "tailwind",
+        "api",
+        "autenticacao",
+        "formularios",
+        "html",
+        "css",
+        "prisma",
+        "typescript"
+      ],
+      "featured": true,
+      "display_order": 1,
+      "created_at": "2026-04-21T22:56:01.268Z"
     }
   ]
 }

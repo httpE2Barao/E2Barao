@@ -42,17 +42,16 @@ export default function ExperiencePage() {
     period_start: "", period_end: "", role_pt: "", role_en: "", company_pt: "", company_en: "", description_pt: "", description_en: "", highlight: false, display_order: 0,
   });
 
-  useEffect(() => {
-    const fetchExperiences = async () => {
-      try {
-        const res = await fetch("/api/admin/experience");
-        const data = await res.json();
-        setExperiences(Array.isArray(data) ? data : []);
-      } catch { setExperiences([]); }
-      setLoading(false);
-    };
-    fetchExperiences();
-  }, []);
+  useEffect(() => { fetchExperiences(); }, []);
+
+  const fetchExperiences = async () => {
+    try {
+      const res = await fetch("/api/admin/experience");
+      const data = await res.json();
+      setExperiences(Array.isArray(data) ? data : []);
+    } catch { setExperiences([]); }
+    setLoading(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +62,7 @@ export default function ExperiencePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editing ? { id: editing.id, ...formData } : formData),
       });
-      if (res.ok) { setMessage({ type: "success", text: editing ? "Atualizado!" : "Criado!" }); resetForm(); }
+      if (res.ok) { setMessage({ type: "success", text: editing ? "Atualizado!" : "Criado!" }); resetForm(); fetchExperiences(); }
     } catch { setMessage({ type: "error", text: "Erro ao salvar" }); }
     setLoading(false);
     setTimeout(() => setMessage(null), 3000);
@@ -74,6 +73,7 @@ export default function ExperiencePage() {
     try {
       await fetch(`/api/admin/experience?id=${id}`, { method: "DELETE" });
       setMessage({ type: "success", text: "Excluído!" });
+      fetchExperiences();
     } catch { setMessage({ type: "error", text: "Erro ao excluir" }); }
     setTimeout(() => setMessage(null), 3000);
   };

@@ -1,9 +1,65 @@
 "use client"
 import { useTheme } from "@/components/switchers/switchers"
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
+// Hook que calcula progresso baseado na posição do elemento
+function useElementScrollProgress() {
+  const [localProgress, setLocalProgress] = useState(0)
+  const [isVisible, setIsVisible] = useState(false)
+  const [elementRef, setElementRef] = useState<HTMLElement | null>(null)
+  const frozenProgress = useRef(0)
+
+  const refCallback = useCallback((node: HTMLElement | null) => {
+    setElementRef(node)
+  }, [])
+
+  useEffect(() => {
+    if (!elementRef) return
+
+    const calculateProgress = () => {
+      const rect = elementRef.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+
+      // A seção está visível se qualquer parte está na viewport
+      const visible = rect.top < viewportHeight && rect.bottom > 0
+      setIsVisible(visible)
+
+      // Distância total que a seção pode viajar pela viewport
+      // = altura da seção - altura da viewport
+      const scrollTravelDistance = rect.height - viewportHeight
+
+      if (scrollTravelDistance <= 0) {
+        // Seção menor que viewport, não há scroll interno
+        setLocalProgress(0)
+        frozenProgress.current = 0
+        return
+      }
+
+      // Progresso: 0 = primeiro projeto centralizado, 1 = último projeto centralizado
+      // section.top = 0 quando fundo da seção está no centro da viewport
+      // section.top = -scrollTravelDistance quando topo da seção está no centro da viewport
+      const rawProgress = -rect.top / scrollTravelDistance
+      const clamped = Math.max(0, Math.min(1, rawProgress))
+
+      setLocalProgress(clamped)
+      frozenProgress.current = clamped
+    }
+
+    window.addEventListener("scroll", calculateProgress, { passive: true })
+    calculateProgress()
+
+    return () => {
+      window.removeEventListener("scroll", calculateProgress)
+    }
+  }, [elementRef])
+
+  const effectiveProgress = isVisible ? localProgress : frozenProgress.current
+
+return { ref: refCallback, progress: effectiveProgress, isVisible, rawProgress: localProgress }
+}
 
 interface ProjectFromAPI {
   id: number;
@@ -12,6 +68,7 @@ interface ProjectFromAPI {
   repo: string;
   tags: string[];
   name: string;
+  subtitle?: string;
   alt: string;
   abt: string;
   featured: boolean;
@@ -54,6 +111,7 @@ function SpiralProjectCard({
   verticalGap,
   cardW,
   cardH,
+  isCurrentProject,
 }: {
   project: ProjectFromAPI
   index: number
@@ -64,6 +122,7 @@ function SpiralProjectCard({
   verticalGap: number
   cardW: number
   cardH: number
+  isCurrentProject: boolean
 }) {
   const { theme } = useTheme()
   const isDark = theme === "dark"
@@ -83,8 +142,8 @@ function SpiralProjectCard({
   const distFromCenter = Math.min(normalizedAngle, 360 - normalizedAngle)
   const isFront = distFromCenter < 45
 
-  const opacity = isFront ? 1 : distFromCenter < 90 ? 0.5 : distFromCenter < 150 ? 0.15 : 0.03
-  const scale = isFront ? 1 : distFromCenter < 90 ? 0.9 : distFromCenter < 150 ? 0.8 : 0.7
+  const opacity = isCurrentProject ? 1 : distFromCenter < 90 ? 0.5 : distFromCenter < 150 ? 0.15 : 0.03
+  const scale = isCurrentProject ? 1 : distFromCenter < 90 ? 0.9 : distFromCenter < 150 ? 0.8 : 0.7
 
   // card dimensions come from props
 
@@ -103,7 +162,7 @@ function SpiralProjectCard({
         zIndex: Math.round(z + radius + 1000),
         transition: "opacity 0.25s ease, scale 0.25s ease",
         willChange: "transform, opacity",
-        pointerEvents: isFront ? "auto" : "none",
+        pointerEvents: isCurrentProject ? "auto" : "none",
       }}
       onClick={onClick}
     >
@@ -165,30 +224,43 @@ function SpiralProjectCard({
       >
         <div style={{ width: "100%" }}>
           <h3
-            className="text-lg font-bold tracking-tight text-white"
+            className="text-xl md:text-2xl font-black tracking-tighter text-white"
             style={{
               textShadow: "0 2px 12px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,1)",
             }}
           >
             {project.name}
+            <span className="text-cyan-400">.</span>
           </h3>
-
-          <div
-            className="mt-1"
-            style={{ transform: "translateZ(50px)" }}
-          >
-            <p className={`text-[10px] font-mono tracking-[0.3em] uppercase mb-1 ${isDark ? "text-cyan-400" : "text-blue-400"}`}>
-              {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </p>
-            <p
-              className={`text-[11px] line-clamp-2 ${isDark ? "text-white/80" : "text-white/90"}`}
-              style={{ textShadow: "0 1px 6px rgba(0,0,0,0.9)" }}
-            >
-              {project.abt}
-            </p>
-          </div>
         </div>
       </div>
+
+      {isCurrentProject && (project as any).subtitle && (
+        <div
+          className="absolute"
+          style={{
+            width: cardW,
+            height: cardH,
+            left: "50%",
+            top: "50%",
+            transformStyle: "preserve-3d",
+            transform: `translate(-50%, -50%) rotateY(${-currentAngle}deg) translateZ(-80px)`,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            textAlign: "center",
+            padding: "30px 10px 10px",
+            margin: 0,
+            zIndex: 51,
+            pointerEvents: "none",
+          }}
+        >
+          <p className="text-xs text-white/70" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.9)" }}>
+            {(project as any).subtitle}
+          </p>
+        </div>
+      )}
     </div>
   )
 }
@@ -345,6 +417,8 @@ export function V2ProjectsSpiral() {
   const lang = language === "pt-BR" ? "pt" : language === "en-US" ? "en" : language
   const [loading, setLoading] = useState(true)
 
+  const [layout, setLayout] = useState({ radius: 520, verticalGap: 260, cardW: 560, cardH: 320, cameraBottomPadding: 120 })
+
   useEffect(() => {
     fetchFeaturedProjects(lang).then((data) => {
       setProjects(data)
@@ -352,33 +426,30 @@ export function V2ProjectsSpiral() {
     })
   }, [lang])
 
-  const total = projects.length
- 
-  // Responsive layout state
-  const [layout, setLayout] = useState({ radius: 520, verticalGap: 260, cardW: 560, cardH: 320, cameraBottomPadding: 120 })
+const total = projects.length
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  })
+  const { ref: sectionRef, progress: scrollProgress, isVisible } = useElementScrollProgress()
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 25,
-    restDelta: 0.001,
-  })
+  useEffect(() => {
+    if (total > 0) {
+      setCameraY(0)
+      setRotation(0)
+      setProgress(0)
+    }
+  }, [total])
 
-  // Compute responsive layout and camera travel so last item isn't cut off by viewport
+// Compute responsive layout and camera travel so last item isn't cut off by viewport
   useEffect(() => {
     const computeLayout = (width: number) => {
+      // verticalGap must be > cardH to avoid overlap
       if (width <= 480) {
-        return { radius: 360, verticalGap: 180, cardW: 320, cardH: 190, cameraBottomPadding: 90 }
+        return { radius: 360, verticalGap: 220, cardW: 320, cardH: 190, cameraBottomPadding: 100 }
       } else if (width <= 640) {
-        return { radius: 420, verticalGap: 210, cardW: 420, cardH: 230, cameraBottomPadding: 100 }
+        return { radius: 420, verticalGap: 260, cardW: 420, cardH: 230, cameraBottomPadding: 120 }
       } else if (width <= 1024) {
-        return { radius: 480, verticalGap: 240, cardW: 520, cardH: 290, cameraBottomPadding: 110 }
+        return { radius: 480, verticalGap: 320, cardW: 520, cardH: 290, cameraBottomPadding: 150 }
       } else {
-        return { radius: 520, verticalGap: 260, cardW: 560, cardH: 320, cameraBottomPadding: 120 }
+        return { radius: 520, verticalGap: 350, cardW: 560, cardH: 320, cameraBottomPadding: 160 }
       }
     }
     const update = () => {
@@ -397,37 +468,41 @@ export function V2ProjectsSpiral() {
   const cardH = layout.cardH
   const cameraBottomPadding = layout.cameraBottomPadding
   const radiusAll = layout.radius
-  const totalHeight = (projects.length - 1) * verticalGap
+  const totalHeight = (total - 1) * verticalGap
 
   useEffect(() => {
     const updateCameraBounds = () => {
-      const max = totalHeight + cameraBottomPadding
+      const max = totalHeight
       setCameraYMax(Math.max(0, max))
     }
     updateCameraBounds()
     window.addEventListener("resize", updateCameraBounds)
     return () => window.removeEventListener("resize", updateCameraBounds)
-  }, [totalHeight, total, verticalGap, cameraBottomPadding])
+}, [totalHeight, total])
 
   useEffect(() => {
-    const unsubscribe = smoothProgress.on("change", (v) => {
-      const projectCount = projects.length
-      const travelHeight = totalHeight + cameraBottomPadding
-      const padding = totalHeight * 0.4
-      const targetY = padding + v * (travelHeight - padding * 2)
-      setCameraY(targetY)
-      setProgress(v)
-      if (projectCount > 1) {
-        setRotation(-v * (projectCount - 1) * (360 / projectCount))
-      }
-    })
-    return () => unsubscribe()
-  }, [smoothProgress, cameraBottomPadding, projects])
+    if (total <= 1) return
+    if (!isVisible) return
+
+    const clampedV = Math.max(0, Math.min(1, scrollProgress))
+
+    const anglePerProject = 360 / total
+    const newRotation = -clampedV * (total - 1) * anglePerProject
+
+    const heightPerProject = layout.verticalGap
+    const travelHeight = (total - 1) * heightPerProject
+    const target = clampedV * travelHeight
+    const clamped = Math.max(0, Math.min(cameraYMax, target))
+
+    setRotation(newRotation)
+    setCameraY(clamped)
+    setProgress(clampedV)
+  }, [scrollProgress, isVisible, total, cameraYMax, layout.verticalGap])
 
   const sectionTitle = language === "pt-BR" ? "Projetos" : language === "es" ? "Proyectos" : language === "fr" ? "Projets" : language === "zh" ? "项目" : "Projects"
   const sectionSubtitle = language === "pt-BR" ? "Clique para explorar" : language === "es" ? "Haz clic para explorar" : language === "fr" ? "Cliquez pour explorer" : language === "zh" ? "点击探索" : "Click to explore"
 
-  const scrollIndicatorOpacity = useTransform(smoothProgress, [0, 0.05], [1, 0])
+  const scrollIndicatorOpacity = isVisible ? 0 : 1
   const scrollIndicatorStyle = useMemo(() => ({ opacity: scrollIndicatorOpacity }), [scrollIndicatorOpacity])
 
   const handleSelectProject = useCallback((index: number) => {
@@ -440,11 +515,13 @@ export function V2ProjectsSpiral() {
 
   const currentProjectIndex = Math.min(Math.floor(progress * total), total - 1)
 
+  // Header offset to compensate for sticky header (approximately 60-80px)
+  const headerOffset = 80
+
   const sectionHeight = useMemo(() => {
     if (total <= 1) return "100vh"
-    const minScrollPerProject = 150
-    const calculatedHeight = total * minScrollPerProject
-    return `${calculatedHeight}vh`
+    if (total <= 4) return "300vh"
+    return "350vh"
   }, [total])
 
   if (loading || projects.length === 0) {
@@ -461,12 +538,12 @@ export function V2ProjectsSpiral() {
     <>
       <section
         id="projects"
-        ref={containerRef}
+        ref={sectionRef}
         className={`relative ${isDark ? "bg-black" : "bg-white"}`}
         style={{ height: sectionHeight }}
       >
         <div
-          className="sticky top-0 h-screen overflow-hidden"
+          className="sticky top-0 h-screen overflow-hidden pt-20 md:pt-24"
           style={{ perspective: "2000px" }}
         >
           <div className="absolute top-24 md:top-28 left-6 md:left-16 z-10">
@@ -482,13 +559,13 @@ export function V2ProjectsSpiral() {
             {String(currentProjectIndex + 1).padStart(2, "0")}
           </div>
 
-          <div
-            className="absolute inset-0"
-            style={{
-              transformStyle: "preserve-3d",
-              transform: `translateY(${-cameraY}px)`,
-            }}
-          >
+<div
+          className="absolute inset-0"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: `translateY(${-cameraY + headerOffset}px)`,
+          }}
+        >
             <div
               className="absolute"
               style={{
@@ -511,6 +588,7 @@ export function V2ProjectsSpiral() {
                   verticalGap={verticalGap}
                   cardW={cardW}
                   cardH={cardH}
+                  isCurrentProject={index === currentProjectIndex}
                 />
               ))}
             </div>
@@ -524,6 +602,49 @@ export function V2ProjectsSpiral() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
             <span className="text-[10px] font-mono tracking-widest">SCROLL</span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ 
+              opacity: progress > 0.96 ? 1 : 0,
+              scale: progress > 0.96 ? 1 : 0.8,
+              y: progress > 0.96 ? 0 : 10
+            }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className={`absolute bottom-12 left-0 right-0 flex justify-center z-20`}
+          >
+            <Link
+              href="/projects"
+              className={`group inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-semibold tracking-wide transition-all duration-500 ${
+                isDark 
+                  ? "bg-cyan-400/90 hover:bg-cyan-400 text-black hover:shadow-[0_0_30px_rgba(34,211,238,0.5)]" 
+                  : "bg-blue-600/90 hover:bg-blue-600 text-white hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]"
+              }`}
+            >
+              <span>
+                {(() => {
+                  const labels: Record<string, string> = {
+                    "pt-BR": "Ver todos os projetos",
+                    "pt": "Ver todos os projetos",
+                    "en-US": "View all projects",
+                    "en": "View all projects",
+                    "es": "Ver todos los proyectos",
+                    "fr": "Voir tous les projets",
+                    "zh": "查看全部项目"
+                  }
+                  return labels[language] || "View all projects"
+                })()}
+              </span>
+              <svg 
+                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </motion.div>
 
           <div className={`absolute bottom-0 left-0 right-0 h-px ${isDark ? "bg-white/5" : "bg-black/5"}`} />

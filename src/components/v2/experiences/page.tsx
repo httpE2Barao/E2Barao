@@ -86,18 +86,18 @@ function TimelineItem({ exp, index, isLast, language }: { exp: Experience; index
     <motion.div
       ref={ref}
       style={{ opacity, x }}
-      className="relative flex gap-8 md:gap-16 mb-16 md:mb-24"
+      className="relative flex gap-8 mb-16 md:mb-24"
     >
-      {!isLast && (
-        <div className={`absolute left-0 md:left-1/2 top-0 bottom-0 w-px ${lineBg}`}>
-          <motion.div
-            className={`w-full ${lineActive} origin-top`}
-            style={{ scaleY: scrollYProgress }}
-          />
-        </div>
-      )}
+{!isLast && (
+  <div className={`absolute left-0 md:left-1/2 top-2 bottom-0 w-px ${lineBg}`}>
+    <motion.div
+      className={`w-full ${lineActive} origin-top`}
+      style={{ scaleY: scrollYProgress }}
+    />
+  </div>
+)}
 
-      <div className={`relative z-10 flex-shrink-0 w-4 h-4 rounded-full border-2 ${exp.highlight ? `${dotHighlightBorder} ${dotHighlightBg}` : `${dotBorder} ${dotBg}`} mt-2`}>
+      <div className={`relative z-10 flex-shrink-0 w-4 h-4 rounded-full border-2 ${exp.highlight ? `${dotHighlightBorder} ${dotHighlightBg}` : `${dotBorder} ${dotBg}`} mt-2 md:mt-1 md:-ml-2`}>
         {exp.highlight && (
           <motion.div
             className={`absolute inset-0 rounded-full ${dotPulse}`}
@@ -212,7 +212,7 @@ export function V2ExperiencesPage() {
   }, [])
 
   return (
-    <section ref={ref} className={`min-h-screen pt-[5rem] pb-10 sm:pb-14 relative overflow-visible ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section ref={ref} className={`min-h-screen pt-[5rem] pb-[60vh] md:pb-[50vh] relative overflow-visible ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       <motion.div
         style={{ y: bgY }}
         className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none -translate-y-20`}
