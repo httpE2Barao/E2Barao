@@ -41,16 +41,16 @@ export async function GET(request: NextRequest) {
         LIMIT 1 OFFSET 0;
       `;
 
-      if (fallbackRows.length === 0) {
+      if (fallbackRows.rows.length === 0) {
         return NextResponse.json({ error: 'No CV found. Generate one from the admin panel.' }, { status: 404 });
       }
 
-      const pdfUrl = fallbackRows[0].blob_url;
+      const pdfUrl = fallbackRows.rows[0].blob_url;
       return NextResponse.json({
         direct: pdfUrl,
         url: pdfUrl,
-        created_at: fallbackRows[0].created_at,
-        language: fallbackRows[0].language,
+        created_at: fallbackRows.rows[0].created_at,
+        language: fallbackRows.rows[0].language,
       });
     }
 
