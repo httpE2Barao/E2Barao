@@ -32,9 +32,24 @@ const TimelineView = dynamic(() => import("./timeline-view"), {
   ),
 });
 
-type ViewType = "constellation" | "circuit" | "timeline";
+const SolarSystemView = dynamic(() => import("./solar-system"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[400px] sm:h-[500px] flex items-center justify-center">
+      <div className={`w-16 h-16 border-4 border-orange-400/30 border-t-orange-400 rounded-full animate-spin`} />
+    </div>
+  ),
+});
+
+type ViewType = "constellation" | "circuit" | "timeline" | "solar";
 
 const views: { id: ViewType; label: string; icon: string; description: string }[] = [
+  {
+    id: "solar",
+    label: "Solar",
+    icon: "☀",
+    description: "Sistema solar com sóis e planetas"
+  },
   {
     id: "constellation",
     label: "Constellation",
@@ -168,6 +183,7 @@ export default function TecsTestPage() {
               {activeView === "constellation" && <ConstellationView activeCategory={activeCategory} />}
               {activeView === "circuit" && <CircuitView activeCategory={activeCategory} />}
               {activeView === "timeline" && <TimelineView activeCategory={activeCategory} />}
+              {activeView === "solar" && <SolarSystemView activeCategory={activeCategory} />}
             </motion.div>
           </AnimatePresence>
         </div>

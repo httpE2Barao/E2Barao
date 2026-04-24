@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { put } from '@vercel/blob';
+import fs from 'fs';
+import path from 'path';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -45,16 +46,24 @@ export async function POST(request: NextRequest) {
     }
 
     const buffer = Buffer.from(await pdfFile.arrayBuffer());
-    const fileName = `cv-${language}-${Date.now()}.pdf`;
+    
+    // Save to public/cv/ folder
+    const cvDir = path.join(process.cwd(), 'public', 'cv');
+    if (!fs.existsSync(cvDir)) {
+      fs.mkdirSync(cvDir, { recursive: true });
+    }
+    
+    const fileName = `cv-${language || 'pt'}-${Date.now()}.pdf`;
+    const filePath = path.join(cvDir, fileName);
+    fs.writeFileSync(filePath, buffer);
+    
+    const pdfUrl = `/cv/${fileName}`;
+    console.log('Saved PDF:', { fileName, size: buffer.length });
 
-    const blob = await put(fileName, buffer, {
-      access: 'public',
-      contentType: 'application/pdf',
-    });
-
+    // Save metadata to database
     const { rows } = await sql`
       INSERT INTO cv_generated (template_id, format, blob_url, language, config)
-      VALUES (${templateId || null}, 'pdf', ${blob.url}, ${language || 'pt'}, ${configJson || null})
+      VALUES (${templateId || null}, 'pdf', ${pdfUrl}, ${language || 'pt'}, ${configJson || null})
       RETURNING *;
     `;
 

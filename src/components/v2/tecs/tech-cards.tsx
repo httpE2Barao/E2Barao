@@ -59,22 +59,8 @@ function TechCard({ tech, index }: TechCardProps) {
         </div>
         
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className={`font-bold text-lg ${textPrimary}`}>{tech.name}</h3>
-            <span className={`text-sm font-mono ${accentColor}`}>{tech.level}%</span>
-          </div>
-          
-          <div className={`h-1.5 rounded-full ${isDark ? "bg-white/10" : "bg-black/10"} overflow-hidden mb-2`}>
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: `${tech.level}%` }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              className={`h-full rounded-full bg-gradient-to-r ${
-                isDark ? "from-cyan-400 to-blue-500" : "from-blue-500 to-blue-700"
-              }`}
-            />
-          </div>
+          <h3 className={`font-bold text-lg ${textPrimary}`}>{tech.name}</h3>
+          <p className={`text-sm ${textMuted}`}>{tech.years} {yearsLabel} · {tech.projects} {projectsLabel}</p>
           
           <motion.div
             initial={{ opacity: 0, height: 0 }}

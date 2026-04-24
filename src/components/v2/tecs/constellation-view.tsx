@@ -254,7 +254,7 @@ function Scene({
         const z = Math.sin(angle) * (categoryRadius + relY * 0.5);
 
         const size = 0.08 + Math.random() * 0.06;
-        const brightness = 0.4 + (tech.level / 100) * 0.6;
+        const brightness = 0.4 + (tech.years / 10) * 0.6;
 
         data.push({
           tech,
@@ -419,7 +419,7 @@ export default function ConstellationView({ activeCategory, onTechSelect }: Cons
               </div>
               <div>
                 <h3 className="text-white font-bold text-lg">{hoveredTech.name}</h3>
-                <span className="text-cyan-400 text-sm font-mono">{hoveredTech.level}%</span>
+                <span className="text-cyan-400/60 text-sm font-mono">{hoveredTech.years}y exp · {hoveredTech.projects} proj</span>
               </div>
             </div>
             <p className="text-gray-400 text-xs leading-relaxed mb-3">

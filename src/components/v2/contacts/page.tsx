@@ -25,6 +25,16 @@ const contactLinks = [
     description: { pt: "Veja meu código", en: "Check out my code", es: "Mira mi código", fr: "Voir mon code", zh: "查看我的代码" },
   },
   {
+    label: "WhatsApp",
+    href: "https://wa.me/5521987716477",
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51-.174-.008-.372-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.027 6.99 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884M8.002 12.022l-.002-.002a.004.004 0 00-.002-.002m7.005 3.335c-.065.065-.148.1-.235.065-.087-.035-.698-.485-.76-.539-.063-.053-.137-.067-.196-.034-.059.034-.232.115-.232.278 0 .163.174.212.339.339.165.127 1.036 1.638 1.125 1.753.089.115.178.277-.019.454l-.393.393c-.073.073-.175.128-.314.064-.139-.064-.587-.267-.7-.636-.113-.369-.238-.327-.393-.336-.155-.009-.31-.009-.464-.003m.985 1.984c-.089.089-.262.232-.455.232-.193 0-.372-.097-.521-.232-.149-.135-.571-.488-.621-.568-.05-.08-.409.049-.602.099-.193.05-.347.05-.416-.099-.07-.15-.247-.398-.247-.455 0-.057.033-.097.075-.135.042-.038.093-.053.165-.053.072 0 .165.001.253.05.088.049.297.198.297.455 0 .257-.304.55-.434.614-.13.064-.227.139-.26.214-.034.075-.034.167.004.245"/>
+      </svg>
+    ),
+    description: { pt: "Mande uma mensagem", en: "Send a message", es: "Enviar un mensaje", fr: "Envoyer un message", zh: "发送消息" },
+  },
+  {
     label: "Email",
     href: "mailto:e2barao@hotmail.com",
     icon: (
@@ -284,41 +294,25 @@ export function V2ContactsPage() {
   })
 
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -150])
-  const [cvUrl, setCvUrl] = useState<string | null>(null)
-
-  useEffect(() => {
-    fetch(`/api/cv/download?language=${language}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.url) setCvUrl(data.url)
-      })
-      .catch(() => setCvUrl(null))
-  }, [language])
-
-  const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
-  const textSubtle = isDark ? "text-white/20" : "text-black/20"
   const textMuted = isDark ? "text-white/40" : "text-black/40"
   const textPrimary = isDark ? "text-white" : "text-black"
-  const bgGlow = isDark ? "bg-cyan-400/5" : "bg-blue-600/5"
   const bgCard = isDark ? "bg-white/5 border-white/10" : "bg-black/5 border-black/10"
   const hoverBorder = isDark ? "hover:border-cyan-400/30" : "hover:border-blue-600/30"
+  const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const accentBg = isDark ? "bg-cyan-400/10" : "bg-blue-600/10"
   const accentBgHover = isDark ? "bg-cyan-400/20" : "bg-blue-600/20"
-  const textSubtleSmall = isDark ? "text-white/40" : "text-black/40"
 
   const title = language === "pt" ? "Contato" : language === "es" ? "Contacto" : language === "fr" ? "Contact" : language === "zh" ? "联系" : "Contacts"
   const subtitle = language === "pt" ? "Entre em Contato" : language === "es" ? "Ponte en Contacto" : language === "fr" ? "Contactez-nous" : language === "zh" ? "取得联系" : "Get in Touch"
   const desc = language === "pt" ? "Tem um projeto em mente? Vamos criar algo incrível juntos." : language === "es" ? "¿Tienes un proyecto en mente? Creemos algo increíble juntos." : language === "fr" ? "Un projet en tête? Créons quelque chose d'incroyable ensemble." : language === "zh" ? "有项目想法？让我们一起创造精彩。" : "Have a project in mind? Let's create something amazing together."
   const connectLabel = language === "pt" ? "Conectar" : language === "es" ? "Conectar" : language === "fr" ? "Connecter" : language === "zh" ? "联系" : "Connect"
   const messageLabel = language === "pt" ? "Mensagem" : language === "es" ? "Mensaje" : language === "fr" ? "Message" : language === "zh" ? "留言" : "Message"
-  const cvLabel = language === "pt" ? "Baixar CV" : language === "es" ? "Descargar CV" : language === "fr" ? "Télécharger CV" : language === "zh" ? "下载简历" : "Download CV"
-  const cvFormat = language === "pt" ? "Formato PDF" : language === "es" ? "Formato PDF" : language === "fr" ? "Format PDF" : language === "zh" ? "PDF格式" : "PDF format"
 
   return (
     <section ref={ref} className={`min-h-screen pt-[5rem] pb-12 sm:pb-16 relative overflow-visible ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       <motion.div
         style={{ y: bgY }}
-        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none -translate-y-20`}
+        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] rounded-full blur-3xl pointer-events-none -translate-y-20`}
       />
 
       <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16 relative z-10">
@@ -353,8 +347,8 @@ export function V2ContactsPage() {
               ))}
             </div>
 
-            <motion.a
-              href={cvUrl || "/CV-EliasBarao.pdf"}
+<motion.a
+              href="/CV-EliasBarao.pdf"
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 15 }}
@@ -371,8 +365,9 @@ export function V2ContactsPage() {
                 </svg>
               </div>
               <div>
-                <p className={`text-xs font-semibold ${textPrimary}`}>{cvLabel}</p>
-                <p className={`text-[10px] ${textSubtleSmall}`}>{cvFormat}</p>
+                <p className={`text-xs font-semibold ${textPrimary}`}>
+                  {language === "pt" ? "Baixar Currículo" : language === "es" ? "Descargar CV" : language === "fr" ? "Télécharger CV" : language === "zh" ? "下载简历" : "Download CV"}
+                </p>
               </div>
             </motion.a>
           </div>

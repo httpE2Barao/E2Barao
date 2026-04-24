@@ -1,18 +1,9 @@
-import { Document, Page, Text, View, StyleSheet, Font, Link } from "@react-pdf/renderer";
-
-Font.register({
-  family: "Inter",
-  fonts: [
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCT3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 600 },
-    { src: "https://fonts.gstatic.com/s/inter/v13/UcCZ3FwrK3iLTeHuS_fvXhkl5Yw.woff2", fontWeight: 700 },
-  ],
-});
+import { Document, Page, Text, View, StyleSheet, Link } from "@react-pdf/renderer";
 
 const accentColor = "#f59e0b";
 
 const styles = StyleSheet.create({
-  page: { flexDirection: "row", fontFamily: "Inter", fontSize: 10, color: "#1a1a1a" },
+  page: { flexDirection: "row", fontFamily: "Helvetica", fontSize: 10, color: "#1a1a1a" },
   sidebar: { width: 160, backgroundColor: "#1e293b", padding: 24, color: "#e2e8f0" },
   main: { flex: 1, padding: 24 },
   sidebarName: { fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 },

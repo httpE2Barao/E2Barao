@@ -107,6 +107,7 @@ export async function GET(request: Request) {
         alt: getLocalizedField(p, 'alt'),
         abt: getLocalizedField(p, 'abt'),
         featured: p.featured || false,
+        imageUrls: p.image_urls || p.imageUrls || [],
       }));
 
       return NextResponse.json(formatted);

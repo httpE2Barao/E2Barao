@@ -33,6 +33,12 @@ interface Experience {
   selected?: boolean;
 }
 
+interface Project {
+  id: number;
+  name: LocalizedString;
+  description: LocalizedString;
+}
+
 interface Education {
   degree: LocalizedString;
   school: LocalizedString;
@@ -59,7 +65,7 @@ interface CVData {
   experience: Experience[];
   education: Education[];
   skills: LocalizedString[];
-  projects: Array<{ name: LocalizedString; description: LocalizedString }>;
+  projects: Project[];
   languages: LocalizedString[];
   additionalInfo: LocalizedString;
   additionalData: AdditionalData;
@@ -69,6 +75,7 @@ interface CVData {
   includeProjects: boolean;
   includeLanguages: boolean;
   selectedExperienceIds: number[];
+  selectedProjectIds: number[];
 }
 
 const templates = [
@@ -140,6 +147,7 @@ export default function CVBuilderPage() {
     includeProjects: true,
     includeLanguages: true,
     selectedExperienceIds: [],
+    selectedProjectIds: [],
   });
 
   const getLocalizedValue = (obj: LocalizedString | undefined, lang: Language): string => {
@@ -155,6 +163,10 @@ export default function CVBuilderPage() {
     const selectedExp = cvData.selectedExperienceIds.length > 0
       ? cvData.experience.filter(exp => cvData.selectedExperienceIds.includes(exp.id))
       : cvData.experience;
+    
+    const selectedProj = cvData.selectedProjectIds.length > 0
+      ? cvData.projects.filter(proj => cvData.selectedProjectIds.includes(proj.id))
+      : cvData.projects;
     
     return ({
     name: getLocalizedValue(cvData.name, lang),
@@ -178,7 +190,7 @@ export default function CVBuilderPage() {
       description: getLocalizedValue(edu.description, lang),
     })),
     skills: cvData.skills.map((s) => getLocalizedValue(s, lang)),
-    projects: cvData.projects.map((p) => ({
+    projects: selectedProj.map((p) => ({
       name: getLocalizedValue(p.name, lang),
       description: getLocalizedValue(p.description, lang),
     })),
@@ -265,11 +277,13 @@ export default function CVBuilderPage() {
               .map((s: any) => localizeField(s.name, s.name_en || s.name, s.name_es || s.name))
           : [],
         projects: Array.isArray(projects)
-          ? projects.slice(0, 5).map((p: any) => ({
+          ? projects.map((p: any) => ({
+              id: p.id,
               name: localizeField(p.name_pt, p.name_en || p.name, p.name_es || p.name_en || p.name),
               description: localizeField(p.abt_pt, p.abt_en || p.abt, p.abt_es || p.abt_en || p.abt),
             }))
           : [],
+        selectedProjectIds: Array.isArray(projects) ? projects.map((p: any) => p.id) : [],
       }));
     } catch (error) {
       console.error("Failed to fetch data:", error);
@@ -301,6 +315,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
       formData.append('language', language);
       formData.append('config', JSON.stringify({
         selectedExperienceIds: cvData.selectedExperienceIds,
+        selectedProjectIds: cvData.selectedProjectIds,
         additionalData: cvData.additionalData,
         includeExperience: cvData.includeExperience,
         includeEducation: cvData.includeEducation,
@@ -418,8 +433,8 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="lg:col-span-1 space-y-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div className="xl:col-span-1 space-y-6 overflow-y-auto max-h-[calc(100vh-180px)] pr-2">
           <div className="{colors.card} border {colors.border} rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Template</h3>
             <div className="space-y-2">
@@ -766,6 +781,52 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
             </div>
           )}
 
+          {cvData.includeProjects && (
+            <div className="{colors.card} border {colors.border} rounded-xl p-5">
+              <h3 className="text-sm font-semibold mb-3">Selecionar Projetos</h3>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {cvData.projects.map((proj) => (
+                  <label key={proj.id} className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={cvData.selectedProjectIds.includes(proj.id)}
+                      onChange={(e) => {
+                        const ids = e.target.checked
+                          ? [...cvData.selectedProjectIds, proj.id]
+                          : cvData.selectedProjectIds.filter((id) => id !== proj.id);
+                        setCvData({ ...cvData, selectedProjectIds: ids });
+                      }}
+                      className="w-4 h-4 mt-0.5 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                    />
+                    <div className="text-xs">
+                      <span className="{colors.textMuted} block font-medium">
+                        {getLocalizedValue(proj.name, language)}
+                      </span>
+                    </div>
+                  </label>
+                ))}
+                {cvData.projects.length === 0 && (
+                  <p className="text-xs text-gray-500">Nenhum projeto encontrado</p>
+                )}
+              </div>
+              <div className="mt-3 pt-3 border-t {colors.border} flex gap-2">
+                <button
+                  onClick={() => setCvData({ ...cvData, selectedProjectIds: cvData.projects.map(p => p.id) })}
+                  className="text-xs text-cyan-400 hover:text-cyan-300"
+                >
+                  Selecionar todos
+                </button>
+                <span className="text-gray-600">|</span>
+                <button
+                  onClick={() => setCvData({ ...cvData, selectedProjectIds: [] })}
+                  className="text-xs text-gray-400 hover:{colors.textMuted}"
+                >
+                  Limpar seleção
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="{colors.card} border {colors.border} rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Resumo</h3>
             <div className="space-y-2 text-xs text-gray-400">
@@ -783,7 +844,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
               </div>
               <div className="flex justify-between">
                 <span>Projetos</span>
-                <span className="{colors.text}">{cvData.projects.length}</span>
+                <span className="{colors.text}">{cvData.selectedProjectIds.length} / {cvData.projects.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Idiomas</span>
@@ -793,11 +854,11 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
           </div>
         </div>
 
-        <div className="lg:col-span-3">
-          <div className="{colors.card} border {colors.border} rounded-xl p-4">
+        <div className="xl:col-span-2">
+          <div className="{colors.card} border {colors.border} rounded-xl p-4 sticky top-0">
             <h3 className="text-sm font-semibold mb-4">Preview</h3>
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg" style={{ minHeight: "800px" }}>
-              <div className="overflow-auto max-h-[800px]">
+            <div className="bg-white rounded-lg overflow-hidden shadow-lg min-h-[600px]">
+              <div className="overflow-auto">
                 {renderPreview()}
               </div>
             </div>

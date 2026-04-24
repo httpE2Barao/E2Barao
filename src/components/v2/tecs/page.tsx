@@ -1,65 +1,41 @@
-"use client"
-import { useRef, useState, useMemo } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
-import dynamic from "next/dynamic"
-import { useTheme } from "@/components/switchers/switchers"
-import { techCategories } from "@/data/v2-tecs"
-import TechCards from "./tech-cards"
-
-const TechOrbital3D = dynamic(() => import("./orbital-3d"), { 
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-[400px] sm:h-[500px] flex items-center justify-center">
-      <div className={`w-16 h-16 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin`} />
-    </div>
-  )
-})
+"use client";
+import { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { techCategories } from "@/data/v2-tecs";
+import { useTheme } from "@/components/switchers/switchers";
 
 export function V2TecsPage() {
-  const ref = useRef<HTMLDivElement>(null)
-  const { theme, language } = useTheme()
-  const isDark = theme === "dark"
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  
+  const ref = useRef<HTMLDivElement>(null);
+  const { theme, language } = useTheme();
+  const isDark = theme === "dark";
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
-  })
+  });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, -150])
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
-  const bgGlow = isDark ? "bg-cyan-400/5" : "bg-blue-600/5"
-  const textMuted = isDark ? "text-white/30" : "text-black/30"
-  const textPrimary = isDark ? "text-white" : "text-black"
-  
-  const title = language === "pt" ? "Tecnologias" : language === "es" ? "Tecnologías" : language === "fr" ? "Technologies" : language === "zh" ? "技术" : "Technologies"
-  const subtitle = language === "pt" ? "Stack & Expertise" : language === "es" ? "Stack y Experiencia" : language === "fr" ? "Stack et Expertise" : language === "zh" ? "技术栈与专业" : "Stack & Expertise"
-  const desc = language === "pt" ? "Uma visão completa das ferramentas, linguagens e frameworks que utilizo para construir soluções digitais de alta qualidade." : language === "es" ? "Una visión completa de las herramientas, lenguajes y frameworks que utilizo." : language === "fr" ? "Une vue complète des outils, langages et frameworks que j'utilise." : language === "zh" ? "我使用的工具、语言和框架的完整视图。" : "A complete view of the tools, languages, and frameworks I use to build high-quality digital solutions."
+  const accentColor = isDark ? "text-cyan-400" : "text-blue-600";
+  const bgGlow = isDark ? "bg-cyan-400/5" : "bg-blue-600/5";
+  const textMuted = isDark ? "text-white/30" : "text-black/30";
 
-  const categoriesLabel = language === "pt" ? "Categorias" : language === "es" ? "Categorías" : language === "fr" ? "Catégories" : language === "zh" ? "分类" : "Categories"
+  const title = language === "pt" ? "Tecnologias" : language === "es" ? "Tecnologías" : language === "fr" ? "Technologies" : language === "zh" ? "技术" : "Technologies";
+  const subtitle = language === "pt" ? "Stack & Expertise" : language === "es" ? "Stack y Experiencia" : language === "fr" ? "Stack et Expertise" : language === "zh" ? "技术栈与专业" : "Stack & Expertise";
+  const desc = language === "pt" ? "Ferramentas, linguagens e frameworks que utilizo para construir soluções digitais." : language === "es" ? "Herramientas, lenguajes y frameworks que utilizo." : language === "fr" ? "Outils, langages et frameworks que j'utilise." : language === "zh" ? "我使用的工具、语言和框架。" : "Tools, languages and frameworks I use to build digital solutions.";
 
-  const categoryLabels = useMemo(() => {
-    return techCategories.map(cat => ({
-      id: cat.id,
-      name: cat.name[language as keyof typeof cat.name] || cat.name.en,
-      icon: cat.icon,
-      count: cat.techs.length,
-    }))
-  }, [language])
-
-  const handleCategoryChange = (categoryId: string | null) => {
-    setActiveCategory(categoryId === activeCategory ? null : categoryId)
-  }
+  const yearsLabel = language === "pt" ? "anos" : language === "es" ? "años" : language === "fr" ? "ans" : "years";
+  const projectsLabel = language === "pt" ? "projetos" : language === "es" ? "proyectos" : language === "fr" ? "projets" : "projects";
 
   return (
-    <section ref={ref} className={`min-h-screen pt-[5rem] pb-12 sm:pb-16 ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section ref={ref} className={`min-h-screen pt-[5rem] pb-16 ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       <motion.div
         style={{ y: bgY }}
-        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none`}
+        className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] ${bgGlow} rounded-full blur-3xl pointer-events-none`}
       />
 
-      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-8 sm:mb-12 relative z-10">
+      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -79,65 +55,81 @@ export function V2TecsPage() {
         </motion.div>
       </div>
 
-      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-10 sm:mb-14">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6"
-        >
-          <p className={`text-xs uppercase tracking-widest ${textMuted} mb-4`}>{categoriesLabel}</p>
-          <div className="flex flex-wrap gap-2">
-            <motion.button
-              onClick={() => handleCategoryChange(null)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                activeCategory === null
-                  ? isDark 
-                    ? "bg-cyan-400/20 text-cyan-400 border border-cyan-400/50" 
-                    : "bg-blue-500/20 text-blue-600 border border-blue-500/50"
-                  : isDark 
-                    ? "bg-white/5 text-white/60 border border-white/10 hover:border-white/30" 
-                    : "bg-black/5 text-black/60 border border-black/10 hover:border-black/30"
-              }`}
+      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 space-y-16">
+        {techCategories.map((category, catIndex) => {
+          const lang = language as keyof typeof category.name;
+          const categoryName = category.name[lang] || category.name.en;
+          const totalYears = category.techs.reduce((acc, t) => acc + t.years, 0);
+          const totalProjects = category.techs.reduce((acc, t) => acc + t.projects, 0);
+
+          return (
+            <motion.section
+              key={category.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: catIndex * 0.1 }}
             >
-              {language === "pt" ? "Todas" : language === "es" ? "Todas" : language === "fr" ? "Toutes" : language === "zh" ? "全部" : "All"}
-              <span className="ml-1 opacity-60">
-                ({techCategories.reduce((acc, cat) => acc + cat.techs.length, 0)})
-              </span>
-            </motion.button>
-            {categoryLabels.map((cat, i) => (
-              <motion.button
-                key={cat.id}
-                onClick={() => handleCategoryChange(cat.id)}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 + i * 0.05 }}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
-                  activeCategory === cat.id
-                    ? isDark 
-                      ? "bg-cyan-400/20 text-cyan-400 border border-cyan-400/50" 
-                      : "bg-blue-500/20 text-blue-600 border border-blue-500/50"
-                    : isDark 
-                      ? "bg-white/5 text-white/60 border border-white/10 hover:border-white/30" 
-                      : "bg-black/5 text-black/60 border border-black/10 hover:border-black/30"
-                }`}
-              >
-                <span>{cat.icon}</span>
-                <span>{cat.name}</span>
-                <span className="opacity-60">({cat.count})</span>
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-3xl">{category.icon}</span>
+                <div className="flex-1">
+                  <h2 className="text-2xl sm:text-3xl font-bold">
+                    {categoryName}
+                  </h2>
+                  <p className={`text-sm ${textMuted}`}>
+                    {category.techs.length} techs · {totalYears} {yearsLabel} · {totalProjects} {projectsLabel}
+                  </p>
+                </div>
+              </div>
 
-        <TechOrbital3D 
-          activeCategory={activeCategory}
-        />
-      </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {category.techs.map((tech, techIndex) => {
+                  const techLang = language as keyof typeof tech.description;
+                  const description = tech.description[techLang] || tech.description.en;
 
-      <div className="px-6 sm:px-10 lg:px-16 xl:px-24">
-        <TechCards categories={techCategories} />
+                  return (
+                    <motion.div
+                      key={tech.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: techIndex * 0.05, duration: 0.4 }}
+                      className={`p-4 rounded-xl border transition-all duration-300 ${
+                        isDark
+                          ? "bg-white/5 border-white/10 hover:border-cyan-400/30 hover:bg-cyan-400/5"
+                          : "bg-black/5 border-black/10 hover:border-blue-500/30 hover:bg-blue-500/5"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                          isDark ? "bg-white/10" : "bg-black/10"
+                        }`}>
+                          <Image
+                            src={`/images/${tech.icon}`}
+                            alt={tech.name}
+                            width={28}
+                            height={28}
+                            className="object-contain"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-lg truncate">{tech.name}</h3>
+                          <p className={`text-sm ${textMuted}`}>
+                            {tech.years} {yearsLabel} · {tech.projects} {projectsLabel}
+                          </p>
+                        </div>
+                      </div>
+                      <p className={`text-sm mt-3 leading-relaxed ${isDark ? "text-white/60" : "text-black/60"}`}>
+                        {description}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.section>
+          );
+        })}
       </div>
     </section>
-  )
+  );
 }

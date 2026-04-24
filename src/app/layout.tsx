@@ -5,10 +5,8 @@ import "./globals.css";
 import "./styles.css";
 
 // Configure a fonte
-const rubik = Rubik({ 
-  subsets: ["latin"],
+const rubik = Rubik({
   display: 'swap',
-  preload: false,
   variable: '--font-rubik'
 });
 

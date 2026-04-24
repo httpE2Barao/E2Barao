@@ -205,36 +205,9 @@ function TimelineNode({
             >
               {tech.name}
             </h3>
-            <div className="flex items-center gap-1">
-              <div
-                className="flex-1 h-1 rounded-full overflow-hidden"
-                style={{
-                  background: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
-                }}
-              >
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={isInView ? { width: `${tech.level}%` } : {}}
-                  transition={{ duration: 0.8, delay: index * 0.1 + 0.5 }}
-                  className="h-full rounded-full"
-                  style={{
-                    background: isActive
-                      ? `linear-gradient(to right, ${LEAF_ACTIVE}, #aed581)`
-                      : isRelated
-                        ? `linear-gradient(to right, ${BRANCH_COLOR}, #8fbc8f)`
-                        : isDark
-                          ? "linear-gradient(to right, #6b8e5a, #8fbc8f)"
-                          : "linear-gradient(to right, #8b7355, #a08060)",
-                  }}
-                />
-              </div>
-              <span
-                className="text-[10px] font-mono"
-                style={{ color: leafColor }}
-              >
-                {tech.level}%
-              </span>
-            </div>
+            <p className={`text-[10px] ${isDark ? "text-stone-500" : "text-stone-600"}`}>
+              {tech.years}y exp · {tech.projects} proj
+            </p>
           </div>
         </div>
 

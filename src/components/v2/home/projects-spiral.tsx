@@ -5,12 +5,13 @@ import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-// Hook que calcula progresso baseado na posição do elemento
+// Hook que calcula progresso baseado na posição do elemento com smooth
 function useElementScrollProgress() {
   const [localProgress, setLocalProgress] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [elementRef, setElementRef] = useState<HTMLElement | null>(null)
   const frozenProgress = useRef(0)
+  const lastProgress = useRef(0)
 
   const refCallback = useCallback((node: HTMLElement | null) => {
     setElementRef(node)
@@ -19,33 +20,43 @@ function useElementScrollProgress() {
   useEffect(() => {
     if (!elementRef) return
 
+    let rafId: number
+    const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 1200
+
     const calculateProgress = () => {
       const rect = elementRef.getBoundingClientRect()
       const viewportHeight = window.innerHeight
 
-      // A seção está visível se qualquer parte está na viewport
       const visible = rect.top < viewportHeight && rect.bottom > 0
       setIsVisible(visible)
 
-      // Distância total que a seção pode viajar pela viewport
-      // = altura da seção - altura da viewport
       const scrollTravelDistance = rect.height - viewportHeight
 
       if (scrollTravelDistance <= 0) {
-        // Seção menor que viewport, não há scroll interno
         setLocalProgress(0)
         frozenProgress.current = 0
         return
       }
 
-      // Progresso: 0 = primeiro projeto centralizado, 1 = último projeto centralizado
-      // section.top = 0 quando fundo da seção está no centro da viewport
-      // section.top = -scrollTravelDistance quando topo da seção está no centro da viewport
       const rawProgress = -rect.top / scrollTravelDistance
       const clamped = Math.max(0, Math.min(1, rawProgress))
 
-      setLocalProgress(clamped)
-      frozenProgress.current = clamped
+      // Smooth interpolation - smaller value = slower/smoother
+      let maxChange = 0.015
+      if (viewportWidth <= 480) maxChange = 0.008
+      else if (viewportWidth <= 1024) maxChange = 0.012
+      else if (viewportWidth <= 1440) maxChange = 0.015
+      else maxChange = 0.02
+
+      const diff = clamped - lastProgress.current
+      const change = Math.max(-maxChange, Math.min(maxChange, diff))
+      const smoothed = lastProgress.current + change
+      lastProgress.current = smoothed
+
+      setLocalProgress(smoothed)
+      frozenProgress.current = smoothed
+
+      rafId = requestAnimationFrame(calculateProgress)
     }
 
     window.addEventListener("scroll", calculateProgress, { passive: true })
@@ -53,12 +64,13 @@ function useElementScrollProgress() {
 
     return () => {
       window.removeEventListener("scroll", calculateProgress)
+      if (rafId) cancelAnimationFrame(rafId)
     }
   }, [elementRef])
 
   const effectiveProgress = isVisible ? localProgress : frozenProgress.current
 
-return { ref: refCallback, progress: effectiveProgress, isVisible, rawProgress: localProgress }
+  return { ref: refCallback, progress: effectiveProgress, isVisible, rawProgress: localProgress }
 }
 
 interface ProjectFromAPI {
@@ -441,15 +453,19 @@ const total = projects.length
 // Compute responsive layout and camera travel so last item isn't cut off by viewport
   useEffect(() => {
     const computeLayout = (width: number) => {
-      // verticalGap must be > cardH to avoid overlap
-      if (width <= 480) {
-        return { radius: 360, verticalGap: 220, cardW: 320, cardH: 190, cameraBottomPadding: 100 }
+      // Larger sizes for bigger screens, smaller for tiny screens
+      if (width <= 380) {
+        return { radius: 120, verticalGap: 150, cardW: 140, cardH: 100, cameraBottomPadding: 160 }
+      } else if (width <= 480) {
+        return { radius: 160, verticalGap: 140, cardW: 180, cardH: 120, cameraBottomPadding: 180 }
       } else if (width <= 640) {
-        return { radius: 420, verticalGap: 260, cardW: 420, cardH: 230, cameraBottomPadding: 120 }
+        return { radius: 200, verticalGap: 130, cardW: 240, cardH: 150, cameraBottomPadding: 200 }
       } else if (width <= 1024) {
-        return { radius: 480, verticalGap: 320, cardW: 520, cardH: 290, cameraBottomPadding: 150 }
+        return { radius: 320, verticalGap: 120, cardW: 400, cardH: 240, cameraBottomPadding: 160 }
+      } else if (width <= 1440) {
+        return { radius: 420, verticalGap: 120, cardW: 520, cardH: 300, cameraBottomPadding: 140 }
       } else {
-        return { radius: 520, verticalGap: 350, cardW: 560, cardH: 320, cameraBottomPadding: 160 }
+        return { radius: 500, verticalGap: 140, cardW: 600, cardH: 340, cameraBottomPadding: 120 }
       }
     }
     const update = () => {
@@ -515,13 +531,20 @@ const total = projects.length
 
   const currentProjectIndex = Math.min(Math.floor(progress * total), total - 1)
 
-  // Header offset to compensate for sticky header (approximately 60-80px)
-  const headerOffset = 80
+  // Header offset - smaller for mobile
+  const headerOffset = typeof window !== 'undefined' && window.innerWidth <= 480 ? 50 : 60
 
   const sectionHeight = useMemo(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 640) {
+      // Shorter section for small/medium screens so last project doesn't overlap button
+      if (total <= 3) return "250vh"
+      if (total <= 5) return "300vh"
+      return "350vh"
+    }
     if (total <= 1) return "100vh"
-    if (total <= 4) return "300vh"
-    return "350vh"
+    if (total <= 3) return "200vh"
+    if (total <= 5) return "250vh"
+    return "300vh"
   }, [total])
 
   if (loading || projects.length === 0) {
@@ -604,52 +627,55 @@ const total = projects.length
             <span className="text-[10px] font-mono tracking-widest">SCROLL</span>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ 
-              opacity: progress > 0.96 ? 1 : 0,
-              scale: progress > 0.96 ? 1 : 0.8,
-              y: progress > 0.96 ? 0 : 10
-            }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className={`absolute bottom-12 left-0 right-0 flex justify-center z-20`}
-          >
-            <Link
-              href="/projects"
-              className={`group inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-semibold tracking-wide transition-all duration-500 ${
-                isDark 
-                  ? "bg-cyan-400/90 hover:bg-cyan-400 text-black hover:shadow-[0_0_30px_rgba(34,211,238,0.5)]" 
-                  : "bg-blue-600/90 hover:bg-blue-600 text-white hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]"
-              }`}
-            >
-              <span>
-                {(() => {
-                  const labels: Record<string, string> = {
-                    "pt-BR": "Ver todos os projetos",
-                    "pt": "Ver todos os projetos",
-                    "en-US": "View all projects",
-                    "en": "View all projects",
-                    "es": "Ver todos los proyectos",
-                    "fr": "Voir tous les projets",
-                    "zh": "查看全部项目"
-                  }
-                  return labels[language] || "View all projects"
-                })()}
-              </span>
-              <svg 
-                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </motion.div>
-
           <div className={`absolute bottom-0 left-0 right-0 h-px ${isDark ? "bg-white/5" : "bg-black/5"}`} />
         </div>
       </section>
+
+      {/* View all projects - below spiral section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ 
+          opacity: progress > 0.94 ? 1 : 0,
+          y: progress > 0.94 ? -20 : 0
+        }}
+        transition={{ duration: 0.5 }}
+        className={`relative ${isDark ? "bg-black" : "bg-white"}`}
+        style={{ height: "80px" }}
+      >
+        <div className="flex items-center justify-center h-full">
+          <Link
+            href="/projects"
+            className={`group inline-flex items-center gap-2 px-8 py-4 rounded-full text-sm font-semibold tracking-wide transition-all duration-500 ${
+              isDark 
+                ? "bg-cyan-400/90 hover:bg-cyan-400 text-black hover:shadow-[0_0_30px_rgba(34,211,238,0.5)]" 
+                : "bg-blue-600/90 hover:bg-blue-600 text-white hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]"
+            }`}
+          >
+            <span>
+              {(() => {
+                const labels: Record<string, string> = {
+                  "pt-BR": "Ver todos os projetos",
+                  "pt": "Ver todos os projetos",
+                  "en-US": "View all projects",
+                  "en": "View all projects",
+                  "es": "Ver todos los proyectos",
+                  "fr": "Voir tous les projets",
+                  "zh": "查看全部项目"
+                }
+                return labels[language] || "View all projects"
+              })()}
+            </span>
+            <svg 
+              className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </div>
+      </motion.div>
 
       <AnimatePresence>
         {selectedProject !== null && (
