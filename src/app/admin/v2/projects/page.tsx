@@ -363,8 +363,8 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
             <div className={`${colors.cardBgAlt} border ${colors.border} rounded-lg p-4`}>
               <h3 className={`text-sm font-semibold ${colors.accent} mb-3`}>Upload de Imagem</h3>
               <label className={`flex items-center gap-2 cursor-pointer ${colors.accentBg} ${colors.accent} px-4 py-2 rounded-lg text-sm transition-colors border ${colors.accentBorder}`}>
-                {uploading ? <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />Enviando...</span> : <><svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>Selecionar Imagem</>}
-                <input type="file" accept="image/*" onChange={handleImageUpload} disabled={uploading} className="hidden" />
+                {uploading ? <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />Enviando...</span> : <><svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>Selecionar Imagem/Video/GIF</>}
+                <input type="file" accept="image/*,video/mp4,video/webm,video/quicktime,.gif" onChange={handleImageUpload} disabled={uploading} className="hidden" />
               </label>
             </div>
 
