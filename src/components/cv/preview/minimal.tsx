@@ -56,6 +56,7 @@ export function MinimalPreview({ data }: { data: CVData }) {
           {data.location && <span>{data.location}</span>}
           {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{t.linkedinLabel}</a>}
           {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{t.githubLabel}</a>}
+          <a href="https://e2-barao.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">Portfolio</a>
         </div>
       </div>
 

@@ -71,6 +71,7 @@ export function CreativeCV({ data }: { data: CVData }) {
             {data.location && <Text style={styles.sidebarText}>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.sidebarLink}><Text style={styles.sidebarLink}>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.sidebarLink}><Text style={styles.sidebarLink}>GitHub</Text></Link>}
+            <Link href="https://e2-barao.vercel.app/" style={styles.sidebarLink}><Text style={styles.sidebarLink}>Portfolio</Text></Link>
           </View>
 
           <View style={styles.sidebarSection}>

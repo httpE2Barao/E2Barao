@@ -76,6 +76,8 @@ interface CVData {
   includeLanguages: boolean;
   selectedExperienceIds: number[];
   selectedProjectIds: number[];
+  maxSkills: number;
+  sortSkills: string;
 }
 
 const templates = [
@@ -116,6 +118,47 @@ export default function CVBuilderPage() {
   const [defaultCV, setDefaultCV] = useState<any>(null);
   const [cvHistory, setCvHistory] = useState<any[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+
+  const fetchDefaultCV = async () => {
+    try {
+      const [defaultRes, historyRes] = await Promise.all([
+        fetch(`/api/admin/cv/save?language=${language}`),
+        fetch('/api/admin/cv/save?history=true'),
+      ]);
+      const defaultData = await defaultRes.json();
+      const historyData = await historyRes.json();
+      
+      if (defaultData?.config) {
+        setCvData((prev) => ({
+          ...prev,
+          selectedExperienceIds: defaultData.config.selectedExperienceIds || prev.selectedExperienceIds,
+          selectedProjectIds: defaultData.config.selectedProjectIds || prev.selectedProjectIds,
+          additionalData: defaultData.config.additionalData || prev.additionalData,
+          includeExperience: defaultData.config.includeExperience ?? prev.includeExperience,
+          includeEducation: defaultData.config.includeEducation ?? prev.includeEducation,
+          includeSkills: defaultData.config.includeSkills ?? prev.includeSkills,
+          includeProjects: defaultData.config.includeProjects ?? prev.includeProjects,
+          includeLanguages: defaultData.config.includeLanguages ?? prev.includeLanguages,
+          maxSkills: defaultData.config.maxSkills ?? prev.maxSkills,
+          sortSkills: defaultData.config.sortSkills ?? prev.sortSkills,
+        }));
+      }
+      
+      setDefaultCV(defaultData);
+      setCvHistory(Array.isArray(historyData) ? historyData : []);
+    } catch (error) {
+      console.error("Failed to fetch CV data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDefaultCV();
+  }, [language]);
+
+  useEffect(() => {
+    fetchAllData();
+  }, []);
+
   const [cvData, setCvData] = useState<CVData>({
     name: { pt: "Elias Edson Barao", en: "Elias Edson Barao", es: "Elias Edson Barao" },
     title: { pt: "Desenvolvedor Full-Stack", en: "Full-Stack Developer", es: "Desarrollador Full-Stack", fr: "Développeur Full-Stack", zh: "全栈开发者" },
@@ -148,6 +191,8 @@ export default function CVBuilderPage() {
     includeLanguages: true,
     selectedExperienceIds: [],
     selectedProjectIds: [],
+    maxSkills: 20,
+    sortSkills: "order",
   });
 
   const getLocalizedValue = (obj: LocalizedString | undefined, lang: Language): string => {
@@ -159,7 +204,7 @@ export default function CVBuilderPage() {
     setCvData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const getLocalizedCVData = (lang: Language): any => {
+const getLocalizedCVData = (lang: Language): any => {
     const selectedExp = cvData.selectedExperienceIds.length > 0
       ? cvData.experience.filter(exp => cvData.selectedExperienceIds.includes(exp.id))
       : cvData.experience;
@@ -167,6 +212,18 @@ export default function CVBuilderPage() {
     const selectedProj = cvData.selectedProjectIds.length > 0
       ? cvData.projects.filter(proj => cvData.selectedProjectIds.includes(proj.id))
       : cvData.projects;
+    
+    let sortedSkills = cvData.skills.map((s) => getLocalizedValue(s, lang));
+    console.log('Skills before limit:', sortedSkills.length, 'maxSkills:', cvData.maxSkills, 'sort:', cvData.sortSkills);
+    if (cvData.sortSkills === "alpha") {
+      sortedSkills = [...sortedSkills].sort((a, b) => a.localeCompare(b));
+    } else if (cvData.sortSkills === "reverse") {
+      sortedSkills = [...sortedSkills].reverse();
+    }
+    if (cvData.maxSkills > 0) {
+      sortedSkills = sortedSkills.slice(0, cvData.maxSkills);
+    }
+    console.log('Skills after limit:', sortedSkills.length);
     
     return ({
     name: getLocalizedValue(cvData.name, lang),
@@ -189,7 +246,7 @@ export default function CVBuilderPage() {
       period: edu.period,
       description: getLocalizedValue(edu.description, lang),
     })),
-    skills: cvData.skills.map((s) => getLocalizedValue(s, lang)),
+    skills: sortedSkills,
     projects: selectedProj.map((p) => ({
       name: getLocalizedValue(p.name, lang),
       description: getLocalizedValue(p.description, lang),
@@ -207,28 +264,9 @@ export default function CVBuilderPage() {
     includeSkills: cvData.includeSkills,
     includeProjects: cvData.includeProjects,
     includeLanguages: cvData.includeLanguages,
+    maxSkills: cvData.maxSkills,
     language: lang,
-  });};
-
-  useEffect(() => {
-    fetchAllData();
-    fetchDefaultCV();
-  }, []);
-
-  const fetchDefaultCV = async () => {
-    try {
-      const [defaultRes, historyRes] = await Promise.all([
-        fetch('/api/admin/cv/save'),
-        fetch('/api/admin/cv/save?history=true'),
-      ]);
-      const defaultData = await defaultRes.json();
-      const historyData = await historyRes.json();
-      
-      setDefaultCV(defaultData);
-      setCvHistory(Array.isArray(historyData) ? historyData : []);
-    } catch (error) {
-      console.error("Failed to fetch CV data:", error);
-    }
+  });
   };
 
   const fetchAllData = async () => {
@@ -273,7 +311,7 @@ export default function CVBuilderPage() {
           : [],
         skills: Array.isArray(skills)
           ? skills
-              .filter((s: any) => s.active && s.category === "tech")
+              .filter((s: any) => s.active)
               .map((s: any) => localizeField(s.name, s.name_en || s.name, s.name_es || s.name))
           : [],
         projects: Array.isArray(projects)
@@ -322,6 +360,8 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
         includeSkills: cvData.includeSkills,
         includeProjects: cvData.includeProjects,
         includeLanguages: cvData.includeLanguages,
+        maxSkills: cvData.maxSkills,
+        sortSkills: cvData.sortSkills,
       }));
 
       await fetch('/api/admin/cv/save', {
@@ -433,9 +473,9 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
         </div>
       )}
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
         <div className="xl:col-span-1 space-y-6 overflow-y-auto max-h-[calc(100vh-180px)] pr-2">
-          <div className="{colors.card} border {colors.border} rounded-xl p-5">
+          <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
             <h3 className="text-sm font-semibold mb-3">Template</h3>
             <div className="space-y-2">
               {templates.map((t) => (
@@ -457,7 +497,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
             </div>
           </div>
 
-          <div className="{colors.card} border {colors.border} rounded-xl p-5">
+          <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
             <h3 className="text-sm font-semibold mb-3">Idioma do CV</h3>
             <div className="flex gap-2">
               {(["pt", "en", "es"] as const).map((lang) => (
@@ -474,7 +514,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
             </div>
           </div>
 
-          <div className="{colors.card} border {colors.border} rounded-xl p-5">
+          <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
             <h3 className="text-sm font-semibold mb-3">Dados do CV</h3>
             <div className="space-y-3">
               <div>
@@ -576,7 +616,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
             </div>
           </div>
 
-          <div className="{colors.card} border {colors.border} rounded-xl p-5">
+          <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
             <h3 className="text-sm font-semibold mb-3">Dados Complementares ({language.toUpperCase()})</h3>
             <div className="space-y-3">
               <div>
@@ -681,7 +721,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
             </div>
           </div>
 
-          <div className="{colors.card} border {colors.border} rounded-xl p-5">
+          <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
             <h3 className="text-sm font-semibold mb-3">Seções do CV</h3>
             <div className="space-y-2">
               <label className="flex items-center gap-2 cursor-pointer">
@@ -729,11 +769,106 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                 />
                 <span className="text-sm {colors.textMuted}">Idiomas</span>
               </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={cvData.includeLanguages}
+                  onChange={(e) => setCvData({ ...cvData, includeLanguages: e.target.checked })}
+                  className="w-4 h-4 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                />
+                <span className="text-sm {colors.textMuted}">Idiomas</span>
+              </label>
             </div>
           </div>
 
+          {cvData.includeLanguages && (
+            <div className={`${colors.card} ${colors.border} rounded-xl p-5 mt-4`}>
+              <h3 className="text-sm font-semibold mb-3">
+                {language === "pt" ? "Idiomas" : language === "en" ? "Languages" : "Idiomas"}
+              </h3>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {cvData.languages.map((langItem, index) => (
+                  <div key={index} className="flex items-center gap-2 p-2 rounded-lg {colors.cardBg}">
+                    <input
+                      type="text"
+                      value={getLocalizedValue(langItem, language)}
+                      onChange={(e) => {
+                        const newLanguages = [...cvData.languages];
+                        newLanguages[index] = { ...newLanguages[index], [language]: e.target.value };
+                        setCvData({ ...cvData, languages: newLanguages });
+                      }}
+                      className={`flex-1 ${colors.cardBg} border ${colors.border} rounded px-2 py-1 text-xs ${colors.text}`}
+                      placeholder={language === "pt" ? "Ex: Português (Nativo)" : language === "en" ? "Ex: Portuguese (Native)" : "Ex: Portugués (Nativo)"}
+                    />
+                    <button
+                      onClick={() => {
+                        const newLanguages = cvData.languages.filter((_, i) => i !== index);
+                        setCvData({ ...cvData, languages: newLanguages });
+                      }}
+                      className="text-red-400 hover:text-red-300 text-xs px-2"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => setCvData({ ...cvData, languages: [...cvData.languages, { pt: "", en: "", es: "" }] })}
+                className="mt-2 text-xs text-cyan-400 hover:text-cyan-300"
+              >
+                + {language === "pt" ? "Adicionar idioma" : language === "en" ? "Add language" : "Agregar idioma"}
+              </button>
+            </div>
+          )}
+
+          {cvData.includeSkills && (
+            <div className={`${colors.card} ${colors.border} rounded-xl p-5 mt-4`}>
+              <h3 className="text-sm font-semibold mb-3">
+                {language === "pt" ? "Configurar Skills" : language === "en" ? "Configure Skills" : "Configurar Habilidades"}
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs {colors.textMuted} mb-1">
+                    {language === "pt" ? "Quantidade máxima" : language === "en" ? "Maximum quantity" : "Cantidad máxima"}
+                  </label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    value={cvData.maxSkills}
+                    onChange={(e) => setCvData({ ...cvData, maxSkills: parseInt(e.target.value) || 0 })}
+                    className={`w-full ${colors.cardBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs {colors.textMuted} mb-1">
+                    {language === "pt" ? "Ordenar por" : language === "en" ? "Sort by" : "Ordenar por"}
+                  </label>
+                  <select
+                    value={cvData.sortSkills}
+                    onChange={(e) => setCvData({ ...cvData, sortSkills: e.target.value })}
+                    className={`w-full ${colors.cardBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
+                  >
+                    <option value="order">
+                      {language === "pt" ? "Ordem do banco" : language === "en" ? "Database order" : "Orden de base de datos"}
+                    </option>
+                    <option value="alpha">
+                      {language === "pt" ? "Alfabética (A-Z)" : language === "en" ? "Alphabetical (A-Z)" : "Alfabética (A-Z)"}
+                    </option>
+                    <option value="reverse">
+                      {language === "pt" ? "Inversa (Z-A)" : language === "en" ? "Reverse (Z-A)" : "Inversa (Z-A)"}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <p className="text-xs {colors.textSubtle} mt-2">
+                {language === "pt" ? "Skills carregadas:" : language === "en" ? "Loaded skills:" : "Habilidades cargadas:"} {cvData.skills.length}
+              </p>
+            </div>
+          )}
+
           {cvData.includeExperience && (
-            <div className="{colors.card} border {colors.border} rounded-xl p-5">
+            <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
               <h3 className="text-sm font-semibold mb-3">Selecionar Experiências</h3>
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {cvData.experience.map((exp) => (
@@ -782,7 +917,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
           )}
 
           {cvData.includeProjects && (
-            <div className="{colors.card} border {colors.border} rounded-xl p-5">
+            <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
               <h3 className="text-sm font-semibold mb-3">Selecionar Projetos</h3>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {cvData.projects.map((proj) => (
@@ -827,7 +962,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
             </div>
           )}
 
-          <div className="{colors.card} border {colors.border} rounded-xl p-5">
+          <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
             <h3 className="text-sm font-semibold mb-3">Resumo</h3>
             <div className="space-y-2 text-xs text-gray-400">
               <div className="flex justify-between">
@@ -854,7 +989,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
           </div>
         </div>
 
-        <div className="xl:col-span-2">
+        <div className="xl:col-span-3">
           <div className="{colors.card} border {colors.border} rounded-xl p-4 sticky top-0">
             <h3 className="text-sm font-semibold mb-4">Preview</h3>
             <div className="bg-white rounded-lg overflow-hidden shadow-lg min-h-[600px]">

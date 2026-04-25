@@ -1,14 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readArrayFromJson, writeJsonFile } from '@/lib/json-storage';
+import { sql } from '@vercel/postgres';
+import { readArrayFromJson } from '@/lib/json-storage';
 import { v1Data } from '@/data/v1-data';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const projects = await readArrayFromJson('projects.json', 'projects', v1Data.projects);
-    return NextResponse.json(projects);
+    const { rows } = await sql`SELECT * FROM projects ORDER BY display_order NULLS LAST, id`;
+    return NextResponse.json(rows);
   } catch (error) {
-    console.error('Failed to fetch projects:', error);
-    return NextResponse.json(v1Data.projects);
+    console.log('Using fallback data for projects');
+    try {
+      const projects = await readArrayFromJson('projects.json', 'projects', v1Data.projects);
+      return NextResponse.json(projects);
+    } catch {
+      return NextResponse.json(v1Data.projects);
+    }
   }
 }
 

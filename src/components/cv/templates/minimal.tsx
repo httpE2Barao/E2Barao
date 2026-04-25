@@ -60,6 +60,7 @@ export function MinimalCV({ data }: { data: CVData }) {
             {data.location && <Text>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.contactLink}><Text>GitHub</Text></Link>}
+            <Link href="https://e2-barao.vercel.app/" style={styles.contactLink}><Text>Portfolio</Text></Link>
           </View>
         </View>
 

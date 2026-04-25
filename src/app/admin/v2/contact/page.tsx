@@ -75,6 +75,19 @@ export default function ContactPage() {
       <div>
         <h1 className={`text-2xl md:text-3xl font-bold ${colors.text}`}>Contato</h1>
         <p className={`${colors.textMuted} mt-1`}>{contacts.length} links</p>
+        <a
+          href="https://e2-barao.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`inline-flex items-center gap-2 mt-3 text-sm ${colors.accent} hover:underline`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          Ver portfólio online →
+        </a>
       </div>
 
       {message && <div className={`p-3 rounded-lg text-sm ${message.type === "success" ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}>{message.text}</div>}

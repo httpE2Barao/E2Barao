@@ -1,13 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readArrayFromJson, writeJsonFile } from '@/lib/json-storage';
+import { sql } from '@vercel/postgres';
+import { readArrayFromJson } from '@/lib/json-storage';
 import { v1Data } from '@/data/v1-data';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const education = await readArrayFromJson('education.json', 'education', v1Data.education);
-    return NextResponse.json(education);
+    const { rows } = await sql`SELECT * FROM education_entries ORDER BY display_order NULLS LAST, period_start DESC`;
+    return NextResponse.json(rows);
   } catch (error) {
-    return NextResponse.json(v1Data.education);
+    console.log('Using fallback data for education');
+    try {
+      const education = await readArrayFromJson('education.json', 'education', v1Data.education);
+      return NextResponse.json(education);
+    } catch {
+      return NextResponse.json(v1Data.education);
+    }
   }
 }
 

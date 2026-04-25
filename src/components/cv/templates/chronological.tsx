@@ -49,6 +49,7 @@ interface CVData {
   includeSkills: boolean;
   includeProjects: boolean;
   includeLanguages: boolean;
+  maxSkills: number;
 }
 
 export function ChronologicalCV({ data }: { data: CVData }) {
@@ -80,6 +81,7 @@ export function ChronologicalCV({ data }: { data: CVData }) {
             {data.location && <Text style={styles.contactItem}>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text style={styles.contactItem}>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.contactLink}><Text style={styles.contactItem}>GitHub</Text></Link>}
+            <Link href="https://e2-barao.vercel.app/" style={styles.contactLink}><Text style={styles.contactItem}>Portfolio</Text></Link>
           </View>
         </View>
 

@@ -6,6 +6,7 @@ import path from 'path';
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const history = searchParams.get('history');
+  const language = searchParams.get('language');
   
   try {
     if (history === 'true') {
@@ -13,7 +14,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(rows);
     }
     
-    const language = searchParams.get('language');
     if (language) {
       const { rows } = await sql`
         SELECT * FROM cv_generated 
@@ -22,8 +22,9 @@ export async function GET(request: NextRequest) {
         LIMIT 1
       `;
       if (rows.length > 0) {
-        return NextResponse.json({ default: rows[0], all: [] });
+        return NextResponse.json(rows[0]);
       }
+      return NextResponse.json(null);
     }
     
     const { rows } = await sql`SELECT * FROM cv_generated ORDER BY created_at DESC LIMIT 1`;

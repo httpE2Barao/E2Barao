@@ -7,6 +7,8 @@
 CREATE TABLE IF NOT EXISTS skills (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
+  name_en VARCHAR(100),
+  name_es VARCHAR(100),
   category VARCHAR(50) NOT NULL CHECK (category IN ('tech', 'concept', 'program')),
   level INTEGER DEFAULT 0 CHECK (level >= 0 AND level <= 100),
   color VARCHAR(50),
@@ -156,8 +158,21 @@ CREATE TABLE IF NOT EXISTS cv_generated (
   format VARCHAR(10) DEFAULT 'pdf',
   blob_url TEXT,
   language VARCHAR(5) DEFAULT 'pt',
+  config JSONB,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- 9. GITHUB CACHE TABLE
+CREATE TABLE IF NOT EXISTS github_cache (
+  id SERIAL PRIMARY KEY,
+  cache_key VARCHAR(50) NOT NULL UNIQUE,
+  data JSONB NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  expires_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_github_cache_key ON github_cache(cache_key);
+CREATE INDEX IF NOT EXISTS idx_github_cache_expires ON github_cache(expires_at);
 
 -- =====================================================
 -- INDEXES

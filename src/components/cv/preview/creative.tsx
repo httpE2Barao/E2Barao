@@ -61,6 +61,7 @@ export function CreativePreview({ data }: { data: CVData }) {
           {data.location && <p className="text-[8px] text-slate-300 mb-1">{data.location}</p>}
           {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-[8px] text-amber-400 hover:underline block mb-1">{t.linkedinLabel}</a>}
           {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-[8px] text-amber-400 hover:underline block mb-1">{t.githubLabel}</a>}
+          <a href="https://e2-barao.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-[8px] text-amber-400 hover:underline block mb-1">Portfolio</a>
         </div>
 
         <div className="mb-4">
