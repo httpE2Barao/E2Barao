@@ -14,13 +14,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File and projectSrc are required' }, { status: 400 });
     }
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const allowedVideoTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
+    const allowedTypes = [...allowedImageTypes, ...allowedVideoTypes];
+    
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json({ error: 'Invalid file type. Allowed: jpeg, png, webp, gif' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid file type. Allowed: jpeg, png, webp, gif, mp4, webm, mov' }, { status: 400 });
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File too large. Max 5MB' }, { status: 400 });
+    const maxSize = allowedVideoTypes.includes(file.type) ? 50 * 1024 * 1024 : 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      return NextResponse.json({ error: `File too large. Max ${maxSize / 1024 / 1024}MB` }, { status: 400 });
     }
 
     try {
@@ -29,7 +33,7 @@ export async function POST(request: NextRequest) {
       await fs.mkdir(IMAGES_DIR, { recursive: true });
     }
 
-    const ext = path.extname(file.name) || '.png';
+    const ext = path.extname(file.name) || (allowedVideoTypes.includes(file.type) ? '.mp4' : '.png');
     const fileName = `project_${projectSrc}${ext}`;
     const filePath = path.join(IMAGES_DIR, fileName);
 
@@ -75,7 +79,7 @@ export async function GET() {
     await fs.access(IMAGES_DIR);
     const files = await fs.readdir(IMAGES_DIR);
     const projectImages = files
-      .filter(f => f.startsWith('project_') && /\.(png|jpg|jpeg|webp|gif)$/i.test(f))
+      .filter(f => f.startsWith('project_') && /\.(png|jpg|jpeg|webp|gif|mp4|webm|mov)$/i.test(f))
       .map(f => ({
         name: f,
         url: `/images/${f}`

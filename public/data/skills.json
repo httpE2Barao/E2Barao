@@ -549,6 +549,26 @@
       "icon_src": "img-microsoft365.png",
       "display_order": 55,
       "active": true
+    },
+    {
+      "id": 58,
+      "name": "Socket.io",
+      "category": "tech",
+      "level": 75,
+      "color": "",
+      "icon_src": "",
+      "display_order": 58,
+      "active": true
+    },
+    {
+      "id": 59,
+      "name": "Tainacan",
+      "category": "tech",
+      "level": 72,
+      "color": "",
+      "icon_src": "",
+      "display_order": 59,
+      "active": true
     }
   ]
 }
