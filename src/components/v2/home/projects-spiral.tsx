@@ -5,6 +5,57 @@ import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+const videoTimeRef = { current: {} as Record<string, number>, currentProject: null as string | null }
+
+function getVideoTime(projectSrc: string) { return videoTimeRef.current[projectSrc] || 0 }
+function setVideoTime(projectSrc: string, time: number) { videoTimeRef.current[projectSrc] = time }
+
+function useProjectMedia(projectSrc: string) {
+  const [mediaUrl, setMediaUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!projectSrc) return
+    const checkMedia = async () => {
+      const extensions = ['.mp4', '.webm', '.mov', '.gif', '.png', '.jpg']
+      for (const ext of extensions) {
+        const path = `/images/project_${projectSrc}${ext}`
+        try {
+          const res = await fetch(path, { method: 'HEAD' })
+          if (res.ok) {
+            setMediaUrl(path)
+            setLoading(false)
+            return
+          }
+        } catch (_e) { /* empty */ }
+      }
+      setMediaUrl(`/images/project_${projectSrc}.png`)
+      setLoading(false)
+    }
+    checkMedia()
+  }, [projectSrc])
+
+  return { mediaUrl, loading }
+}
+
+function hasGif(url: string | null): boolean {
+  if (!url) return false
+  return url.toLowerCase().endsWith('.gif')
+}
+
+function hasVideo(url: string | null): boolean {
+  if (!url) return false
+  const lower = url.toLowerCase()
+  return lower.endsWith('.mp4') || lower.endsWith('.webm') || lower.endsWith('.mov')
+}
+
+function getProjectImage(project: ProjectFromAPI): string {
+  if (project.imageUrls && project.imageUrls.length > 0) {
+    return project.imageUrls[0]
+  }
+  return `/images/project_${project.src}.png`
+}
+
 // Hook que calcula progresso baseado na posição do elemento com smooth
 function useElementScrollProgress() {
   const [localProgress, setLocalProgress] = useState(0)
@@ -101,18 +152,6 @@ async function fetchFeaturedProjects(lang: string): Promise<ProjectFromAPI[]> {
   }
 }
 
-function getProjectImage(project: ProjectFromAPI): string {
-  if (project.imageUrls && project.imageUrls.length > 0) {
-    return project.imageUrls[0]
-  }
-  return `/images/project_${project.src}.png`
-}
-
-function hasGif(project: ProjectFromAPI): boolean {
-  const img = getProjectImage(project)
-  return img.toLowerCase().endsWith('.gif')
-}
-
 function SpiralProjectCard({
   project,
   index,
@@ -138,6 +177,27 @@ function SpiralProjectCard({
 }) {
   const { theme } = useTheme()
   const isDark = theme === "dark"
+  const { mediaUrl, loading: mediaLoading } = useProjectMedia(project.src)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const prevIsCurrentRef = useRef(false)
+
+  useEffect(() => {
+    if (!videoRef.current) return
+    
+    if (isCurrentProject) {
+      const savedTime = videoTimeRef.current[project.src] || 0
+      videoRef.current.currentTime = savedTime
+      videoRef.current.play().catch(() => {})
+      videoTimeRef.currentProject = project.src
+    } else if (prevIsCurrentRef.current) {
+      videoTimeRef.current[project.src] = videoRef.current.currentTime
+      videoRef.current.pause()
+      if (videoTimeRef.currentProject === project.src) {
+        videoTimeRef.currentProject = null
+      }
+    }
+    prevIsCurrentRef.current = isCurrentProject
+  }, [isCurrentProject, project.src])
 
   // layout-based values are provided via props for responsive behavior
   
@@ -193,15 +253,26 @@ function SpiralProjectCard({
         <div
           className={`absolute inset-0 rounded-xl overflow-hidden ${isDark ? "shadow-2xl shadow-black/70" : "shadow-2xl shadow-black/20"}`}
         >
-          {hasGif(project) ? (
+          {mediaLoading ? (
+            <div className="w-full h-full bg-black/20 animate-pulse" />
+          ) : hasVideo(mediaUrl) ? (
+            <video
+              ref={videoRef}
+              src={mediaUrl!}
+              className="object-cover w-full h-full"
+              muted
+              loop
+              playsInline
+            />
+          ) : hasGif(mediaUrl) ? (
             <img
-              src={getProjectImage(project)}
+              src={mediaUrl!}
               alt={project.name}
-              className="object-cover"
+              className="object-cover w-full h-full"
             />
           ) : (
             <Image
-              src={getProjectImage(project)}
+              src={mediaUrl || getProjectImage(project)}
               alt={project.name}
               fill
               className="object-cover"
@@ -290,6 +361,9 @@ function ProjectModal({
 }) {
   const { theme } = useTheme()
   const isDark = theme === "dark"
+  const { mediaUrl, loading: mediaLoading } = useProjectMedia(project.src)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const hasInitializedRef = useRef(false)
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -302,6 +376,15 @@ function ProjectModal({
       document.body.style.overflow = ""
     }
   }, [onClose])
+
+  useEffect(() => {
+    if (videoRef.current && hasVideo(mediaUrl) && !hasInitializedRef.current) {
+      const savedTime = videoTimeRef.current[project.src] || 0
+      videoRef.current.currentTime = savedTime
+      videoRef.current.play().catch(() => {})
+      hasInitializedRef.current = true
+    }
+  }, [mediaUrl, project.src])
 
   return (
     <motion.div
@@ -330,15 +413,26 @@ function ProjectModal({
         </button>
 
         <div className="relative w-full h-[50vh] md:h-[60vh]">
-          {hasGif(project) ? (
+          {mediaLoading ? (
+            <div className="w-full h-full bg-black/20 animate-pulse" />
+          ) : hasVideo(mediaUrl) ? (
+            <video
+              ref={videoRef}
+              src={mediaUrl!}
+              className="object-cover w-full h-full"
+              loop
+              muted
+              playsInline
+            />
+          ) : hasGif(mediaUrl) ? (
             <img
-              src={getProjectImage(project)}
+              src={mediaUrl!}
               alt={project.name}
               className="object-cover w-full h-full"
             />
           ) : (
             <Image
-              src={getProjectImage(project)}
+              src={mediaUrl || getProjectImage(project)}
               alt={project.name}
               fill
               className="object-cover"

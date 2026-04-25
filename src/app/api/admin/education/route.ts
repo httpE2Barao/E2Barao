@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { readArrayFromJson } from '@/lib/json-storage';
+import { readArrayFromJson, writeJsonFile } from '@/lib/json-storage';
 import { v1Data } from '@/data/v1-data';
 
 export async function GET(request: NextRequest) {
