@@ -248,7 +248,7 @@ export function V2HomeHeroV2() {
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textMuted = isDark ? "text-white/50" : "text-black/50"
   const btnBg = isDark ? "bg-cyan-400 hover:bg-cyan-300 text-black" : "bg-blue-600 hover:bg-blue-500 text-white"
-  const btnOutline = isDark ? "border-white/20 text-white hover:border-cyan-400 hover:text-cyan-400" : "border-black/20 text-black hover:border-blue-600 hover:text-blue-600"
+  const btnOutline = isDark ? "border-white/20 text-white hover:border-cyan-400 hover:text-cyan-400 bg-white/10 hover:bg-cyan-400/10" : "border-black/20 text-black hover:border-blue-600 hover:text-blue-600 bg-white/90 hover:bg-white"
   const bubbleBg = isDark ? "bg-white/90 border-white/50" : "bg-black/90 border-black/50"
   const bubbleText = isDark ? "text-black" : "text-white"
   const scrollDot = isDark ? "bg-cyan-400" : "bg-blue-600"

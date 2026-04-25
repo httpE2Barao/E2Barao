@@ -254,7 +254,7 @@ export function V2HomeHero() {
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textMuted = isDark ? "text-white/50" : "text-black/50"
   const btnBg = isDark ? "bg-cyan-400 hover:bg-cyan-300 text-black" : "bg-blue-600 hover:bg-blue-500 text-white"
-  const btnOutline = isDark ? "border-white/20 text-white hover:border-cyan-400 hover:text-cyan-400" : "border-black/20 text-black hover:border-blue-600 hover:text-blue-600"
+  const btnOutline = isDark ? "border-white/20 text-white hover:border-cyan-400 hover:text-cyan-400 bg-white/10 hover:bg-cyan-400/10" : "border-black/20 text-black hover:border-blue-600 hover:text-blue-600 bg-white/90 hover:bg-white"
   const bubbleBg = isDark ? "bg-white/5 border-white/10" : "bg-black/5 border-black/10"
   const placeholderText = isDark ? "placeholder-white/20" : "placeholder-black/20"
   const scrollText = isDark ? "text-white/30" : "text-black/30"
@@ -306,7 +306,7 @@ export function V2HomeHero() {
               initial={{ opacity: 0, x: -15 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
-              className={`${textMuted} text-sm sm:text-base font-light tracking-wide`}
+              className={`${textMuted} text-sm sm:text-base font-light tracking-wide break-words max-w-full`}
             >
               {sub}
             </motion.p>
