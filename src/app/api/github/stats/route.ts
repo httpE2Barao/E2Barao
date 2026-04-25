@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
+import { getCachedData, setCachedData, getGitHubHeaders } from '@/lib/github-cache';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'httpE2Barao';
+const CACHE_KEY = 'stats';
 
 interface LanguageBytes {
   [language: string]: number;
@@ -9,6 +11,11 @@ interface LanguageBytes {
 
 export async function GET() {
   try {
+    const cached = await getCachedData(CACHE_KEY);
+    if (cached) {
+      return NextResponse.json(cached);
+    }
+
     const repos: any[] = [];
     let page = 1;
     const perPage = 100;
@@ -16,12 +23,7 @@ export async function GET() {
     while (true) {
       const response = await fetch(
         `${GITHUB_API}/users/${OWNER}/repos?sort=updated&per_page=${perPage}&page=${page}&type=owner`,
-        {
-          headers: {
-            'Accept': 'application/vnd.github.v3+json',
-            'User-Agent': 'E2Barao-Portfolio',
-          },
-        }
+        { headers: getGitHubHeaders() }
       );
 
       if (!response.ok) {
@@ -45,12 +47,7 @@ export async function GET() {
       try {
         const langResponse = await fetch(
           `${GITHUB_API}/repos/${OWNER}/${repoName}/languages`,
-          {
-            headers: {
-              'Accept': 'application/vnd.github.v3+json',
-              'User-Agent': 'E2Barao-Portfolio',
-            },
-          }
+          { headers: getGitHubHeaders() }
         );
 
         if (langResponse.ok) {
@@ -97,7 +94,7 @@ export async function GET() {
       });
     }
 
-    return NextResponse.json({
+    const result = {
       owner: OWNER,
       total_repos: nonForkRepos.length,
       repos_analyzed: reposWithData,
@@ -105,7 +102,11 @@ export async function GET() {
       total_lines_estimate: Math.round(totalBytes / 30),
       languages: topLanguages,
       generated_at: new Date().toISOString(),
-    });
+    };
+
+    await setCachedData(CACHE_KEY, result);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error('GitHub stats error:', error);
     return NextResponse.json(

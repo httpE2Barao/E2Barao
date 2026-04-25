@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getCachedData, setCachedData, getGitHubHeaders } from '@/lib/github-cache';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'httpE2Barao';
@@ -17,37 +18,41 @@ export async function GET(request: NextRequest) {
 
   try {
     if (repos) {
+      const cacheKey = `lang_${repos}`;
+      const cached = await getCachedData(cacheKey);
+      if (cached) {
+        return NextResponse.json(cached);
+      }
+
       const repoList = repos.split(',');
       const results = await Promise.all(
         repoList.map(async (r: string) => {
           try {
             const response = await fetch(
               `${GITHUB_API}/repos/${OWNER}/${r.trim()}/languages`,
-              {
-                headers: {
-                  'Accept': 'application/vnd.github.v3+json',
-                  'User-Agent': 'E2Barao-Portfolio',
-                },
-              }
+              { headers: getGitHubHeaders() }
             );
             const data = await response.json();
             return { repo: r.trim(), languages: data };
-          } catch (e) {
+          } catch {
             return { repo: r.trim(), languages: null, error: 'Repo não encontrado' };
           }
         })
       );
+      
+      await setCachedData(cacheKey, results);
       return NextResponse.json(results);
+    }
+
+    const cacheKey = `lang_${repo}`;
+    const cached = await getCachedData(cacheKey);
+    if (cached) {
+      return NextResponse.json(cached);
     }
 
     const response = await fetch(
       `${GITHUB_API}/repos/${OWNER}/${repo}/languages`,
-      {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'E2Barao-Portfolio',
-        },
-      }
+      { headers: getGitHubHeaders() }
     );
 
     if (!response.ok) {
@@ -67,12 +72,16 @@ export async function GET(request: NextRequest) {
       percentages[lang] = Math.round(((bytes as number) / total) * 100);
     }
 
-    return NextResponse.json({
+    const result = {
       repo,
       total_bytes: total,
       languages: percentages,
       raw: languages,
-    });
+    };
+
+    await setCachedData(cacheKey, result);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error('GitHub languages error:', error);
     return NextResponse.json(

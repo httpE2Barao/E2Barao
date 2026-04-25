@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getCachedData, setCachedData, getGitHubHeaders } from '@/lib/github-cache';
 
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'httpE2Barao';
@@ -45,12 +46,7 @@ async function fetchLanguages(repoName: string): Promise<LanguageBytes> {
   try {
     const response = await fetch(
       `${GITHUB_API}/repos/${OWNER}/${repoName}/languages`,
-      {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'E2Barao-Portfolio',
-        },
-      }
+      { headers: getGitHubHeaders() }
     );
     if (!response.ok) return {};
     const data = await response.json();
@@ -81,6 +77,12 @@ export async function GET(request: NextRequest) {
 
   if (repos.length === 0) {
     return NextResponse.json({ error: 'Nenhum repositório fornecido' }, { status: 400 });
+  }
+
+  const cacheKey = `exp_${reposParam}`;
+  const cached = await getCachedData(cacheKey);
+  if (cached) {
+    return NextResponse.json(cached);
   }
 
   try {
@@ -126,7 +128,7 @@ export async function GET(request: NextRequest) {
       }))
       .sort((a, b) => b.bytes - a.bytes);
 
-    return NextResponse.json({
+    const result = {
       repos_count: repos.length,
       repos_with_data: reposWithData,
       total_bytes: totalBytes,
@@ -134,7 +136,11 @@ export async function GET(request: NextRequest) {
       by_language: stats,
       by_repo: repoStats,
       generated_at: new Date().toISOString(),
-    });
+    };
+
+    await setCachedData(cacheKey, result);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error('GitHub experience stats error:', error);
     return NextResponse.json(

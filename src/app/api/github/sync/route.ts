@@ -3,6 +3,18 @@ import { NextRequest, NextResponse } from 'next/server';
 const GITHUB_API = 'https://api.github.com';
 const OWNER = 'httpE2Barao';
 
+function getGitHubHeaders() {
+  const headers: Record<string, string> = {
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'E2Barao-Portfolio',
+  };
+  const token = process.env.GITHUB_TOKEN;
+  if (token) {
+    headers['Authorization'] = `token ${token}`;
+  }
+  return headers;
+}
+
 async function fetchAllRepos(): Promise<any[]> {
   const repos: any[] = [];
   let page = 1;
@@ -11,12 +23,7 @@ async function fetchAllRepos(): Promise<any[]> {
   while (true) {
     const response = await fetch(
       `${GITHUB_API}/users/${OWNER}/repos?sort=updated&per_page=${perPage}&page=${page}&type=owner`,
-      {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'E2Barao-Portfolio',
-        },
-      }
+      { headers: getGitHubHeaders() }
     );
 
     if (!response.ok) {
@@ -37,12 +44,7 @@ async function fetchLanguages(repoName: string): Promise<Record<string, number>>
   try {
     const response = await fetch(
       `${GITHUB_API}/repos/${OWNER}/${repoName}/languages`,
-      {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'E2Barao-Portfolio',
-        },
-      }
+      { headers: getGitHubHeaders() }
     );
     if (!response.ok) return {};
     return await response.json();
