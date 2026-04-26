@@ -421,7 +421,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "React Hook Form",
-        icon: "img-hook-form.png",
+        icon: "https://react-hook-form.com/images/logo/react-hook-form-logo-only.svg",
         level: 85,
         years: 2,
         projects: 10,

@@ -17,6 +17,16 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'react-hook-form.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'ui.shadcn.com',
         pathname: '/**',
       },
