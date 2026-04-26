@@ -462,7 +462,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "Radix UI",
-        icon: "img-radix-ui.png",
+        icon: "https://www.radix-ui.com/images/logo.svg",
         level: 82,
         years: 2,
         projects: 8,
@@ -476,7 +476,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "shadcn/ui",
-        icon: "img-shadcn.png",
+        icon: "https://raw.githubusercontent.com/shadcn-ui/ui/main/apps/www/public/logo.svg",
         level: 80,
         years: 1,
         projects: 5,
@@ -531,7 +531,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "NextAuth.js",
-        icon: "img-nextauth.png",
+        icon: "https://cdn.jsdelivr.net/gh/nextauthjs/next-auth/trunk/www/public/images/logo-sm.png",
         level: 82,
         years: 2,
         projects: 8,
@@ -545,7 +545,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "JWT",
-        icon: "img-jwt.png",
+        icon: "https://jwt.io/img/logo.svg",
         level: 78,
         years: 2,
         projects: 8,
@@ -600,7 +600,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "Socket.IO",
-        icon: "img-socket-io.png",
+        icon: "https://socket.io/socket.svg",
         level: 75,
         years: 2,
         projects: 5,
@@ -641,7 +641,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "Mercado Pago",
-        icon: "img-mercado-pago.png",
+        icon: "https://seeklogo.com/images/m/mercado-pago-logo-vector-svg.png",
         level: 80,
         years: 2,
         projects: 5,
@@ -765,7 +765,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "sharp",
-        icon: "img-sharp.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/sharp.svg",
         level: 78,
         years: 2,
         projects: 6,
@@ -806,7 +806,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "Recharts",
-        icon: "img-recharts.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/recharts.svg",
         level: 82,
         years: 2,
         projects: 8,
@@ -834,7 +834,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Mermaid",
-        icon: "img-mermaid.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/mermaid.svg",
         level: 75,
         years: 1,
         projects: 3,
@@ -956,7 +956,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "n8n",
-        icon: "img-n8n.png",
+        icon: "https://n8n.io/brandguidelines/logo-dark.svg",
         level: 75,
         years: 2,
         projects: 5,
@@ -970,7 +970,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Insomnia",
-        icon: "img-insomnia.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/insomnia.svg",
         level: 85,
         years: 3,
         projects: 10,
@@ -1040,7 +1040,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "DeepL",
-        icon: "img-deepl.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/deepl.svg",
         level: 80,
         years: 2,
         projects: 7,
@@ -1207,7 +1207,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Microsoft 365",
-        icon: "img-microsoft365.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/microsoft.svg",
         level: 85,
         years: 6,
         projects: 30,
@@ -1221,7 +1221,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Notion",
-        icon: "img-figma.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/figma.svg",
         level: 82,
         years: 3,
         projects: 20,
