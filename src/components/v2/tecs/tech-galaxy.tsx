@@ -5,7 +5,7 @@ import { OrbitControls, Float, Html, Stars, PerspectiveCamera } from "@react-thr
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { techCategories, TechItem } from "@/data/v2-tecs";
+import { techCategories, TechItem, getTechIconUrl } from "@/data/v2-tecs";
 import { useTheme } from "@/components/switchers/switchers";
 
 interface TechGalaxyProps {
@@ -374,7 +374,7 @@ function TechHoverCard({ tech }: { tech: TechItem }) {
             style={{ background: `${accentColor}20`, border: `1px solid ${accentColor}50` }}
           >
             <Image
-              src={`/images/${tech.icon}`}
+              src={getTechIconUrl(tech.icon)}
               alt={tech.name}
               width={18}
               height={18}

@@ -5,7 +5,7 @@ import { OrthographicCamera, OrbitControls, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { techCategories, TechItem } from "@/data/v2-tecs";
+import { techCategories, TechItem, getTechIconUrl } from "@/data/v2-tecs";
 import { useTheme } from "@/components/switchers/switchers";
 
 interface SolarSystemViewProps {
@@ -243,7 +243,7 @@ function Planet({
             boxShadow: (hovered || isFocusedPlanet) ? `0 0 6px ${color}60` : "none",
           }}>
             <Image
-              src={`/images/${tech.icon}`}
+              src={getTechIconUrl(tech.icon)}
               alt={tech.name}
               width={10}
               height={10}

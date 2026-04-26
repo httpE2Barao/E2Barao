@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { techCategories } from "@/data/v2-tecs";
+import { techCategories, getTechIconUrl } from "@/data/v2-tecs";
 import { useTheme } from "@/components/switchers/switchers";
 
 export function V2TecsPage() {
@@ -105,7 +105,7 @@ export function V2TecsPage() {
                           isDark ? "bg-white/10" : "bg-black/10"
                         }`}>
                           <Image
-                            src={`/images/${tech.icon}`}
+                            src={getTechIconUrl(tech.icon)}
                             alt={tech.name}
                             width={28}
                             height={28}

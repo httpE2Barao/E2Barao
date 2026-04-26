@@ -5,7 +5,7 @@ import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { techCategories, TechItem } from "@/data/v2-tecs";
+import { techCategories, TechItem, getTechIconUrl } from "@/data/v2-tecs";
 import { useTheme } from "@/components/switchers/switchers";
 
 interface TechSphereProps {
@@ -217,7 +217,7 @@ function TechHoverCard({ tech }: TechHoverCardProps) {
             isDark ? "bg-white/10" : "bg-gray-100"
           }`}>
             <Image
-              src={`/images/${tech.icon}`}
+              src={getTechIconUrl(tech.icon)}
               alt={tech.name}
               width={28}
               height={28}

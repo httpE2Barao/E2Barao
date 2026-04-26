@@ -5,7 +5,7 @@ import { Html } from "@react-three/drei";
 import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { techCategories, TechItem } from "@/data/v2-tecs";
+import { techCategories, TechItem, getTechIconUrl } from "@/data/v2-tecs";
 import { useTheme } from "@/components/switchers/switchers";
 
 interface ConstellationViewProps {
@@ -410,7 +410,7 @@ export default function ConstellationView({ activeCategory, onTechSelect }: Cons
             <div className="flex items-center gap-4 mb-3">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: "rgba(0, 212, 255, 0.1)", border: "1px solid rgba(0, 212, 255, 0.3)" }}>
                 <Image
-                  src={`/images/${hoveredTech.icon}`}
+                  src={getTechIconUrl(hoveredTech.icon)}
                   alt={hoveredTech.name}
                   width={28}
                   height={28}

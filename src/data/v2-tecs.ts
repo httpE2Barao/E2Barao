@@ -13,6 +13,13 @@ export interface TechItem {
   };
 }
 
+export function getTechIconUrl(icon: string): string {
+  if (icon.startsWith("http")) {
+    return icon;
+  }
+  return `/images/${icon}`;
+}
+
 export interface TechCategory {
   id: string;
   name: {

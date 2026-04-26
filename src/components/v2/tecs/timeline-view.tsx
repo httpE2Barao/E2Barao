@@ -2,7 +2,7 @@
 import { useRef, useMemo } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Image from "next/image";
-import { techCategories, TechItem } from "@/data/v2-tecs";
+import { techCategories, TechItem, getTechIconUrl } from "@/data/v2-tecs";
 import { useTheme } from "@/components/switchers/switchers";
 
 interface TimelineViewProps {
@@ -124,7 +124,7 @@ function TimelineNode({
       >
         <div className="absolute inset-0 rounded-full flex items-center justify-center">
           <Image
-            src={`/images/${tech.icon}`}
+            src={getTechIconUrl(tech.icon)}
             alt={tech.name}
             width={14}
             height={14}
@@ -190,7 +190,7 @@ function TimelineNode({
             }}
           >
             <Image
-              src={`/images/${tech.icon}`}
+              src={getTechIconUrl(tech.icon)}
               alt={tech.name}
               width={22}
               height={22}

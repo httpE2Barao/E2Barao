@@ -2,7 +2,7 @@
 import { useRef, useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { techCategories, TechItem } from "@/data/v2-tecs";
+import { techCategories, TechItem, getTechIconUrl } from "@/data/v2-tecs";
 import { useTheme } from "@/components/switchers/switchers";
 
 interface CircuitViewProps {
@@ -112,7 +112,7 @@ function TechChip({
             }}
           >
             <Image
-              src={`/images/${tech.icon}`}
+              src={getTechIconUrl(tech.icon)}
               alt={tech.name}
               width={22}
               height={22}
