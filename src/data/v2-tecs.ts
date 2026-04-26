@@ -103,7 +103,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "HTML5",
-        icon: "img-html.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
         level: 95,
         years: 6,
         projects: 50,
@@ -117,7 +117,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "CSS3",
-        icon: "img-css.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
         level: 93,
         years: 6,
         projects: 50,
@@ -144,7 +144,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "React",
-        icon: "img-react.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
         level: 92,
         years: 4,
         projects: 30,
@@ -158,7 +158,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Next.js",
-        icon: "img-nextjs.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
         level: 90,
         years: 3,
         projects: 20,
@@ -172,7 +172,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Tailwind CSS",
-        icon: "img-tailwind.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg",
         level: 88,
         years: 3,
         projects: 25,
@@ -186,7 +186,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "SASS",
-        icon: "img-sass.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg",
         level: 85,
         years: 2,
         projects: 15,
@@ -241,7 +241,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "NVIDIA NIM",
-        icon: "img-nvidia.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/nvidia.svg",
         level: 75,
         years: 1,
         projects: 2,
@@ -255,7 +255,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Google Gemini",
-        icon: "img-gemini.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/google.svg",
         level: 80,
         years: 2,
         projects: 5,
@@ -269,7 +269,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Groq SDK",
-        icon: "img-groq.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/groq/groq-original-wordmark.svg",
         level: 72,
         years: 1,
         projects: 3,
@@ -283,7 +283,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Ollama",
-        icon: "img-ollama.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/ollama.svg",
         level: 70,
         years: 1,
         projects: 2,
@@ -297,7 +297,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "MCP",
-        icon: "img-mcp.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/mcp.svg",
         level: 68,
         years: 1,
         projects: 2,
@@ -324,7 +324,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "PostgreSQL",
-        icon: "img-postgres.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
         level: 80,
         years: 3,
         projects: 15,
@@ -338,7 +338,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "SQLite",
-        icon: "img-sqlite.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
         level: 75,
         years: 2,
         projects: 8,
@@ -366,7 +366,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Prisma ORM",
-        icon: "img-prisma.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/prisma/prisma-original.svg",
         level: 82,
         years: 2,
         projects: 10,
@@ -435,7 +435,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Zod",
-        icon: "img-zod.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/zod.svg",
         level: 85,
         years: 2,
         projects: 10,
@@ -490,7 +490,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Framer Motion",
-        icon: "img-framer.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/framer.svg",
         level: 78,
         years: 2,
         projects: 6,
@@ -504,7 +504,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Lucide React",
-        icon: "img-lucide.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/lucide.svg",
         level: 88,
         years: 2,
         projects: 20,
@@ -614,7 +614,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Pusher",
-        icon: "img-pusher.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/pusher.svg",
         level: 78,
         years: 2,
         projects: 6,
@@ -696,7 +696,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Leaflet",
-        icon: "img-leaflet.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/leaflet/leaflet-original.svg",
         level: 78,
         years: 2,
         projects: 4,
@@ -820,7 +820,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "lightweight-charts",
-        icon: "img-tradingview.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/tradingview.svg",
         level: 80,
         years: 1,
         projects: 2,
@@ -888,7 +888,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "@vercel/blob",
-        icon: "img-vercel.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/vercel.svg",
         level: 75,
         years: 1,
         projects: 3,
@@ -915,7 +915,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "Jest",
-        icon: "img-jest.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg",
         level: 80,
         years: 3,
         projects: 10,
@@ -929,7 +929,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "React Testing Library",
-        icon: "img-rtl.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/jest.svg",
         level: 78,
         years: 2,
         projects: 8,
@@ -998,7 +998,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "axios",
-        icon: "img-axios.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/axios.svg",
         level: 85,
         years: 4,
         projects: 20,
@@ -1026,7 +1026,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "qrcode",
-        icon: "img-qrcode.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/qrcode.svg",
         level: 80,
         years: 2,
         projects: 5,
@@ -1151,7 +1151,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "PostgreSQL",
-        icon: "img-sql.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
         level: 72,
         years: 2,
         projects: 8,
@@ -1179,7 +1179,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Adobe Photoshop",
-        icon: "img-photoshop.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/photoshop.svg",
         level: 80,
         years: 6,
         projects: 30,
@@ -1193,7 +1193,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Adobe Lightroom",
-        icon: "img-lightroom.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/lightroom.svg",
         level: 75,
         years: 2,
         projects: 8,
@@ -1248,7 +1248,7 @@ export const techCategories: TechCategory[] = [
     techs: [
       {
         name: "Vercel",
-        icon: "img-nextjs.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/nextjs.svg",
         level: 85,
         years: 3,
         projects: 20,
@@ -1262,7 +1262,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "AWS",
-        icon: "img-docker.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/docker.svg",
         level: 55,
         years: 1,
         projects: 5,
@@ -1276,7 +1276,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "Supabase",
-        icon: "img-nodejs.png",
+        icon: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/nodejs.svg",
         level: 70,
         years: 1,
         projects: 6,
@@ -1290,7 +1290,7 @@ export const techCategories: TechCategory[] = [
       },
       {
         name: "PlanetScale",
-        icon: "img-sql.png",
+        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
         level: 65,
         years: 1,
         projects: 5,

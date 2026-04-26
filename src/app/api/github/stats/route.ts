@@ -9,22 +9,28 @@ interface LanguageBytes {
   [language: string]: number;
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const includePrivate = searchParams.get('include_private') === 'true';
+  
   try {
     const cached = await getCachedData(CACHE_KEY);
-    if (cached) {
+    if (cached && !includePrivate) {
       return NextResponse.json(cached);
     }
 
     const repos: any[] = [];
     let page = 1;
     const perPage = 100;
+    const headers = getGitHubHeaders();
+    const isAuthenticated = !!process.env.GITHUB_TOKEN;
 
     while (true) {
-      const response = await fetch(
-        `${GITHUB_API}/users/${OWNER}/repos?sort=updated&per_page=${perPage}&page=${page}&type=owner`,
-        { headers: getGitHubHeaders() }
-      );
+      const url = includePrivate && isAuthenticated
+        ? `${GITHUB_API}/user/repos?sort=updated&per_page=${perPage}&page=${page}&affiliation=owner`
+        : `${GITHUB_API}/users/${OWNER}/repos?sort=updated&per_page=${perPage}&page=${page}&type=owner`;
+      
+      const response = await fetch(url, { headers });
 
       if (!response.ok) {
         throw new Error(`GitHub API error: ${response.status}`);
@@ -38,16 +44,20 @@ export async function GET() {
     }
 
     const nonForkRepos = repos.filter((repo) => !repo.fork);
+    const privateRepos = nonForkRepos.filter((repo) => repo.private);
+    const publicRepos = nonForkRepos.filter((repo) => !repo.private);
+    
     const repoNames = nonForkRepos.map((r) => r.name);
 
     const allLanguages: LanguageBytes = {};
+    const privateLanguages: LanguageBytes = {};
     let reposWithData = 0;
 
     for (const repoName of repoNames) {
       try {
         const langResponse = await fetch(
           `${GITHUB_API}/repos/${OWNER}/${repoName}/languages`,
-          { headers: getGitHubHeaders() }
+          { headers }
         );
 
         if (langResponse.ok) {
@@ -61,6 +71,15 @@ export async function GET() {
             } else {
               allLanguages[normalizedLang] = bytes as number;
             }
+            
+            const repoIsPrivate = nonForkRepos.find(r => r.name === repoName)?.private;
+            if (repoIsPrivate) {
+              if (privateLanguages[normalizedLang]) {
+                privateLanguages[normalizedLang] += bytes as number;
+              } else {
+                privateLanguages[normalizedLang] = bytes as number;
+              }
+            }
           }
         }
       } catch {
@@ -69,6 +88,8 @@ export async function GET() {
     }
 
     const totalBytes = Object.values(allLanguages).reduce((a, b) => a + b, 0);
+    const privateBytes = Object.values(privateLanguages).reduce((a, b) => a + b, 0);
+    const publicBytes = totalBytes - privateBytes;
 
     const stats: any[] = [];
     for (const [lang, bytes] of Object.entries(allLanguages)) {
@@ -97,14 +118,22 @@ export async function GET() {
     const result = {
       owner: OWNER,
       total_repos: nonForkRepos.length,
+      public_repos: publicRepos.length,
+      private_repos: privateRepos.length,
       repos_analyzed: reposWithData,
       total_bytes: totalBytes,
+      public_bytes: publicBytes,
+      private_bytes: privateBytes,
       total_lines_estimate: Math.round(totalBytes / 30),
+      public_lines: Math.round(publicBytes / 30),
+      private_lines: Math.round(privateBytes / 30),
       languages: topLanguages,
       generated_at: new Date().toISOString(),
     };
 
-    await setCachedData(CACHE_KEY, result);
+    if (!includePrivate) {
+      await setCachedData(CACHE_KEY, result);
+    }
 
     return NextResponse.json(result);
   } catch (error) {

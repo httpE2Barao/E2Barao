@@ -32,6 +32,10 @@ interface Project {
   alt_zh: string;
   featured: boolean;
   display_order: number;
+  show_on_page: boolean;
+  github_src: string;
+  github_languages: Record<string, number>;
+  is_private: boolean;
   created_at: string;
 }
 
@@ -75,6 +79,7 @@ const [formData, setFormData] = useState({
   abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
   alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
   tags: [] as string[], featured: false, display_order: 0,
+  show_on_page: true, github_src: "",
 });
 
   const fetchProjectImages = async () => {
@@ -259,6 +264,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       alt_pt: project.alt_pt || "", alt_en: project.alt_en || "", alt_es: project.alt_es || "", alt_fr: project.alt_fr || "", alt_zh: project.alt_zh || "",
       tags: Array.isArray(project.tags) ? project.tags : [],
       featured: project.featured || false, display_order: project.display_order || 0,
+      show_on_page: project.show_on_page !== false, github_src: project.github_src || "",
     });
     setShowForm(true);
   };
@@ -273,6 +279,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
       alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
       tags: [], featured: false, display_order: 0,
+      show_on_page: true, github_src: "",
     });
     setTagInput("");
   };
@@ -314,6 +321,42 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                 <label className={`block text-sm ${colors.textMuted} mb-1`}>Src (slug)*</label>
                 <input type="text" value={formData.src} onChange={(e) => setFormData({ ...formData, src: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required />
               </div>
+              <div>
+                <label className={`block text-sm ${colors.textMuted} mb-1`}>GitHub Src (para linkar com repo)</label>
+                <input type="text" value={formData.github_src} onChange={(e) => setFormData({ ...formData, github_src: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} placeholder="Nome do repo no GitHub" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className={`block text-sm ${colors.textMuted} mb-1`}>Mostrar na página</label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.show_on_page}
+                    onChange={(e) => setFormData({ ...formData, show_on_page: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                  />
+                  <span className={`text-sm ${colors.text}`}>Visível</span>
+                </label>
+              </div>
+              <div>
+                <label className={`block text-sm ${colors.textMuted} mb-1`}>Destaque</label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.featured}
+                    onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                  />
+                  <span className={`text-sm ${colors.text}`}>Featured</span>
+                </label>
+              </div>
+              <div>
+                <label className={`block text-sm ${colors.textMuted} mb-1`}>Ordem</label>
+                <input type="number" value={formData.display_order} onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} />
+              </div>
+            </div>
+            <div>
 <div>
               <label className={`block text-sm ${colors.textMuted} mb-1`}>Tags</label>
               <div className={`relative`}>
@@ -503,7 +546,9 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Src</th>
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Nome (PT)</th>
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Tags</th>
+                <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Visível</th>
                 <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Destaque</th>
+                <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>GitHub</th>
                 <th className={`text-right px-4 py-3 ${colors.textMuted} font-medium`}>Ações</th>
               </tr>
             </thead>
@@ -520,7 +565,13 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center">
+                    {project.show_on_page ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>Sim</span> : <span className={`text-xs ${colors.textSubtle}`}>Não</span>}
+                  </td>
+                  <td className="px-4 py-3 text-center">
                     {project.featured ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>Sim</span> : <span className={`text-xs ${colors.textSubtle}`}>Não</span>}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <span className={`text-xs ${colors.textSubtle}`}>{project.github_src || '-'}</span>
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">

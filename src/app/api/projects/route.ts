@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { getCachedData, setCachedData, getGitHubHeaders } from '@/lib/github-cache';
 
 const PROJECTS_JSON_PATH = path.join(process.cwd(), 'public', 'data', 'projects.json');
+const GITHUB_API = 'https://api.github.com';
+const OWNER = 'httpE2Barao';
 
 async function getProjectsFromJSON() {
   try {
@@ -35,87 +38,141 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const langParam = searchParams.get('lang') || 'pt';
   const lang = langParam === 'pt-BR' ? 'ptBR' : langParam === 'en-US' ? 'enUS' : langParam;
+  const includeGithub = searchParams.get('include_github') !== 'false';
 
   try {
     const { sql } = await import('@vercel/postgres');
-    const { rows } = await sql`
+    
+    const { rows: adminProjects } = await sql`
       SELECT 
         id, src, site_url, repo_url, image_urls, tags, created_at, featured, display_order,
         name_pt, name_en, name_es, name_fr, name_zh,
         subtitle_pt, subtitle_en, subtitle_es, subtitle_fr, subtitle_zh,
         abt_pt, abt_en, abt_es, abt_fr, abt_zh,
-        alt_pt, alt_en, alt_es, alt_fr, alt_zh
+        alt_pt, alt_en, alt_es, alt_fr, alt_zh,
+        show_on_page, github_languages, is_private
       FROM projects 
+      WHERE show_on_page = true AND image_urls != '{}' AND image_urls IS NOT NULL
       ORDER BY 
         CASE WHEN featured = true THEN 0 ELSE 1 END,
         display_order ASC,
         created_at DESC;
     `;
 
-    const projects = (rows as any[]).map((row: any) => {
-      const getText = (field: string) => {
-        return row[`${field}_${lang}`] || row[`${field}_en`] || row[`${field}_pt`];
-      };
-      
-      return {
-        id: row.id,
-        src: row.src,
-        site: row.site_url,
-        repo: row.repo_url,
-        tags: row.tags,
-        imageUrls: row.image_urls,
-        name: getText('name'),
-        subtitle: getText('subtitle'),
-        alt: getText('alt'),
-        abt: getText('abt'),
-        featured: row.featured,
-        display_order: row.display_order,
-      };
-    });
-    
-    return NextResponse.json(projects);
-  } catch (dbError) {
-    console.log('[Projects API] Vercel Postgres indisponível, usando JSON fallback');
-    
-    try {
-      const projects = await getProjectsFromJSON();
-      
-      const langMap: Record<string, string[]> = {
-        'pt': ['pt'],
-        'en': ['en'],
-        'es': ['es'],
-        'fr': ['fr'],
-        'zh': ['zh'],
-      };
-      
-      const getLocalizedField = (p: any, baseField: string): string => {
-        const langs = langMap[lang] || langMap['en'];
-        for (const l of langs) {
-          const value = p[`${baseField}_${l}`];
-          if (value) return value;
+    let githubRepos: any[] = [];
+    if (includeGithub) {
+      try {
+        const githubRes = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/github/repos?per_page=100`,
+          { cache: 'no-store' }
+        );
+        if (githubRes.ok) {
+          githubRepos = await githubRes.json();
         }
-        return '';
-      };
-      
-      const formatted = projects.map((p: any) => ({
+      } catch (e) {
+        console.log('[Projects API] GitHub repos unavailable');
+      }
+    }
+
+    const adminSrcs = new Set(adminProjects.map((p: any) => p.src));
+    const githubSrcs = new Set(githubRepos.map((r: any) => r.name));
+    
+    const githubOnlyRepos = githubRepos.filter((r: any) => !adminSrcs.has(r.name));
+    const mergedAdminProjects = adminProjects.map((p: any) => {
+      const githubRepo = githubRepos.find((r: any) => r.name === p.src);
+      return {
         id: p.id,
         src: p.src,
-        site: p.site_url || p.site || '',
-        repo: p.repo_url || p.repo || '',
-        tags: p.tags || [],
-        name: getLocalizedField(p, 'name'),
-        alt: getLocalizedField(p, 'alt'),
-        abt: getLocalizedField(p, 'abt'),
-        featured: p.featured || false,
-        imageUrls: p.image_urls || p.imageUrls || [],
-      }));
+        site: p.site_url,
+        repo: p.repo_url,
+        tags: p.tags,
+        imageUrls: p.image_urls,
+        name: getText(p, 'name', lang),
+        subtitle: getText(p, 'subtitle', lang),
+        alt: getText(p, 'alt', lang),
+        abt: getText(p, 'abt', lang),
+        featured: p.featured,
+        display_order: p.display_order,
+        hasImages: true,
+        githubLanguages: p.github_languages || {},
+        stars: githubRepo?.stargazers_count || 0,
+        forks: githubRepo?.forks_count || 0,
+      };
+    });
 
-      return NextResponse.json(formatted);
-    } catch (jsonError) {
-      console.error('Erro ao buscar projetos (JSON fallback também falhou):', jsonError);
-      return NextResponse.json({ message: 'Erro interno do servidor' }, { status: 500 });
+    const githubOnlyProjects = githubOnlyRepos.map((r: any) => ({
+      id: r.id,
+      src: r.name,
+      site: r.homepage,
+      repo: r.html_url,
+      tags: r.topics || [],
+      imageUrls: [],
+      name: r.name,
+      subtitle: r.description,
+      alt: '',
+      abt: '',
+      featured: false,
+      display_order: 999,
+      hasImages: false,
+      githubLanguages: {},
+      stars: r.stargazers_count || 0,
+      forks: r.forks_count || 0,
+      isPrivate: r.private || false,
+    }));
+
+    const mergedAdminSrcs = mergedAdminProjects.map(p => p.src);
+    const langsCacheKey = `admin_langs_${mergedAdminSrcs.sort().join(',')}`;
+    let langsMap: Record<string, Record<string, number>> = {};
+    const cachedLangs = await getCachedData(langsCacheKey);
+    
+    if (cachedLangs) {
+      langsMap = cachedLangs;
+    } else {
+      const langResults: Record<string, Record<string, number>> = {};
+      for (const src of mergedAdminSrcs) {
+        try {
+          const langRes = await fetch(
+            `${GITHUB_API}/repos/${OWNER}/${src}/languages`,
+            { headers: getGitHubHeaders() }
+          );
+          if (langRes.ok) {
+            const langs = await langRes.json();
+            const total = Object.values(langs as Record<string, number>).reduce((a, b) => a + b, 0);
+            langResults[src] = {};
+            for (const [lang, bytes] of Object.entries(langs)) {
+              langResults[src][lang] = Math.round(((bytes as number) / total) * 100);
+            }
+          }
+        } catch (e) {}
+      }
+      langsMap = langResults;
+      await setCachedData(langsCacheKey, langsMap);
     }
+
+    const finalAdminProjects = mergedAdminProjects.map(p => ({
+      ...p,
+      githubLanguages: langsMap[p.src] || {},
+    }));
+
+    return NextResponse.json({
+      adminProjects: finalAdminProjects,
+      githubOnlyProjects: githubOnlyProjects,
+      total: finalAdminProjects.length + githubOnlyProjects.length,
+    });
+  } catch (dbError) {
+    console.log('[Projects API] Vercel Postgres error:', dbError);
+    return NextResponse.json({ error: 'Database unavailable' }, { status: 500 });
   }
+}
+
+function getText(row: any, field: string, lang: string): string {
+  const langMap: Record<string, string> = {
+    'pt': 'pt', 'ptBR': 'pt',
+    'en': 'en', 'enUS': 'en',
+    'es': 'es', 'fr': 'fr', 'zh': 'zh',
+  };
+  const langKey = langMap[lang] || 'en';
+  return row[`${field}_${langKey}`] || row[`${field}_en`] || row[`${field}_pt`] || '';
 }
 
 export async function POST(request: Request) {
