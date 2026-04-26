@@ -689,3 +689,9 @@ export async function POST(request: Request) {
     return Response.json({ message: 'Seed failed', error: String(error) }, { status: 500 });
   }
 }
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const type = searchParams.get('type') || 'all';
+  return POST(request);
+}
