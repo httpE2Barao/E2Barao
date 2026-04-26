@@ -122,13 +122,13 @@ function TimelineNode({
         }}
         whileHover={{ scale: 1.2 }}
       >
-        <div className="absolute inset-0 rounded-full flex items-center justify-center">
+        <div className="absolute inset-0 rounded-full flex items-center justify-center bg-white">
           <Image
             src={getTechIconUrl(tech.icon)}
             alt={tech.name}
             width={14}
             height={14}
-            className="object-contain brightness-0 invert opacity-80"
+            className="object-contain"
           />
         </div>
       </motion.div>
@@ -194,7 +194,7 @@ function TimelineNode({
               alt={tech.name}
               width={22}
               height={22}
-              className="object-contain brightness-0 invert opacity-90"
+              className="object-contain bg-white rounded-full"
             />
           </div>
           <div className="flex-1 min-w-0">

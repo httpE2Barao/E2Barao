@@ -213,9 +213,7 @@ function TechHoverCard({ tech }: TechHoverCardProps) {
         }}
       >
         <div className="flex items-center gap-3 mb-3">
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-            isDark ? "bg-white/10" : "bg-gray-100"
-          }`}>
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white">
             <Image
               src={getTechIconUrl(tech.icon)}
               alt={tech.name}

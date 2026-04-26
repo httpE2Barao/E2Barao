@@ -101,9 +101,7 @@ export function V2TecsPage() {
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                          isDark ? "bg-white/10" : "bg-black/10"
-                        }`}>
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-white`}>
                           <Image
                             src={getTechIconUrl(tech.icon)}
                             alt={tech.name}
