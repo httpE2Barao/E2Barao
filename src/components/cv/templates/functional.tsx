@@ -52,11 +52,22 @@ interface CVData {
 }
 
 export function FunctionalCV({ data }: { data: CVData }) {
+  const lang = data.language || "pt";
+  const t = {
+    experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
+    education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    summary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
+    frontend: lang === "pt" ? "Desenvolvimento Frontend" : lang === "en" ? "Frontend Development" : "Desarrollo Frontend",
+    backend: lang === "pt" ? "Backend & Banco de Dados" : lang === "en" ? "Backend & Database" : "Backend & Base de Datos",
+    tools: lang === "pt" ? "Ferramentas & Plataformas" : lang === "en" ? "Tools & Platforms" : "Herramientas & Plataformas",
+    concepts: lang === "pt" ? "Conceitos & Práticas" : lang === "en" ? "Concepts & Practices" : "Conceptos & Prácticas",
+    projects: lang === "pt" ? "Projetos" : lang === "en" ? "Projects" : "Proyectos",
+  };
   const skillCategories = [
-    { title: "Frontend Development", skills: data.skills.filter((s) => /react|next|typescript|javascript|tailwind|html|css|sass/i.test(s)) },
-    { title: "Backend & Database", skills: data.skills.filter((s) => /node|python|php|postgres|mysql|prisma|api/i.test(s)) },
-    { title: "Tools & Platforms", skills: data.skills.filter((s) => /git|docker|figma|wordpress|n8n|vercel/i.test(s)) },
-    { title: "Concepts & Practices", skills: data.skills.filter((s) => !/react|next|typescript|javascript|tailwind|html|css|sass|node|python|php|postgres|mysql|prisma|api|git|docker|figma|wordpress|n8n|vercel/i.test(s)) },
+    { title: t.frontend, skills: data.skills.filter((s) => /react|next|typescript|javascript|tailwind|html|css|sass/i.test(s)) },
+    { title: t.backend, skills: data.skills.filter((s) => /node|python|php|postgres|mysql|prisma|api/i.test(s)) },
+    { title: t.tools, skills: data.skills.filter((s) => /git|docker|figma|wordpress|n8n|vercel/i.test(s)) },
+    { title: t.concepts, skills: data.skills.filter((s) => !/react|next|typescript|javascript|tailwind|html|css|sass|node|python|php|postgres|mysql|prisma|api|git|docker|figma|wordpress|n8n|vercel/i.test(s)) },
   ].filter((cat) => cat.skills.length > 0);
 
   return (
@@ -102,7 +113,7 @@ export function FunctionalCV({ data }: { data: CVData }) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Professional Experience</Text>
+          <Text style={styles.sectionTitle}>{t.experience}</Text>
           {data.experience.map((exp, i) => (
             <View key={i} style={styles.entry}>
               <View style={styles.entryHeader}>

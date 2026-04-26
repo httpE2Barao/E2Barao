@@ -32,6 +32,7 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
   education: Array<{ degree: string; school: string; period: string; description: string }>;
   skills: string[];
@@ -52,6 +53,15 @@ interface CVData {
 }
 
 export function CombinationCV({ data }: { data: CVData }) {
+  const lang = data.language || "pt";
+  const t = {
+    professionalSummary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
+    workExperience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
+    education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
+    keyProjects: lang === "pt" ? "Projetos Principais" : lang === "en" ? "Key Projects" : "Proyectos Principales",
+    languages: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
+  };
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -69,12 +79,12 @@ export function CombinationCV({ data }: { data: CVData }) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Professional Summary</Text>
+          <Text style={styles.sectionTitle}>{t.professionalSummary}</Text>
           <Text style={styles.summary}>{data.summary}</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Core Skills</Text>
+          <Text style={styles.sectionTitle}>{t.skills}</Text>
           <View style={styles.skillRow}>
             {data.skills.map((skill, i) => (
               <Text key={i} style={styles.skillTag}>{skill}</Text>
@@ -85,7 +95,7 @@ export function CombinationCV({ data }: { data: CVData }) {
         <View style={styles.twoCol}>
           <View style={styles.col}>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Work Experience</Text>
+              <Text style={styles.sectionTitle}>{t.workExperience}</Text>
               {data.experience.map((exp, i) => (
                 <View key={i} style={styles.entry}>
                   <View style={styles.entryHeader}>
@@ -101,7 +111,7 @@ export function CombinationCV({ data }: { data: CVData }) {
 
           <View style={styles.col}>
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Education</Text>
+              <Text style={styles.sectionTitle}>{t.education}</Text>
               {data.education.map((edu, i) => (
                 <View key={i} style={styles.entry}>
                   <View style={styles.entryHeader}>
@@ -116,7 +126,7 @@ export function CombinationCV({ data }: { data: CVData }) {
 
             {data.projects.length > 0 && (
               <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Projects</Text>
+                <Text style={styles.sectionTitle}>{t.keyProjects}</Text>
                 {data.projects.slice(0, 3).map((project, i) => (
                   <View key={i} style={{ marginBottom: 6 }}>
                     <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b" }}>{project.name}</Text>
@@ -128,7 +138,7 @@ export function CombinationCV({ data }: { data: CVData }) {
 
             {data.languages.length > 0 && (
               <View style={styles.section}>
-                <Text style={styles.sectionTitle}>Languages</Text>
+                <Text style={styles.sectionTitle}>{t.languages}</Text>
                 <Text style={{ fontSize: 10, color: "#334155" }}>{data.languages.join(" • ")}</Text>
               </View>
             )}

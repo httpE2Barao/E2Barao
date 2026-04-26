@@ -4,7 +4,7 @@ const accentColor = "#f59e0b";
 
 const styles = StyleSheet.create({
   page: { flexDirection: "row", fontFamily: "Helvetica", fontSize: 10, color: "#1a1a1a" },
-  sidebar: { width: 160, backgroundColor: "#1e293b", padding: 24, color: "#e2e8f0" },
+  sidebar: { width: 160, backgroundColor: "#1e293b", padding: 24, color: "#e2e8f0", minHeight: 770 },
   main: { flex: 1, padding: 24 },
   sidebarName: { fontSize: 16, fontWeight: 700, color: "#fff", marginBottom: 4 },
   sidebarTitle: { fontSize: 9, color: accentColor, marginBottom: 16 },
@@ -37,6 +37,7 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
   education: Array<{ degree: string; school: string; period: string; description: string }>;
   skills: string[];
@@ -57,6 +58,21 @@ interface CVData {
 }
 
 export function CreativeCV({ data }: { data: CVData }) {
+  const lang = data.language || "pt";
+  const t = {
+    experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
+    education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
+    summary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
+    projects: lang === "pt" ? "Projetos" : lang === "en" ? "Projects" : "Proyectos",
+    contact: lang === "pt" ? "Contato" : lang === "en" ? "Contact" : "Contacto",
+    languages: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
+    additionalData: lang === "pt" ? "Dados Complementares" : lang === "en" ? "Additional Data" : "Datos Adicionales",
+    willingnessToTravel: lang === "pt" ? "Disponibilidade para viajar" : lang === "en" ? "Willingness to travel" : "Disponibilidad para viajar",
+    willingnessToRelocate: lang === "pt" ? "Disponibilidade para mudar" : lang === "en" ? "Willingness to relocate" : "Disponibilidad para mudarse",
+    driverLicense: lang === "pt" ? "Carteira de Habilitação" : lang === "en" ? "Driver's License" : "Licencia de Conducir",
+    vehicle: lang === "pt" ? "Veículo" : lang === "en" ? "Vehicle" : "Vehículo",
+  };
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -65,7 +81,7 @@ export function CreativeCV({ data }: { data: CVData }) {
           <Text style={styles.sidebarTitle}>{data.title}</Text>
 
           <View style={styles.sidebarSection}>
-            <Text style={styles.sidebarSectionTitle}>Contact</Text>
+            <Text style={styles.sidebarSectionTitle}>{t.contact}</Text>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.email}</Text></Link>}
             {data.phone && <Link href={`tel:${data.phone}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.phone}</Text></Link>}
             {data.location && <Text style={styles.sidebarText}>{data.location}</Text>}
@@ -75,7 +91,7 @@ export function CreativeCV({ data }: { data: CVData }) {
           </View>
 
           <View style={styles.sidebarSection}>
-            <Text style={styles.sidebarSectionTitle}>Skills</Text>
+            <Text style={styles.sidebarSectionTitle}>{t.skills}</Text>
             {data.skills.slice(0, 12).map((skill, i) => (
               <Text key={i} style={styles.sidebarSkill}>• {skill}</Text>
             ))}
@@ -83,7 +99,7 @@ export function CreativeCV({ data }: { data: CVData }) {
 
           {data.languages.length > 0 && (
             <View style={styles.sidebarSection}>
-              <Text style={styles.sidebarSectionTitle}>Languages</Text>
+              <Text style={styles.sidebarSectionTitle}>{t.languages}</Text>
               {data.languages.map((lang, i) => (
                 <Text key={i} style={styles.sidebarText}>{lang}</Text>
               ))}
@@ -91,7 +107,7 @@ export function CreativeCV({ data }: { data: CVData }) {
           )}
 
           <View style={styles.sidebarSection}>
-            <Text style={styles.sidebarSectionTitle}>Education</Text>
+            <Text style={styles.sidebarSectionTitle}>{t.education}</Text>
             {data.education.slice(0, 2).map((edu, i) => (
               <View key={i} style={{ marginBottom: 6 }}>
                 <Text style={{ fontSize: 8, fontWeight: 600, color: "#fff" }}>{edu.degree}</Text>
@@ -105,13 +121,13 @@ export function CreativeCV({ data }: { data: CVData }) {
         <View style={styles.main}>
           {data.summary && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Profile</Text>
+              <Text style={styles.sectionTitle}>{t.summary}</Text>
               <Text style={styles.summary}>{data.summary}</Text>
             </View>
           )}
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Experience</Text>
+            <Text style={styles.sectionTitle}>{t.experience}</Text>
             {data.experience.map((exp, i) => (
               <View key={i} style={styles.entry}>
                 <View style={styles.entryHeader}>
@@ -126,7 +142,7 @@ export function CreativeCV({ data }: { data: CVData }) {
 
           {data.projects.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Key Projects</Text>
+              <Text style={styles.sectionTitle}>{t.projects}</Text>
               {data.projects.slice(0, 3).map((project, i) => (
                 <View key={i} style={{ marginBottom: 6 }}>
                   <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b" }}>{project.name}</Text>
@@ -138,19 +154,19 @@ export function CreativeCV({ data }: { data: CVData }) {
 
           {data.languages.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Languages</Text>
+              <Text style={styles.sectionTitle}>{t.languages}</Text>
               <Text style={{ fontSize: 10, color: "#334155" }}>{data.languages.join(" • ")}</Text>
             </View>
           )}
 
           {(data.additionalData?.willingnessToTravel || data.additionalData?.willingnessToRelocate || data.additionalData?.driverLicense || data.additionalData?.vehicleType) && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Additional Data</Text>
+              <Text style={styles.sectionTitle}>{t.additionalData}</Text>
               <View style={{ fontSize: 9, color: "#334155", lineHeight: 1.6 }}>
-                {data.additionalData.willingnessToTravel && <Text>• Willingness to travel: {data.additionalData.willingnessToTravel}</Text>}
-                {data.additionalData.willingnessToRelocate && <Text>• Willingness to relocate: {data.additionalData.willingnessToRelocate}</Text>}
-                {data.additionalData.driverLicense && <Text>• Driver's License: {data.additionalData.driverLicense}</Text>}
-                {data.additionalData.vehicleType && <Text>• Vehicle: {data.additionalData.vehicleType}</Text>}
+                {data.additionalData.willingnessToTravel && <Text>• {t.willingnessToTravel}: {data.additionalData.willingnessToTravel}</Text>}
+                {data.additionalData.willingnessToRelocate && <Text>• {t.willingnessToRelocate}: {data.additionalData.willingnessToRelocate}</Text>}
+                {data.additionalData.driverLicense && <Text>• {t.driverLicense}: {data.additionalData.driverLicense}</Text>}
+                {data.additionalData.vehicleType && <Text>• {t.vehicle}: {data.additionalData.vehicleType}</Text>}
               </View>
             </View>
           )}

@@ -28,6 +28,7 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
   education: Array<{ degree: string; school: string; period: string; description: string }>;
   skills: string[];
@@ -48,6 +49,18 @@ interface CVData {
 }
 
 export function MinimalCV({ data }: { data: CVData }) {
+  const lang = data.language || "pt";
+  const t = {
+    experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
+    education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
+    languages: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
+    additionalData: lang === "pt" ? "Dados Complementares" : lang === "en" ? "Additional Data" : "Datos Adicionales",
+    willingnessToTravel: lang === "pt" ? "Disponibilidade para viajar" : lang === "en" ? "Willingness to travel" : "Disponibilidad para viajar",
+    willingnessToRelocate: lang === "pt" ? "Disponibilidade para mudar" : lang === "en" ? "Willingness to relocate" : "Disponibilidad para mudarse",
+    driverLicense: lang === "pt" ? "Carteira de Habilitação" : lang === "en" ? "Driver's License" : "Licencia de Conducir",
+    vehicleType: lang === "pt" ? "Veículo" : lang === "en" ? "Vehicle" : "Vehículo",
+  };
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -71,7 +84,7 @@ export function MinimalCV({ data }: { data: CVData }) {
         )}
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Experience</Text>
+          <Text style={styles.sectionTitle}>{t.experience}</Text>
           {data.experience.map((exp, i) => (
             <View key={i} style={styles.entry}>
               <View style={styles.entryHeader}>
@@ -85,7 +98,7 @@ export function MinimalCV({ data }: { data: CVData }) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Education</Text>
+          <Text style={styles.sectionTitle}>{t.education}</Text>
           {data.education.map((edu, i) => (
             <View key={i} style={styles.entry}>
               <View style={styles.entryHeader}>
@@ -99,7 +112,7 @@ export function MinimalCV({ data }: { data: CVData }) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Skills</Text>
+          <Text style={styles.sectionTitle}>{t.skills}</Text>
           <View style={styles.skillList}>
             {data.skills.map((skill, i) => (
               <Text key={i} style={styles.skillItem}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
@@ -109,19 +122,19 @@ export function MinimalCV({ data }: { data: CVData }) {
 
         {data.languages.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Languages</Text>
+            <Text style={styles.sectionTitle}>{t.languages}</Text>
             <Text style={{ fontSize: 9, color: "#333" }}>{data.languages.join(", ")}</Text>
           </View>
         )}
 
         {(data.additionalData?.willingnessToTravel || data.additionalData?.willingnessToRelocate || data.additionalData?.driverLicense || data.additionalData?.vehicleType) && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Additional Data</Text>
+            <Text style={styles.sectionTitle}>{t.additionalData}</Text>
             <View style={{ fontSize: 9, color: "#333", lineHeight: 1.6 }}>
-              {data.additionalData.willingnessToTravel && <Text>• Willingness to travel: {data.additionalData.willingnessToTravel}</Text>}
-              {data.additionalData.willingnessToRelocate && <Text>• Willingness to relocate: {data.additionalData.willingnessToRelocate}</Text>}
-              {data.additionalData.driverLicense && <Text>• Driver's License: {data.additionalData.driverLicense}</Text>}
-              {data.additionalData.vehicleType && <Text>• Vehicle: {data.additionalData.vehicleType}</Text>}
+              {data.additionalData.willingnessToTravel && <Text>• {t.willingnessToTravel}: {data.additionalData.willingnessToTravel}</Text>}
+              {data.additionalData.willingnessToRelocate && <Text>• {t.willingnessToRelocate}: {data.additionalData.willingnessToRelocate}</Text>}
+              {data.additionalData.driverLicense && <Text>• {t.driverLicense}: {data.additionalData.driverLicense}</Text>}
+              {data.additionalData.vehicleType && <Text>• {t.vehicleType}: {data.additionalData.vehicleType}</Text>}
             </View>
           </View>
         )}

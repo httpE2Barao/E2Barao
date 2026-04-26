@@ -197,7 +197,7 @@ export default function CVBuilderPage() {
 
   const getLocalizedValue = (obj: LocalizedString | undefined, lang: Language): string => {
     if (!obj) return "";
-    return obj[lang] || obj.pt || "";
+    return obj[lang] || obj.pt || obj.en || obj.es || "";
   };
 
   const updateLocalizedField = (field: keyof CVData, value: LocalizedString) => {
@@ -214,16 +214,7 @@ const getLocalizedCVData = (lang: Language): any => {
       : cvData.projects;
     
     let sortedSkills = cvData.skills.map((s) => getLocalizedValue(s, lang));
-    console.log('Skills before limit:', sortedSkills.length, 'maxSkills:', cvData.maxSkills, 'sort:', cvData.sortSkills);
-    if (cvData.sortSkills === "alpha") {
-      sortedSkills = [...sortedSkills].sort((a, b) => a.localeCompare(b));
-    } else if (cvData.sortSkills === "reverse") {
-      sortedSkills = [...sortedSkills].reverse();
-    }
-    if (cvData.maxSkills > 0) {
-      sortedSkills = sortedSkills.slice(0, cvData.maxSkills);
-    }
-    console.log('Skills after limit:', sortedSkills.length);
+    console.log('DEBUG skills sample:', sortedSkills.slice(0, 3));
     
     return ({
     name: getLocalizedValue(cvData.name, lang),
@@ -284,8 +275,8 @@ const getLocalizedCVData = (lang: Language): any => {
       const projects = await projectsRes.json();
 
       const localizeField = (pt: string, en: string, es: string): LocalizedString => ({
-        pt: pt || "",
-        en: en || pt || "",
+        pt: pt || en || es || "",
+        en: en || pt || es || "",
         es: es || en || pt || "",
       });
 
@@ -312,13 +303,13 @@ const getLocalizedCVData = (lang: Language): any => {
         skills: Array.isArray(skills)
           ? skills
               .filter((s: any) => s.active)
-              .map((s: any) => localizeField(s.name, s.name_en || s.name, s.name_es || s.name))
+              .map((s: any) => localizeField(s.name_pt || s.name, s.name_en || s.name || s.name_pt, s.name_es || s.name || s.name_en))
           : [],
         projects: Array.isArray(projects)
           ? projects.map((p: any) => ({
               id: p.id,
-              name: localizeField(p.name_pt, p.name_en || p.name, p.name_es || p.name_en || p.name),
-              description: localizeField(p.abt_pt, p.abt_en || p.abt, p.abt_es || p.abt_en || p.abt),
+              name: localizeField(p.name_pt || p.name, p.name_en || p.name || p.name_pt, p.name_es || p.name_en || p.name),
+              description: localizeField(p.abt_pt || p.abt, p.abt_en || p.abt || p.abt_pt, p.abt_es || p.abt_en || p.abt),
             }))
           : [],
         selectedProjectIds: Array.isArray(projects) ? projects.map((p: any) => p.id) : [],
