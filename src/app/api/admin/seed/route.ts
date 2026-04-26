@@ -6,9 +6,50 @@ import { rawProjectsData } from '@/data/projects-data';
 const SCHEMA_PATH = path.join(process.cwd(), 'src', 'lib', 'db', 'schema.sql');
 
 async function runSchema() {
-  const schema = await fs.readFile(SCHEMA_PATH, 'utf-8');
-  await sql.query(schema);
-  console.log('✅ Schema applied successfully');
+  console.log('🔄 Running migrations...');
+  
+  try {
+    await sql.query(`
+      CREATE TABLE IF NOT EXISTS skills (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        category VARCHAR(50) NOT NULL,
+        level INTEGER DEFAULT 0,
+        color VARCHAR(50),
+        icon_src VARCHAR(255),
+        display_order INTEGER DEFAULT 0,
+        active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+  } catch (e) { /* table exists */ }
+  
+  try {
+    await sql.query(`
+      CREATE TABLE IF NOT EXISTS experience_entries (
+        id SERIAL PRIMARY KEY,
+        period_start VARCHAR(50),
+        period_end VARCHAR(50),
+        role_pt TEXT, role_en TEXT, role_es TEXT, role_fr TEXT, role_zh TEXT,
+        company_pt TEXT, company_en TEXT, company_es TEXT, company_fr TEXT, company_zh TEXT,
+        description_pt TEXT, description_en TEXT, description_es TEXT, description_fr TEXT, description_zh TEXT,
+        highlight BOOLEAN DEFAULT false,
+        display_order INTEGER DEFAULT 0,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+  } catch (e) { /* table exists */ }
+
+  try {
+    await sql.query(`ALTER TABLE projects ADD COLUMN featured BOOLEAN DEFAULT false;`);
+  } catch (e) { /* column exists */ }
+  try {
+    await sql.query(`ALTER TABLE projects ADD COLUMN display_order INTEGER DEFAULT 0;`);
+  } catch (e) { /* column exists */ }
+  
+  console.log('✅ Schema ready');
 }
 
 async function seedProjects() {
@@ -22,13 +63,13 @@ async function seedProjects() {
         name_pt, name_en, name_es, name_fr, name_zh,
         abt_pt, abt_en, abt_es, abt_fr, abt_zh,
         alt_pt, alt_en, alt_es, alt_fr, alt_zh,
-        featured, display_order
+        display_order
       ) VALUES (
         ${p.src}, ${p.site || ''}, ${p.repo || ''}, ${tagsForDb},
         ${p.name.ptBR}, ${p.name.enUS}, '', '', '',
         ${p.abt.ptBR}, ${p.abt.enUS}, '', '', '',
         ${p.alt.ptBR}, ${p.alt.enUS}, '', '', '',
-        ${p.featured || false}, ${i}
+        ${i}
       )
       ON CONFLICT (src) DO UPDATE SET
         name_pt = EXCLUDED.name_pt,
@@ -37,7 +78,6 @@ async function seedProjects() {
         abt_en = EXCLUDED.abt_en,
         alt_pt = EXCLUDED.alt_pt,
         alt_en = EXCLUDED.alt_en,
-        featured = EXCLUDED.featured,
         display_order = EXCLUDED.display_order;
     `;
   }
@@ -602,23 +642,42 @@ async function seedCVTemplates() {
   console.log(`✅ Seeded ${templates.length} CV templates`);
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    console.log('🚀 Starting database migration and seed...');
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get('type') || 'all';
+    
+    console.log(`🚀 Starting seed... type: ${type}`);
+    
+    if (type === 'all' || type === 'schema') {
+      await runSchema();
+    }
+    if (type === 'all' || type === 'projects') {
+      await seedProjects();
+    }
+    if (type === 'all' || type === 'skills') {
+      await seedSkills();
+    }
+    if (type === 'all' || type === 'experience') {
+      await seedExperience();
+    }
+    if (type === 'all' || type === 'education') {
+      await seedEducation();
+    }
+    if (type === 'all' || type === 'portfolio') {
+      await seedPortfolioContent();
+    }
+    if (type === 'all' || type === 'contact') {
+      await seedContactInfo();
+    }
+    if (type === 'all' || type === 'cv') {
+      await seedCVTemplates();
+    }
 
-    await runSchema();
-    await seedProjects();
-    await seedSkills();
-    await seedExperience();
-    await seedEducation();
-    await seedPortfolioContent();
-    await seedContactInfo();
-    await seedCVTemplates();
-
-    console.log('✅ Migration and seed completed successfully!');
-    return Response.json({ message: 'Migration and seed completed successfully!' });
+    console.log(`✅ Seed completed: ${type}`);
+    return Response.json({ message: `Seed completed: ${type}` });
   } catch (error) {
-    console.error('❌ Migration error:', error);
-    return Response.json({ message: 'Migration failed', error: String(error) }, { status: 500 });
+    console.error('❌ Seed error:', error);
+    return Response.json({ message: 'Seed failed', error: String(error) }, { status: 500 });
   }
 }
