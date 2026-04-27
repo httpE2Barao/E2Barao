@@ -5,6 +5,19 @@ import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "@/components/switchers/switchers"
 
+const videoTimeRef: { current: Record<string, number>; currentProject: string | null } = {
+  current: {},
+  currentProject: null,
+}
+
+function getVideoTime(projectSrc: string): number {
+  return videoTimeRef.current[projectSrc] || 0
+}
+
+function setVideoTime(projectSrc: string, time: number) {
+  videoTimeRef.current[projectSrc] = time
+}
+
 function useProjectMedia(projectSrc: string) {
   const [mediaUrl, setMediaUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -261,19 +274,37 @@ export function V2ProjectsPage() {
 
       <AnimatePresence>
         {selectedProject && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 ${overlayBg} backdrop-blur-xl`} onClick={() => setSelectedProject(null)}>
-            <motion.div initial={{ scale: 0.96, opacity: 0, y: 30 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.96, opacity: 0, y: 30 }} transition={{ type: "spring", damping: 25, stiffness: 300 }} className={`relative w-full max-w-3xl max-h-[90vh] overflow-y-auto ${modalBg} border rounded-3xl`} onClick={(e) => e.stopPropagation()}>
-              <button onClick={() => setSelectedProject(null)} className={`absolute top-4 right-4 z-10 w-10 h-10 rounded-full ${bgCard} backdrop-blur-sm flex items-center justify-center ${hoverBorder} transition-colors`}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={isDark ? "white" : "black"} strokeWidth="2"><path d="M18 6L6 18M6 6l12 12" /></svg>
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            transition={{ duration: 0.3 }}
+            className={`fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 ${isDark ? "bg-black" : "bg-white"}`}
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 40 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 40 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className={`relative w-full max-w-4xl max-h-[90vh] overflow-auto rounded-3xl ${isDark ? "bg-black" : "bg-white"}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedProject(null)}
+                className={`absolute top-4 right-4 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-colors border ${isDark ? "bg-black/70 hover:bg-black/90 text-white border-white/20" : "bg-white/80 hover:bg-white/95 text-black border-black/10"}`}
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
 
-              <div className="p-6 sm:p-8">
-                <ProjectMedia project={selectedProject} isDark={isDark} />
-                
-                <h2 className="text-2xl sm:text-3xl font-black tracking-tighter mt-6 mb-4">{selectedProject.name}<span className="text-cyan-400">.</span></h2>
-                
-                {selectedProject.subtitle && <p className={`${textDesc} leading-relaxed text-base mb-4`}>{selectedProject.subtitle}</p>}
-                {selectedProject.abt && <p className={`${textMuted} leading-relaxed text-sm mb-6`}>{selectedProject.abt}</p>}
+              <ProjectMedia project={selectedProject} isDark={isDark} />
+              
+              <h2 className={`text-2xl sm:text-3xl font-black tracking-tighter mt-6 mb-4 ${isDark ? "text-white" : "text-black"}`}>{selectedProject.name}<span className="text-cyan-400">.</span></h2>
+              
+              {selectedProject.subtitle && <p className={`${textDesc} leading-relaxed text-base mb-4`}>{selectedProject.subtitle}</p>}
+              {selectedProject.abt && <p className={`${textMuted} leading-relaxed text-sm mb-6`}>{selectedProject.abt}</p>}
 
                 {selectedProject.githubLanguages && Object.keys(selectedProject.githubLanguages).length > 0 && (
                   <div className="mb-6">
@@ -291,8 +322,7 @@ export function V2ProjectsPage() {
                     {language === "pt" ? "Código Fonte" : language === "es" ? "Código Fuente" : language === "fr" ? "Code Source" : language === "zh" ? "源代码" : "Source Code"}
                   </a>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -350,10 +380,21 @@ function FeaturedProjectCard({ project, index, onClick, isDark }: { project: Pro
   
   useEffect(() => {
     if (!videoRef.current || !hasVideo(mediaUrl)) return
+    const savedTime = getVideoTime(project.src)
+    if (savedTime > 0) {
+      videoRef.current.currentTime = savedTime
+    }
+  }, [mediaUrl])
+  
+  useEffect(() => {
+    if (!videoRef.current || !hasVideo(mediaUrl)) return
     if (isHovered) {
       videoRef.current.play().catch(() => {})
     } else {
       videoRef.current.pause()
+      if (videoRef.current.currentTime > 0) {
+        setVideoTime(project.src, videoRef.current.currentTime)
+      }
     }
   }, [mediaUrl, isHovered])
   
@@ -403,10 +444,21 @@ function AdminProjectCard({ project, index, onClick, isDark }: { project: Projec
   
   useEffect(() => {
     if (!videoRef.current || !hasVideo(mediaUrl)) return
+    const savedTime = getVideoTime(project.src)
+    if (savedTime > 0) {
+      videoRef.current.currentTime = savedTime
+    }
+  }, [mediaUrl])
+  
+  useEffect(() => {
+    if (!videoRef.current || !hasVideo(mediaUrl)) return
     if (isHovered) {
       videoRef.current.play().catch(() => {})
     } else {
       videoRef.current.pause()
+      if (videoRef.current.currentTime > 0) {
+        setVideoTime(project.src, videoRef.current.currentTime)
+      }
     }
   }, [mediaUrl, isHovered])
   
