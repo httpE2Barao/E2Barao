@@ -25,11 +25,10 @@ export async function POST(request: NextRequest) {
       featured, display_order, show_on_page, github_src
     } = body;
 
-    // Try to add columns if they don't exist
     try {
       await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS in_spiral BOOLEAN DEFAULT true`;
       await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS visible BOOLEAN DEFAULT true`;
-    } catch { /* columns may already exist */ }
+    } catch { }
 
     const { rows } = await sql`
       INSERT INTO projects (
@@ -107,14 +106,13 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
-    // Try to add columns if they don't exist
     try {
       await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS in_spiral BOOLEAN DEFAULT true`;
       await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS visible BOOLEAN DEFAULT true`;
-    } catch { /* columns may already exist */ }
+    } catch { }
 
-    const updates: string[] = [];
-    const values: any[] = [];
+    const updates = [];
+    const values = [];
     let idx = 1;
 
     if (src !== undefined) { updates.push(`src = $${idx++}`); values.push(src); }
