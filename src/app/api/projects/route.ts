@@ -31,10 +31,13 @@ async function fetchRepoLanguages(repoName: string): Promise<Record<string, numb
   if (cached) return cached;
 
   try {
-    const res = await fetch(`${GITHUB_API}/repos/${OWNER}/${repoName}/languages`, {
+    const res = await fetch(`${GITHUB_API}/repos/${OWNER}/${encodeURIComponent(repoName)}/languages`, {
       headers: getGitHubHeaders()
     });
-    if (!res.ok) return {};
+    if (!res.ok) {
+      console.log(`[Languages] Failed to fetch ${repoName}: ${res.status}`);
+      return {};
+    }
     
     const raw = await res.json();
     const total = Object.values(raw as Record<string, number>).reduce((a, b) => a + b, 0);
@@ -47,7 +50,8 @@ async function fetchRepoLanguages(repoName: string): Promise<Record<string, numb
     
     await setCachedData(cacheKey, percentages);
     return percentages;
-  } catch {
+  } catch (error) {
+    console.log(`[Languages] Error fetching ${repoName}:`, error);
     return {};
   }
 }
@@ -143,13 +147,15 @@ export async function GET(request: Request) {
     });
 
     // Get all repo names for language fetching (local + GitHub only)
+    const projectSrcs = [...featuredProjects.map(p => p.src), ...visibleProjects.map(p => p.src)].filter(Boolean);
     const allRepoNames = [
-      ...featuredProjects.map(p => p.src),
-      ...visibleProjects.map(p => p.src),
-      ...githubRepos.map((r: any) => r.name).filter((name: string) => !allLocalSrcs.has(name))
+      ...projectSrcs,
+      ...githubRepos.map((r: any) => r.name).filter((name: string) => !projectSrcs.includes(name))
     ];
     
+    console.log(`[Projects API] Fetching languages for ${allRepoNames.length} repos:`, allRepoNames.slice(0, 5));
     const allLanguages = await getLanguagesForRepos(allRepoNames);
+    console.log(`[Projects API] Got languages for repos:`, Object.keys(allLanguages).filter(k => Object.keys(allLanguages[k] || {}).length > 0));
 
     // Transform local projects
     const mergedFeatured = featuredProjects.map((p: any) => ({

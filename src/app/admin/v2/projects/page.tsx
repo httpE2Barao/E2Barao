@@ -35,7 +35,6 @@ interface Project {
   show_on_page: boolean;
   in_spiral: boolean;
   visible: boolean;
-  github_src: string;
   github_languages: Record<string, number>;
   is_private: boolean;
   created_at: string;
@@ -82,7 +81,7 @@ const [formData, setFormData] = useState({
   abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
   alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
   tags: [] as string[], featured: false, display_order: 0,
-  show_on_page: true, in_spiral: true, visible: true, github_src: "",
+  show_on_page: true, in_spiral: true, visible: true,
 });
   const [githubRepos, setGithubRepos] = useState<any[]>([]);
   const [loadingGithub, setLoadingGithub] = useState(false);
@@ -285,7 +284,6 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       show_on_page: project.show_on_page !== false, 
       in_spiral: project.in_spiral !== false, 
       visible: project.visible !== false, 
-      github_src: project.github_src || "",
     });
     setShowForm(true);
   };
@@ -300,7 +298,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
       alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
       tags: [], featured: false, display_order: 0,
-      show_on_page: true, in_spiral: true, visible: true, github_src: "",
+      show_on_page: true, in_spiral: true, visible: true,
     });
     setTagInput("");
   };
@@ -336,7 +334,6 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       show_on_page: true,
       in_spiral: true,
       visible: true,
-      github_src: repo.name,
     });
     setShowGithubImport(false);
     setShowForm(true);
@@ -402,10 +399,6 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
               <div>
                 <label className={`block text-sm ${colors.textMuted} mb-1`}>Src (slug)*</label>
                 <input type="text" value={formData.src} onChange={(e) => setFormData({ ...formData, src: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required />
-              </div>
-              <div>
-                <label className={`block text-sm ${colors.textMuted} mb-1`}>GitHub Src (para linkar com repo)</label>
-                <input type="text" value={formData.github_src} onChange={(e) => setFormData({ ...formData, github_src: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} placeholder="Nome do repo no GitHub" />
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

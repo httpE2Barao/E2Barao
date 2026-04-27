@@ -283,7 +283,7 @@ function SpiralProjectCard({
               quality={90}
             />
           )}
-          <div className={`absolute inset-0 transition-opacity duration-300 ${isDark ? "bg-black/30 group-hover:bg-black/60" : "bg-white/20 group-hover:bg-black/50"}`} />
+          <div className={`absolute inset-0 transition-opacity duration-300 ${isCurrentProject ? "" : (isDark ? "bg-black/30 group-hover:bg-black/60" : "bg-white/20 group-hover:bg-black/50")}`} />
         </div>
       </div>
 
