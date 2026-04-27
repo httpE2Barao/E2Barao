@@ -22,8 +22,14 @@ export async function POST(request: NextRequest) {
       subtitle_pt, subtitle_en, subtitle_es, subtitle_fr, subtitle_zh,
       abt_pt, abt_en, abt_es, abt_fr, abt_zh,
       alt_pt, alt_en, alt_es, alt_fr, alt_zh,
-      featured, display_order, show_on_page, in_spiral, visible, github_src
+      featured, display_order, show_on_page, github_src
     } = body;
+
+    // Try to add columns if they don't exist
+    try {
+      await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS in_spiral BOOLEAN DEFAULT true`;
+      await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS visible BOOLEAN DEFAULT true`;
+    } catch { /* columns may already exist */ }
 
     const { rows } = await sql`
       INSERT INTO projects (
@@ -40,7 +46,7 @@ export async function POST(request: NextRequest) {
         ${subtitle_pt || null}, ${subtitle_en || null}, ${subtitle_es || null}, ${subtitle_fr || null}, ${subtitle_zh || null},
         ${abt_pt || null}, ${abt_en || null}, ${abt_es || null}, ${abt_fr || null}, ${abt_zh || null},
         ${alt_pt || null}, ${alt_en || null}, ${alt_es || null}, ${alt_fr || null}, ${alt_zh || null},
-        ${featured || false}, ${display_order || 0}, ${show_on_page !== false}, ${in_spiral !== false}, ${visible !== false}, ${github_src || null}
+        ${featured || false}, ${display_order || 0}, ${show_on_page !== false}, ${body.in_spiral !== false}, ${body.visible !== false}, ${github_src || null}
       )
       ON CONFLICT (src) DO UPDATE SET
         site_url = EXCLUDED.site_url,
@@ -94,12 +100,18 @@ export async function PUT(request: NextRequest) {
       subtitle_pt, subtitle_en, subtitle_es, subtitle_fr, subtitle_zh,
       abt_pt, abt_en, abt_es, abt_fr, abt_zh,
       alt_pt, alt_en, alt_es, alt_fr, alt_zh,
-      featured, display_order, show_on_page, in_spiral, visible, github_src
+      featured, display_order, show_on_page, github_src
     } = body;
 
     if (!id) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
+
+    // Try to add columns if they don't exist
+    try {
+      await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS in_spiral BOOLEAN DEFAULT true`;
+      await sql`ALTER TABLE projects ADD COLUMN IF NOT EXISTS visible BOOLEAN DEFAULT true`;
+    } catch { /* columns may already exist */ }
 
     const updates: string[] = [];
     const values: any[] = [];
@@ -133,8 +145,8 @@ export async function PUT(request: NextRequest) {
     if (featured !== undefined) { updates.push(`featured = $${idx++}`); values.push(featured); }
     if (display_order !== undefined) { updates.push(`display_order = $${idx++}`); values.push(display_order); }
     if (show_on_page !== undefined) { updates.push(`show_on_page = $${idx++}`); values.push(show_on_page); }
-    if (in_spiral !== undefined) { updates.push(`in_spiral = $${idx++}`); values.push(in_spiral); }
-    if (visible !== undefined) { updates.push(`visible = $${idx++}`); values.push(visible); }
+    if (body.in_spiral !== undefined) { updates.push(`in_spiral = $${idx++}`); values.push(body.in_spiral); }
+    if (body.visible !== undefined) { updates.push(`visible = $${idx++}`); values.push(body.visible); }
     if (github_src !== undefined) { updates.push(`github_src = $${idx++}`); values.push(github_src); }
 
     if (updates.length === 0) {
