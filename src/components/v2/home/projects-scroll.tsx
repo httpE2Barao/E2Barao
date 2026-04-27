@@ -22,7 +22,8 @@ async function fetchFeaturedProjects(lang: string): Promise<ProjectFromAPI[]> {
   try {
     const res = await fetch(`/api/projects?lang=${lang}`)
     const data = await res.json()
-    return data.filter((p: ProjectFromAPI) => p.featured)
+    const projects = data.adminProjects || data.githubOnlyProjects || (Array.isArray(data) ? data : []) || []
+    return Array.isArray(projects) ? projects.filter((p: ProjectFromAPI) => p.featured) : []
   } catch (err) {
     console.error('Erro ao buscar projetos:', err)
     return []

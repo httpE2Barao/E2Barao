@@ -33,6 +33,8 @@ interface Project {
   featured: boolean;
   display_order: number;
   show_on_page: boolean;
+  in_spiral: boolean;
+  visible: boolean;
   github_src: string;
   github_languages: Record<string, number>;
   is_private: boolean;
@@ -56,6 +58,7 @@ export default function ProjectsPage() {
   const [uploading, setUploading] = useState(false);
   const [allTags, setAllTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [showGithubImport, setShowGithubImport] = useState(false);
 
   const colors = {
     card: isDark ? "bg-gray-900" : "bg-white",
@@ -79,8 +82,10 @@ const [formData, setFormData] = useState({
   abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
   alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
   tags: [] as string[], featured: false, display_order: 0,
-  show_on_page: true, github_src: "",
+  show_on_page: true, in_spiral: true, visible: true, github_src: "",
 });
+  const [githubRepos, setGithubRepos] = useState<any[]>([]);
+  const [loadingGithub, setLoadingGithub] = useState(false);
 
   const fetchProjectImages = async () => {
     try {
@@ -93,18 +98,31 @@ const [formData, setFormData] = useState({
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch("/api/admin/projects");
-        const data = await res.json();
-        const projectsData = Array.isArray(data) ? data : [];
-        setProjects(projectsData);
+        const [projectsRes, githubRes] = await Promise.all([
+          fetch("/api/admin/projects"),
+          fetch("/api/github/repos?per_page=100").catch(() => ({ ok: false, json: async () => [] }))
+        ]);
+        const projectsData = await projectsRes.json();
+        const githubData = projectsRes.ok ? await githubRes.json() : [];
+        
+        const projectsList = Array.isArray(projectsData) ? projectsData : [];
+        const githubList = Array.isArray(githubData) ? githubData : [];
+        
+        const localSrcs = new Set(projectsList.map((p: any) => p.src));
+        const availableGithub = githubList.filter((r: any) => !localSrcs.has(r.name));
+        
+        setProjects(projectsList);
+        setGithubRepos(availableGithub);
+        
         const tags = new Set<string>();
-        projectsData.forEach((p: Project) => {
-          if (Array.isArray(p.tags)) {
-            p.tags.forEach((t: string) => tags.add(t));
-          }
+        projectsList.forEach((p: Project) => {
+          if (Array.isArray(p.tags)) p.tags.forEach((t: string) => tags.add(t));
         });
         setAllTags(Array.from(tags).sort());
-      } catch { setProjects([]); }
+      } catch { 
+        setProjects([]); 
+        setGithubRepos([]);
+      }
       setLoading(false);
     };
     fetchProjects();
@@ -264,7 +282,10 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       alt_pt: project.alt_pt || "", alt_en: project.alt_en || "", alt_es: project.alt_es || "", alt_fr: project.alt_fr || "", alt_zh: project.alt_zh || "",
       tags: Array.isArray(project.tags) ? project.tags : [],
       featured: project.featured || false, display_order: project.display_order || 0,
-      show_on_page: project.show_on_page !== false, github_src: project.github_src || "",
+      show_on_page: project.show_on_page !== false, 
+      in_spiral: project.in_spiral !== false, 
+      visible: project.visible !== false, 
+      github_src: project.github_src || "",
     });
     setShowForm(true);
   };
@@ -279,9 +300,46 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       abt_pt: "", abt_en: "", abt_es: "", abt_fr: "", abt_zh: "",
       alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
       tags: [], featured: false, display_order: 0,
-      show_on_page: true, github_src: "",
+      show_on_page: true, in_spiral: true, visible: true, github_src: "",
     });
     setTagInput("");
+  };
+
+  const importFromGithub = (repo: any) => {
+    setFormData({
+      src: repo.name,
+      site_url: repo.homepage || "",
+      repo_url: repo.html_url || "",
+      name_pt: repo.name,
+      name_en: repo.name,
+      name_es: "",
+      name_fr: "",
+      name_zh: "",
+      subtitle_pt: repo.description || "",
+      subtitle_en: repo.description || "",
+      subtitle_es: "",
+      subtitle_fr: "",
+      subtitle_zh: "",
+      abt_pt: "",
+      abt_en: "",
+      abt_es: "",
+      abt_fr: "",
+      abt_zh: "",
+      alt_pt: "",
+      alt_en: "",
+      alt_es: "",
+      alt_fr: "",
+      alt_zh: "",
+      tags: repo.topics || (repo.language ? [repo.language] : []),
+      featured: false,
+      display_order: 999,
+      show_on_page: true,
+      in_spiral: true,
+      visible: true,
+      github_src: repo.name,
+    });
+    setShowGithubImport(false);
+    setShowForm(true);
   };
 
   if (loading && projects.length === 0) {
@@ -299,12 +357,36 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       <div className="flex items-center justify-between">
         <div>
           <h1 className={`text-2xl md:text-3xl font-bold ${colors.text}`}>Projetos</h1>
-          <p className={`${colors.textMuted} mt-1`}>{projects.length} projetos cadastrados</p>
+          <p className={`${colors.textMuted} mt-1`}>{projects.length} projetos cadastrados • {githubRepos.length} repos no GitHub disponíveis</p>
         </div>
-        <button onClick={() => { resetForm(); setShowForm(true); }} className={`${accentClass} font-semibold px-4 py-2 rounded-lg text-sm transition-colors`}>
-          + Novo Projeto
-        </button>
+        <div className="flex gap-2">
+          {githubRepos.length > 0 && (
+            <button onClick={() => setShowGithubImport(!showGithubImport)} className={`${colors.cardBg} border ${colors.border} font-semibold px-4 py-2 rounded-lg text-sm transition-colors hover:${colors.cardBgAlt}`}>
+              Importar do GitHub ({githubRepos.length})
+            </button>
+          )}
+          <button onClick={() => { resetForm(); setShowForm(true); }} className={`${accentClass} font-semibold px-4 py-2 rounded-lg text-sm transition-colors`}>
+            + Novo Projeto
+          </button>
+        </div>
       </div>
+
+      {showGithubImport && (
+        <div className={`${colors.card} border ${colors.border} rounded-xl p-4`}>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className={`text-sm font-semibold ${colors.text}`}>Repos GitHub não cadastrados</h3>
+            <button onClick={() => setShowGithubImport(false)} className={`text-xs ${colors.textMuted} hover:${colors.text}`}>Fechar</button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-64 overflow-y-auto">
+            {githubRepos.map((repo) => (
+              <button key={repo.id} onClick={() => importFromGithub(repo)} className={`text-left p-2 rounded ${colors.cardBg} hover:${colors.cardBgAlt} border ${colors.border} transition-colors`}>
+                <p className={`text-xs font-medium truncate ${colors.text}`}>{repo.name}</p>
+                <p className={`text-[10px] truncate ${colors.textSubtle}`}>{repo.language || 'Sem linguagem'}</p>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {message && (
         <div className={`p-3 rounded-lg text-sm ${message.type === "success" ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}>
@@ -328,7 +410,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className={`block text-sm ${colors.textMuted} mb-1`}>Mostrar na página</label>
+                <label className={`block text-sm ${colors.textMuted} mb-1`}>Visibilidade</label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
@@ -336,9 +418,35 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                     onChange={(e) => setFormData({ ...formData, show_on_page: e.target.checked })}
                     className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
                   />
-                  <span className={`text-sm ${colors.text}`}>Visível</span>
+                  <span className={`text-sm ${colors.text}`}>Página</span>
                 </label>
               </div>
+              <div>
+                <label className={`block text-sm ${colors.textMuted} mb-1`}>Spiral</label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.in_spiral}
+                    onChange={(e) => setFormData({ ...formData, in_spiral: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                  />
+                  <span className={`text-sm ${colors.text}`}>Emenda (Home)</span>
+                </label>
+              </div>
+              <div>
+                <label className={`block text-sm ${colors.textMuted} mb-1`}>Outros</label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.visible}
+                    onChange={(e) => setFormData({ ...formData, visible: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
+                  />
+                  <span className={`text-sm ${colors.text}`}>Ver outros</span>
+                </label>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className={`block text-sm ${colors.textMuted} mb-1`}>Destaque</label>
                 <label className="flex items-center gap-2 cursor-pointer">
@@ -348,7 +456,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
                     className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500"
                   />
-                  <span className={`text-sm ${colors.text}`}>Featured</span>
+                  <span className={`text-sm ${colors.text}`}>Cards Grandes</span>
                 </label>
               </div>
               <div>
@@ -546,9 +654,10 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Src</th>
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Nome (PT)</th>
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Tags</th>
-                <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Visível</th>
+                <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Página</th>
+                <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Spiral</th>
+                <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Outros</th>
                 <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Destaque</th>
-                <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>GitHub</th>
                 <th className={`text-right px-4 py-3 ${colors.textMuted} font-medium`}>Ações</th>
               </tr>
             </thead>
@@ -565,13 +674,16 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    {project.show_on_page ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>Sim</span> : <span className={`text-xs ${colors.textSubtle}`}>Não</span>}
+                    {project.show_on_page ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>P</span> : <span className={`text-xs ${colors.textSubtle}`}>-</span>}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    {project.featured ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>Sim</span> : <span className={`text-xs ${colors.textSubtle}`}>Não</span>}
+                    {project.in_spiral ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>S</span> : <span className={`text-xs ${colors.textSubtle}`}>-</span>}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`text-xs ${colors.textSubtle}`}>{project.github_src || '-'}</span>
+                    {project.visible ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>O</span> : <span className={`text-xs ${colors.textSubtle}`}>-</span>}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    {project.featured ? <span className={`text-xs ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded`}>D</span> : <span className={`text-xs ${colors.textSubtle}`}>-</span>}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-2">

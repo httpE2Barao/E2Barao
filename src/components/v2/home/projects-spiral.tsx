@@ -142,9 +142,12 @@ async function fetchFeaturedProjects(lang: string): Promise<ProjectFromAPI[]> {
   try {
     const res = await fetch(`/api/projects?lang=${lang}`)
     const data = await res.json()
-    return data.filter((p: ProjectFromAPI) => p.featured).map((p: any) => ({
+    const projects = data.spiralProjects || data.featuredProjects || data.showcaseProjects || data.githubOnlyProjects || (Array.isArray(data) ? data : []) || []
+    return projects.map((p: any) => ({
       ...p,
-      imageUrls: typeof p.imageUrls === 'string' ? JSON.parse(p.imageUrls || '[]') : (p.imageUrls || [])
+      imageUrls: typeof p.imageUrls === 'string' 
+        ? JSON.parse(p.imageUrls || '[]') 
+        : (Array.isArray(p.imageUrls) ? p.imageUrls : [])
     }))
   } catch (err) {
     console.error('Erro ao buscar projetos:', err)
