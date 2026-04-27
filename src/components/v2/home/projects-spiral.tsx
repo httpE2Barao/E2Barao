@@ -3,7 +3,7 @@ import { useTheme } from "@/components/switchers/switchers"
 import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 const videoTimeRef = { current: {} as Record<string, number>, currentProject: null as string | null }
 
@@ -181,26 +181,33 @@ function SpiralProjectCard({
   const { theme } = useTheme()
   const isDark = theme === "dark"
   const { mediaUrl, loading: mediaLoading } = useProjectMedia(project.src)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const prevIsCurrentRef = useRef(false)
+const videoRef = useRef<HTMLVideoElement>(null)
 
-  useEffect(() => {
-    if (!videoRef.current) return
+  useLayoutEffect(() => {
+    if (!videoRef.current || !mediaUrl) return
+    
+    const attemptPlay = () => {
+      const savedTime = videoTimeRef.current[project.src] || 0
+      videoRef.current!.currentTime = savedTime
+      videoRef.current!.play().catch(() => {})
+      videoTimeRef.currentProject = project.src
+    }
+    
+    const attemptPause = () => {
+      videoRef.current!.pause()
+      videoTimeRef.current[project.src] = videoRef.current!.currentTime
+    }
     
     if (isCurrentProject) {
-      const savedTime = videoTimeRef.current[project.src] || 0
-      videoRef.current.currentTime = savedTime
-      videoRef.current.play().catch(() => {})
-      videoTimeRef.currentProject = project.src
-    } else if (prevIsCurrentRef.current) {
-      videoTimeRef.current[project.src] = videoRef.current.currentTime
-      videoRef.current.pause()
-      if (videoTimeRef.currentProject === project.src) {
-        videoTimeRef.currentProject = null
+      if (videoRef.current.readyState >= 1) {
+        attemptPlay()
+      } else {
+        videoRef.current.addEventListener('canplay', attemptPlay, { once: true })
       }
+    } else {
+      attemptPause()
     }
-    prevIsCurrentRef.current = isCurrentProject
-  }, [isCurrentProject, project.src])
+  }, [isCurrentProject, project.src, mediaUrl])
 
   // layout-based values are provided via props for responsive behavior
   

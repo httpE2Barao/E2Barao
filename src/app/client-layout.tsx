@@ -19,6 +19,10 @@ export default function ClientLayout({
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   if (!mounted) return null;
 
   return (
