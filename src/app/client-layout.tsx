@@ -22,7 +22,7 @@ export default function ClientLayout({
   if (!mounted) return null;
 
   return (
-    <ThemeProvider>
+    <ThemeProvider initialTheme={isV2 || isAdmin ? "light" : "dark"}>
       {!isV2 && !isAdmin && <Header />}
       {children}
       {!isV2 && !isAdmin && <ToTheTopButton />}

@@ -384,11 +384,11 @@ function FeaturedProjectCard({ project, index, onClick, isDark }: { project: Pro
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         
         <div className="absolute bottom-0 left-0 right-0 p-6">
-          <h3 className="text-2xl md:text-3xl font-black tracking-tighter" style={{ textShadow: isDark ? "0 2px 12px rgba(0,0,0,0.9)" : "0 2px 4px rgba(255,255,255,0.3)" }}>
+          <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-white" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>
             {project.name}<span className="text-cyan-400">.</span>
           </h3>
           {project.subtitle && (
-            <p className="text-sm mt-1" style={{ textShadow: isDark ? "0 1px 4px rgba(0,0,0,0.9)" : "0 1px 2px rgba(255,255,255,0.2)" }}>{project.subtitle}</p>
+            <p className="text-sm mt-1 text-white/80" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.9)" }}>{project.subtitle}</p>
           )}
         </div>
       </div>

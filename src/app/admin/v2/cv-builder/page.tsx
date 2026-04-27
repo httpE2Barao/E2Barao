@@ -97,13 +97,15 @@ const defaultLocalizedString: LocalizedString = {
 export default function CVBuilderPage() {
   const { isDark } = useAdminTheme();
   
-  const colors = {
-    card: isDark ? "{colors.card}" : "bg-white",
-    cardBg: isDark ? "{colors.cardBg}" : "bg-gray-50",
-    border: isDark ? "{colors.border}" : "border-gray-200",
-    borderInput: isDark ? "{colors.border}" : "border-gray-300",
-    text: isDark ? "{colors.text}" : "text-gray-900",
-    textMuted: isDark ? "{colors.textMuted}" : "text-gray-600",
+  const inputBg = isDark ? "bg-gray-900" : "bg-white";
+
+const colors = {
+    card: isDark ? "bg-gray-800" : "bg-white",
+    cardBg: isDark ? "bg-gray-700" : "bg-gray-50",
+    border: isDark ? "border-gray-600" : "border-gray-200",
+    borderInput: isDark ? "border-gray-500" : "border-gray-300",
+    text: isDark ? "text-white" : "text-gray-900",
+    textMuted: isDark ? "text-gray-300" : "text-gray-600",
     textSubtle: isDark ? "text-gray-400" : "text-gray-500",
     accent: isDark ? "text-cyan-400" : "text-blue-600",
     accentBg: isDark ? "bg-cyan-500/10" : "bg-blue-500/10",
@@ -165,8 +167,8 @@ export default function CVBuilderPage() {
     email: "e2barao@hotmail.com",
     phone: "+55 41 99804-6755",
     location: { pt: "Curitiba, Paraná, Brasil", en: "Curitiba, Paraná, Brazil", es: "Curitiba, Paraná, Brasil" },
-    linkedin: "linkedin.com/in/e2barao",
-    github: "github.com/httpE2Barao",
+    linkedin: "https://linkedin.com/in/e2barao",
+    github: "https://github.com/httpE2Barao",
     summary: { pt: "", en: "", es: "" },
     experience: [],
     education: [],
@@ -174,8 +176,8 @@ export default function CVBuilderPage() {
     projects: [],
     languages: [
       { pt: "Português (Nativo)", en: "Portuguese (Native)", es: "Portugués (Nativo)" },
-      { pt: "Inglês (Fluente)", en: "English (Fluent)", es: "Inglés (Fluido)" },
-      { pt: "Espanhol (Conversacional)", en: "Spanish (Conversational)", es: "Español (Conversacional)" },
+      { pt: "Inglês (Avançado)", en: "English (Advanced)", es: "Inglés (Avanzado)" },
+      { pt: "Espanhol (Básico)", en: "Spanish (Basic)", es: "Español (Básico)" },
     ],
     additionalInfo: { pt: "", en: "", es: "" },
     additionalData: {
@@ -427,7 +429,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowHistory(!showHistory)}
-            className="{colors.cardBg} hover:bg-gray-700 border {colors.border} {colors.textMuted} font-semibold px-4 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2"
+            className={`${colors.cardBg} hover:bg-gray-700 border ${colors.border} ${colors.textMuted} font-semibold px-4 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2`}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10"/>
@@ -473,13 +475,13 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                 <button
                   key={t.id}
                   onClick={() => setSelectedTemplate(t.id)}
-                  className={`w-full text-left p-3 rounded-lg border transition-colors ${
-                    selectedTemplate === t.id
-                      ? "bg-cyan-500/10 border-cyan-500/30"
-                      : "{colors.cardBg} {colors.border} hover:{colors.border}"
-                  }`}
+className={`w-full text-left p-3 rounded-lg border transition-colors ${
+                      selectedTemplate === t.id
+                        ? `${colors.accentBg} border-${colors.accentBorder.replace('/30', '')}`
+                        : `${colors.cardBg} ${colors.border} hover:${colors.border}`
+                    }`}
                 >
-                  <span className={`text-sm font-medium ${selectedTemplate === t.id ? "text-cyan-400" : "{colors.text}"}`}>
+                  <span className={`text-sm font-medium ${selectedTemplate === t.id ? colors.accent : colors.text}`}>
                     {t.name}
                   </span>
                   <span className="block text-xs text-gray-500 mt-0.5">{t.desc}</span>
@@ -496,7 +498,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   key={lang}
                   onClick={() => setLanguage(lang)}
                   className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
-                    language === lang ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30" : "{colors.cardBg} text-gray-400 border {colors.border}"
+                    language === lang ? `${colors.accentBg} ${colors.accent} border ${colors.accentBorder}` : `${colors.cardBg} text-gray-400 border ${colors.border}`
                   }`}
                 >
                   {lang === "pt" ? "PT-BR" : lang === "en" ? "EN-US" : "ES"}
@@ -515,7 +517,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                       key={lang}
                       onClick={() => setLanguage(lang)}
                       className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
-                        language === lang ? "bg-cyan-500/20 text-cyan-400" : "text-gray-500 hover:{colors.textMuted}"
+                        language === lang ? "bg-cyan-500/20 text-cyan-400" : `text-gray-500 hover:${colors.textMuted}`
                       }`}
                     >
                       {lang.toUpperCase()}
@@ -527,7 +529,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="text"
                   value={cvData.name[language] || ""}
                   onChange={(e) => handleFieldChange("name", language, e.target.value)}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>
               <div>
@@ -536,7 +538,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="text"
                   value={cvData.title[language] || ""}
                   onChange={(e) => handleFieldChange("title", language, e.target.value)}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>
               <div>
@@ -545,7 +547,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   value={cvData.summary[language] || ""}
                   onChange={(e) => handleFieldChange("summary", language, e.target.value)}
                   rows={3}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm resize-none"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm resize-none ${colors.text}`}
                   placeholder={language === "pt" ? "Descreva seu perfil profissional..." : language === "en" ? "Describe your professional profile..." : "Describe tu perfil profesional..."}
                 />
               </div>
@@ -555,7 +557,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="text"
                   value={cvData.location[language] || ""}
                   onChange={(e) => handleFieldChange("location", language, e.target.value)}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>
               <div>
@@ -564,7 +566,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="email"
                   value={cvData.email}
                   onChange={(e) => setCvData({ ...cvData, email: e.target.value })}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>
               <div>
@@ -573,7 +575,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="text"
                   value={cvData.phone}
                   onChange={(e) => setCvData({ ...cvData, phone: e.target.value })}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>
               <div>
@@ -582,7 +584,8 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="text"
                   value={cvData.linkedin}
                   onChange={(e) => setCvData({ ...cvData, linkedin: e.target.value })}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  placeholder="https://linkedin.com/in/seu-perfil"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>
               <div>
@@ -591,7 +594,8 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="text"
                   value={cvData.github}
                   onChange={(e) => setCvData({ ...cvData, github: e.target.value })}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  placeholder="https://github.com/seu-usuario"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>
               <div>
@@ -600,7 +604,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   value={cvData.additionalInfo[language] || ""}
                   onChange={(e) => handleFieldChange("additionalInfo", language, e.target.value)}
                   rows={3}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm resize-none"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm resize-none ${colors.text}`}
                   placeholder={language === "pt" ? "Certificações, cursos, prêmios..." : language === "en" ? "Certifications, courses, awards..." : "Certificaciones, cursos, premios..."}
                 />
               </div>
@@ -626,7 +630,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                       },
                     }));
                   }}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 >
                   <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
                   <option value={language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}>{language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}</option>
@@ -649,7 +653,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                       },
                     }));
                   }}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 >
                   <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
                   <option value={language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}>{language === "pt" ? "Sim" : language === "en" ? "Yes" : "Sí"}</option>
@@ -672,7 +676,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                       },
                     }));
                   }}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 >
                   <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
                   <option value="A">A</option>
@@ -699,7 +703,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                       },
                     }));
                   }}
-                  className="w-full {colors.cardBg} border {colors.border} rounded-lg px-3 py-2 text-sm"
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 >
                   <option value="">{language === "pt" ? "Selecione..." : language === "en" ? "Select..." : "Seleccione..."}</option>
                   <option value={language === "pt" ? "Carro particular" : language === "en" ? "Personal car" : "Coche particular"}>{language === "pt" ? "Carro particular" : language === "en" ? "Personal car" : "Coche particular"}</option>
@@ -720,54 +724,54 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   type="checkbox"
                   checked={cvData.includeExperience}
                   onChange={(e) => setCvData({ ...cvData, includeExperience: e.target.checked })}
-                  className="w-4 h-4 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                  className={`w-4 h-4 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                 />
-                <span className="text-sm {colors.textMuted}">Experiência Profissional</span>
+                <span className={`text-sm ${colors.textMuted}`}>Experiência Profissional</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={cvData.includeEducation}
                   onChange={(e) => setCvData({ ...cvData, includeEducation: e.target.checked })}
-                  className="w-4 h-4 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                  className={`w-4 h-4 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                 />
-                <span className="text-sm {colors.textMuted}">Educação</span>
+                <span className={`text-sm ${colors.textMuted}`}>Educação</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={cvData.includeSkills}
                   onChange={(e) => setCvData({ ...cvData, includeSkills: e.target.checked })}
-                  className="w-4 h-4 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                  className={`w-4 h-4 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                 />
-                <span className="text-sm {colors.textMuted}">Skills</span>
+                <span className={`text-sm ${colors.textMuted}`}>Skills</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={cvData.includeProjects}
                   onChange={(e) => setCvData({ ...cvData, includeProjects: e.target.checked })}
-                  className="w-4 h-4 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                  className={`w-4 h-4 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                 />
-                <span className="text-sm {colors.textMuted}">Projetos</span>
+                <span className={`text-sm ${colors.textMuted}`}>Projetos</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={cvData.includeLanguages}
                   onChange={(e) => setCvData({ ...cvData, includeLanguages: e.target.checked })}
-                  className="w-4 h-4 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                  className={`w-4 h-4 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                 />
-                <span className="text-sm {colors.textMuted}">Idiomas</span>
+                <span className={`text-sm ${colors.textMuted}`}>Idiomas</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={cvData.includeLanguages}
                   onChange={(e) => setCvData({ ...cvData, includeLanguages: e.target.checked })}
-                  className="w-4 h-4 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                  className={`w-4 h-4 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                 />
-                <span className="text-sm {colors.textMuted}">Idiomas</span>
+                <span className={`text-sm ${colors.textMuted}`}>Idiomas</span>
               </label>
             </div>
           </div>
@@ -779,7 +783,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
               </h3>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {cvData.languages.map((langItem, index) => (
-                  <div key={index} className="flex items-center gap-2 p-2 rounded-lg {colors.cardBg}">
+                  <div key={index} className={`flex items-center gap-2 p-2 rounded-lg ${colors.cardBg}`}>
                     <input
                       type="text"
                       value={getLocalizedValue(langItem, language)}
@@ -788,7 +792,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                         newLanguages[index] = { ...newLanguages[index], [language]: e.target.value };
                         setCvData({ ...cvData, languages: newLanguages });
                       }}
-                      className={`flex-1 ${colors.cardBg} border ${colors.border} rounded px-2 py-1 text-xs ${colors.text}`}
+                      className={`flex-1 ${inputBg} border ${colors.border} rounded px-2 py-1 text-xs ${colors.text}`}
                       placeholder={language === "pt" ? "Ex: Português (Nativo)" : language === "en" ? "Ex: Portuguese (Native)" : "Ex: Portugués (Nativo)"}
                     />
                     <button
@@ -819,7 +823,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs {colors.textMuted} mb-1">
+                  <label className={`block text-xs ${colors.textMuted} mb-1`}>
                     {language === "pt" ? "Quantidade máxima" : language === "en" ? "Maximum quantity" : "Cantidad máxima"}
                   </label>
                   <input
@@ -828,17 +832,17 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                     max={100}
                     value={cvData.maxSkills}
                     onChange={(e) => setCvData({ ...cvData, maxSkills: parseInt(e.target.value) || 0 })}
-                    className={`w-full ${colors.cardBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
+                    className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs {colors.textMuted} mb-1">
+                  <label className={`block text-xs ${colors.textMuted} mb-1`}>
                     {language === "pt" ? "Ordenar por" : language === "en" ? "Sort by" : "Ordenar por"}
                   </label>
                   <select
                     value={cvData.sortSkills}
                     onChange={(e) => setCvData({ ...cvData, sortSkills: e.target.value })}
-                    className={`w-full ${colors.cardBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
+                    className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                   >
                     <option value="order">
                       {language === "pt" ? "Ordem do banco" : language === "en" ? "Database order" : "Orden de base de datos"}
@@ -852,7 +856,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   </select>
                 </div>
               </div>
-              <p className="text-xs {colors.textSubtle} mt-2">
+              <p className={`text-xs ${colors.textSubtle} mt-2`}>
                 {language === "pt" ? "Skills carregadas:" : language === "en" ? "Loaded skills:" : "Habilidades cargadas:"} {cvData.skills.length}
               </p>
             </div>
@@ -873,10 +877,10 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                           : cvData.selectedExperienceIds.filter((id) => id !== exp.id);
                         setCvData({ ...cvData, selectedExperienceIds: ids });
                       }}
-                      className="w-4 h-4 mt-0.5 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                      className={`w-4 h-4 mt-0.5 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                     />
                     <div className="text-xs">
-                      <span className="{colors.textMuted} block font-medium">
+                      <span className={`${colors.textMuted} block font-medium`}>
                         {getLocalizedValue(exp.role, language)}
                       </span>
                       <span className="text-gray-500">
@@ -889,7 +893,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   <p className="text-xs text-gray-500">Nenhuma experiência encontrada</p>
                 )}
               </div>
-              <div className="mt-3 pt-3 border-t {colors.border} flex gap-2">
+              <div className={`mt-3 pt-3 border-t ${colors.border} flex gap-2`}>
                 <button
                   onClick={() => setCvData({ ...cvData, selectedExperienceIds: cvData.experience.map(e => e.id) })}
                   className="text-xs text-cyan-400 hover:text-cyan-300"
@@ -899,7 +903,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                 <span className="text-gray-600">|</span>
                 <button
                   onClick={() => setCvData({ ...cvData, selectedExperienceIds: [] })}
-                  className="text-xs text-gray-400 hover:{colors.textMuted}"
+                  className={`text-xs text-gray-400 hover:${colors.textMuted}`}
                 >
                   Limpar seleção
                 </button>
@@ -922,10 +926,10 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                           : cvData.selectedProjectIds.filter((id) => id !== proj.id);
                         setCvData({ ...cvData, selectedProjectIds: ids });
                       }}
-                      className="w-4 h-4 mt-0.5 rounded {colors.border} {colors.cardBg} text-cyan-500 focus:ring-cyan-500"
+                      className={`w-4 h-4 mt-0.5 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
                     />
                     <div className="text-xs">
-                      <span className="{colors.textMuted} block font-medium">
+                      <span className={`${colors.textMuted} block font-medium`}>
                         {getLocalizedValue(proj.name, language)}
                       </span>
                     </div>
@@ -935,7 +939,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                   <p className="text-xs text-gray-500">Nenhum projeto encontrado</p>
                 )}
               </div>
-              <div className="mt-3 pt-3 border-t {colors.border} flex gap-2">
+              <div className={`mt-3 pt-3 border-t ${colors.border} flex gap-2`}>
                 <button
                   onClick={() => setCvData({ ...cvData, selectedProjectIds: cvData.projects.map(p => p.id) })}
                   className="text-xs text-cyan-400 hover:text-cyan-300"
@@ -945,7 +949,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                 <span className="text-gray-600">|</span>
                 <button
                   onClick={() => setCvData({ ...cvData, selectedProjectIds: [] })}
-                  className="text-xs text-gray-400 hover:{colors.textMuted}"
+                  className={`text-xs text-gray-400 hover:${colors.textMuted}`}
                 >
                   Limpar seleção
                 </button>
@@ -958,30 +962,30 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
             <div className="space-y-2 text-xs text-gray-400">
               <div className="flex justify-between">
                 <span>Experiências</span>
-                <span className="{colors.text}">{cvData.selectedExperienceIds.length} / {cvData.experience.length}</span>
+                <span className={`${colors.text}`}>{cvData.selectedExperienceIds.length} / {cvData.experience.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Educação</span>
-                <span className="{colors.text}">{cvData.education.length}</span>
+                <span className={`${colors.text}`}>{cvData.education.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Skills</span>
-                <span className="{colors.text}">{cvData.skills.length}</span>
+                <span className={`${colors.text}`}>{cvData.skills.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Projetos</span>
-                <span className="{colors.text}">{cvData.selectedProjectIds.length} / {cvData.projects.length}</span>
+                <span className={`${colors.text}`}>{cvData.selectedProjectIds.length} / {cvData.projects.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Idiomas</span>
-                <span className="{colors.text}">{cvData.languages.length}</span>
+                <span className={`${colors.text}`}>{cvData.languages.length}</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="xl:col-span-3">
-          <div className="{colors.card} border {colors.border} rounded-xl p-4 sticky top-0">
+          <div className={`${colors.card} border ${colors.border} rounded-xl p-4 sticky top-0`}>
             <h3 className="text-sm font-semibold mb-4">Preview</h3>
             <div className="bg-white rounded-lg overflow-hidden shadow-lg min-h-[600px]">
               <div className="overflow-auto">
@@ -994,14 +998,14 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
 
       {showHistory && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="{colors.card} border {colors.border} rounded-xl max-w-2xl w-full max-h-[80vh] overflow-hidden">
-            <div className="p-4 border-b {colors.border} flex items-center justify-between">
+          <div className={`${colors.card} border ${colors.border} rounded-xl max-w-2xl w-full max-h-[80vh] overflow-hidden`}>
+            <div className={`p-4 border-b ${colors.border} flex items-center justify-between`}>
               <h2 className="text-lg font-semibold">
                 {language === "pt" ? "Histórico de CVs" : language === "en" ? "CV History" : "Historial de CVs"}
               </h2>
               <button
                 onClick={() => setShowHistory(false)}
-                className="text-gray-400 hover:{colors.text}"
+                className={`text-gray-400 hover:${colors.text}`}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="18" y1="6" x2="6" y2="18"/>
@@ -1020,14 +1024,14 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                     <div
                       key={cv.id}
                       className={`p-4 rounded-lg border ${
-                        index === 0 ? "bg-cyan-500/10 border-cyan-500/30" : "{colors.cardBg} {colors.border}"
+                        index === 0 ? "bg-cyan-500/10 border-cyan-500/30" : `${colors.cardBg} ${colors.border}`
                       }`}
                     >
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-medium {colors.text}">{cv.template_id || "Template"}</span>
-                            <span className="text-xs bg-gray-700 px-2 py-0.5 rounded {colors.textMuted}">{cv.language?.toUpperCase()}</span>
+                            <span className={`font-medium ${colors.text}`}>{cv.template_id || "Template"}</span>
+                            <span className={`text-xs bg-gray-700 px-2 py-0.5 rounded ${colors.textMuted}`}>{cv.language?.toUpperCase()}</span>
                             {index === 0 && (
                               <span className="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-0.5 rounded">
                                 {language === "pt" ? "Padrão" : language === "en" ? "Default" : "Predeterminado"}

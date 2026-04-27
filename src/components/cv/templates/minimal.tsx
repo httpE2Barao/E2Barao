@@ -1,22 +1,22 @@
 import { Document, Page, Text, View, StyleSheet, Link } from "@react-pdf/renderer";
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontFamily: "Helvetica", fontSize: 10, color: "#000" },
+  page: { padding: 40, fontFamily: "Helvetica", fontSize: 10, color: "#000", minHeight: "100%", forcePageBreak: "no" },
   header: { marginBottom: 20, borderBottomWidth: 1, borderBottomColor: "#000", paddingBottom: 12 },
-  name: { fontSize: 20, fontWeight: "bold", marginBottom: 4, letterSpacing: 0.5 },
-  contactRow: { flexDirection: "row", flexWrap: "wrap", gap: 16, fontSize: 9, color: "#333" },
-  contactLink: { color: "#0000ee", textDecoration: "none" },
-  section: { marginBottom: 16 },
-  sectionTitle: { fontSize: 11, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8, paddingBottom: 3, borderBottomWidth: 0.5, borderBottomColor: "#ccc" },
-  entry: { marginBottom: 8 },
+  name: { fontSize: 20, fontWeight: "bold", marginBottom: 4, letterSpacing: 0.5, wrap: false },
+  contactRow: { flexDirection: "row", flexWrap: "wrap", gap: 16, fontSize: 9, color: "#333", wrap: false },
+  contactLink: { color: "#0000ee", textDecoration: "none", wrap: false },
+  section: { marginBottom: 16, wrap: false },
+  sectionTitle: { fontSize: 11, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8, paddingBottom: 3, borderBottomWidth: 0.5, borderBottomColor: "#ccc", wrap: false },
+  entry: { marginBottom: 8, wrap: false },
   entryHeader: { flexDirection: "row", justifyContent: "space-between", marginBottom: 2 },
-  entryRole: { fontSize: 10, fontWeight: "bold" },
-  entryPeriod: { fontSize: 9, color: "#666" },
-  entryCompany: { fontSize: 9, color: "#444", fontStyle: "italic", marginBottom: 2 },
-  entryDesc: { fontSize: 9, color: "#333", lineHeight: 1.5 },
+  entryRole: { fontSize: 10, fontWeight: "bold", wrap: false },
+  entryPeriod: { fontSize: 9, color: "#666", wrap: false },
+  entryCompany: { fontSize: 9, color: "#444", fontStyle: "italic", marginBottom: 2, wrap: false },
+  entryDesc: { fontSize: 9, color: "#333", lineHeight: 1.5, wrap: false },
   skillList: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
   skillItem: { fontSize: 9, color: "#333" },
-  summary: { fontSize: 9, color: "#333", lineHeight: 1.6, marginBottom: 16 },
+  summary: { fontSize: 9, color: "#333", lineHeight: 1.6, marginBottom: 16, wrap: false },
 });
 
 interface CVData {

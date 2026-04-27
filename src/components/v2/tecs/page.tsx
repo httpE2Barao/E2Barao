@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { techCategories, getTechIconUrl } from "@/data/v2-tecs";
@@ -9,6 +9,32 @@ export function V2TecsPage() {
   const ref = useRef<HTMLDivElement>(null);
   const { theme, language } = useTheme();
   const isDark = theme === "dark";
+  const [failedIcons, setFailedIcons] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    const checkLocalIcons = async () => {
+      const missingIcons = new Set<string>();
+      for (const category of techCategories) {
+        for (const tech of category.techs) {
+          const iconUrl = getTechIconUrl(tech.icon);
+          if (!iconUrl.startsWith("http")) {
+            try {
+              const res = await fetch(iconUrl, { method: "HEAD" });
+              if (!res.ok) {
+                missingIcons.add(tech.name);
+              }
+            } catch {
+              missingIcons.add(tech.name);
+            }
+          }
+        }
+      }
+      if (missingIcons.size > 0) {
+        setFailedIcons((prev) => new Set([...prev, ...missingIcons]));
+      }
+    };
+    checkLocalIcons();
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -101,15 +127,19 @@ export function V2TecsPage() {
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-white`}>
-                          <Image
-                            src={getTechIconUrl(tech.icon)}
-                            alt={tech.name}
-                            width={28}
-                            height={28}
-                            className="object-contain"
-                          />
-                        </div>
+                        {!failedIcons.has(tech.name) && (
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-white`}>
+                            <Image
+                              src={getTechIconUrl(tech.icon)}
+                              alt={tech.name}
+                              width={28}
+                              height={28}
+                              className="object-contain"
+                              onError={() => setFailedIcons((prev) => new Set(prev).add(tech.name))}
+                              unoptimized
+                            />
+                          </div>
+                        )}
                         <div className="flex-1 min-w-0">
                           <h3 className="font-bold text-lg truncate">{tech.name}</h3>
                           <p className={`text-sm ${textMuted}`}>

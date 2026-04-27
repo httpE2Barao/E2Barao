@@ -64,9 +64,9 @@ const PreloadImage = () => {
 };
 
 // Adicionar Suspense para melhor UX durante carregamento
-export default function ThemeProvider({ children }: { children: React.ReactNode }) {
+export default function ThemeProvider({ children, initialTheme = "dark" }: { children: React.ReactNode, initialTheme?: string }) {
   const { isProjectOpened, currentProject, changeProject, handleBack } = UseSelectedProject();
-  const { theme, mainTheme, altTheme, toggleTheme } = useColors();
+  const { theme, mainTheme, altTheme, toggleTheme } = useColors(initialTheme);
   const { page, pageSelected, changePage } = usePage();
   const { language, changeLanguage } = useLanguage();
   const { isMenuActive, changeMenuState } = useMenu();
