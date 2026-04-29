@@ -227,6 +227,9 @@ export async function POST(req: Request) {
 
     console.log(`[NVIDIA AI] Lang: ${language}, Message: "${message.substring(0, 50)}..."`)
 
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 25000)
+
     const res = await fetch(NVIDIA_API_URL, {
       method: "POST",
       headers: {
@@ -243,7 +246,10 @@ export async function POST(req: Request) {
         temperature: 0.7,
         top_p: 0.9,
       }),
+      signal: controller.signal as RequestInit["signal"],
     })
+
+    clearTimeout(timeout)
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "")
@@ -258,6 +264,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ reply })
   } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      console.error("[NVIDIA AI] Timeout: API não respondeu em 25s")
+      return NextResponse.json({ error: "Timeout. Tente novamente." }, { status: 504 })
+    }
     console.error("[NVIDIA AI] Erro inesperado:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
