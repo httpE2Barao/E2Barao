@@ -108,7 +108,7 @@ export function CreativeCV({ data }: { data: CVData }) {
 
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarSectionTitle}>{t.education}</Text>
-            {data.education.slice(0, 2).map((edu, i) => (
+            {data.education.map((edu, i) => (
               <View key={i} style={{ marginBottom: 6 }}>
                 <Text style={{ fontSize: 8, fontWeight: 600, color: "#fff" }}>{edu.degree}</Text>
                 <Text style={styles.sidebarText}>{edu.school}</Text>
