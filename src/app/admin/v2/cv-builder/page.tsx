@@ -40,6 +40,7 @@ interface Project {
 }
 
 interface Education {
+  id: number;
   degree: LocalizedString;
   school: LocalizedString;
   period: string;
@@ -75,6 +76,7 @@ interface CVData {
   includeProjects: boolean;
   includeLanguages: boolean;
   selectedExperienceIds: number[];
+  selectedEducationIds: number[];
   selectedProjectIds: number[];
   maxSkills: number;
   sortSkills: string;
@@ -134,6 +136,7 @@ const colors = {
         setCvData((prev) => ({
           ...prev,
           selectedExperienceIds: defaultData.config.selectedExperienceIds || prev.selectedExperienceIds,
+          selectedEducationIds: defaultData.config.selectedEducationIds || prev.selectedEducationIds,
           selectedProjectIds: defaultData.config.selectedProjectIds || prev.selectedProjectIds,
           additionalData: defaultData.config.additionalData || prev.additionalData,
           includeExperience: defaultData.config.includeExperience ?? prev.includeExperience,
@@ -162,7 +165,7 @@ const colors = {
   }, []);
 
   const [cvData, setCvData] = useState<CVData>({
-    name: { pt: "Elias Edson Barao", en: "Elias Edson Barao", es: "Elias Edson Barao" },
+    name: { pt: "Elias Edson Barão", en: "Elias Edson Barão", es: "Elias Edson Barão" },
     title: { pt: "Desenvolvedor Full-Stack", en: "Full-Stack Developer", es: "Desarrollador Full-Stack", fr: "Développeur Full-Stack", zh: "全栈开发者" },
     email: "e2barao@hotmail.com",
     phone: "+55 41 99804-6755",
@@ -192,6 +195,7 @@ const colors = {
     includeProjects: true,
     includeLanguages: true,
     selectedExperienceIds: [],
+    selectedEducationIds: [],
     selectedProjectIds: [],
     maxSkills: 20,
     sortSkills: "order",
@@ -215,6 +219,10 @@ const getLocalizedCVData = (lang: Language): any => {
       ? cvData.projects.filter(proj => cvData.selectedProjectIds.includes(proj.id))
       : cvData.projects;
     
+    const selectedEdu = cvData.selectedEducationIds.length > 0
+      ? cvData.education.filter(edu => cvData.selectedEducationIds.includes(edu.id))
+      : cvData.education;
+    
     let sortedSkills = cvData.skills.map((s) => getLocalizedValue(s, lang));
     console.log('DEBUG skills sample:', sortedSkills.slice(0, 3));
     
@@ -233,7 +241,7 @@ const getLocalizedCVData = (lang: Language): any => {
       period: exp.period,
       description: getLocalizedValue(exp.description, lang),
     })),
-    education: cvData.education.map((edu) => ({
+    education: selectedEdu.map((edu) => ({
       degree: getLocalizedValue(edu.degree, lang),
       school: getLocalizedValue(edu.school, lang),
       period: edu.period,
@@ -296,12 +304,14 @@ const getLocalizedCVData = (lang: Language): any => {
         selectedExperienceIds: Array.isArray(exp) ? exp.map((e: any) => e.id) : [],
         education: Array.isArray(edu)
           ? edu.map((e: any) => ({
+              id: e.id,
               degree: localizeField(e.degree_pt, e.degree_en, e.degree_es),
               school: localizeField(e.school_pt, e.school_en, e.school_es),
               period: `${e.period_start} - ${e.period_end || "Atual"}`,
               description: localizeField(e.description_pt, e.description_en, e.description_es),
             }))
           : [],
+        selectedEducationIds: Array.isArray(edu) ? edu.map((e: any) => e.id) : [],
         skills: Array.isArray(skills)
           ? skills
               .filter((s: any) => s.active)
@@ -346,6 +356,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
       formData.append('language', language);
       formData.append('config', JSON.stringify({
         selectedExperienceIds: cvData.selectedExperienceIds,
+        selectedEducationIds: cvData.selectedEducationIds,
         selectedProjectIds: cvData.selectedProjectIds,
         additionalData: cvData.additionalData,
         includeExperience: cvData.includeExperience,
@@ -911,6 +922,55 @@ className={`w-full text-left p-3 rounded-lg border transition-colors ${
             </div>
           )}
 
+          {cvData.includeEducation && (
+            <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
+              <h3 className="text-sm font-semibold mb-3">Selecionar Educação</h3>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {cvData.education.map((edu) => (
+                  <label key={edu.id} className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={cvData.selectedEducationIds.includes(edu.id)}
+                      onChange={(e) => {
+                        const ids = e.target.checked
+                          ? [...cvData.selectedEducationIds, edu.id]
+                          : cvData.selectedEducationIds.filter((id) => id !== edu.id);
+                        setCvData({ ...cvData, selectedEducationIds: ids });
+                      }}
+                      className={`w-4 h-4 mt-0.5 rounded ${colors.border} ${colors.cardBg} text-cyan-500 focus:ring-cyan-500`}
+                    />
+                    <div className="text-xs">
+                      <span className={`${colors.textMuted} block font-medium`}>
+                        {getLocalizedValue(edu.degree, language)}
+                      </span>
+                      <span className="text-gray-500">
+                        {getLocalizedValue(edu.school, language)} • {edu.period}
+                      </span>
+                    </div>
+                  </label>
+                ))}
+                {cvData.education.length === 0 && (
+                  <p className="text-xs text-gray-500">Nenhuma educação encontrada</p>
+                )}
+              </div>
+              <div className={`mt-3 pt-3 border-t ${colors.border} flex gap-2`}>
+                <button
+                  onClick={() => setCvData({ ...cvData, selectedEducationIds: cvData.education.map(e => e.id) })}
+                  className="text-xs text-cyan-400 hover:text-cyan-300"
+                >
+                  Selecionar todas
+                </button>
+                <span className="text-gray-600">|</span>
+                <button
+                  onClick={() => setCvData({ ...cvData, selectedEducationIds: [] })}
+                  className={`text-xs text-gray-400 hover:${colors.textMuted}`}
+                >
+                  Limpar seleção
+                </button>
+              </div>
+            </div>
+          )}
+
           {cvData.includeProjects && (
             <div className={`${colors.card} ${colors.border} rounded-xl p-5`}>
               <h3 className="text-sm font-semibold mb-3">Selecionar Projetos</h3>
@@ -966,7 +1026,7 @@ className={`w-full text-left p-3 rounded-lg border transition-colors ${
               </div>
               <div className="flex justify-between">
                 <span>Educação</span>
-                <span className={`${colors.text}`}>{cvData.education.length}</span>
+                <span className={`${colors.text}`}>{cvData.selectedEducationIds.length} / {cvData.education.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Skills</span>
