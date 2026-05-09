@@ -2,8 +2,8 @@
   "education": [
     {
       "id": 1,
-      "period_start": "May 2024",
-      "period_end": "June 2028",
+      "period_start": "05/2024",
+      "period_end": "05/2026",
       "degree_pt": "Engenharia de Software",
       "degree_en": "Software Engineering",
       "degree_es": "Ingeniería de Software",
@@ -14,19 +14,19 @@
       "school_es": "Descomplica Facultad Digital",
       "school_fr": "Descomplica Faculté Numérique",
       "school_zh": "Descomplica 数字学院",
-      "description_pt": "Bacharelado em Engenharia de Software com MEC 5/5. Cursos principais: Banco de Dados, Algoritmos e Programação, Arquitetura de Computadores, Redes de Computadores, Inteligência Artificial, Machine Learning.",
-      "description_en": "Bachelor's in Software Engineering with MEC rating 5/5. Key courses: Database, Algorithms & Programming, Computer Architecture, Computer Networks, Artificial Intelligence, Machine Learning.",
+      "description_pt": "Bacharelado em Engenharia de Software com MEC 5/5. Cursos principais: Banco de Dados, Algoritmos e Programação, Arquitetura de Computadores, Redes de Computadores, Inteligência Artificial, Machine Learning.\n\n-> Transferido para PUCPR.",
+      "description_en": "Bachelor's in Software Engineering with MEC rating 5/5. Key courses: Database, Algorithms & Programming, Computer Architecture, Computer Networks, Artificial Intelligence, Machine Learning.\n\n-> Transferred to PUCPR.",
       "description_es": "Licenciatura en Ingeniería de Software con MEC 5/5. Cursos principales: Base de Datos, Algoritmos y Programación, Arquitectura de Computadoras, Redes, Inteligencia Artificial, Machine Learning.",
       "description_fr": "Licence en Ingénierie Logicielle avec note MEC 5/5. Cours principaux: Base de données, Algorithmes et Programmation, Architecture Informatique, Réseaux, Intelligence Artificielle, Machine Learning.",
       "description_zh": "软件工程学士学位，MEC 评分 5/5。主要课程：数据库、算法与编程、计算机架构、计算机网络、人工智能、机器学习。",
-      "display_order": 1,
+      "display_order": 2,
       "created_at": "2026-04-06T19:07:55.970Z",
-      "updated_at": "2026-04-06T19:07:55.970Z"
+      "updated_at": "2026-05-09T19:14:27.121Z"
     },
     {
       "id": 2,
-      "period_start": "October 2022",
-      "period_end": "July 2023",
+      "period_start": "08/2022",
+      "period_end": "07/2023",
       "degree_pt": "Desenvolvimento de Software",
       "degree_en": "Software Development",
       "degree_es": "Desarrollo de Software",
@@ -44,12 +44,12 @@
       "description_zh": "专注于软件开发。技术：JavaScript、TypeScript、React、Tailwind CSS、REST APIs、Git。",
       "display_order": 2,
       "created_at": "2026-04-06T19:07:55.970Z",
-      "updated_at": "2026-04-06T19:07:55.970Z"
+      "updated_at": "2026-05-09T19:07:12.549Z"
     },
     {
       "id": 3,
-      "period_start": "January 2019",
-      "period_end": "December 2020",
+      "period_start": "01/2019",
+      "period_end": "12/2020",
       "degree_pt": "Curso Técnico em Artes Visuais e Cênicas",
       "degree_en": "Technical Course in Visual and Performing Arts",
       "degree_es": "Curso Técnico en Artes Visuales y Escénicas",
@@ -67,14 +67,14 @@
       "description_zh": "身体意识、发音、创造力、公共互动、情感责任。参与3部戏剧制作。",
       "display_order": 3,
       "created_at": "2026-04-06T19:07:55.970Z",
-      "updated_at": "2026-04-06T19:07:55.970Z"
+      "updated_at": "2026-05-09T19:07:27.547Z"
     },
     {
       "id": 4,
-      "period_start": "January 2013",
-      "period_end": "December 2019",
-      "degree_pt": "Ensino Médio",
-      "degree_en": "High School",
+      "period_start": "01/2013",
+      "period_end": "12/2019",
+      "degree_pt": "Ensino Fundamental e Médio",
+      "degree_en": "Regular and High School",
       "degree_es": "Escuela Secundaria",
       "degree_fr": "Lycée",
       "degree_zh": "高中",
@@ -90,7 +90,21 @@
       "description_zh": "巴西数学奥林匹克竞赛荣誉奖。",
       "display_order": 4,
       "created_at": "2026-04-06T19:07:55.970Z",
-      "updated_at": "2026-04-06T19:07:55.970Z"
+      "updated_at": "2026-05-09T19:09:47.735Z"
+    },
+    {
+      "id": 5,
+      "period_start": "05/2026",
+      "period_end": "Atualmente",
+      "degree_pt": "Análise e Desenvolvimento de Sistemas",
+      "degree_en": "Analysis and Systems Development",
+      "school_pt": "PUCPR - Pontifícia Universidade Católica do Paraná",
+      "school_en": "PUCPR - Pontifícia Universidade Católica do Paraná",
+      "description_pt": "MEC 5/5. Cursos principais: Raciocínio Computacional, Programação Orientada a Objetos, Banco de Dados, Cloud Computing, Desenvolvimento Mobile, DevOps, Inteligência Analítica e Segurança da Informação.",
+      "description_en": "MEC 5/5 (top-tier accreditation). Core courses: Computational Reasoning, Object-Oriented Programming, Databases, Cloud Computing, Mobile Development, DevOps, Analytical Intelligence, and Information Security.",
+      "display_order": 1,
+      "created_at": "2026-05-09T19:10:41.897Z",
+      "updated_at": "2026-05-09T19:12:35.035Z"
     }
   ]
 }
