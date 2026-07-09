@@ -6,23 +6,24 @@ import { useEffect, useState } from "react"
 interface Skill {
   id: number
   name: string
-  category: "tech" | "concept" | "program"
+  category: string
   level: number
 }
 
-const programs = [
-  "Figma", "Photoshop", "VS Code", "Docker", "Postman",
-  "GitHub", "NPM", "Vercel", "Netlify", "AWS",
-]
-
-const techItems = [
+const fallbackTech = [
   "React", "Next.js", "TypeScript", "Tailwind", "Node.js",
   "PostgreSQL", "Python", "PHP", "CSS", "HTML",
 ]
 
-const concepts = [
-  "Clean Code", "SOLID", "Design Patterns", "Microservices", "TDD",
-  "DevOps", "REST API", "OAuth 2.0", "JWT", "CI/CD",
+const fallbackTools = [
+  "Figma", "Photoshop", "VS Code", "Docker", "GitHub",
+  "Notion", "WordPress", "Premiere Pro", "Lightroom", "Adobe XD",
+]
+
+const fallbackConcepts = [
+  "Clean Code", "Mobile First", "Object Orientation", "UI / UX Design",
+  "Accessibility", "Software Architecture", "Agile Development", "SEO",
+  "Performance Optimization", "Teamwork",
 ]
 
 function MarqueeRow({ items, direction = 1, speed }: { items: string[]; direction?: number; speed?: number }) {
@@ -57,28 +58,32 @@ function MarqueeRow({ items, direction = 1, speed }: { items: string[]; directio
 export function V2Marquee() {
   const { theme, language } = useTheme()
   const isDark = theme === "dark"
-  const [techSkills, setTechSkills] = useState<string[]>(techItems)
-  const [conceptSkills, setConceptSkills] = useState<string[]>(concepts)
-  const [programSkills, setProgramSkills] = useState<string[]>(programs)
+  const [techSkills, setTechSkills] = useState<string[]>(fallbackTech)
+  const [toolSkills, setToolSkills] = useState<string[]>(fallbackTools)
+  const [conceptSkills, setConceptSkills] = useState<string[]>(fallbackConcepts)
 
   useEffect(() => {
     fetch("/api/admin/skills")
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          const techList = data.filter((s: Skill) => s.category === "tech").map((s: Skill) => s.name)
-          const conceptsList = data.filter((s: Skill) => s.category === "concept").map((s: Skill) => s.name)
-          const programList = data.filter((s: Skill) => s.category === "program").map((s: Skill) => s.name)
+          const techCategories = ["languages", "frameworks", "styling", "database", "state", "auth", "ai"]
+          const toolCategories = ["devops", "design", "tools", "testing", "realtime", "dataviz", "integrations"]
+          const conceptCategories = ["concepts"]
+
+          const techList = data.filter((s: Skill) => techCategories.includes(s.category)).map((s: Skill) => s.name)
+          const toolList = data.filter((s: Skill) => toolCategories.includes(s.category)).map((s: Skill) => s.name)
+          const conceptList = data.filter((s: Skill) => conceptCategories.includes(s.category)).map((s: Skill) => s.name)
+
           if (techList.length > 0) setTechSkills(techList)
-          if (conceptsList.length > 0) setConceptSkills(conceptsList)
-          if (programList.length > 0) setProgramSkills(programList)
+          if (toolList.length > 0) setToolSkills(toolList)
+          if (conceptList.length > 0) setConceptSkills(conceptList)
         }
       })
       .catch(() => {})
   }, [])
 
   const textMuted = isDark ? "text-white/30" : "text-black/30"
-  const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const techStackLabel = language === "pt" ? "Stack Tecnológico" : language === "es" ? "Stack Tecnológico" : language === "fr" ? "Stack Technique" : language === "zh" ? "技术栈" : "Tech Stack"
 
   return (
@@ -91,8 +96,8 @@ export function V2Marquee() {
       </div>
 
       <MarqueeRow items={techSkills} direction={1} speed={60} />
-      <MarqueeRow items={conceptSkills} direction={-1} speed={70} />
-      <MarqueeRow items={programSkills} direction={1} speed={80} />
+      <MarqueeRow items={toolSkills} direction={-1} speed={70} />
+      <MarqueeRow items={conceptSkills} direction={1} speed={80} />
     </section>
   )
 }

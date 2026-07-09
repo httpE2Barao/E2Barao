@@ -1,7 +1,9 @@
 export interface Skill {
   id: number;
   name: string;
-  category: 'tech' | 'concept' | 'program';
+  name_en: string | null;
+  name_es: string | null;
+  category: 'languages' | 'frameworks' | 'styling' | 'database' | 'state' | 'auth' | 'ai' | 'devops' | 'design' | 'testing' | 'realtime' | 'dataviz' | 'integrations' | 'tools' | 'concepts';
   level: number;
   color: string;
   icon_src: string;

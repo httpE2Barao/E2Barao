@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
   name: { fontSize: 20, fontWeight: "bold", marginBottom: 4, letterSpacing: 0.5, wrap: false },
   contactRow: { flexDirection: "row", flexWrap: "wrap", gap: 16, fontSize: 9, color: "#333", wrap: false },
   contactLink: { color: "#0000ee", textDecoration: "none", wrap: false },
-  section: { marginBottom: 16, wrap: false },
-  sectionTitle: { fontSize: 11, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8, paddingBottom: 3, borderBottomWidth: 0.5, borderBottomColor: "#ccc", wrap: false },
+  section: { marginBottom: 20, wrap: false },
+  sectionTitle: { fontSize: 11, fontWeight: "bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12, paddingBottom: 3, borderBottomWidth: 0.5, borderBottomColor: "#ccc", wrap: false },
   entry: { marginBottom: 8, wrap: false },
   entryHeader: { flexDirection: "row", justifyContent: "space-between", marginBottom: 2 },
   entryRole: { fontSize: 10, fontWeight: "bold", wrap: false },
@@ -32,7 +32,7 @@ interface CVData {
   experience: Array<{ role: string; company: string; period: string; description: string }>;
   education: Array<{ degree: string; school: string; period: string; description: string }>;
   skills: string[];
-  projects: Array<{ name: string; description: string }>;
+  projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
   additionalInfo: string;
   additionalData: {
@@ -111,14 +111,35 @@ export function MinimalCV({ data }: { data: CVData }) {
           ))}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t.skills}</Text>
-          <View style={styles.skillList}>
-            {data.skills.map((skill, i) => (
-              <Text key={i} style={styles.skillItem}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
+        {data.includeSkills && data.skills.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.skills}</Text>
+            <View style={styles.skillList}>
+              {data.skills.map((skill, i) => (
+                <Text key={i} style={styles.skillItem}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
+              ))}
+            </View>
+          </View>
+        )}
+
+        {data.includeProjects && data.projects.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Projetos</Text>
+            {data.projects.map((project, i) => (
+              <View key={i} style={{ marginBottom: 4 }}>
+                <Text style={{ fontSize: 10, fontWeight: "bold" }}>{project.name}</Text>
+                <Text style={{ fontSize: 9, color: "#333" }}>{project.description}</Text>
+                {project.tags && project.tags.length > 0 && (
+                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                    {project.tags.map((tag, j) => (
+                      <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                    ))}
+                  </View>
+                )}
+              </View>
             ))}
           </View>
-        </View>
+        )}
 
         {data.languages.length > 0 && (
           <View style={styles.section}>

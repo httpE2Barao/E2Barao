@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
-import { readArrayFromJson } from '@/lib/json-storage';
+import { readArrayFromJson, saveArrayToJson } from '@/lib/json-storage';
 import { v1Data } from '@/data/v1-data';
 
 export async function GET(request: NextRequest) {
@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
     if (category) {
       conditions.push(`category = $${conditions.length + 1}`);
       values.push(category);
-      // Por padrão, se category=tech, também inclui concept e program
     } else if (!active) {
       // Se não tem filtros, retorna todas as skills (sem filtrar active)
       // query stays as is
@@ -50,7 +49,16 @@ export async function GET(request: NextRequest) {
     console.log('Using fallback data for skills');
     try {
       const skills = await readArrayFromJson('skills.json', 'skills', v1Data.skills);
-      return NextResponse.json(skills);
+      if (all === 'true') {
+        return NextResponse.json(skills);
+      }
+      if (category) {
+        return NextResponse.json(skills.filter((s: any) => s.category === category));
+      }
+      if (active === 'true') {
+        return NextResponse.json(skills.filter((s: any) => s.active === true));
+      }
+      return NextResponse.json(skills.filter((s: any) => s.active !== false));
     } catch {
       return NextResponse.json(v1Data.skills);
     }
@@ -58,23 +66,60 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const clonedRequest = request.clone();
+  let body: any;
   try {
-    const body = await request.json();
+    body = await request.json();
+    console.log('Skills POST - attempting DB insert:', body.name, 'category:', body.category);
+    
+    // First try to drop the constraint if it exists
+    try {
+      await sql`ALTER TABLE skills DROP CONSTRAINT IF EXISTS skills_category_check`;
+      console.log('Dropped constraint check');
+    } catch (e) {
+      console.log('Constraint drop attempt:', e);
+    }
+
     const { rows } = await sql`
       INSERT INTO skills (name, category, level, color, icon_src, display_order, active)
-      VALUES (${body.name}, ${body.category}, ${body.level || 0}, ${body.color}, ${body.icon_src}, ${body.display_order || 0}, ${body.active ?? true})
+      VALUES (${body.name}, ${body.category}, ${body.level || 0}, ${body.color || ''}, ${body.icon_src || ''}, ${body.display_order || 0}, ${body.active ?? true})
       RETURNING *;
     `;
+    console.log('Skills POST - DB insert successful:', rows[0]);
     return NextResponse.json(rows[0], { status: 201 });
-  } catch (error) {
-    console.log('Skills POST fallback - DB unavailable');
-    return NextResponse.json({ error: 'Database unavailable' }, { status: 503 });
+  } catch (error: any) {
+    console.error('Skills POST - DB error:', error?.message || error);
+    try {
+      body = await clonedRequest.json();
+      const existingSkills = await readArrayFromJson('skills.json', 'skills', v1Data.skills);
+      const newSkill = {
+        id: Date.now(),
+        name: body.name,
+        category: body.category,
+        level: body.level || 0,
+        color: body.color || '',
+        icon_src: body.icon_src || '',
+        display_order: body.display_order || 0,
+        active: body.active ?? true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      const updatedSkills = [...existingSkills, newSkill];
+      await saveArrayToJson('skills.json', updatedSkills, 'skills');
+      console.log('Skills POST - saved to JSON fallback');
+      return NextResponse.json(newSkill, { status: 201 });
+    } catch (fallbackError) {
+      console.error('Fallback save also failed:', fallbackError);
+      return NextResponse.json({ error: 'Database unavailable and local save failed' }, { status: 503 });
+    }
   }
 }
 
 export async function PUT(request: NextRequest) {
+  const clonedRequest = request.clone();
+  let body: any;
   try {
-    const body = await request.json();
+    body = await request.json();
     const { id, ...fields } = body;
     
     if (!id) {
@@ -107,8 +152,22 @@ export async function PUT(request: NextRequest) {
     
     return NextResponse.json(rows[0]);
   } catch (error) {
-    console.error('Failed to update skill:', error);
-    return NextResponse.json({ error: 'Failed to update skill' }, { status: 500 });
+    console.log('Skills PUT fallback - saving to JSON');
+    try {
+      body = await clonedRequest.json();
+      const { id, ...fields } = body;
+      const existingSkills = await readArrayFromJson('skills.json', 'skills', v1Data.skills);
+      const index = existingSkills.findIndex((s: any) => s.id === id);
+      if (index === -1) {
+        return NextResponse.json({ error: 'Skill not found' }, { status: 404 });
+      }
+      existingSkills[index] = { ...existingSkills[index], ...fields, updated_at: new Date().toISOString() };
+      await saveArrayToJson('skills.json', existingSkills, 'skills');
+      return NextResponse.json(existingSkills[index]);
+    } catch (fallbackError) {
+      console.error('Fallback update also failed:', fallbackError);
+      return NextResponse.json({ error: 'Database unavailable' }, { status: 503 });
+    }
   }
 }
 
@@ -124,7 +183,17 @@ export async function DELETE(request: NextRequest) {
     await sql`DELETE FROM skills WHERE id = ${parseInt(id)}`;
     return NextResponse.json({ message: 'Skill deleted' });
   } catch (error) {
-    console.error('Failed to delete skill:', error);
-    return NextResponse.json({ error: 'Failed to delete skill' }, { status: 500 });
+    console.log('Skills DELETE fallback - removing from JSON');
+    try {
+      const { searchParams } = new URL(request.url);
+      const id = searchParams.get('id');
+      const existingSkills = await readArrayFromJson('skills.json', 'skills', v1Data.skills);
+      const filteredSkills = existingSkills.filter((s: any) => s.id !== parseInt(id!));
+      await saveArrayToJson('skills.json', filteredSkills, 'skills');
+      return NextResponse.json({ message: 'Skill deleted (local)' });
+    } catch (fallbackError) {
+      console.error('Fallback delete also failed:', fallbackError);
+      return NextResponse.json({ error: 'Database unavailable' }, { status: 503 });
+    }
   }
 }

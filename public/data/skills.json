@@ -569,6 +569,72 @@
       "icon_src": "",
       "display_order": 59,
       "active": true
+    },
+    {
+      "id": 1783625711086,
+      "name": "Scrum",
+      "category": "concepts",
+      "level": 0,
+      "icon_src": "",
+      "display_order": 0,
+      "active": true,
+      "created_at": "2026-07-09T19:35:11.086Z",
+      "updated_at": "2026-07-09T19:35:11.086Z"
+    },
+    {
+      "id": 1783625741534,
+      "name": "Scrum",
+      "category": "concepts",
+      "level": 0,
+      "icon_src": "",
+      "display_order": 0,
+      "active": true,
+      "created_at": "2026-07-09T19:35:41.534Z",
+      "updated_at": "2026-07-09T19:35:41.534Z"
+    },
+    {
+      "id": 1783626564060,
+      "name": "Agile Development",
+      "category": "concepts",
+      "level": 0,
+      "icon_src": "",
+      "display_order": 0,
+      "active": true,
+      "created_at": "2026-07-09T19:49:24.060Z",
+      "updated_at": "2026-07-09T19:49:24.060Z"
+    },
+    {
+      "id": 1783626684686,
+      "name": "Scrum",
+      "category": "concepts",
+      "level": 0,
+      "icon_src": "",
+      "display_order": 0,
+      "active": true,
+      "created_at": "2026-07-09T19:51:24.686Z",
+      "updated_at": "2026-07-09T19:51:24.686Z"
+    },
+    {
+      "id": 1783627094430,
+      "name": "Scrum",
+      "category": "concepts",
+      "level": 0,
+      "icon_src": "",
+      "display_order": 0,
+      "active": true,
+      "created_at": "2026-07-09T19:58:14.430Z",
+      "updated_at": "2026-07-09T19:58:14.430Z"
+    },
+    {
+      "id": 1783627182147,
+      "name": "Scrum",
+      "category": "concepts",
+      "level": 0,
+      "icon_src": "",
+      "display_order": 0,
+      "active": true,
+      "created_at": "2026-07-09T19:59:42.147Z",
+      "updated_at": "2026-07-09T19:59:42.147Z"
     }
   ]
 }

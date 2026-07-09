@@ -13,7 +13,7 @@ interface CVData {
   experience: Array<{ role: string; company: string; period: string; description: string }>;
   education: Array<{ degree: string; school: string; period: string; description: string }>;
   skills: string[];
-  projects: Array<{ name: string; description: string }>;
+  projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
   additionalInfo: string;
   additionalData: {
@@ -67,7 +67,7 @@ export function MinimalPreview({ data }: { data: CVData }) {
       )}
 
       <div className="mb-4">
-        <h2 className="text-[11px] font-bold uppercase tracking-widest mb-3 pb-1 border-b border-gray-300">{t.experience}</h2>
+        <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">{t.experience}</h2>
         {data.experience.map((exp, i) => (
           <div key={i} className="mb-3">
             <div className="flex justify-between items-baseline">
@@ -81,7 +81,7 @@ export function MinimalPreview({ data }: { data: CVData }) {
       </div>
 
       <div className="mb-4">
-        <h2 className="text-[11px] font-bold uppercase tracking-widest mb-3 pb-1 border-b border-gray-300">{t.education}</h2>
+        <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">{t.education}</h2>
         {data.education.map((edu, i) => (
           <div key={i} className="mb-2">
             <div className="flex justify-between items-baseline">
@@ -94,25 +94,46 @@ export function MinimalPreview({ data }: { data: CVData }) {
         ))}
       </div>
 
-      <div className="mb-4">
-        <h2 className="text-[11px] font-bold uppercase tracking-widest mb-3 pb-1 border-b border-gray-300">{t.skills}</h2>
-        <div className="flex flex-wrap gap-1">
-          {data.skills.map((skill, i) => (
-            <span key={i} className="text-[9px] text-gray-800">{skill}{i < data.skills.length - 1 ? " · " : ""}</span>
+      {data.includeSkills && data.skills.length > 0 && (
+        <div className="mb-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">{t.skills}</h2>
+          <div className="flex flex-wrap gap-1">
+            {data.skills.map((skill, i) => (
+              <span key={i} className="text-[9px] text-gray-800">{skill}{i < data.skills.length - 1 ? " · " : ""}</span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {data.includeProjects && data.projects.length > 0 && (
+        <div className="mb-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">Projetos</h2>
+          {data.projects.map((project, i) => (
+            <div key={i} className="mb-2">
+              <p className="text-[10px] font-bold">{project.name}</p>
+              <p className="text-[9px] text-gray-800">{project.description}</p>
+              {project.tags && project.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {project.tags.map((tag, j) => (
+                    <span key={j} className="text-[7px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">{tag}</span>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
-      </div>
+      )}
 
       {data.languages.length > 0 && (
         <div>
-          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-3 pb-1 border-b border-gray-300">{t.languages}</h2>
+          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">{t.languages}</h2>
           <p className="text-[9px] text-gray-800">{data.languages.join(", ")}</p>
         </div>
       )}
 
       {(data.additionalData?.willingnessToTravel || data.additionalData?.willingnessToRelocate || data.additionalData?.driverLicense || data.additionalData?.vehicleType) && (
         <div className="mt-4">
-          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-3 pb-1 border-b border-gray-300">{t.additionalData}</h2>
+          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">{t.additionalData}</h2>
           <div className="text-[9px] text-gray-800 space-y-0.5">
             {data.additionalData.willingnessToTravel && <p>• {t.willingnessToTravel}: {data.additionalData.willingnessToTravel}</p>}
             {data.additionalData.willingnessToRelocate && <p>• {t.willingnessToRelocate}: {data.additionalData.willingnessToRelocate}</p>}

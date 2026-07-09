@@ -55,11 +55,11 @@
       "image_urls": [],
       "tags": [
         "wordpress",
-        "tainacan",
-        "museu",
-        "patrimonio",
-        "cultura",
-        "digitalizacao"
+        "php",
+        "docker",
+        "cloudflare",
+        "python",
+        "tainacan"
       ],
       "name_pt": "Museu Cristóforo Colombo",
       "name_en": "Cristóforo Colombo Museum",

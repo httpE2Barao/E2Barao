@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useAdminTheme } from "../layout";
+import { SKILL_CATEGORIES } from "@/lib/skill-categories";
+
+type SkillCategory = typeof SKILL_CATEGORIES[number]["id"];
 
 interface Skill {
   id: number;
   name: string;
-  category: "tech" | "concept" | "program";
+  category: SkillCategory;
   level: number;
   icon_src: string;
   display_order: number;
@@ -36,24 +39,36 @@ export default function SkillsPage() {
     spinner: isDark ? "border-cyan-400" : "border-blue-600",
   };
 
-  const categoryLabels = { tech: "Tech", concept: "Conceito", program: "Programa" };
-  const categoryColors = {
-    tech: isDark ? "text-cyan-400 bg-cyan-500/10" : "text-blue-600 bg-blue-500/10",
-    concept: isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-500/10",
-    program: isDark ? "text-green-400 bg-green-500/10" : "text-green-600 bg-green-500/10",
+  const categoryColors: Record<string, string> = {
+    languages: isDark ? "text-cyan-400 bg-cyan-500/10" : "text-blue-600 bg-blue-500/10",
+    frameworks: isDark ? "text-blue-400 bg-blue-500/10" : "text-blue-700 bg-blue-500/10",
+    styling: isDark ? "text-pink-400 bg-pink-500/10" : "text-pink-600 bg-pink-500/10",
+    database: isDark ? "text-green-400 bg-green-500/10" : "text-green-600 bg-green-500/10",
+    state: isDark ? "text-yellow-400 bg-yellow-500/10" : "text-yellow-600 bg-yellow-500/10",
+    auth: isDark ? "text-red-400 bg-red-500/10" : "text-red-600 bg-red-500/10",
+    ai: isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-500/10",
+    devops: isDark ? "text-orange-400 bg-orange-500/10" : "text-orange-600 bg-orange-500/10",
+    design: isDark ? "text-pink-400 bg-pink-500/10" : "text-pink-600 bg-pink-500/10",
+    testing: isDark ? "text-teal-400 bg-teal-500/10" : "text-teal-600 bg-teal-500/10",
+    realtime: isDark ? "text-amber-400 bg-amber-500/10" : "text-amber-600 bg-amber-500/10",
+    dataviz: isDark ? "text-indigo-400 bg-indigo-500/10" : "text-indigo-600 bg-indigo-500/10",
+    integrations: isDark ? "text-cyan-400 bg-cyan-500/10" : "text-cyan-600 bg-cyan-500/10",
+    tools: isDark ? "text-gray-400 bg-gray-500/10" : "text-gray-600 bg-gray-500/10",
+    concepts: isDark ? "text-purple-400 bg-purple-500/10" : "text-purple-600 bg-purple-500/10",
   };
 
-  const [formData, setFormData] = useState({ name: "", category: "tech" as Skill["category"], level: 0, icon_src: "", display_order: 0, active: true });
+  const [formData, setFormData] = useState({ name: "", category: "languages" as SkillCategory, level: 0, icon_src: "", display_order: 0, active: true });
+
+  const fetchSkills = async () => {
+    try {
+      const res = await fetch("/api/admin/skills?all=true");
+      const data = await res.json();
+      setSkills(Array.isArray(data) ? data : []);
+    } catch { setSkills([]); }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const res = await fetch("/api/admin/skills");
-        const data = await res.json();
-        setSkills(Array.isArray(data) ? data : []);
-      } catch { setSkills([]); }
-      setLoading(false);
-    };
     fetchSkills();
   }, []);
 
@@ -69,6 +84,7 @@ export default function SkillsPage() {
       if (res.ok) {
         setMessage({ type: "success", text: editing ? "Habilidade atualizada!" : "Habilidade criada!" });
         resetForm();
+        await fetchSkills();
       }
     } catch { setMessage({ type: "error", text: "Erro ao salvar" }); }
     setLoading(false);
@@ -80,6 +96,7 @@ export default function SkillsPage() {
     try {
       await fetch(`/api/admin/skills?id=${id}`, { method: "DELETE" });
       setMessage({ type: "success", text: "Habilidade excluída!" });
+      await fetchSkills();
     } catch { setMessage({ type: "error", text: "Erro ao excluir" }); }
     setTimeout(() => setMessage(null), 3000);
   };
@@ -90,12 +107,14 @@ export default function SkillsPage() {
     setShowForm(true);
   };
 
-  const resetForm = () => { setEditing(null); setShowForm(false); setFormData({ name: "", category: "tech", level: 0, icon_src: "", display_order: 0, active: true }); };
+  const resetForm = () => { setEditing(null); setShowForm(false); setFormData({ name: "", category: "languages", level: 0, icon_src: "", display_order: 0, active: true }); };
 
   const filteredSkills = filter === "all" ? skills : skills.filter((s) => s.category === filter);
-  const techSkills = skills.filter((s) => s.category === "tech").length;
-  const conceptSkills = skills.filter((s) => s.category === "concept").length;
-  const programSkills = skills.filter((s) => s.category === "program").length;
+
+  const categoryCounts = SKILL_CATEGORIES.map((cat) => ({
+    ...cat,
+    count: skills.filter((s) => s.category === cat.id).length,
+  })).filter((cat) => cat.count > 0);
 
   if (loading && skills.length === 0) return <div className="flex items-center justify-center h-64"><div className={`w-8 h-8 border-2 ${colors.spinner} border-t-transparent rounded-full animate-spin`} /></div>;
 
@@ -113,23 +132,32 @@ export default function SkillsPage() {
 
       {message && <div className={`p-3 rounded-lg text-sm ${message.type === "success" ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-red-500/10 text-red-400 border border-red-500/20"}`}>{message.text}</div>}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {[
-          { label: "Todas", value: "all", count: skills.length },
-          { label: "Tech", value: "tech", count: techSkills },
-          { label: "Conceitos", value: "concept", count: conceptSkills },
-          { label: "Programas", value: "program", count: programSkills },
-        ].map((f) => {
-          const isActive = filter === f.value;
-          const bgClass = isActive ? colors.accentBg : colors.card + " " + colors.border;
-          const textClass = isActive ? colors.accent : colors.textMuted;
-          const hoverClass = isActive ? "" : "hover:" + colors.border;
-          return (
-          <button key={f.value} onClick={() => setFilter(f.value)} className={"p-3 rounded-lg border text-sm transition-colors " + bgClass + " " + textClass + " " + hoverClass}>
-            <span className="block text-lg font-bold">{f.count}</span>
-            <span className="text-xs">{f.label}</span>
+      <div className={`${colors.card} border ${colors.border} rounded-xl p-3`}>
+        <div className="flex flex-wrap gap-1.5">
+          <button
+            onClick={() => setFilter("all")}
+            className={`px-2.5 py-1 rounded-full text-[10px] font-medium transition-colors border ${
+              filter === "all"
+                ? `${colors.accentBg} ${colors.accent} ${colors.accentBorder}`
+                : `${colors.card} ${colors.border} ${colors.textMuted}`
+            }`}
+          >
+            Todas ({skills.length})
           </button>
-        )})}
+          {categoryCounts.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setFilter(filter === cat.id ? "all" : cat.id)}
+              className={`px-2.5 py-1 rounded-full text-[10px] font-medium transition-colors border ${
+                filter === cat.id
+                  ? `${colors.accentBg} ${colors.accent} ${colors.accentBorder}`
+                  : `${colors.card} ${colors.border} ${colors.textMuted}`
+              }`}
+            >
+              {cat.label.pt} ({cat.count})
+            </button>
+          ))}
+        </div>
       </div>
 
       {showForm && (
@@ -143,10 +171,10 @@ export default function SkillsPage() {
               </div>
               <div>
                 <label className={`block text-sm ${colors.textMuted} mb-1`}>Categoria*</label>
-                <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value as Skill["category"] })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`}>
-                  <option value="tech">Tech</option>
-                  <option value="concept">Conceito</option>
-                  <option value="program">Programa</option>
+                <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value as SkillCategory })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`}>
+                  {SKILL_CATEGORIES.map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.label.pt}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -192,9 +220,9 @@ export default function SkillsPage() {
               {filteredSkills.map((skill) => (
                 <tr key={skill.id} className={`hover:${colors.cardBg}/30`}>
                   <td className={`px-4 py-3 font-medium ${colors.text}`}>{skill.name}</td>
-                  <td className="px-4 py-3"><span className={`text-xs px-2 py-0.5 rounded ${categoryColors[skill.category]}`}>{categoryLabels[skill.category]}</span></td>
+                  <td className="px-4 py-3"><span className={`text-xs px-2 py-0.5 rounded ${categoryColors[skill.category] || ""}`}>{SKILL_CATEGORIES.find((c) => c.id === skill.category)?.label.pt || skill.category}</span></td>
                   <td className="px-4 py-3">
-                    {skill.category === "tech" ? (
+                    {skill.level > 0 ? (
                       <div className="flex items-center gap-2">
                         <div className={`flex-1 h-1.5 ${colors.cardBg} rounded-full overflow-hidden max-w-[120px]`}><div className={`h-full ${isDark ? "bg-cyan-500" : "bg-blue-600"} rounded-full`} style={{ width: `${skill.level}%` }} /></div>
                         <span className={`text-xs ${colors.textMuted}`}>{skill.level}%</span>

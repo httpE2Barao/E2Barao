@@ -9,7 +9,11 @@ CREATE TABLE IF NOT EXISTS skills (
   name VARCHAR(100) NOT NULL,
   name_en VARCHAR(100),
   name_es VARCHAR(100),
-  category VARCHAR(50) NOT NULL CHECK (category IN ('tech', 'concept', 'program')),
+  category VARCHAR(50) NOT NULL CHECK (category IN (
+    'languages', 'frameworks', 'styling', 'database', 'state', 'auth',
+    'ai', 'devops', 'design', 'testing', 'realtime', 'dataviz',
+    'integrations', 'tools', 'concepts'
+  )),
   level INTEGER DEFAULT 0 CHECK (level >= 0 AND level <= 100),
   color VARCHAR(50),
   icon_src VARCHAR(255),

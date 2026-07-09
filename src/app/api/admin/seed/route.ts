@@ -86,143 +86,134 @@ async function seedProjects() {
 
 async function seedSkills() {
   const skills = [
-    // Tech skills - Languages
-    { name: 'JavaScript', category: 'tech', level: 92, icon_src: 'img-javascript.png', display_order: 1 },
-    { name: 'TypeScript', category: 'tech', level: 90, icon_src: 'img-typescript.png', display_order: 2 },
-    { name: 'Python', category: 'tech', level: 70, icon_src: 'img-python.png', display_order: 3 },
-    { name: 'PHP', category: 'tech', level: 65, icon_src: 'img-php.png', display_order: 4 },
-    { name: 'HTML5', category: 'tech', level: 95, icon_src: 'img-html.png', display_order: 5 },
-    { name: 'CSS3', category: 'tech', level: 93, icon_src: 'img-css.png', display_order: 6 },
+    // Languages
+    { name: 'JavaScript', category: 'languages', level: 92, icon_src: 'img-javascript.png', display_order: 1 },
+    { name: 'TypeScript', category: 'languages', level: 90, icon_src: 'img-typescript.png', display_order: 2 },
+    { name: 'Python', category: 'languages', level: 70, icon_src: 'img-python.png', display_order: 3 },
+    { name: 'PHP', category: 'languages', level: 65, icon_src: 'img-php.png', display_order: 4 },
+    { name: 'HTML5', category: 'languages', level: 95, icon_src: 'img-html.png', display_order: 5 },
+    { name: 'CSS3', category: 'languages', level: 93, icon_src: 'img-css.png', display_order: 6 },
 
-    // Tech skills - Frameworks
-    { name: 'React', category: 'tech', level: 92, icon_src: 'img-react.png', display_order: 10 },
-    { name: 'Next.js', category: 'tech', level: 90, icon_src: 'img-nextjs.png', display_order: 11 },
-    { name: 'Node.js', category: 'tech', level: 78, icon_src: 'img-nodejs.png', display_order: 12 },
-    { name: 'Vite', category: 'tech', level: 78, icon_src: 'img-vite.png', display_order: 13 },
+    // Frameworks & Libraries
+    { name: 'React', category: 'frameworks', level: 92, icon_src: 'img-react.png', display_order: 10 },
+    { name: 'Next.js', category: 'frameworks', level: 90, icon_src: 'img-nextjs.png', display_order: 11 },
+    { name: 'Node.js', category: 'frameworks', level: 78, icon_src: 'img-nodejs.png', display_order: 12 },
+    { name: 'Vite', category: 'frameworks', level: 78, icon_src: 'img-vite.png', display_order: 13 },
+    { name: 'Radix UI', category: 'frameworks', level: 82, icon_src: 'img-radix-ui.png', display_order: 14 },
+    { name: 'shadcn/ui', category: 'frameworks', level: 80, icon_src: 'img-shadcn.png', display_order: 15 },
+    { name: 'Framer Motion', category: 'frameworks', level: 78, icon_src: 'img-framer.png', display_order: 16 },
+    { name: 'Lucide React', category: 'frameworks', level: 88, icon_src: 'img-lucide.png', display_order: 17 },
+    { name: 'React Hook Form', category: 'frameworks', level: 85, icon_src: 'img-hook-form.png', display_order: 18 },
+    { name: 'Zod', category: 'frameworks', level: 85, icon_src: 'img-zod.png', display_order: 19 },
+    { name: 'NextAuth.js', category: 'frameworks', level: 82, icon_src: 'img-nextauth.png', display_order: 20 },
 
-    // Tech skills - Styling
-    { name: 'Tailwind CSS', category: 'tech', level: 88, icon_src: 'img-tailwind.png', display_order: 20 },
-    { name: 'SASS', category: 'tech', level: 85, icon_src: 'img-sass.png', display_order: 21 },
-    { name: 'Bootstrap', category: 'tech', level: 80, icon_src: 'img-bootstrap.png', display_order: 22 },
-    { name: 'Styled Components', category: 'tech', level: 75, icon_src: 'img-styledcomponents.png', display_order: 23 },
-    { name: 'jQuery', category: 'tech', level: 70, icon_src: 'img-jquery.png', display_order: 24 },
+    // Styling & UI
+    { name: 'Tailwind CSS', category: 'styling', level: 88, icon_src: 'img-tailwind.png', display_order: 21 },
+    { name: 'SASS', category: 'styling', level: 85, icon_src: 'img-sass.png', display_order: 22 },
+    { name: 'Bootstrap', category: 'styling', level: 80, icon_src: 'img-bootstrap.png', display_order: 23 },
+    { name: 'Styled Components', category: 'styling', level: 75, icon_src: 'img-styledcomponents.png', display_order: 24 },
+    { name: 'jQuery', category: 'styling', level: 70, icon_src: 'img-jquery.png', display_order: 25 },
 
-    // Tech skills - Databases
-    { name: 'PostgreSQL', category: 'tech', level: 80, icon_src: 'img-postgres.png', display_order: 30 },
-    { name: 'SQLite', category: 'tech', level: 75, icon_src: 'img-sqlite.png', display_order: 31 },
-    { name: 'Neon', category: 'tech', level: 75, icon_src: 'img-neon.png', display_order: 32 },
-    { name: 'Prisma ORM', category: 'tech', level: 82, icon_src: 'img-prisma.png', display_order: 33 },
+    // Database
+    { name: 'PostgreSQL', category: 'database', level: 80, icon_src: 'img-postgres.png', display_order: 30 },
+    { name: 'SQLite', category: 'database', level: 75, icon_src: 'img-sqlite.png', display_order: 31 },
+    { name: 'Neon', category: 'database', level: 75, icon_src: 'img-neon.png', display_order: 32 },
+    { name: 'Prisma ORM', category: 'database', level: 82, icon_src: 'img-prisma.png', display_order: 33 },
 
-    // Tech skills - AI/ML
-    { name: 'NVIDIA NIM', category: 'tech', level: 75, icon_src: 'img-nvidia.png', display_order: 40 },
-    { name: 'Google Gemini', category: 'tech', level: 80, icon_src: 'img-gemini.png', display_order: 41 },
-    { name: 'Groq SDK', category: 'tech', level: 72, icon_src: 'img-groq.png', display_order: 42 },
-    { name: 'Ollama', category: 'tech', level: 70, icon_src: 'img-ollama.png', display_order: 43 },
-    { name: 'MCP', category: 'tech', level: 68, icon_src: 'img-mcp.png', display_order: 44 },
+    // State Management
+    { name: 'Zustand', category: 'state', level: 85, icon_src: 'img-zustand.png', display_order: 40 },
+    { name: 'TanStack Query', category: 'state', level: 82, icon_src: 'img-tanstack.png', display_order: 41 },
 
-    // Tech skills - State Management
-    { name: 'Zustand', category: 'tech', level: 85, icon_src: 'img-zustand.png', display_order: 50 },
-    { name: 'TanStack Query', category: 'tech', level: 82, icon_src: 'img-tanstack.png', display_order: 51 },
-    { name: 'React Hook Form', category: 'tech', level: 85, icon_src: 'img-hook-form.png', display_order: 52 },
-    { name: 'Zod', category: 'tech', level: 85, icon_src: 'img-zod.png', display_order: 53 },
+    // Auth
+    { name: 'JWT', category: 'auth', level: 78, icon_src: 'img-jwt.png', display_order: 50 },
+    { name: 'bcrypt', category: 'auth', level: 80, icon_src: 'img-bcrypt.png', display_order: 51 },
+    { name: '2FA (otplib)', category: 'auth', level: 72, icon_src: 'img-2fa.png', display_order: 52 },
 
-    // Tech skills - UI Components
-    { name: 'Radix UI', category: 'tech', level: 82, icon_src: 'img-radix-ui.png', display_order: 60 },
-    { name: 'shadcn/ui', category: 'tech', level: 80, icon_src: 'img-shadcn.png', display_order: 61 },
-    { name: 'Framer Motion', category: 'tech', level: 78, icon_src: 'img-framer.png', display_order: 62 },
-    { name: 'Lucide React', category: 'tech', level: 88, icon_src: 'img-lucide.png', display_order: 63 },
+    // AI & Machine Learning
+    { name: 'NVIDIA NIM', category: 'ai', level: 75, icon_src: 'img-nvidia.png', display_order: 60 },
+    { name: 'Google Gemini', category: 'ai', level: 80, icon_src: 'img-gemini.png', display_order: 61 },
+    { name: 'Groq SDK', category: 'ai', level: 72, icon_src: 'img-groq.png', display_order: 62 },
+    { name: 'Ollama', category: 'ai', level: 70, icon_src: 'img-ollama.png', display_order: 63 },
+    { name: 'MCP', category: 'ai', level: 68, icon_src: 'img-mcp.png', display_order: 64 },
 
-    // Tech skills - Auth
-    { name: 'NextAuth.js', category: 'tech', level: 82, icon_src: 'img-nextauth.png', display_order: 70 },
-    { name: 'JWT', category: 'tech', level: 78, icon_src: 'img-jwt.png', display_order: 71 },
-    { name: 'bcrypt', category: 'tech', level: 80, icon_src: 'img-bcrypt.png', display_order: 72 },
-    { name: '2FA (otplib)', category: 'tech', level: 72, icon_src: 'img-2fa.png', display_order: 73 },
+    // DevOps & Cloud
+    { name: 'Git', category: 'devops', level: 85, icon_src: 'img-github.png', display_order: 70 },
+    { name: 'GitHub', category: 'devops', level: 85, icon_src: 'img-github.png', display_order: 71 },
+    { name: 'Docker', category: 'devops', level: 68, icon_src: 'img-docker.png', display_order: 72 },
+    { name: 'n8n', category: 'devops', level: 75, icon_src: 'img-n8n.png', display_order: 73 },
 
-    // Tech skills - Real-time
-    { name: 'Socket.IO', category: 'tech', level: 75, icon_src: 'img-socket-io.png', display_order: 80 },
-    { name: 'Pusher', category: 'tech', level: 78, icon_src: 'img-pusher.png', display_order: 81 },
+    // Design & Media
+    { name: 'Figma', category: 'design', level: 80, icon_src: 'img-figma.png', display_order: 80 },
+    { name: 'Photoshop', category: 'design', level: 75, icon_src: 'img-photoshop.png', display_order: 81 },
+    { name: 'Premiere Pro', category: 'design', level: 70, icon_src: '', display_order: 82 },
+    { name: 'Lightroom', category: 'design', level: 70, icon_src: 'img-lightroom.png', display_order: 83 },
+    { name: 'Adobe XD', category: 'design', level: 70, icon_src: '', display_order: 84 },
+    { name: 'Adobe Dreamweaver', category: 'design', level: 65, icon_src: '', display_order: 85 },
+    { name: 'Adobe Dimension 3D', category: 'design', level: 60, icon_src: '', display_order: 86 },
+    { name: 'Sony Vegas', category: 'design', level: 65, icon_src: '', display_order: 87 },
 
-    // Tech skills - Payments
-    { name: 'Mercado Pago', category: 'tech', level: 80, icon_src: 'img-mercado-pago.png', display_order: 90 },
-    { name: 'PIX', category: 'tech', level: 80, icon_src: 'img-pix.png', display_order: 91 },
+    // Testing
+    { name: 'Jest', category: 'testing', level: 80, icon_src: 'img-jest.png', display_order: 90 },
+    { name: 'React Testing Library', category: 'testing', level: 78, icon_src: 'img-rtl.png', display_order: 91 },
 
-    // Tech skills - Delivery & Maps
-    { name: 'Lalamove', category: 'tech', level: 75, icon_src: 'img-lalamove.png', display_order: 100 },
-    { name: 'Leaflet', category: 'tech', level: 78, icon_src: 'img-leaflet.png', display_order: 101 },
-    { name: 'react-leaflet', category: 'tech', level: 75, icon_src: 'img-react-leaflet.png', display_order: 102 },
+    // Realtime & Payments
+    { name: 'Socket.IO', category: 'realtime', level: 75, icon_src: 'img-socket-io.png', display_order: 100 },
+    { name: 'Pusher', category: 'realtime', level: 78, icon_src: 'img-pusher.png', display_order: 101 },
+    { name: 'Mercado Pago', category: 'realtime', level: 80, icon_src: 'img-mercado-pago.png', display_order: 102 },
+    { name: 'PIX', category: 'realtime', level: 80, icon_src: 'img-pix.png', display_order: 103 },
+    { name: 'Lalamove', category: 'realtime', level: 75, icon_src: 'img-lalamove.png', display_order: 104 },
+    { name: 'Leaflet', category: 'realtime', level: 78, icon_src: 'img-leaflet.png', display_order: 105 },
+    { name: 'react-leaflet', category: 'realtime', level: 75, icon_src: 'img-react-leaflet.png', display_order: 106 },
 
-    // Tech skills - Media & PDF
-    { name: 'pdf-lib', category: 'tech', level: 75, icon_src: 'img-pdf-lib.png', display_order: 110 },
-    { name: 'jsPDF', category: 'tech', level: 72, icon_src: 'img-jspdf.png', display_order: 111 },
-    { name: 'sharp', category: 'tech', level: 78, icon_src: 'img-sharp.png', display_order: 112 },
-    { name: 'heic2any', category: 'tech', level: 70, icon_src: 'img-heic2any.png', display_order: 113 },
+    // Data & Visualization
+    { name: 'Recharts', category: 'dataviz', level: 82, icon_src: 'img-recharts.png', display_order: 110 },
+    { name: 'lightweight-charts', category: 'dataviz', level: 80, icon_src: 'img-tradingview.png', display_order: 111 },
+    { name: 'Mermaid', category: 'dataviz', level: 75, icon_src: 'img-mermaid.png', display_order: 112 },
+    { name: 'pdf-lib', category: 'dataviz', level: 75, icon_src: 'img-pdf-lib.png', display_order: 113 },
+    { name: 'jsPDF', category: 'dataviz', level: 72, icon_src: 'img-jspdf.png', display_order: 114 },
+    { name: 'sharp', category: 'dataviz', level: 78, icon_src: 'img-sharp.png', display_order: 115 },
+    { name: 'heic2any', category: 'dataviz', level: 70, icon_src: 'img-heic2any.png', display_order: 116 },
 
-    // Tech skills - Data Visualization
-    { name: 'Recharts', category: 'tech', level: 82, icon_src: 'img-recharts.png', display_order: 120 },
-    { name: 'lightweight-charts', category: 'tech', level: 80, icon_src: 'img-tradingview.png', display_order: 121 },
-    { name: 'Mermaid', category: 'tech', level: 75, icon_src: 'img-mermaid.png', display_order: 122 },
+    // Automation & Integrations
+    { name: 'next-intl', category: 'integrations', level: 78, icon_src: 'img-next-intl.png', display_order: 120 },
+    { name: '@vercel/blob', category: 'integrations', level: 75, icon_src: 'img-vercel.png', display_order: 121 },
+    { name: 'REST APIs', category: 'integrations', level: 82, icon_src: 'img-api.png', display_order: 122 },
+    { name: 'axios', category: 'integrations', level: 85, icon_src: 'img-axios.png', display_order: 123 },
+    { name: 'date-fns', category: 'integrations', level: 85, icon_src: 'img-date-fns.png', display_order: 124 },
+    { name: 'papaparse', category: 'integrations', level: 78, icon_src: 'img-papaparse.png', display_order: 125 },
+    { name: 'qrcode', category: 'integrations', level: 80, icon_src: 'img-qrcode.png', display_order: 126 },
+    { name: 'Nodemailer', category: 'integrations', level: 78, icon_src: 'img-nodemailer.png', display_order: 127 },
+    { name: 'Insomnia', category: 'integrations', level: 85, icon_src: 'img-insomnia.png', display_order: 128 },
 
-    // Tech skills - i18n & Storage
-    { name: 'next-intl', category: 'tech', level: 78, icon_src: 'img-next-intl.png', display_order: 130 },
-    { name: '@vercel/blob', category: 'tech', level: 75, icon_src: 'img-vercel.png', display_order: 131 },
+    // Tools & Platforms
+    { name: 'VS Code', category: 'tools', level: 90, icon_src: 'img-visualcode.png', display_order: 130 },
+    { name: 'Notion', category: 'tools', level: 80, icon_src: '', display_order: 131 },
+    { name: 'PgAdmin4', category: 'tools', level: 75, icon_src: '', display_order: 132 },
+    { name: 'Microsoft 365', category: 'tools', level: 80, icon_src: 'img-microsoft365.png', display_order: 133 },
+    { name: 'WordPress', category: 'tools', level: 70, icon_src: 'img-wordpress.png', display_order: 134 },
+    { name: 'Cisco Packet Tracer', category: 'tools', level: 65, icon_src: '', display_order: 135 },
 
-    // Tech skills - Testing
-    { name: 'Jest', category: 'tech', level: 80, icon_src: 'img-jest.png', display_order: 140 },
-    { name: 'React Testing Library', category: 'tech', level: 78, icon_src: 'img-rtl.png', display_order: 141 },
-
-    // Tech skills - Additional Libraries
-    { name: 'n8n', category: 'tech', level: 75, icon_src: 'img-n8n.png', display_order: 150 },
-    { name: 'date-fns', category: 'tech', level: 85, icon_src: 'img-date-fns.png', display_order: 151 },
-    { name: 'axios', category: 'tech', level: 85, icon_src: 'img-axios.png', display_order: 152 },
-    { name: 'papaparse', category: 'tech', level: 78, icon_src: 'img-papaparse.png', display_order: 153 },
-    { name: 'qrcode', category: 'tech', level: 80, icon_src: 'img-qrcode.png', display_order: 154 },
-    { name: 'Nodemailer', category: 'tech', level: 78, icon_src: 'img-nodemailer.png', display_order: 155 },
-    { name: 'REST APIs', category: 'tech', level: 82, icon_src: 'img-api.png', display_order: 156 },
-    { name: 'Insomnia', category: 'tech', level: 85, icon_src: 'img-insomnia.png', display_order: 157 },
-    { name: 'Git', category: 'tech', level: 85, icon_src: 'img-github.png', display_order: 158 },
-    { name: 'Docker', category: 'tech', level: 68, icon_src: 'img-docker.png', display_order: 159 },
-
-    // Programs / Tools
-    { name: 'VS Code', category: 'program', icon_src: 'img-visualcode.png', display_order: 1 },
-    { name: 'GitHub', category: 'program', icon_src: 'img-github.png', display_order: 2 },
-    { name: 'Figma', category: 'program', icon_src: 'img-figma.png', display_order: 3 },
-    { name: 'PostgreSQL', category: 'program', display_order: 4 },
-    { name: 'PgAdmin4', category: 'program', display_order: 5 },
-    { name: 'Docker', category: 'program', icon_src: 'img-docker.png', display_order: 6 },
-    { name: 'Notion', category: 'program', display_order: 7 },
-    { name: 'Photoshop', category: 'program', icon_src: 'img-photoshop.png', display_order: 8 },
-    { name: 'Premiere Pro', category: 'program', display_order: 9 },
-    { name: 'Lightroom', category: 'program', icon_src: 'img-lightroom.png', display_order: 10 },
-    { name: 'Adobe XD', category: 'program', display_order: 11 },
-    { name: 'Adobe Dreamweaver', category: 'program', display_order: 12 },
-    { name: 'Adobe Dimension 3D', category: 'program', display_order: 13 },
-    { name: 'Sony Vegas', category: 'program', display_order: 14 },
-    { name: 'Cisco Packet Tracer', category: 'program', display_order: 15 },
-    { name: 'Microsoft 365', category: 'program', icon_src: 'img-microsoft365.png', display_order: 16 },
-    { name: 'WordPress', category: 'program', icon_src: 'img-wordpress.png', display_order: 17 },
-    { name: 'n8n', category: 'program', display_order: 18 },
-
-    // Concepts
-    { name: 'Clean Code', category: 'concept', display_order: 1 },
-    { name: 'Mobile First', category: 'concept', display_order: 2 },
-    { name: 'Object Orientation', category: 'concept', display_order: 3 },
-    { name: 'Functional Programming', category: 'concept', display_order: 4 },
-    { name: 'UI / UX Design', category: 'concept', display_order: 5 },
-    { name: 'Accessibility', category: 'concept', display_order: 6 },
-    { name: 'Software Architecture', category: 'concept', display_order: 7 },
-    { name: 'Information Architecture', category: 'concept', display_order: 8 },
-    { name: 'State Management', category: 'concept', display_order: 9 },
-    { name: 'Server Side Rendering', category: 'concept', display_order: 10 },
-    { name: 'Relational Database', category: 'concept', display_order: 11 },
-    { name: 'Information Security', category: 'concept', display_order: 12 },
-    { name: 'Agile Development', category: 'concept', display_order: 13 },
-    { name: 'SEO', category: 'concept', display_order: 14 },
-    { name: 'Performance Optimization', category: 'concept', display_order: 15 },
-    { name: 'Continuous Learning', category: 'concept', display_order: 16 },
-    { name: 'Analytical Thinking', category: 'concept', display_order: 17 },
-    { name: 'Code Versioning', category: 'concept', display_order: 18 },
-    { name: 'Teamwork', category: 'concept', display_order: 19 },
-    { name: 'Self-Management', category: 'concept', display_order: 20 },
+    // Concepts & Methodologies
+    { name: 'Clean Code', category: 'concepts', level: 0, icon_src: '', display_order: 140 },
+    { name: 'Mobile First', category: 'concepts', level: 0, icon_src: '', display_order: 141 },
+    { name: 'Object Orientation', category: 'concepts', level: 0, icon_src: '', display_order: 142 },
+    { name: 'Functional Programming', category: 'concepts', level: 0, icon_src: '', display_order: 143 },
+    { name: 'UI / UX Design', category: 'concepts', level: 0, icon_src: '', display_order: 144 },
+    { name: 'Accessibility', category: 'concepts', level: 0, icon_src: '', display_order: 145 },
+    { name: 'Software Architecture', category: 'concepts', level: 0, icon_src: '', display_order: 146 },
+    { name: 'Information Architecture', category: 'concepts', level: 0, icon_src: '', display_order: 147 },
+    { name: 'State Management', category: 'concepts', level: 0, icon_src: '', display_order: 148 },
+    { name: 'Server Side Rendering', category: 'concepts', level: 0, icon_src: '', display_order: 149 },
+    { name: 'Relational Database', category: 'concepts', level: 0, icon_src: '', display_order: 150 },
+    { name: 'Information Security', category: 'concepts', level: 0, icon_src: '', display_order: 151 },
+    { name: 'Agile Development', category: 'concepts', level: 0, icon_src: '', display_order: 152 },
+    { name: 'SEO', category: 'concepts', level: 0, icon_src: '', display_order: 153 },
+    { name: 'Performance Optimization', category: 'concepts', level: 0, icon_src: '', display_order: 154 },
+    { name: 'Continuous Learning', category: 'concepts', level: 0, icon_src: '', display_order: 155 },
+    { name: 'Analytical Thinking', category: 'concepts', level: 0, icon_src: '', display_order: 156 },
+    { name: 'Code Versioning', category: 'concepts', level: 0, icon_src: '', display_order: 157 },
+    { name: 'Teamwork', category: 'concepts', level: 0, icon_src: '', display_order: 158 },
+    { name: 'Self-Management', category: 'concepts', level: 0, icon_src: '', display_order: 159 },
   ];
 
   for (const skill of skills) {

@@ -1,4 +1,5 @@
 import { Document, Page, Text, View, StyleSheet, Link } from "@react-pdf/renderer";
+import { categorizeSkills } from "@/lib/skill-categories";
 
 const styles = StyleSheet.create({
   page: { padding: 30, fontFamily: "Helvetica", fontSize: 10, color: "#1a1a1a", minHeight: "100%", forcePageBreak: "no" },
@@ -8,8 +9,8 @@ const styles = StyleSheet.create({
   contactRow: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 12, fontSize: 9, color: "#475569", wrap: false },
   contactItem: { flexDirection: "row", alignItems: "center", gap: 4, wrap: false },
   contactLink: { color: "#2563eb", textDecoration: "none", wrap: false },
-  section: { marginBottom: 14, wrap: false },
-  sectionTitle: { fontSize: 12, fontWeight: 700, color: "#0f172a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 8, borderBottomWidth: 1, borderBottomColor: "#e2e8f0", paddingBottom: 4, wrap: false },
+  section: { marginBottom: 20, wrap: false },
+  sectionTitle: { fontSize: 12, fontWeight: 700, color: "#0f172a", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12, borderBottomWidth: 1, borderBottomColor: "#e2e8f0", paddingBottom: 4, wrap: false },
   skillCategory: { marginBottom: 10, wrap: false },
   skillCategoryTitle: { fontSize: 11, fontWeight: 600, color: "#1e293b", marginBottom: 4, wrap: false },
   skillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
@@ -35,7 +36,8 @@ interface CVData {
   experience: Array<{ role: string; company: string; period: string; description: string }>;
   education: Array<{ degree: string; school: string; period: string; description: string }>;
   skills: string[];
-  projects: Array<{ name: string; description: string }>;
+  skillOrders?: number[];
+  projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
   additionalInfo: string;
   additionalData: {
@@ -57,18 +59,17 @@ export function FunctionalCV({ data }: { data: CVData }) {
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     summary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
-    frontend: lang === "pt" ? "Desenvolvimento Frontend" : lang === "en" ? "Frontend Development" : "Desarrollo Frontend",
-    backend: lang === "pt" ? "Backend & Banco de Dados" : lang === "en" ? "Backend & Database" : "Backend & Base de Datos",
-    tools: lang === "pt" ? "Ferramentas & Plataformas" : lang === "en" ? "Tools & Platforms" : "Herramientas & Plataformas",
-    concepts: lang === "pt" ? "Conceitos & Práticas" : lang === "en" ? "Concepts & Practices" : "Conceptos & Prácticas",
+    coreCompetencies: lang === "pt" ? "Competências Principais" : lang === "en" ? "Core Competencies" : "Competencias Principales",
+    languages: lang === "pt" ? "Linguagens" : lang === "en" ? "Languages" : "Lenguajes",
     projects: lang === "pt" ? "Projetos" : lang === "en" ? "Projects" : "Proyectos",
+    languagesList: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
+    additionalData: lang === "pt" ? "Dados Complementares" : lang === "en" ? "Additional Data" : "Datos Adicionales",
+    willingnessToTravel: lang === "pt" ? "Disponibilidade para viajar" : lang === "en" ? "Willingness to travel" : "Disponibilidad para viajar",
+    willingnessToRelocate: lang === "pt" ? "Disponibilidade para mudar" : lang === "en" ? "Willingness to relocate" : "Disponibilidad para mudarse",
+    driverLicense: lang === "pt" ? "Carteira de Habilitação" : lang === "en" ? "Driver's License" : "Licencia de Conducir",
+    vehicle: lang === "pt" ? "Veículo" : lang === "en" ? "Vehicle" : "Vehículo",
   };
-  const skillCategories = [
-    { title: t.frontend, skills: data.skills.filter((s) => /react|next|typescript|javascript|tailwind|html|css|sass/i.test(s)) },
-    { title: t.backend, skills: data.skills.filter((s) => /node|python|php|postgres|mysql|prisma|api/i.test(s)) },
-    { title: t.tools, skills: data.skills.filter((s) => /git|docker|figma|wordpress|n8n|vercel/i.test(s)) },
-    { title: t.concepts, skills: data.skills.filter((s) => !/react|next|typescript|javascript|tailwind|html|css|sass|node|python|php|postgres|mysql|prisma|api|git|docker|figma|wordpress|n8n|vercel/i.test(s)) },
-  ].filter((cat) => cat.skills.length > 0);
+  const skillCategories = categorizeSkills(data.skills, lang, data.skillOrders);
 
   return (
     <Document>
@@ -88,71 +89,86 @@ export function FunctionalCV({ data }: { data: CVData }) {
 
         <Text style={styles.summary}>{data.summary}</Text>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Core Competencies</Text>
-          {skillCategories.map((cat, i) => (
-            <View key={i} style={styles.skillCategory}>
-              <Text style={styles.skillCategoryTitle}>{cat.title}</Text>
-              <View style={styles.skillRow}>
-                {cat.skills.map((skill, j) => (
-                  <Text key={j} style={styles.skillTag}>{skill}</Text>
-                ))}
-              </View>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Key Projects</Text>
-          {data.projects.map((project, i) => (
-            <View key={i} style={styles.entry}>
-              <Text style={styles.entryRole}>{project.name}</Text>
-              <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.5 }}>{project.description}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t.experience}</Text>
-          {data.experience.map((exp, i) => (
-            <View key={i} style={styles.entry}>
-              <View style={styles.entryHeader}>
-                <Text style={styles.entryRole}>{exp.role}</Text>
-                <Text style={styles.entryPeriod}>{exp.period}</Text>
-              </View>
-              <Text style={styles.entryCompany}>{exp.company}</Text>
-            </View>
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Education</Text>
-          {data.education.map((edu, i) => (
-            <View key={i} style={styles.entry}>
-              <View style={styles.entryHeader}>
-                <Text style={styles.entryRole}>{edu.degree}</Text>
-                <Text style={styles.entryPeriod}>{edu.period}</Text>
-              </View>
-              <Text style={styles.entryCompany}>{edu.school}</Text>
-            </View>
-          ))}
-        </View>
-
-        {data.languages.length > 0 && (
+        {data.includeSkills && skillCategories.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Languages</Text>
+            <Text style={styles.sectionTitle}>{t.coreCompetencies}</Text>
+            {skillCategories.map((cat, i) => (
+              <View key={i} style={styles.skillCategory}>
+                <Text style={styles.skillCategoryTitle}>{cat.title}</Text>
+                <View style={styles.skillRow}>
+                  {cat.skills.map((skill, j) => (
+                    <Text key={j} style={styles.skillTag}>{skill}</Text>
+                  ))}
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {data.includeProjects && data.projects.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.projects}</Text>
+            {data.projects.map((project, i) => (
+              <View key={i} style={styles.entry}>
+                <Text style={styles.entryRole}>{project.name}</Text>
+                <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.5 }}>{project.description}</Text>
+                {project.tags && project.tags.length > 0 && (
+                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                    {project.tags.map((tag, j) => (
+                      <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                    ))}
+                  </View>
+                )}
+              </View>
+            ))}
+          </View>
+        )}
+
+        {data.includeExperience && data.experience.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.experience}</Text>
+            {data.experience.map((exp, i) => (
+              <View key={i} style={styles.entry}>
+                <View style={styles.entryHeader}>
+                  <Text style={styles.entryRole}>{exp.role}</Text>
+                  <Text style={styles.entryPeriod}>{exp.period}</Text>
+                </View>
+                <Text style={styles.entryCompany}>{exp.company}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {data.includeEducation && data.education.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.education}</Text>
+            {data.education.map((edu, i) => (
+              <View key={i} style={styles.entry}>
+                <View style={styles.entryHeader}>
+                  <Text style={styles.entryRole}>{edu.degree}</Text>
+                  <Text style={styles.entryPeriod}>{edu.period}</Text>
+                </View>
+                <Text style={styles.entryCompany}>{edu.school}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {data.includeLanguages && data.languages.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.languages}</Text>
             <Text style={{ fontSize: 10, color: "#334155" }}>{data.languages.join(" • ")}</Text>
           </View>
         )}
 
         {(data.additionalData?.willingnessToTravel || data.additionalData?.willingnessToRelocate || data.additionalData?.driverLicense || data.additionalData?.vehicleType) && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Additional Data</Text>
+            <Text style={styles.sectionTitle}>{t.additionalData}</Text>
             <View style={{ fontSize: 10, color: "#334155", lineHeight: 1.6 }}>
-              {data.additionalData.willingnessToTravel && <Text>• Willingness to travel: {data.additionalData.willingnessToTravel}</Text>}
-              {data.additionalData.willingnessToRelocate && <Text>• Willingness to relocate: {data.additionalData.willingnessToRelocate}</Text>}
-              {data.additionalData.driverLicense && <Text>• Driver's License: {data.additionalData.driverLicense}</Text>}
-              {data.additionalData.vehicleType && <Text>• Vehicle: {data.additionalData.vehicleType}</Text>}
+              {data.additionalData.willingnessToTravel && <Text>• {t.willingnessToTravel}: {data.additionalData.willingnessToTravel}</Text>}
+              {data.additionalData.willingnessToRelocate && <Text>• {t.willingnessToRelocate}: {data.additionalData.willingnessToRelocate}</Text>}
+              {data.additionalData.driverLicense && <Text>• {t.driverLicense}: {data.additionalData.driverLicense}</Text>}
+              {data.additionalData.vehicleType && <Text>• {t.vehicle}: {data.additionalData.vehicleType}</Text>}
             </View>
           </View>
         )}
