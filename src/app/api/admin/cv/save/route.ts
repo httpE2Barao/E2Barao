@@ -3,17 +3,6 @@ import { sql } from '@vercel/postgres';
 import fs from 'fs';
 import path from 'path';
 
-async function ensureNullableColumns() {
-  const columns = ['template_id', 'blob_url'];
-  for (const col of columns) {
-    try {
-      await sql.unsafe(`ALTER TABLE cv_generated ALTER COLUMN ${col} DROP NOT NULL`);
-    } catch {
-      // already nullable or column doesn't exist
-    }
-  }
-}
-
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const history = searchParams.get('history');
@@ -57,10 +46,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Config is required' }, { status: 400 });
       }
 
-      // Ensure nullable columns exist
-      await ensureNullableColumns();
-
-      // Find existing config entries for all languages
+      // Find existing config entries
       const { rows: existing } = await sql`
         SELECT id, language FROM cv_generated 
         WHERE format = 'config'
@@ -81,8 +67,8 @@ export async function POST(request: NextRequest) {
         const langs = ['pt', 'en', 'es'];
         for (const lang of langs) {
           await sql`
-            INSERT INTO cv_generated (format, blob_url, language, config)
-            VALUES ('config', '', ${lang}, ${JSON.stringify(config)})
+            INSERT INTO cv_generated (template_id, format, blob_url, language, config)
+            VALUES (0, 'config', '', ${lang}, ${JSON.stringify(config)})
           `;
         }
         return NextResponse.json({ success: true });
@@ -116,10 +102,9 @@ export async function POST(request: NextRequest) {
     console.log('Saved PDF:', { fileName, size: buffer.length });
 
     // Save metadata to database
-    await ensureNullableColumns();
     const { rows } = await sql`
-      INSERT INTO cv_generated (format, blob_url, language, config)
-      VALUES ('pdf', ${pdfUrl}, ${language || 'pt'}, ${configJson || null})
+      INSERT INTO cv_generated (template_id, format, blob_url, language, config)
+      VALUES (0, 'pdf', ${pdfUrl}, ${language || 'pt'}, ${configJson || null})
       RETURNING *;
     `;
 
