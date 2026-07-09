@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
       // Update ALL language entries with the same config
       const { rows: existing } = await sql`
         SELECT id, language FROM cv_generated 
-        WHERE template_id IS NULL AND format = 'config'
+        WHERE format = 'config'
       `;
 
       if (existing.length > 0) {
@@ -63,12 +63,17 @@ export async function POST(request: NextRequest) {
         }
         return NextResponse.json({ success: true, id: existing[0].id });
       } else {
+        // Ensure template_id allows NULL
+        try {
+          await sql`ALTER TABLE cv_generated ALTER COLUMN template_id DROP NOT NULL`;
+        } catch (e) { /* already nullable */ }
+        
         // Insert config entries for all languages
         const langs = ['pt', 'en', 'es'];
         for (const lang of langs) {
           await sql`
-            INSERT INTO cv_generated (template_id, format, blob_url, language, config)
-            VALUES (NULL, 'config', NULL, ${lang}, ${JSON.stringify(config)})
+            INSERT INTO cv_generated (format, blob_url, language, config)
+            VALUES ('config', NULL, ${lang}, ${JSON.stringify(config)})
           `;
         }
         return NextResponse.json({ success: true });
