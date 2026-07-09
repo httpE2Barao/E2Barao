@@ -3,6 +3,17 @@ import { sql } from '@vercel/postgres';
 import fs from 'fs';
 import path from 'path';
 
+async function ensureNullableColumns() {
+  const columns = ['template_id', 'blob_url'];
+  for (const col of columns) {
+    try {
+      await sql.unsafe(`ALTER TABLE cv_generated ALTER COLUMN ${col} DROP NOT NULL`);
+    } catch {
+      // already nullable or column doesn't exist
+    }
+  }
+}
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const history = searchParams.get('history');
@@ -46,14 +57,17 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Config is required' }, { status: 400 });
       }
 
-      // Update ALL language entries with the same config
+      // Ensure nullable columns exist
+      await ensureNullableColumns();
+
+      // Find existing config entries for all languages
       const { rows: existing } = await sql`
         SELECT id, language FROM cv_generated 
         WHERE format = 'config'
       `;
 
       if (existing.length > 0) {
-        // Update all existing config entries
+        // Update all existing config entries with same config
         for (const row of existing) {
           await sql`
             UPDATE cv_generated 
@@ -63,17 +77,12 @@ export async function POST(request: NextRequest) {
         }
         return NextResponse.json({ success: true, id: existing[0].id });
       } else {
-        // Ensure template_id allows NULL
-        try {
-          await sql`ALTER TABLE cv_generated ALTER COLUMN template_id DROP NOT NULL`;
-        } catch (e) { /* already nullable */ }
-        
         // Insert config entries for all languages
         const langs = ['pt', 'en', 'es'];
         for (const lang of langs) {
           await sql`
             INSERT INTO cv_generated (format, blob_url, language, config)
-            VALUES ('config', NULL, ${lang}, ${JSON.stringify(config)})
+            VALUES ('config', '', ${lang}, ${JSON.stringify(config)})
           `;
         }
         return NextResponse.json({ success: true });
@@ -107,9 +116,10 @@ export async function POST(request: NextRequest) {
     console.log('Saved PDF:', { fileName, size: buffer.length });
 
     // Save metadata to database
+    await ensureNullableColumns();
     const { rows } = await sql`
-      INSERT INTO cv_generated (template_id, format, blob_url, language, config)
-      VALUES (${templateId || null}, 'pdf', ${pdfUrl}, ${language || 'pt'}, ${configJson || null})
+      INSERT INTO cv_generated (format, blob_url, language, config)
+      VALUES ('pdf', ${pdfUrl}, ${language || 'pt'}, ${configJson || null})
       RETURNING *;
     `;
 
