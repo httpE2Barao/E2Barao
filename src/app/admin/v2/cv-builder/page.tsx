@@ -193,7 +193,7 @@ const colors = {
           location: defaultData.config.location || prev.location,
           linkedin: defaultData.config.linkedin || prev.linkedin,
           github: defaultData.config.github || prev.github,
-          summary: defaultData.config.summary || prev.summary,
+          summary: defaultData.config.summary ?? prev.summary,
           languages: defaultData.config.languages || prev.languages,
           additionalInfo: defaultData.config.additionalInfo || prev.additionalInfo,
           selectedExperienceIds: defaultData.config.selectedExperienceIds || prev.selectedExperienceIds,
@@ -209,6 +209,9 @@ const colors = {
           sortSkills: defaultData.config.sortSkills ?? prev.sortSkills,
           selectedSkillIds: defaultData.config.selectedSkillIds ?? prev.selectedSkillIds,
         }));
+        if (defaultData.config.selectedTemplate) {
+          setSelectedTemplate(defaultData.config.selectedTemplate);
+        }
       }
       
       setDefaultCV(defaultData);
@@ -309,6 +312,7 @@ const colors = {
           includeLanguages: d.includeLanguages,
           maxSkills: d.maxSkills,
           sortSkills: d.sortSkills,
+          selectedTemplate,
         },
       }),
     });
@@ -629,7 +633,7 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
                 {language === "pt" ? "CV padrão atual" : language === "en" ? "Current default CV" : "CV predeterminado actual"}
               </span>
               <span className={`text-xs ${colors.textSubtle}`}>
-                {defaultCV.template_id} • {defaultCV.language?.toUpperCase()} • {new Date(defaultCV.created_at).toLocaleDateString()}
+                {defaultCV.config?.selectedTemplate || selectedTemplate} • {new Date(defaultCV.created_at).toLocaleDateString()}
               </span>
             </div>
           )}
@@ -645,6 +649,25 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
               <polyline points="12 6 12 12 16 14"/>
             </svg>
             {language === "pt" ? "Histórico" : language === "en" ? "History" : "Historial"}
+          </button>
+          <button
+            onClick={async () => {
+              try {
+                await saveConfig();
+                setMessage({ type: "success", text: language === "pt" ? "Configuração salva como padrão!" : language === "en" ? "Configuration saved as default!" : "¡Configuración guardada como predeterminada!" });
+              } catch {
+                setMessage({ type: "error", text: "Erro ao salvar" });
+              }
+              setTimeout(() => setMessage(null), 3000);
+            }}
+            className={`${colors.cardBg} ${colors.hoverBg} border ${colors.border} ${colors.textMuted} font-semibold px-4 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-2`}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+              <polyline points="17 21 17 13 7 13 7 21" />
+              <polyline points="7 3 7 8 15 8" />
+            </svg>
+            {language === "pt" ? "Salvar Padrão" : language === "en" ? "Save Default" : "Guardar Predeterminado"}
           </button>
           <button
           onClick={generatePDF}

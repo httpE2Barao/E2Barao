@@ -132,10 +132,16 @@ export function V2HomeHeroV2() {
   }
 
   const handleFirstInteraction = useCallback(() => {
-    if (hasInteracted.current || isMuted) return
+    if (hasInteracted.current) return
     hasInteracted.current = true
-    playWelcome()
-  }, [playWelcome, isMuted])
+    if (isMuted) {
+      setIsMuted(false)
+      localStorage.setItem(MUTE_KEY, "false")
+      setHasPlayedBefore(true)
+      localStorage.setItem(PLAYED_KEY, "true")
+    }
+    preload().then(() => playWelcome())
+  }, [isMuted, preload, playWelcome])
 
   const phrases = hasPlayedBefore ? welcomePhrases.returning[language as keyof typeof welcomePhrases.returning] : welcomePhrases.first[language as keyof typeof welcomePhrases.first]
   const currentPhrases = phrases || welcomePhrases.first.en

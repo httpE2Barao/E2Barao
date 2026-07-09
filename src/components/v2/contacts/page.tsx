@@ -288,6 +288,7 @@ export function V2ContactsPage() {
   const ref = useRef<HTMLDivElement>(null)
   const { theme, language } = useTheme()
   const isDark = theme === "dark"
+  const cvLanguage = ["pt", "en", "es"].includes(language) ? language : "en"
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -348,9 +349,8 @@ export function V2ContactsPage() {
             </div>
 
 <motion.a
-              href="/CV-EliasBarao.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`/api/cv/generate?language=${cvLanguage}`}
+              download={`CV-EliasBarao-${cvLanguage}.pdf`}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
