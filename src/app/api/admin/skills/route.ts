@@ -4,12 +4,12 @@ import { readArrayFromJson, saveArrayToJson } from '@/lib/json-storage';
 import { v1Data } from '@/data/v1-data';
 
 export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const category = searchParams.get('category');
+  const active = searchParams.get('active');
+  const all = searchParams.get('all');
+
   try {
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
-    const active = searchParams.get('active');
-    const all = searchParams.get('all');
-    
     // Se all=true, retorna todas as skills sem filtrar por category
     if (all === 'true') {
       const { rows } = await sql`SELECT * FROM skills ORDER BY display_order NULLS LAST, name`;
