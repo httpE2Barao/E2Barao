@@ -46,30 +46,32 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Config is required' }, { status: 400 });
       }
 
-      // Check if there's an existing entry for this language
+      // Update ALL language entries with the same config
       const { rows: existing } = await sql`
-        SELECT id FROM cv_generated 
-        WHERE language = ${language || 'pt'}
-        ORDER BY created_at DESC 
-        LIMIT 1
+        SELECT id, language FROM cv_generated 
+        WHERE template_id IS NULL AND format = 'config'
       `;
 
       if (existing.length > 0) {
-        // Update existing config
-        await sql`
-          UPDATE cv_generated 
-          SET config = ${JSON.stringify(config)}
-          WHERE id = ${existing[0].id}
-        `;
+        // Update all existing config entries
+        for (const row of existing) {
+          await sql`
+            UPDATE cv_generated 
+            SET config = ${JSON.stringify(config)}
+            WHERE id = ${row.id}
+          `;
+        }
         return NextResponse.json({ success: true, id: existing[0].id });
       } else {
-        // Insert new config-only entry
-        const { rows } = await sql`
-          INSERT INTO cv_generated (template_id, format, blob_url, language, config)
-          VALUES (NULL, 'config', NULL, ${language || 'pt'}, ${JSON.stringify(config)})
-          RETURNING *;
-        `;
-        return NextResponse.json({ success: true, id: rows[0].id });
+        // Insert config entries for all languages
+        const langs = ['pt', 'en', 'es'];
+        for (const lang of langs) {
+          await sql`
+            INSERT INTO cv_generated (template_id, format, blob_url, language, config)
+            VALUES (NULL, 'config', NULL, ${lang}, ${JSON.stringify(config)})
+          `;
+        }
+        return NextResponse.json({ success: true });
       }
     }
 
