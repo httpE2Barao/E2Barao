@@ -83,6 +83,7 @@ export function useWelcomeAudio(language = "pt", isReturning = false) {
   const [isPreloaded, setIsPreloaded] = useState(false)
   const preloadPromise = useRef<Promise<void> | null>(null)
   const [userInteracted, setUserInteracted] = useState(false)
+  const useNativeRef = useRef(false)
 
   const welcomeText = isReturning 
     ? (RETURNING_TEXTS[language] || RETURNING_TEXTS["en"])
@@ -110,13 +111,21 @@ export function useWelcomeAudio(language = "pt", isReturning = false) {
     preloadPromise.current = (async () => {
       console.log("[TTS] Pré-carregando audio...")
       try {
-        const { url, cleanup } = await fetchTTSBlob(welcomeText, language)
-        audioRef.current = new Audio(url)
-        cleanupRef.current = cleanup
+        const result = await fetchTTSBlob(welcomeText, language)
+        if (result.native) {
+          useNativeRef.current = true
+          setIsPreloaded(true)
+          console.log("[TTS] API indisponível, usando SpeechSynthesis nativo")
+          return
+        }
+        audioRef.current = new Audio(result.url)
+        cleanupRef.current = result.cleanup
         setIsPreloaded(true)
         console.log("[TTS] Audio pré-carregado com sucesso")
       } catch (err) {
-        console.error("[TTS] Falha ao pré-carregar:", err)
+        console.error("[TTS] Falha ao pré-carregar, usando nativo:", err)
+        useNativeRef.current = true
+        setIsPreloaded(true)
       }
     })()
     await preloadPromise.current
@@ -127,6 +136,9 @@ export function useWelcomeAudio(language = "pt", isReturning = false) {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
     }
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.cancel()
+    }
     hasSpoken.current = false
     console.log("[TTS] Audio pausado")
   }, [])
@@ -136,28 +148,24 @@ export function useWelcomeAudio(language = "pt", isReturning = false) {
     hasSpoken.current = true
     console.log("[TTS] === Iniciando boas-vindas ===")
 
-    if (audioRef.current) {
-      try {
-        await audioRef.current.play()
-        audioRef.current.onended = () => {
-          cleanupRef.current?.()
-          audioRef.current = null
-          cleanupRef.current = null
-          console.log("[TTS] Boas-vindas finalizado")
-        }
-        return
-      } catch (err) {
-        console.error("[TTS] Playback do preloaded falhou:", err)
-      }
+    if (useNativeRef.current || !audioRef.current) {
+      console.log("[TTS] Usando SpeechSynthesis nativo para boas-vindas")
+      speakNative(welcomeText, language)
+      return
     }
 
     try {
-      const { url, cleanup } = await fetchTTSBlob(welcomeText, language)
-      const audio = new Audio(url)
-      await audio.play()
-      audio.onended = () => { cleanup(); console.log("[TTS] Boas-vindas finalizado (on-demand)") }
+      await audioRef.current.play()
+      audioRef.current.onended = () => {
+        cleanupRef.current?.()
+        audioRef.current = null
+        cleanupRef.current = null
+        console.log("[TTS] Boas-vindas finalizado")
+      }
+      return
     } catch (err) {
-      console.error("[TTS] Tudo falhou, sem fallback:", err)
+      console.error("[TTS] Playback do preloaded falhou, usando nativo:", err)
+      speakNative(welcomeText, language)
     }
   }, [welcomeText, language, userInteracted])
 
