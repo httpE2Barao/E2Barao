@@ -21,12 +21,14 @@ export async function POST(request: NextRequest) {
         degree_pt, degree_en, degree_es, degree_fr, degree_zh,
         school_pt, school_en, school_es, school_fr, school_zh,
         description_pt, description_en, description_es, description_fr, description_zh,
+        education_type,
         display_order
       ) VALUES (
         ${body.period_start || null}, ${body.period_end || null},
         ${body.degree_pt || ''}, ${body.degree_en || ''}, ${body.degree_es || ''}, ${body.degree_fr || ''}, ${body.degree_zh || ''},
         ${body.school_pt || ''}, ${body.school_en || ''}, ${body.school_es || ''}, ${body.school_fr || ''}, ${body.school_zh || ''},
         ${body.description_pt || ''}, ${body.description_en || ''}, ${body.description_es || ''}, ${body.description_fr || ''}, ${body.description_zh || ''},
+        ${body.education_type || 'course'},
         ${body.display_order || null}
       )
       RETURNING *
@@ -53,6 +55,7 @@ export async function PUT(request: NextRequest) {
       'degree_pt', 'degree_en', 'degree_es', 'degree_fr', 'degree_zh',
       'school_pt', 'school_en', 'school_es', 'school_fr', 'school_zh',
       'description_pt', 'description_en', 'description_es', 'description_fr', 'description_zh',
+      'education_type',
       'display_order'
     ];
 

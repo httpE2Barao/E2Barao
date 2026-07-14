@@ -9,11 +9,12 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type: string }>;
   skills: string[];
-  projects: Array<{ name: string; description: string }>;
+  projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
   additionalInfo: string;
   additionalData: {
@@ -33,9 +34,11 @@ export function CombinationPreview({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
     professionalSummary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
     coreSkills: lang === "pt" ? "Habilidades Principais" : lang === "en" ? "Core Skills" : "Habilidades Principales",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
-    education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    graduation: lang === "pt" ? "Educação (Graduação)" : lang === "en" ? "Education (Graduation)" : "Educación (Graduación)",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     projects: lang === "pt" ? "Projetos" : lang === "en" ? "Projects" : "Proyectos",
     languages: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
     additionalData: lang === "pt" ? "Dados Complementares" : lang === "en" ? "Additional Data" : "Datos Adicionales",
@@ -69,13 +72,18 @@ export function CombinationPreview({ data }: { data: CVData }) {
         </div>
       )}
 
+      {data.objective && (
+        <div className="mb-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.objective}</h2>
+          <p className="text-[10px] text-gray-700 leading-relaxed">{data.objective}</p>
+        </div>
+      )}
+
       <div className="mb-4">
         <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.coreSkills}</h2>
-        <div className="flex flex-wrap gap-1">
-          {data.skills.map((skill, i) => (
-            <span key={i} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-[9px]">{skill}</span>
-          ))}
-        </div>
+        {data.skills.map((skill, i) => (
+          <span key={i} className="text-[10px] text-gray-700">{skill}{i < data.skills.length - 1 ? ", " : ""}</span>
+        ))}
       </div>
 
       <div className="grid grid-cols-2 gap-6">
@@ -94,17 +102,36 @@ export function CombinationPreview({ data }: { data: CVData }) {
         </div>
 
         <div>
-          <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.education}</h2>
-          {data.education.map((edu, i) => (
-            <div key={i} className="mb-2">
-              <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[11px] text-gray-800">{edu.degree}</span>
-                <span className="text-[9px] text-gray-500">{edu.period}</span>
-              </div>
-              <p className="text-[10px] text-gray-600 italic">{edu.school}</p>
-              {edu.description && <p className="text-[9px] text-gray-700 mt-1">{edu.description}</p>}
+          {data.education.filter(e => e.type === 'graduation').length > 0 && (
+            <div className="mb-3">
+              <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.graduation}</h2>
+              {data.education.filter(e => e.type === 'graduation').map((edu, i) => (
+                <div key={i} className="mb-2">
+                  <div className="flex justify-between items-baseline">
+                    <span className="font-semibold text-[11px] text-gray-800">{edu.degree}</span>
+                    <span className="text-[9px] text-gray-500">{edu.period}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-600 italic">{edu.school}</p>
+                  {edu.description && <p className="text-[9px] text-gray-700 mt-1">{edu.description}</p>}
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+          {data.education.filter(e => e.type === 'course').length > 0 && (
+            <div className="mb-3">
+              <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.complementaryCourses}</h2>
+              {data.education.filter(e => e.type === 'course').map((edu, i) => (
+                <div key={i} className="mb-2">
+                  <div className="flex justify-between items-baseline">
+                    <span className="font-semibold text-[11px] text-gray-800">{edu.degree}</span>
+                    <span className="text-[9px] text-gray-500">{edu.period}</span>
+                  </div>
+                  <p className="text-[10px] text-gray-600 italic">{edu.school}</p>
+                  {edu.description && <p className="text-[9px] text-gray-700 mt-1">{edu.description}</p>}
+                </div>
+              ))}
+            </div>
+          )}
 
           {data.projects.length > 0 && (
             <div className="mt-4">
@@ -113,6 +140,13 @@ export function CombinationPreview({ data }: { data: CVData }) {
                 <div key={i} className="mb-2">
                   <p className="text-[10px] font-semibold text-gray-800">{project.name}</p>
                   <p className="text-[8px] text-gray-600 leading-relaxed">{project.description}</p>
+                  {project.tags && project.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {project.tags.map((tag, j) => (
+                        <span key={j} className="text-[7px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">{tag}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

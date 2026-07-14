@@ -32,9 +32,10 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   skillOrders?: number[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
@@ -56,6 +57,9 @@ interface CVData {
 export function FunctionalCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Graduação" : lang === "en" ? "Graduation" : "Graduación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     summary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
@@ -88,6 +92,13 @@ export function FunctionalCV({ data }: { data: CVData }) {
         </View>
 
         <Text style={styles.summary}>{data.summary}</Text>
+
+        {data.objective && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.objective}</Text>
+            <Text style={{ fontSize: 10, color: "#334155", lineHeight: 1.6 }}>{data.objective}</Text>
+          </View>
+        )}
 
         {data.includeSkills && skillCategories.length > 0 && (
           <View style={styles.section}>
@@ -141,16 +152,42 @@ export function FunctionalCV({ data }: { data: CVData }) {
 
         {data.includeEducation && data.education.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t.education}</Text>
-            {data.education.map((edu, i) => (
-              <View key={i} style={styles.entry}>
-                <View style={styles.entryHeader}>
-                  <Text style={styles.entryRole}>{edu.degree}</Text>
-                  <Text style={styles.entryPeriod}>{edu.period}</Text>
-                </View>
-                <Text style={styles.entryCompany}>{edu.school}</Text>
-              </View>
-            ))}
+            {(() => {
+              const graduations = data.education.filter(e => e.type === "graduation");
+              const courses = data.education.filter(e => e.type !== "graduation");
+              return (
+                <>
+                  {graduations.length > 0 && (
+                    <>
+                      <Text style={styles.sectionTitle}>{t.graduation}</Text>
+                      {graduations.map((edu, i) => (
+                        <View key={i} style={styles.entry}>
+                          <View style={styles.entryHeader}>
+                            <Text style={styles.entryRole}>{edu.degree}</Text>
+                            <Text style={styles.entryPeriod}>{edu.period}</Text>
+                          </View>
+                          <Text style={styles.entryCompany}>{edu.school}</Text>
+                        </View>
+                      ))}
+                    </>
+                  )}
+                  {courses.length > 0 && (
+                    <>
+                      <Text style={styles.sectionTitle}>{t.complementaryCourses}</Text>
+                      {courses.map((edu, i) => (
+                        <View key={i} style={styles.entry}>
+                          <View style={styles.entryHeader}>
+                            <Text style={styles.entryRole}>{edu.degree}</Text>
+                            <Text style={styles.entryPeriod}>{edu.period}</Text>
+                          </View>
+                          <Text style={styles.entryCompany}>{edu.school}</Text>
+                        </View>
+                      ))}
+                    </>
+                  )}
+                </>
+              );
+            })()}
           </View>
         )}
 

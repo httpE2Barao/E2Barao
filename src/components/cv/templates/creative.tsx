@@ -38,9 +38,10 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
@@ -61,6 +62,9 @@ interface CVData {
 export function CreativeCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Graduação" : lang === "en" ? "Graduation" : "Graduación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
@@ -87,6 +91,13 @@ export function CreativeCV({ data }: { data: CVData }) {
             </View>
           )}
 
+          {data.objective && (
+            <View style={styles.sidebarSection}>
+              <Text style={styles.sidebarSectionTitle}>{t.objective}</Text>
+              <Text style={{ fontSize: 8.5, color: "#cbd5e1", lineHeight: 1.3 }}>{data.objective}</Text>
+            </View>
+          )}
+
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarSectionTitle}>{t.contact}</Text>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.email}</Text></Link>}
@@ -109,13 +120,38 @@ export function CreativeCV({ data }: { data: CVData }) {
           {data.education.length > 0 && (
             <View style={styles.sidebarSection}>
               <Text style={styles.sidebarSectionTitle}>{t.education}</Text>
-              {data.education.map((edu, i) => (
-                <View key={i} style={{ marginBottom: 8 }}>
-                  <Text style={{ fontSize: 8.5, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{edu.degree}</Text>
-                  <Text style={styles.sidebarText}>{edu.school}</Text>
-                  <Text style={{ fontSize: 7.5, color: "#94a3b8" }}>{edu.period}</Text>
-                </View>
-              ))}
+              {(() => {
+                const graduations = data.education.filter(e => e.type === "graduation");
+                const courses = data.education.filter(e => e.type !== "graduation");
+                return (
+                  <>
+                    {graduations.length > 0 && (
+                      <View style={{ marginBottom: 8 }}>
+                        <Text style={{ fontSize: 7.5, fontWeight: 700, color: "#f59e0b", marginBottom: 4 }}>{t.graduation}</Text>
+                        {graduations.map((edu, i) => (
+                          <View key={i} style={{ marginBottom: 6 }}>
+                            <Text style={{ fontSize: 8.5, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{edu.degree}</Text>
+                            <Text style={styles.sidebarText}>{edu.school}</Text>
+                            <Text style={{ fontSize: 7.5, color: "#94a3b8" }}>{edu.period}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                    {courses.length > 0 && (
+                      <View>
+                        <Text style={{ fontSize: 7.5, fontWeight: 700, color: "#f59e0b", marginBottom: 4 }}>{t.complementaryCourses}</Text>
+                        {courses.map((edu, i) => (
+                          <View key={i} style={{ marginBottom: 6 }}>
+                            <Text style={{ fontSize: 8.5, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{edu.degree}</Text>
+                            <Text style={styles.sidebarText}>{edu.school}</Text>
+                            <Text style={{ fontSize: 7.5, color: "#94a3b8" }}>{edu.period}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    )}
+                  </>
+                );
+              })()}
             </View>
           )}
 

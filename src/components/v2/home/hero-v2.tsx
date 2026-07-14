@@ -260,7 +260,7 @@ export function V2HomeHeroV2() {
   const scrollDot = isDark ? "bg-cyan-400" : "bg-blue-600"
 
   return (
-    <section className={`relative h-[calc(100vh-4.5rem)] flex flex-col overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section className={`relative h-[calc(100vh-6rem)] flex flex-col overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       <div
         className="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}
@@ -380,7 +380,7 @@ export function V2HomeHeroV2() {
       </div>
 
       {/* Chat Widget - Bottom, acima do header */}
-      <div className="absolute bottom-16 sm:bottom-20 left-0 right-0 z-20 px-3 sm:px-6 pb-2">
+      <div className="absolute bottom-12 sm:bottom-16 left-0 right-0 z-20 px-3 sm:px-6 pb-2">
         <div className="max-w-md mx-auto">
           {/* Speech bubble */}
           <div className="mb-2">
@@ -511,7 +511,7 @@ export function V2HomeHeroV2() {
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className={`w-5 h-8 ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1.5`}
+          className={`w-5 h-8 ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1`}
         >
           <motion.div
             className={`w-1 h-1.5 ${isDark ? "bg-cyan-400" : "bg-blue-600"} rounded-full`}

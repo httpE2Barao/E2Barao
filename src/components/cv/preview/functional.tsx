@@ -11,9 +11,10 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   skillOrders?: number[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
@@ -36,6 +37,9 @@ export function FunctionalPreview({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const skillCategories = categorizeSkills(data.skills, lang, data.skillOrders);
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Graduação" : lang === "en" ? "Graduation" : "Graduación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     professionalSummary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
     professionalExperience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Professional Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
@@ -68,6 +72,13 @@ export function FunctionalPreview({ data }: { data: CVData }) {
       <div className="mb-4">
         <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.professionalSummary}</h2>
         <p className="text-[10px] text-gray-700 leading-relaxed mb-4">{data.summary}</p>
+
+        {data.objective && (
+          <div className="mb-4">
+            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.objective}</h2>
+            <p className="text-[10px] text-gray-700 leading-relaxed">{data.objective}</p>
+          </div>
+        )}
 
         {data.includeSkills && skillCategories.length > 0 && (
           <>
@@ -123,20 +134,42 @@ export function FunctionalPreview({ data }: { data: CVData }) {
       </div>
 
       <div className="mb-4">
-        {data.includeEducation && (
-          <>
-            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.education}</h2>
-            {data.education.map((edu, i) => (
-              <div key={i} className="mb-2">
-                <div className="flex justify-between items-baseline">
-                  <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
-                  <span className="text-[9px] text-gray-500">{edu.period}</span>
-                </div>
-                <p className="text-[9px] text-gray-600">{edu.school}</p>
-              </div>
-            ))}
-          </>
-        )}
+        {data.includeEducation && (() => {
+          const graduations = data.education.filter(e => e.type === "graduation");
+          const courses = data.education.filter(e => e.type !== "graduation");
+          return (
+            <>
+              {graduations.length > 0 && (
+                <>
+                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.graduation}</h2>
+                  {graduations.map((edu, i) => (
+                    <div key={i} className="mb-2">
+                      <div className="flex justify-between items-baseline">
+                        <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
+                        <span className="text-[9px] text-gray-500">{edu.period}</span>
+                      </div>
+                      <p className="text-[9px] text-gray-600">{edu.school}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+              {courses.length > 0 && (
+                <>
+                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.complementaryCourses}</h2>
+                  {courses.map((edu, i) => (
+                    <div key={i} className="mb-2">
+                      <div className="flex justify-between items-baseline">
+                        <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
+                        <span className="text-[9px] text-gray-500">{edu.period}</span>
+                      </div>
+                      <p className="text-[9px] text-gray-600">{edu.school}</p>
+                    </div>
+                  ))}
+                </>
+              )}
+            </>
+          );
+        })()}
       </div>
 
       {data.includeLanguages && data.languages.length > 0 && (

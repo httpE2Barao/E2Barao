@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readArrayFromJson, writeJsonFile } from '@/lib/json-storage';
-import { v1Data } from '@/data/v1-data';
+import { sql } from '@vercel/postgres';
 
 export async function GET() {
   try {
-    const contact = await readArrayFromJson('contact.json', 'contact', v1Data.contact);
-    return NextResponse.json(contact.filter((c: any) => c.visible !== false));
+    const { rows } = await sql`SELECT * FROM contact_info ORDER BY display_order NULLS LAST, id`;
+    return NextResponse.json(rows.filter((c: any) => c.visible !== false));
   } catch (error) {
-    return NextResponse.json(v1Data.contact.filter((c: any) => c.visible !== false));
+    console.error('Failed to fetch contact:', error);
+    return NextResponse.json({ error: 'Failed to fetch contact' }, { status: 500 });
   }
 }
 
@@ -20,18 +20,41 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
-    const contact = await readArrayFromJson('contact.json', 'contact', v1Data.contact);
-    const index = contact.findIndex((c: any) => c.id === id);
+    const allowedFields = [
+      'label', 'value', 'icon',
+      'description_pt', 'description_en', 'description_es', 'description_fr', 'description_zh',
+      'visible', 'display_order'
+    ];
 
-    if (index === -1) {
+    const setClauses: string[] = [];
+    const values: any[] = [];
+    let paramIndex = 1;
+
+    for (const field of allowedFields) {
+      if (field in fields) {
+        setClauses.push(`${field} = $${paramIndex}`);
+        values.push(fields[field]);
+        paramIndex++;
+      }
+    }
+
+    if (setClauses.length === 0) {
+      return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
+    }
+
+    setClauses.push('updated_at = NOW()');
+    values.push(id);
+
+    const query = `UPDATE contact_info SET ${setClauses.join(', ')} WHERE id = $${paramIndex} RETURNING *`;
+    const { rows } = await sql.query(query, values);
+
+    if (rows.length === 0) {
       return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
     }
 
-    contact[index] = { ...contact[index], ...fields, updated_at: new Date().toISOString() };
-    await writeJsonFile('contact.json', { contact });
-
-    return NextResponse.json(contact[index]);
+    return NextResponse.json(rows[0]);
   } catch (error) {
+    console.error('Failed to update contact:', error);
     return NextResponse.json({ error: 'Failed to update contact' }, { status: 500 });
   }
 }

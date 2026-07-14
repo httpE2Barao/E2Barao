@@ -19,6 +19,7 @@
       "description_es": "Licenciatura en Ingeniería de Software con MEC 5/5. Cursos principales: Base de Datos, Algoritmos y Programación, Arquitectura de Computadoras, Redes, Inteligencia Artificial, Machine Learning.",
       "description_fr": "Licence en Ingénierie Logicielle avec note MEC 5/5. Cours principaux: Base de données, Algorithmes et Programmation, Architecture Informatique, Réseaux, Intelligence Artificielle, Machine Learning.",
       "description_zh": "软件工程学士学位，MEC 评分 5/5。主要课程：数据库、算法与编程、计算机架构、计算机网络、人工智能、机器学习。",
+      "education_type": "graduation",
       "display_order": 2,
       "created_at": "2026-04-06T19:07:55.970Z",
       "updated_at": "2026-05-09T19:14:27.121Z"
@@ -42,6 +43,7 @@
       "description_es": "Enfoque en desarrollo de software. Tecnologías: JavaScript, TypeScript, React, Tailwind CSS, REST APIs, Git.",
       "description_fr": "Focus sur le développement logiciel. Technologies: JavaScript, TypeScript, React, Tailwind CSS, REST APIs, Git.",
       "description_zh": "专注于软件开发。技术：JavaScript、TypeScript、React、Tailwind CSS、REST APIs、Git。",
+      "education_type": "course",
       "display_order": 2,
       "created_at": "2026-04-06T19:07:55.970Z",
       "updated_at": "2026-05-09T19:07:12.549Z"
@@ -65,6 +67,7 @@
       "description_es": "Conciencia corporal, dicción, creatividad, interacción pública, responsabilidad emocional. Participación en 3 producciones teatrales.",
       "description_fr": "Conscience corporelle, diction, créativité, interaction publique, responsabilité émotionnelle. Participation à 3 productions théâtrales.",
       "description_zh": "身体意识、发音、创造力、公共互动、情感责任。参与3部戏剧制作。",
+      "education_type": "course",
       "display_order": 3,
       "created_at": "2026-04-06T19:07:55.970Z",
       "updated_at": "2026-05-09T19:07:27.547Z"
@@ -88,6 +91,7 @@
       "description_es": "Mención Honrosa en la Olimpiada Brasileña de Matemáticas.",
       "description_fr": "Mention Honorable à l'Olympiade Brésilienne de Mathématiques.",
       "description_zh": "巴西数学奥林匹克竞赛荣誉奖。",
+      "education_type": "high_school",
       "display_order": 4,
       "created_at": "2026-04-06T19:07:55.970Z",
       "updated_at": "2026-05-09T19:09:47.735Z"
@@ -102,6 +106,7 @@
       "school_en": "PUCPR - Pontifícia Universidade Católica do Paraná",
       "description_pt": "MEC 5/5. Cursos principais: Raciocínio Computacional, Programação Orientada a Objetos, Banco de Dados, Cloud Computing, Desenvolvimento Mobile, DevOps, Inteligência Analítica e Segurança da Informação.",
       "description_en": "MEC 5/5 (top-tier accreditation). Core courses: Computational Reasoning, Object-Oriented Programming, Databases, Cloud Computing, Mobile Development, DevOps, Analytical Intelligence, and Information Security.",
+      "education_type": "graduation",
       "display_order": 1,
       "created_at": "2026-05-09T19:10:41.897Z",
       "updated_at": "2026-05-09T19:12:35.035Z"

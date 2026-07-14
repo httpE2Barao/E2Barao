@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS education_entries (
   description_es TEXT,
   description_fr TEXT,
   description_zh TEXT,
+  education_type VARCHAR(20) DEFAULT 'course',
   display_order INTEGER DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

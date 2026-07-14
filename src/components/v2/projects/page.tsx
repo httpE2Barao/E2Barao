@@ -214,7 +214,7 @@ export function V2ProjectsPage() {
             {[
               { number: data?.total?.toString() || "0", label: projectsLabel },
               { number: stats?.languages?.length?.toString() || "0", label: techLabel },
-              { number: stats ? Math.round(stats.total_lines_estimate / 1000).toString() + "k" : "0", label: linesLabel },
+              { number: stats ? "+" + Math.round(stats.total_lines_estimate / 1000).toString() + "k" : "0", label: linesLabel },
             ].map((stat) => (
               <motion.div key={stat.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
                 <p className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tight ${accentColor}`}>{stat.number}</p>

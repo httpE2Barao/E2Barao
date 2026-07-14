@@ -28,9 +28,10 @@ interface CVData {
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
@@ -51,6 +52,9 @@ interface CVData {
 export function MinimalCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Graduação" : lang === "en" ? "Graduation" : "Graduación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
@@ -83,6 +87,13 @@ export function MinimalCV({ data }: { data: CVData }) {
           </View>
         )}
 
+        {data.objective && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.objective}</Text>
+            <Text style={styles.summary}>{data.objective}</Text>
+          </View>
+        )}
+
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t.experience}</Text>
           {data.experience.map((exp, i) => (
@@ -98,17 +109,44 @@ export function MinimalCV({ data }: { data: CVData }) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t.education}</Text>
-          {data.education.map((edu, i) => (
-            <View key={i} style={styles.entry}>
-              <View style={styles.entryHeader}>
-                <Text style={styles.entryRole}>{edu.degree}</Text>
-                <Text style={styles.entryPeriod}>{edu.period}</Text>
-              </View>
-              <Text style={styles.entryCompany}>{edu.school}</Text>
-              {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
-            </View>
-          ))}
+          {(() => {
+            const graduations = data.education.filter(e => e.type === "graduation");
+            const courses = data.education.filter(e => e.type !== "graduation");
+            return (
+              <>
+                {graduations.length > 0 && (
+                  <>
+                    <Text style={styles.sectionTitle}>{t.graduation}</Text>
+                    {graduations.map((edu, i) => (
+                      <View key={i} style={styles.entry}>
+                        <View style={styles.entryHeader}>
+                          <Text style={styles.entryRole}>{edu.degree}</Text>
+                          <Text style={styles.entryPeriod}>{edu.period}</Text>
+                        </View>
+                        <Text style={styles.entryCompany}>{edu.school}</Text>
+                        {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
+                      </View>
+                    ))}
+                  </>
+                )}
+                {courses.length > 0 && (
+                  <>
+                    <Text style={styles.sectionTitle}>{t.complementaryCourses}</Text>
+                    {courses.map((edu, i) => (
+                      <View key={i} style={styles.entry}>
+                        <View style={styles.entryHeader}>
+                          <Text style={styles.entryRole}>{edu.degree}</Text>
+                          <Text style={styles.entryPeriod}>{edu.period}</Text>
+                        </View>
+                        <Text style={styles.entryCompany}>{edu.school}</Text>
+                        {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
+                      </View>
+                    ))}
+                  </>
+                )}
+              </>
+            );
+          })()}
         </View>
 
         {data.includeSkills && data.skills.length > 0 && (

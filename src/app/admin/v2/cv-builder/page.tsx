@@ -78,6 +78,7 @@ interface Education {
   school: LocalizedString;
   period: string;
   description: LocalizedString;
+  type?: string;
 }
 
 interface AdditionalData {
@@ -101,6 +102,7 @@ interface CVData {
   skills: LocalizedString[];
   projects: Project[];
   languages: LocalizedString[];
+  objective: LocalizedString;
   additionalInfo: LocalizedString;
   additionalData: AdditionalData;
   includeExperience: boolean;
@@ -194,6 +196,7 @@ const colors = {
           linkedin: defaultData.config.linkedin || prev.linkedin,
           github: defaultData.config.github || prev.github,
           summary: defaultData.config.summary ?? prev.summary,
+          objective: defaultData.config.objective ?? prev.objective,
           languages: defaultData.config.languages || prev.languages,
           additionalInfo: defaultData.config.additionalInfo || prev.additionalInfo,
           selectedExperienceIds: defaultData.config.selectedExperienceIds || prev.selectedExperienceIds,
@@ -247,6 +250,7 @@ const colors = {
       { pt: "Inglês (Avançado)", en: "English (Advanced)", es: "Inglés (Avanzado)" },
       { pt: "Espanhol (Básico)", en: "Spanish (Basic)", es: "Español (Básico)" },
     ],
+    objective: { pt: "", en: "", es: "" },
     additionalInfo: { pt: "", en: "", es: "" },
     additionalData: {
       willingnessToTravel: { pt: "Sim", en: "Yes", es: "Sí" },
@@ -298,6 +302,7 @@ const colors = {
           linkedin: d.linkedin,
           github: d.github,
           summary: d.summary,
+          objective: d.objective,
           languages: d.languages,
           additionalInfo: d.additionalInfo,
           selectedExperienceIds: d.selectedExperienceIds,
@@ -409,6 +414,7 @@ const getLocalizedCVData = (lang: Language): any => {
     linkedin: cvData.linkedin,
     github: cvData.github,
     summary: getLocalizedValue(cvData.summary, lang),
+    objective: getLocalizedValue(cvData.objective, lang),
     experience: selectedExp.map((exp) => ({
       role: getLocalizedValue(exp.role, lang),
       company: getLocalizedValue(exp.company, lang),
@@ -420,6 +426,7 @@ const getLocalizedCVData = (lang: Language): any => {
       school: getLocalizedValue(edu.school, lang),
       period: edu.period,
       description: getLocalizedValue(edu.description, lang),
+      type: edu.type,
     })),
     skills: sortedSkills,
     skillOrders: skillOrders,
@@ -497,6 +504,7 @@ const getLocalizedCVData = (lang: Language): any => {
               school: localizeField(e.school_pt, e.school_en, e.school_es),
               period: `${e.period_start} - ${e.period_end || "Atual"}`,
               description: localizeField(e.description_pt, e.description_en, e.description_es),
+              type: e.education_type || "course",
             }))
           : prev.education,
         skills: Array.isArray(skills)
@@ -781,6 +789,16 @@ className={`w-full text-left p-3 rounded-lg border transition-colors ${
                   rows={3}
                   className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm resize-none ${colors.text}`}
                   placeholder={language === "pt" ? "Descreva seu perfil profissional..." : language === "en" ? "Describe your professional profile..." : "Describe tu perfil profesional..."}
+                />
+              </div>
+              <div>
+                <label className={`block text-xs ${colors.textLabel} mb-1`}>Objetivo ({language.toUpperCase()})</label>
+                <textarea
+                  value={cvData.objective[language] || ""}
+                  onChange={(e) => handleFieldChange("objective", language, e.target.value)}
+                  rows={2}
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm resize-none ${colors.text}`}
+                  placeholder={language === "pt" ? "Descreva seu objetivo profissional..." : language === "en" ? "Describe your professional objective..." : "Describe tu objetivo profesional..."}
                 />
               </div>
               <div>

@@ -58,6 +58,7 @@ export interface EducationEntry {
   description_es: string;
   description_fr: string;
   description_zh: string;
+  education_type: string;
   display_order: number;
   created_at: string;
   updated_at: string;
