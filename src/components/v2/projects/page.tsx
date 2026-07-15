@@ -25,7 +25,7 @@ function useProjectMedia(projectSrc: string) {
   useEffect(() => {
     if (!projectSrc) return
     const checkMedia = async () => {
-      const extensions = ['.mp4', '.webm', '.mov', '.gif', '.png', '.jpg']
+      const extensions = ['.mp4', '.png', '.webm', '.mov', '.gif', '.jpg']
       for (const ext of extensions) {
         const path = `/images/project_${projectSrc}${ext}`
         try {

@@ -9,6 +9,7 @@ const nextConfig = {
   transpilePackages: ['@splinetool/react-spline', '@splinetool/runtime', 'recharts', 'react-chrono', '@mui/material', '@emotion/react', 'hoist-non-react-statics', 'decimal.js-light', 'react-is'],
   turbopack: {},
   images: {
+    qualities: [75, 90, 95],
     remotePatterns: [
       {
         protocol: 'https',

@@ -34,7 +34,7 @@ export const OpenedProject = ({ theme, list, project, language, onBack }: iOpene
 
   useEffect(() => {
     const checkMedia = async () => {
-      const extensions = ['-full.png', '-full.gif', '-full.mp4', '-full.webm', '-full.mov', '.png', '.gif', '.mp4', '.webm', '.mov'];
+      const extensions = ['-full.png', '.png', '-full.mp4', '.mp4', '-full.gif', '.gif', '-full.webm', '-full.mov', '.webm', '.mov'];
       for (const ext of extensions) {
         try {
           const response = await fetch(`/images/project_${project}${ext}`);

@@ -429,9 +429,11 @@ export function V2HomeHero() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-24 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent`}>
-                    {chatResponse}
-                  </p>
+                  <div className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent`}>
+                    {chatResponse.split("\n").map((line, i) => (
+                      <p key={i}>{line || "\u00A0"}</p>
+                    ))}
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div

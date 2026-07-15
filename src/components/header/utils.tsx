@@ -20,6 +20,7 @@ export const Utils = ( props:UtilsProps ) => {
           width={30} 
           height={30} 
           className="max-sm:w-8 max-sm:h-8"
+          unoptimized
         />
       </button>
       <LanguageSelector />

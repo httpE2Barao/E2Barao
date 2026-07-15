@@ -228,7 +228,7 @@ export async function POST(req: Request) {
     console.log(`[NVIDIA AI] Lang: ${language}, Message: "${message.substring(0, 50)}..."`)
 
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 25000)
+    const timeout = setTimeout(() => controller.abort(), 30000)
 
     const res = await fetch(NVIDIA_API_URL, {
       method: "POST",
@@ -242,7 +242,7 @@ export async function POST(req: Request) {
           { role: "system", content: systemPrompt },
           { role: "user", content: message },
         ],
-        max_tokens: 300,
+        max_tokens: 1000,
         temperature: 0.7,
         top_p: 0.9,
       }),
