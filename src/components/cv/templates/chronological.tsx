@@ -149,17 +149,6 @@ export function ChronologicalCV({ data }: { data: CVData }) {
           </View>
         )}
 
-        {data.includeSkills && data.skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t.skills}</Text>
-            <View style={styles.skillRow}>
-              {data.skills.map((skill, i) => (
-                <Text key={i} style={styles.skillTag}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
-              ))}
-            </View>
-          </View>
-        )}
-
         {data.includeProjects && data.projects.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t.keyProjects}</Text>
@@ -176,6 +165,17 @@ export function ChronologicalCV({ data }: { data: CVData }) {
                 )}
               </View>
             ))}
+          </View>
+        )}
+
+        {data.includeSkills && data.skills.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.skills}</Text>
+            <View style={styles.skillRow}>
+              {data.skills.map((skill, i) => (
+                <Text key={i} style={styles.skillTag}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
+              ))}
+            </View>
           </View>
         )}
 

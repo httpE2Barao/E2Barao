@@ -80,22 +80,6 @@ export function FunctionalPreview({ data }: { data: CVData }) {
           </div>
         )}
 
-        {data.includeSkills && skillCategories.length > 0 && (
-          <>
-            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.skills}</h2>
-            {skillCategories.map((cat, i) => (
-              <div key={i} className="mb-3">
-                <h3 className="text-[10px] font-semibold text-gray-800 mb-1">{cat.title}</h3>
-                <div className="flex flex-wrap gap-1">
-                  {cat.skills.map((skill, j) => (
-                    <span key={j} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-[9px]">{skill}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-
         {data.includeProjects && data.projects.length > 0 && (
           <>
             <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">Key Projects</h2>
@@ -115,6 +99,22 @@ export function FunctionalPreview({ data }: { data: CVData }) {
           </>
         )}
       </div>
+
+        {data.includeSkills && skillCategories.length > 0 && (
+          <>
+            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.skills}</h2>
+            {skillCategories.map((cat, i) => (
+              <div key={i} className="mb-3">
+                <h3 className="text-[10px] font-semibold text-gray-800 mb-1">{cat.title}</h3>
+                <div className="flex flex-wrap gap-1">
+                  {cat.skills.map((skill, j) => (
+                    <span key={j} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-[9px]">{skill}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </>
+        )}
 
       <div className="mb-4">
         {data.includeExperience && (

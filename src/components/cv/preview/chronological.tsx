@@ -125,13 +125,6 @@ export function ChronologicalPreview({ data }: { data: CVData }) {
         </div>
       )}
 
-      <div className="mb-4">
-        <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.skills}</h2>
-        {data.skills.map((skill, i) => (
-          <span key={i} className="text-[10px] text-gray-700">{skill}{i < data.skills.length - 1 ? ", " : ""}</span>
-        ))}
-      </div>
-
       {data.projects.length > 0 && (
         <div className="mb-4">
           <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.keyProjects}</h2>
@@ -150,6 +143,13 @@ export function ChronologicalPreview({ data }: { data: CVData }) {
           ))}
         </div>
       )}
+
+      <div className="mb-4">
+        <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.skills}</h2>
+        {data.skills.map((skill, i) => (
+          <span key={i} className="text-[10px] text-gray-700">{skill}{i < data.skills.length - 1 ? ", " : ""}</span>
+        ))}
+      </div>
 
       {data.languages.length > 0 && (
         <div>

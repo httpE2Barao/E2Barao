@@ -100,22 +100,6 @@ export function FunctionalCV({ data }: { data: CVData }) {
           </View>
         )}
 
-        {data.includeSkills && skillCategories.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t.coreCompetencies}</Text>
-            {skillCategories.map((cat, i) => (
-              <View key={i} style={styles.skillCategory}>
-                <Text style={styles.skillCategoryTitle}>{cat.title}</Text>
-                <View style={styles.skillRow}>
-                  {cat.skills.map((skill, j) => (
-                    <Text key={j} style={styles.skillTag}>{skill}</Text>
-                  ))}
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
-
         {data.includeProjects && data.projects.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t.projects}</Text>
@@ -130,6 +114,22 @@ export function FunctionalCV({ data }: { data: CVData }) {
                     ))}
                   </View>
                 )}
+              </View>
+            ))}
+          </View>
+        )}
+
+        {data.includeSkills && skillCategories.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.coreCompetencies}</Text>
+            {skillCategories.map((cat, i) => (
+              <View key={i} style={styles.skillCategory}>
+                <Text style={styles.skillCategoryTitle}>{cat.title}</Text>
+                <View style={styles.skillRow}>
+                  {cat.skills.map((skill, j) => (
+                    <Text key={j} style={styles.skillTag}>{skill}</Text>
+                  ))}
+                </View>
               </View>
             ))}
           </View>

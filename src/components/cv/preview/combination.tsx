@@ -79,13 +79,6 @@ export function CombinationPreview({ data }: { data: CVData }) {
         </div>
       )}
 
-      <div className="mb-4">
-        <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.coreSkills}</h2>
-        {data.skills.map((skill, i) => (
-          <span key={i} className="text-[10px] text-gray-700">{skill}{i < data.skills.length - 1 ? ", " : ""}</span>
-        ))}
-      </div>
-
       <div className="grid grid-cols-2 gap-6">
         <div>
           <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.experience}</h2>
@@ -151,6 +144,13 @@ export function CombinationPreview({ data }: { data: CVData }) {
               ))}
             </div>
           )}
+
+          <div className="mb-4">
+            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.coreSkills}</h2>
+            {data.skills.map((skill, i) => (
+              <span key={i} className="text-[10px] text-gray-700">{skill}{i < data.skills.length - 1 ? ", " : ""}</span>
+            ))}
+          </div>
 
           {data.languages.length > 0 && (
             <div className="mt-4">

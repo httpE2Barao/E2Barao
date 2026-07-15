@@ -95,17 +95,6 @@ export function MinimalPreview({ data }: { data: CVData }) {
         ))}
       </div>
 
-      {data.includeSkills && data.skills.length > 0 && (
-        <div className="mb-4">
-          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">{t.skills}</h2>
-          <div className="flex flex-wrap gap-1">
-            {data.skills.map((skill, i) => (
-              <span key={i} className="text-[9px] text-gray-800">{skill}{i < data.skills.length - 1 ? " · " : ""}</span>
-            ))}
-          </div>
-        </div>
-      )}
-
       {data.includeProjects && data.projects.length > 0 && (
         <div className="mb-4">
           <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">Projetos</h2>
@@ -122,6 +111,17 @@ export function MinimalPreview({ data }: { data: CVData }) {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {data.includeSkills && data.skills.length > 0 && (
+        <div className="mb-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">{t.skills}</h2>
+          <div className="flex flex-wrap gap-1">
+            {data.skills.map((skill, i) => (
+              <span key={i} className="text-[9px] text-gray-800">{skill}{i < data.skills.length - 1 ? " · " : ""}</span>
+            ))}
+          </div>
         </div>
       )}
 
