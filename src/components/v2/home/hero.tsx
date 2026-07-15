@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import { useWelcomeAudio, useSpeech } from "@/hooks/use-welcome-audio"
+import ReactMarkdown from "react-markdown"
 
 const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
@@ -429,10 +430,8 @@ export function V2HomeHero() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <div className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent`}>
-                    {chatResponse.split("\n").map((line, i) => (
-                      <p key={i}>{line || "\u00A0"}</p>
-                    ))}
+                  <div className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent [&_strong]:text-cyan-400 [&_strong]:font-bold text-left`}>
+                    <ReactMarkdown>{chatResponse}</ReactMarkdown>
                   </div>
                 </motion.div>
               ) : (
