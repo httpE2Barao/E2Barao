@@ -165,7 +165,7 @@ export function CombinationCV({ data }: { data: CVData }) {
               <Text style={styles.sectionTitle}>{t.skills}</Text>
               <View style={styles.skillRow}>
                 {data.skills.map((skill, i) => (
-                  <Text key={i} style={styles.skillTag}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
+                  <Text key={i} style={styles.skillTag}>{skill}</Text>
                 ))}
               </View>
             </View>
