@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "@/components/switchers/switchers"
+import { V2ProjectModal } from "@/components/v2/projects/project-modal"
 
 const videoTimeRef: { current: Record<string, number>; currentProject: string | null } = {
   current: {},
@@ -187,6 +188,7 @@ export function V2ProjectsPage() {
   const featuredProjects = data?.featuredProjects || []
   const showcaseProjects = data?.showcaseProjects || []
   const githubProjects = data?.githubOnlyProjects || []
+  const allProjects = [...featuredProjects, ...showcaseProjects, ...githubProjects]
 
   if (loading) {
     return (
@@ -274,56 +276,12 @@ export function V2ProjectsPage() {
 
       <AnimatePresence>
         {selectedProject && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
-            transition={{ duration: 0.3 }}
-            className={`fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 ${isDark ? "bg-black" : "bg-white"}`}
-            onClick={() => setSelectedProject(null)}
-          >
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 40 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 40 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className={`relative w-full max-w-4xl max-h-[90vh] overflow-auto rounded-3xl ${isDark ? "bg-black" : "bg-white"}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setSelectedProject(null)}
-                className={`absolute top-4 right-4 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-colors border ${isDark ? "bg-black/70 hover:bg-black/90 text-white border-white/20" : "bg-white/80 hover:bg-white/95 text-black border-black/10"}`}
-              >
-                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              <ProjectMedia project={selectedProject} isDark={isDark} />
-              
-              <h2 className={`text-2xl sm:text-3xl font-black tracking-tighter mt-6 mb-4 ${isDark ? "text-white" : "text-black"}`}>{selectedProject.name}<span className="text-cyan-400">.</span></h2>
-              
-              {selectedProject.subtitle && <p className={`${textDesc} leading-relaxed text-base mb-4`}>{selectedProject.subtitle}</p>}
-              {selectedProject.abt && <p className={`${textMuted} leading-relaxed text-sm mb-6`}>{selectedProject.abt}</p>}
-
-                {selectedProject.githubLanguages && Object.keys(selectedProject.githubLanguages).length > 0 && (
-                  <div className="mb-6">
-                    <LanguageBars languages={selectedProject.githubLanguages} size="lg" />
-                  </div>
-                )}
-
-                <div className="flex gap-3">
-                  {selectedProject.site && (
-                    <a href={selectedProject.site} target="_blank" rel="noopener noreferrer" className={`px-6 py-2.5 ${btnBg} font-semibold rounded-full transition-colors text-sm`}>
-                      {language === "pt" ? "Ver Projeto" : language === "es" ? "Ver Proyecto" : language === "fr" ? "Voir le Projet" : language === "zh" ? "查看项目" : "View Project"}
-                    </a>
-                  )}
-                  <a href={selectedProject.repo} target="_blank" rel="noopener noreferrer" className={`px-6 py-2.5 border ${btnOutline} rounded-full transition-colors text-sm`}>
-                    {language === "pt" ? "Código Fonte" : language === "es" ? "Código Fuente" : language === "fr" ? "Code Source" : language === "zh" ? "源代码" : "Source Code"}
-                  </a>
-                </div>
-              </motion.div>
-          </motion.div>
+          <V2ProjectModal
+            project={selectedProject}
+            index={allProjects.findIndex(p => p.id === selectedProject.id)}
+            total={allProjects.length}
+            onClose={() => setSelectedProject(null)}
+          />
         )}
       </AnimatePresence>
     </>
