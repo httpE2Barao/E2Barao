@@ -199,6 +199,24 @@ function EducationItem({ edu, index, language }: { edu: Education; index: number
   )
 }
 
+function TabSelector({ activeTab, setActiveTab, activeBg, bgTab, textTab, hoverTab, experienceTab, educationTab }: {
+  activeTab: "experience" | "education";
+  setActiveTab: (tab: "experience" | "education") => void;
+  activeBg: string; bgTab: string; textTab: string; hoverTab: string;
+  experienceTab: string; educationTab: string;
+}) {
+  return (
+    <div className="flex gap-3">
+      <button onClick={() => setActiveTab("experience")} className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${activeTab === "experience" ? activeBg : `${bgTab} ${textTab} ${hoverTab}`}`}>
+        {experienceTab}
+      </button>
+      <button onClick={() => setActiveTab("education")} className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${activeTab === "education" ? activeBg : `${bgTab} ${textTab} ${hoverTab}`}`}>
+        {educationTab}
+      </button>
+    </div>
+  )
+}
+
 export function V2ExperiencesPage() {
   const [activeTab, setActiveTab] = useState<"experience" | "education">("experience")
   const [experiences, setExperiences] = useState<Experience[]>([])
@@ -303,28 +321,7 @@ export function V2ExperiencesPage() {
       </div>
 
       <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-10">
-        <div className="flex gap-3">
-          <button
-            onClick={() => setActiveTab("experience")}
-            className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${
-              activeTab === "experience"
-                ? activeBg
-                : `${bgTab} ${textTab} ${hoverTab}`
-            }`}
-          >
-            {experienceTab}
-          </button>
-          <button
-            onClick={() => setActiveTab("education")}
-            className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${
-              activeTab === "education"
-                ? activeBg
-                : `${bgTab} ${textTab} ${hoverTab}`
-            }`}
-          >
-            {educationTab}
-          </button>
-        </div>
+        <TabSelector activeTab={activeTab} setActiveTab={setActiveTab} activeBg={activeBg} bgTab={bgTab} textTab={textTab} hoverTab={hoverTab} experienceTab={experienceTab} educationTab={educationTab} />
       </div>
 
       <div className="px-6 sm:px-10 lg:px-16 xl:px-24">
@@ -371,6 +368,12 @@ export function V2ExperiencesPage() {
           </AnimatePresence>
         )}
       </div>
+
+      {!loading && (experiences.length > 0 || education.length > 0) && (
+        <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mt-10">
+          <TabSelector activeTab={activeTab} setActiveTab={setActiveTab} activeBg={activeBg} bgTab={bgTab} textTab={textTab} hoverTab={hoverTab} experienceTab={experienceTab} educationTab={educationTab} />
+        </div>
+      )}
     </section>
   )
 }
