@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
   entryPeriod: { fontSize: 9, color: "#64748b", wrap: false },
   entryCompany: { fontSize: 10, color: "#475569", marginBottom: 3, wrap: false },
   entryDesc: { fontSize: 9, color: "#334155", lineHeight: 1.5, wrap: false },
-  skillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  skillTag: { fontSize: 9, backgroundColor: "#f1f5f9", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, color: "#334155", wrap: false },
+  skillRow: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
+  skillTag: { fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 5, paddingVertical: 2, borderRadius: 3, color: "#334155", wrap: false },
   twoCol: { flexDirection: "row", gap: 20 },
   col: { flex: 1 },
 });
