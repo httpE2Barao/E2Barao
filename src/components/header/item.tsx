@@ -37,9 +37,11 @@ export const ItemNav = (props: ItemProps) => {
         className={`
           w-full text-left icon-animation-nav p-2 rounded-md hover:cursor-pointer
           ${props.menuStyle && 'p-4'}
-          ${props.pageSelected == props.index
-            ? (props.theme === 'dark' ? 'text-black' : '')
-            : (props.theme === 'dark' ? 'text-white' : 'text-dark')
+          ${props.menuStyle
+            ? ''
+            : props.pageSelected == props.index
+              ? (props.theme === 'dark' ? 'text-black' : '')
+              : (props.theme === 'dark' ? 'text-white' : 'text-dark')
           }
           hover:text-black focus:text-black
           focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-azul-claro
