@@ -158,9 +158,24 @@ export function CreativeCV({ data }: { data: CVData }) {
 
           {data.projects.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>{t.projects}</Text>
-              {data.projects.slice(0, 4).map((project, i) => (
-                <View key={i} style={{ marginBottom: 10 }}>
+              <View wrap={false}>
+                <Text style={styles.sectionTitle}>{t.projects}</Text>
+                {data.projects.slice(0, 1).map((project, i) => (
+                  <View key={i} wrap={false} style={{ marginBottom: 18 }}>
+                    <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b", marginBottom: 2 }}>{project.name}</Text>
+                    <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.4 }}>{project.description}</Text>
+                    {project.tags && project.tags.length > 0 && (
+                      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                        {project.tags.map((tag, j) => (
+                          <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                ))}
+              </View>
+              {data.projects.slice(1, 4).map((project, i) => (
+                <View key={i} wrap={false} style={{ marginBottom: 18 }}>
                   <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b", marginBottom: 2 }}>{project.name}</Text>
                   <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.4 }}>{project.description}</Text>
                   {project.tags && project.tags.length > 0 && (

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   skillCategoryTitle: { fontSize: 11, fontWeight: 600, color: "#1e293b", marginBottom: 4, wrap: false },
   skillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
   skillTag: { fontSize: 9, backgroundColor: "#f1f5f9", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, color: "#334155", wrap: false },
-  entry: { marginBottom: 8, wrap: false },
+  entry: { marginBottom: 16, wrap: false },
   entryHeader: { flexDirection: "row", justifyContent: "space-between", marginBottom: 1, wrap: false },
   entryRole: { fontSize: 10, fontWeight: 600, color: "#1e293b", wrap: false },
   entryPeriod: { fontSize: 9, color: "#64748b", wrap: false },
@@ -102,8 +102,23 @@ export function FunctionalCV({ data }: { data: CVData }) {
 
         {data.includeProjects && data.projects.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t.projects}</Text>
-            {data.projects.map((project, i) => (
+            <View wrap={false}>
+              <Text style={styles.sectionTitle}>{t.projects}</Text>
+              {data.projects.slice(0, 1).map((project, i) => (
+                <View key={i} style={styles.entry}>
+                  <Text style={styles.entryRole}>{project.name}</Text>
+                  <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.5 }}>{project.description}</Text>
+                  {project.tags && project.tags.length > 0 && (
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                      {project.tags.map((tag, j) => (
+                        <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                      ))}
+                    </View>
+                  )}
+                </View>
+              ))}
+            </View>
+            {data.projects.slice(1).map((project, i) => (
               <View key={i} style={styles.entry}>
                 <Text style={styles.entryRole}>{project.name}</Text>
                 <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.5 }}>{project.description}</Text>
