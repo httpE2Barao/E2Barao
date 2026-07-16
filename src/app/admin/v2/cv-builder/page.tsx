@@ -567,16 +567,8 @@ const getLocalizedCVData = (lang: Language): any => {
       };
 
       const Component = templateMap[selectedTemplate];
-      const localizedData = getLocalizedCVData(language);
-      const blob = await pdf(<Component data={localizedData} />).toBlob();
-
-const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-${language}.pdf`;
-       
-      const formData = new FormData();
-      formData.append('pdf', blob, fileName);
-      formData.append('templateId', selectedTemplate);
-      formData.append('language', language);
-      formData.append('config', JSON.stringify({
+      const langs: Language[] = ['pt', 'en', 'es'];
+      const config = JSON.stringify({
         selectedExperienceIds: cvData.selectedExperienceIds,
         selectedEducationIds: cvData.selectedEducationIds,
         selectedProjectIds: cvData.selectedProjectIds,
@@ -589,19 +581,29 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
         maxSkills: cvData.maxSkills,
         sortSkills: cvData.sortSkills,
         selectedSkillIds: cvData.selectedSkillIds,
-      }));
-
-      await fetch('/api/admin/cv/save', {
-        method: 'POST',
-        body: formData,
       });
 
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      link.click();
-      URL.revokeObjectURL(url);
+      for (const lang of langs) {
+        const localizedData = getLocalizedCVData(lang);
+        if (!localizedData) continue;
+        const blob = await pdf(<Component data={localizedData} />).toBlob();
+        const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-${lang}.pdf`;
+        const formData = new FormData();
+        formData.append('pdf', blob, fileName);
+        formData.append('templateId', selectedTemplate);
+        formData.append('language', lang);
+        formData.append('config', config);
+        await fetch('/api/admin/cv/save', { method: 'POST', body: formData });
+
+        if (lang === language) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = fileName;
+          link.click();
+          URL.revokeObjectURL(url);
+        }
+      }
 
       setMessage({ type: "success", text: language === "pt" ? "PDF gerado e baixado com sucesso!" : language === "en" ? "PDF generated and downloaded successfully!" : "¡PDF generado y descargado con éxito!" });
     } catch (error) {

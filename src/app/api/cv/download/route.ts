@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
+import fs from 'fs';
+import path from 'path';
 
 async function ensureTable() {
   try {
@@ -28,7 +30,7 @@ export async function GET(request: NextRequest) {
 
     const { rows } = await sql`
       SELECT * FROM cv_generated
-      WHERE language = ${language}
+      WHERE language = ${language} AND format = 'pdf'
       ORDER BY created_at DESC
       LIMIT 1 OFFSET 0;
     `;
@@ -36,6 +38,7 @@ export async function GET(request: NextRequest) {
     if (rows.length === 0) {
       const fallbackRows = await sql`
         SELECT * FROM cv_generated
+        WHERE format = 'pdf'
         ORDER BY created_at DESC
         LIMIT 1 OFFSET 0;
       `;
@@ -45,13 +48,27 @@ export async function GET(request: NextRequest) {
       }
 
       const cv = fallbackRows.rows[0];
-      if (cv.pdf_data && download === 'true') {
-        return new NextResponse(cv.pdf_data, {
-          headers: {
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': `attachment; filename="cv-${cv.language}.pdf"`,
-          },
-        });
+      if (download === 'true') {
+        if (cv.pdf_data) {
+          return new NextResponse(cv.pdf_data, {
+            headers: {
+              'Content-Type': 'application/pdf',
+              'Content-Disposition': `attachment; filename="cv-${cv.language}.pdf"`,
+            },
+          });
+        }
+        if (cv.blob_url) {
+          const filePath = path.join(process.cwd(), 'public', cv.blob_url);
+          if (fs.existsSync(filePath)) {
+            const buffer = fs.readFileSync(filePath);
+            return new NextResponse(buffer, {
+              headers: {
+                'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename="CV-EliasBarao-${cv.language}.pdf"`,
+              },
+            });
+          }
+        }
       }
 
       return NextResponse.json({
@@ -64,13 +81,27 @@ export async function GET(request: NextRequest) {
 
     const latestCV = rows[0];
 
-    if (latestCV.pdf_data && download === 'true') {
-      return new NextResponse(latestCV.pdf_data, {
-        headers: {
-          'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename="cv-${latestCV.language}.pdf"`,
-        },
-      });
+    if (download === 'true') {
+      if (latestCV.pdf_data) {
+        return new NextResponse(latestCV.pdf_data, {
+          headers: {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename="cv-${latestCV.language}.pdf"`,
+          },
+        });
+      }
+      if (latestCV.blob_url) {
+        const filePath = path.join(process.cwd(), 'public', latestCV.blob_url);
+        if (fs.existsSync(filePath)) {
+          const buffer = fs.readFileSync(filePath);
+          return new NextResponse(buffer, {
+            headers: {
+              'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename="CV-EliasBarao-${latestCV.language}.pdf"`,
+            },
+          });
+        }
+      }
     }
 
     return NextResponse.json({
