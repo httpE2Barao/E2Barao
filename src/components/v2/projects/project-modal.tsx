@@ -126,9 +126,14 @@ export function V2ProjectModal({ project, index, total, onClose }: V2ProjectModa
   const videoRef = useRef<HTMLVideoElement>(null)
   const hasInitializedRef = useRef(false)
 
+  const [mediaFullscreen, setMediaFullscreen] = useState(false)
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
+      if (e.key === "Escape") {
+        if (mediaFullscreen) setMediaFullscreen(false)
+        else onClose()
+      }
     }
     document.addEventListener("keydown", handleEsc)
     document.body.style.overflow = "hidden"
@@ -136,7 +141,7 @@ export function V2ProjectModal({ project, index, total, onClose }: V2ProjectModa
       document.removeEventListener("keydown", handleEsc)
       document.body.style.overflow = ""
     }
-  }, [onClose])
+  }, [onClose, mediaFullscreen])
 
   useEffect(() => {
     if (videoRef.current && hasVideo(mediaUrl) && !hasInitializedRef.current) {
@@ -173,7 +178,7 @@ export function V2ProjectModal({ project, index, total, onClose }: V2ProjectModa
           </svg>
         </button>
 
-        <div className="relative w-full h-[50vh] md:h-[60vh]">
+        <div className="relative w-full h-[50vh] md:h-[60vh] cursor-pointer" onClick={() => setMediaFullscreen(true)}>
           {mediaLoading ? (
             <div className="w-full h-full bg-black/20 animate-pulse" />
           ) : hasVideo(mediaUrl) ? (
@@ -304,6 +309,44 @@ export function V2ProjectModal({ project, index, total, onClose }: V2ProjectModa
           </motion.div>
         </div>
       </motion.div>
+
+      {mediaFullscreen && mediaUrl && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`fixed inset-0 z-[99999] ${isDark ? "bg-black" : "bg-white"} flex items-center justify-center`}
+          onClick={() => setMediaFullscreen(false)}
+        >
+          <button
+            onClick={() => setMediaFullscreen(false)}
+            className="fixed top-4 right-4 md:top-6 md:right-6 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-black/70 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md transition-colors"
+          >
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          {hasVideo(mediaUrl) ? (
+            <video
+              src={mediaUrl}
+              className="max-w-full max-h-full object-contain"
+              autoPlay
+              loop
+              muted
+              playsInline
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <img
+              src={mediaUrl}
+              alt={project.name}
+              className="max-w-full max-h-full object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+        </motion.div>
+      )}
     </motion.div>
   )
 }
