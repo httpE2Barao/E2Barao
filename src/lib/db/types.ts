@@ -133,6 +133,11 @@ export interface Project {
   name_es: string;
   name_fr: string;
   name_zh: string;
+  subtitle_pt: string;
+  subtitle_en: string;
+  subtitle_es: string;
+  subtitle_fr: string;
+  subtitle_zh: string;
   abt_pt: string;
   abt_en: string;
   abt_es: string;
@@ -145,7 +150,49 @@ export interface Project {
   alt_zh: string;
   featured: boolean;
   display_order: number;
+  show_on_page: boolean;
+  in_spiral: boolean;
+  visible: boolean;
+  skill_ids: number[];
+  github_src: string | null;
+  github_languages: Record<string, number>;
+  is_private: boolean;
   created_at: string;
+}
+
+export interface SkillBrief {
+  id: number;
+  name: string;
+  category: string;
+}
+
+export interface ProjectDTO {
+  id: number;
+  src: string;
+  site: string;
+  repo: string;
+  tags: string[];
+  imageUrls: string[];
+  name: string;
+  subtitle: string;
+  alt: string;
+  abt: string;
+  featured: boolean;
+  display_order: number;
+  hasLocalMedia: boolean;
+  githubLanguages: Record<string, number>;
+  skills: SkillBrief[];
+  stars: number;
+  forks: number;
+  isPrivate?: boolean;
+}
+
+export interface ProjectsResponse {
+  featuredProjects: ProjectDTO[];
+  showcaseProjects: ProjectDTO[];
+  spiralProjects: ProjectDTO[];
+  githubOnlyProjects: ProjectDTO[];
+  total: number;
 }
 
 export type Language = 'pt' | 'en' | 'es' | 'fr' | 'zh';

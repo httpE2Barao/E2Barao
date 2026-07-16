@@ -34,7 +34,7 @@ export function CreativePreview({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
     objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
-    graduation: lang === "pt" ? "Educação (Graduação)" : lang === "en" ? "Education (Graduation)" : "Educación (Graduación)",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     contact: lang === "pt" ? "Contato" : lang === "en" ? "Contact" : "Contacto",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
@@ -93,38 +93,13 @@ export function CreativePreview({ data }: { data: CVData }) {
         {data.education.length > 0 && (
           <div className="mb-5">
             <h3 className="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-2 pb-1 border-b border-amber-400">{t.education}</h3>
-            {(() => {
-              const graduations = data.education.filter(e => e.type === "graduation");
-              const courses = data.education.filter(e => e.type !== "graduation");
-              return (
-                <>
-                  {graduations.length > 0 && (
-                    <div className="mb-2">
-                      <p className="text-[8px] font-semibold text-amber-400 mb-1">{t.graduation}</p>
-                      {graduations.map((edu, i) => (
-                        <div key={i} className="mb-2">
-                          <p className="text-[9px] font-semibold text-white">{edu.degree}</p>
-                          <p className="text-[9px] text-slate-300">{edu.school}</p>
-                          <p className="text-[8px] text-slate-400">{edu.period}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {courses.length > 0 && (
-                    <div>
-                      <p className="text-[8px] font-semibold text-amber-400 mb-1">{t.complementaryCourses}</p>
-                      {courses.map((edu, i) => (
-                        <div key={i} className="mb-2">
-                          <p className="text-[9px] font-semibold text-white">{edu.degree}</p>
-                          <p className="text-[9px] text-slate-300">{edu.school}</p>
-                          <p className="text-[8px] text-slate-400">{edu.period}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              );
-            })()}
+            {data.education.map((edu, i) => (
+              <div key={i} className="mb-2">
+                <p className="text-[9px] font-semibold text-white">{edu.degree}</p>
+                <p className="text-[9px] text-slate-300">{edu.school}</p>
+                <p className="text-[8px] text-slate-400">{edu.period}</p>
+              </div>
+            ))}
           </div>
         )}
 

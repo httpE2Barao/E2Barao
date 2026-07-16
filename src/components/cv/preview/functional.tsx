@@ -38,7 +38,7 @@ export function FunctionalPreview({ data }: { data: CVData }) {
   const skillCategories = categorizeSkills(data.skills, lang, data.skillOrders);
   const t = {
     objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
-    graduation: lang === "pt" ? "Graduação" : lang === "en" ? "Graduation" : "Graduación",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     professionalSummary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
     professionalExperience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Professional Experience" : "Experiencia Laboral",
@@ -133,44 +133,20 @@ export function FunctionalPreview({ data }: { data: CVData }) {
         )}
       </div>
 
-      <div className="mb-4">
-        {data.includeEducation && (() => {
-          const graduations = data.education.filter(e => e.type === "graduation");
-          const courses = data.education.filter(e => e.type !== "graduation");
-          return (
-            <>
-              {graduations.length > 0 && (
-                <>
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.graduation}</h2>
-                  {graduations.map((edu, i) => (
-                    <div key={i} className="mb-2">
-                      <div className="flex justify-between items-baseline">
-                        <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
-                        <span className="text-[9px] text-gray-500">{edu.period}</span>
-                      </div>
-                      <p className="text-[9px] text-gray-600">{edu.school}</p>
-                    </div>
-                  ))}
-                </>
-              )}
-              {courses.length > 0 && (
-                <>
-                  <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.complementaryCourses}</h2>
-                  {courses.map((edu, i) => (
-                    <div key={i} className="mb-2">
-                      <div className="flex justify-between items-baseline">
-                        <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
-                        <span className="text-[9px] text-gray-500">{edu.period}</span>
-                      </div>
-                      <p className="text-[9px] text-gray-600">{edu.school}</p>
-                    </div>
-                  ))}
-                </>
-              )}
-            </>
-          );
-        })()}
-      </div>
+      {data.includeEducation && data.education.length > 0 && (
+        <div className="mb-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.graduation}</h2>
+          {data.education.map((edu, i) => (
+            <div key={i} className="mb-2">
+              <div className="flex justify-between items-baseline">
+                <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
+                <span className="text-[9px] text-gray-500">{edu.period}</span>
+              </div>
+              <p className="text-[9px] text-gray-600">{edu.school}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {data.includeLanguages && data.languages.length > 0 && (
         <div>

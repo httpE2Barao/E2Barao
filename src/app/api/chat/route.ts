@@ -60,7 +60,7 @@ function getSystemPrompt(lang: string): string {
 
 SOBRE ELIAS:
 - Nome completo: Elias Edson Barão
-- Título: Software & Automation Engineer | Full-Stack Developer
+- Título: Software & Automation Engineer | Full-Stack Developer | Arquiteto de Agentes de IA
 - Localização: Curitiba, PR, Brasil
 - Idiomas: Português (nativo), Inglês, Espanhol
 - Formação: Engenharia de Software na Descomplica (2024-2028)
@@ -69,7 +69,7 @@ SOBRE ELIAS:
 - LinkedIn: linkedin.com/in/e2barao
 
 STACK PRINCIPAL:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini, Ollama, NVIDIA NIM, LangChain, MCP, RAG, LLMs locais
 
 EXPERIÊNCIA:
 - CMS Developer na Prefeitura Municipal de Colombo (Mai 2025 - presente)
@@ -91,7 +91,7 @@ REGRAS:
 
 SOBRE ELIAS:
 - Nombre completo: Elias Edson Barão
-- Título: Software & Automation Engineer | Full-Stack Developer
+- Título: Software & Automation Engineer | Full-Stack Developer | Arquitecto de Agentes de IA
 - Ubicación: Curitiba, PR, Brasil
 - Idiomas: Portugués (nativo), Inglés, Español
 - Formación: Ingeniería de Software en Descomplica (2024-2028)
@@ -100,7 +100,7 @@ SOBRE ELIAS:
 - LinkedIn: linkedin.com/in/e2barao
 
 STACK PRINCIPAL:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini, Ollama, NVIDIA NIM, LangChain, MCP, RAG, LLMs locales
 
 EXPERIENCIA:
 - CMS Developer en Prefeitura Municipal de Colombo (May 2025 - presente)
@@ -122,7 +122,7 @@ REGLAS:
 
 À PROPOS D'ELIAS:
 - Nom complet: Elias Edson Barão
-- Titre: Software & Automation Engineer | Full-Stack Developer
+- Titre: Software & Automation Engineer | Full-Stack Developer | Architecte d'Agents IA
 - Localisation: Curitiba, PR, Brésil
 - Langues: Portugais (natif), Anglais, Espagnol
 - Formation: Ingénierie Logiciel à Descomplica (2024-2028)
@@ -131,7 +131,7 @@ REGLAS:
 - LinkedIn: linkedin.com/in/e2barao
 
 STACK PRINCIPAL:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini, Ollama, NVIDIA NIM, LangChain, MCP, RAG, LLMs locaux
 
 EXPÉRIENCE:
 - CMS Developer à Prefeitura Municipal de Colombo (Mai 2025 - présent)
@@ -153,7 +153,7 @@ RÈGLES:
 
 关于 ELIAS：
 - 全名：Elias Edson Barão
-- 职位：软件与自动化工程师 | 全栈开发者
+- 职位：软件与自动化工程师 | 全栈开发者 | AI 智能体架构师
 - 位置：巴西库里奇巴
 - 语言：葡萄牙语（母语）、英语、西班牙语
 - 教育：Descomplica 软件工程（2024-2028）
@@ -162,7 +162,7 @@ RÈGLES:
 - LinkedIn: linkedin.com/in/e2barao
 
 主要技术栈：
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini, Ollama, NVIDIA NIM, LangChain, MCP, RAG, 本地 LLM
 
 工作经验：
 - CMS Developer，Colombo 市政府（2025年5月至今）
@@ -184,7 +184,7 @@ ${projectsContext}
 
 ABOUT ELIAS:
 - Full name: Elias Edson Barão
-- Title: Software & Automation Engineer | Full-Stack Developer
+- Title: Software & Automation Engineer | Full-Stack Developer | AI Agent Architect
 - Location: Curitiba, PR, Brazil
 - Languages: Portuguese (native), English, Spanish
 - Education: Software Engineering at Descomplica (2024-2028)
@@ -193,7 +193,7 @@ ABOUT ELIAS:
 - LinkedIn: linkedin.com/in/e2barao
 
 MAIN STACK:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini, Ollama, NVIDIA NIM, LangChain, MCP, RAG, local LLMs
 
 EXPERIENCE:
 - CMS Developer at Prefeitura Municipal de Colombo (May 2025 - present)

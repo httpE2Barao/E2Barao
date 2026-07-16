@@ -37,7 +37,7 @@ export function CombinationPreview({ data }: { data: CVData }) {
     objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
     coreSkills: lang === "pt" ? "Habilidades Principais" : lang === "en" ? "Core Skills" : "Habilidades Principales",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
-    graduation: lang === "pt" ? "Educação (Graduação)" : lang === "en" ? "Education (Graduation)" : "Educación (Graduación)",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     projects: lang === "pt" ? "Projetos" : lang === "en" ? "Projects" : "Proyectos",
     languages: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
@@ -95,25 +95,10 @@ export function CombinationPreview({ data }: { data: CVData }) {
         </div>
 
         <div>
-          {data.education.filter(e => e.type === 'graduation').length > 0 && (
+          {data.education.length > 0 && (
             <div className="mb-3">
               <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.graduation}</h2>
-              {data.education.filter(e => e.type === 'graduation').map((edu, i) => (
-                <div key={i} className="mb-2">
-                  <div className="flex justify-between items-baseline">
-                    <span className="font-semibold text-[11px] text-gray-800">{edu.degree}</span>
-                    <span className="text-[9px] text-gray-500">{edu.period}</span>
-                  </div>
-                  <p className="text-[10px] text-gray-600 italic">{edu.school}</p>
-                  {edu.description && <p className="text-[9px] text-gray-700 mt-1">{edu.description}</p>}
-                </div>
-              ))}
-            </div>
-          )}
-          {data.education.filter(e => e.type === 'course').length > 0 && (
-            <div className="mb-3">
-              <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-2 pb-1 border-b border-gray-200">{t.complementaryCourses}</h2>
-              {data.education.filter(e => e.type === 'course').map((edu, i) => (
+              {data.education.map((edu, i) => (
                 <div key={i} className="mb-2">
                   <div className="flex justify-between items-baseline">
                     <span className="font-semibold text-[11px] text-gray-800">{edu.degree}</span>

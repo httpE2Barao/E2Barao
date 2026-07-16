@@ -2,43 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useAdminTheme } from "../layout";
+import { SKILL_CATEGORIES, CATEGORY_ORDER } from "@/lib/skill-categories";
+import { Project } from "@/lib/db/types";
 
-interface Project {
-  id: number;
-  src: string;
-  site_url: string;
-  repo_url: string;
-  image_urls: string[];
-  tags: string[];
-  name_pt: string;
-  name_en: string;
-  name_es: string;
-  name_fr: string;
-  name_zh: string;
-  subtitle_pt: string;
-  subtitle_en: string;
-  subtitle_es: string;
-  subtitle_fr: string;
-  subtitle_zh: string;
-  abt_pt: string;
-  abt_en: string;
-  abt_es: string;
-  abt_fr: string;
-  abt_zh: string;
-  alt_pt: string;
-  alt_en: string;
-  alt_es: string;
-  alt_fr: string;
-  alt_zh: string;
-  featured: boolean;
-  display_order: number;
-  show_on_page: boolean;
-  in_spiral: boolean;
-  visible: boolean;
-  github_languages: Record<string, number>;
-  is_private: boolean;
-  created_at: string;
-}
 
 interface ProjectImage {
   name: string;
@@ -58,6 +24,7 @@ export default function ProjectsPage() {
   const [allTags, setAllTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [showGithubImport, setShowGithubImport] = useState(false);
+  const [allSkills, setAllSkills] = useState<any[]>([]);
 
   const colors = {
     card: isDark ? "bg-gray-900" : "bg-white",
@@ -82,6 +49,7 @@ const [formData, setFormData] = useState({
   alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
   tags: [] as string[], featured: false, display_order: 0,
   show_on_page: true, in_spiral: true, visible: true,
+  skill_ids: [] as number[],
 });
   const [githubRepos, setGithubRepos] = useState<any[]>([]);
   const [loadingGithub, setLoadingGithub] = useState(false);
@@ -97,21 +65,25 @@ const [formData, setFormData] = useState({
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const [projectsRes, githubRes] = await Promise.all([
+        const [projectsRes, githubRes, skillsRes] = await Promise.all([
           fetch("/api/admin/projects"),
-          fetch("/api/github/repos?per_page=100").catch(() => ({ ok: false, json: async () => [] }))
+          fetch("/api/github/repos?per_page=100").catch(() => ({ ok: false, json: async () => [] })),
+          fetch("/api/admin/skills?all=true").catch(() => ({ ok: false, json: async () => [] })),
         ]);
         const projectsData = await projectsRes.json();
         const githubData = projectsRes.ok ? await githubRes.json() : [];
+        const skillsData = skillsRes.ok ? await skillsRes.json() : [];
         
         const projectsList = Array.isArray(projectsData) ? projectsData : [];
         const githubList = Array.isArray(githubData) ? githubData : [];
+        const skillsList = Array.isArray(skillsData) ? skillsData : [];
         
         const localSrcs = new Set(projectsList.map((p: any) => p.src));
         const availableGithub = githubList.filter((r: any) => !localSrcs.has(r.name));
         
         setProjects(projectsList);
         setGithubRepos(availableGithub);
+        setAllSkills(skillsList);
         
         const tags = new Set<string>();
         projectsList.forEach((p: Project) => {
@@ -283,7 +255,8 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       featured: project.featured || false, display_order: project.display_order || 0,
       show_on_page: project.show_on_page !== false, 
       in_spiral: project.in_spiral !== false, 
-      visible: project.visible !== false, 
+      visible: project.visible !== false,
+      skill_ids: Array.isArray(project.skill_ids) ? project.skill_ids : [],
     });
     setShowForm(true);
   };
@@ -299,11 +272,56 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       alt_pt: "", alt_en: "", alt_es: "", alt_fr: "", alt_zh: "",
       tags: [], featured: false, display_order: 0,
       show_on_page: true, in_spiral: true, visible: true,
+      skill_ids: [],
     });
     setTagInput("");
   };
 
-  const importFromGithub = (repo: any) => {
+  const matchTopicsToSkills = async (topics: string[], language: string | null) => {
+    const namesToMatch = [...topics];
+    if (language && !namesToMatch.includes(language)) namesToMatch.push(language);
+    const matchedIds: number[] = [];
+    const toCreate: string[] = [];
+
+    for (const name of namesToMatch) {
+      const lower = name.toLowerCase();
+      const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const normalized = normalize(lower);
+
+      let skill = allSkills.find((s: any) => s.name.toLowerCase() === lower);
+      if (!skill) skill = allSkills.find((s: any) => normalize(s.name) === normalized);
+      if (!skill) skill = allSkills.find((s: any) => s.name.toLowerCase().includes(lower) || normalized.includes(normalize(s.name)));
+
+      if (skill) {
+        if (!matchedIds.includes(skill.id)) matchedIds.push(skill.id);
+      } else {
+        toCreate.push(name);
+      }
+    }
+
+    // Auto-create unmatched skills
+    for (const name of toCreate) {
+      try {
+        const { getSkillCategory } = await import("@/lib/skill-categories");
+        const category = getSkillCategory({ name });
+        const res = await fetch("/api/admin/skills", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, category, level: 0 }),
+        });
+        if (res.ok) {
+          const newSkill = await res.json();
+          setAllSkills((prev: any[]) => [...prev, newSkill]);
+          matchedIds.push(newSkill.id);
+        }
+      } catch { /* skip if creation fails */ }
+    }
+
+    return [...new Set(matchedIds)];
+  };
+
+  const importFromGithub = async (repo: any) => {
+    const matchedIds = await matchTopicsToSkills(repo.topics || [], repo.language || null);
     setFormData({
       src: repo.name,
       site_url: repo.homepage || "",
@@ -334,6 +352,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       show_on_page: true,
       in_spiral: true,
       visible: true,
+      skill_ids: matchedIds,
     });
     setShowGithubImport(false);
     setShowForm(true);
@@ -503,6 +522,54 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
               <p className={`text-xs ${colors.textSubtle} mt-1`}>Pressione Enter para adicionar ou clique em uma opção</p>
             </div>
             </div>
+            <div>
+              <label className={`block text-sm ${colors.textMuted} mb-2`}>Skills Vinculadas</label>
+              <div className={`border ${colors.border} rounded-lg p-3 max-h-60 overflow-y-auto`}>
+                {allSkills.length === 0 ? (
+                  <p className={`text-xs ${colors.textSubtle}`}>Nenhuma skill cadastrada</p>
+                ) : (
+                  SKILL_CATEGORIES.map((cat) => {
+                    const catSkills = allSkills.filter((s: any) => s.category === cat.id);
+                    if (catSkills.length === 0) return null;
+                    const selectedCount = catSkills.filter((s: any) => formData.skill_ids.includes(s.id)).length;
+                    return (
+                      <div key={cat.id} className="mb-2 last:mb-0">
+                        <div className={`flex items-center gap-2 text-xs ${colors.textMuted} mb-1.5`}>
+                          <span className="font-medium">{cat.label.pt}</span>
+                          <span>({selectedCount}/{catSkills.length})</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {catSkills.map((skill: any) => {
+                            const isSelected = formData.skill_ids.includes(skill.id);
+                            return (
+                              <button
+                                key={skill.id}
+                                type="button"
+                                onClick={() => {
+                                  setFormData({
+                                    ...formData,
+                                    skill_ids: isSelected
+                                      ? formData.skill_ids.filter((id) => id !== skill.id)
+                                      : [...formData.skill_ids, skill.id],
+                                  });
+                                }}
+                                className={`text-xs px-2 py-1 rounded transition-colors border ${
+                                  isSelected
+                                    ? `bg-cyan-500/20 text-cyan-300 border-cyan-500/40`
+                                    : `${colors.cardBg} ${colors.textMuted} border-transparent hover:${colors.cardBgAlt}`
+                                }`}
+                              >
+                                {skill.name}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
 
             <div className={`${colors.cardBgAlt} border ${colors.border} rounded-lg p-4`}>
               <h3 className={`text-sm font-semibold ${colors.accent} mb-3`}>Upload de Imagem</h3>
@@ -661,6 +728,32 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                   <td className={`px-4 py-3 ${colors.text}`}>{project.name_pt}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
+                      {Array.isArray(project.skill_ids) && project.skill_ids.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-1 w-full">
+                          {project.skill_ids.slice(0, 3).map((sid) => {
+                            const skill = allSkills.find((s) => s.id === sid);
+                            return skill ? (
+                              <span key={sid} className={`text-[10px] px-1.5 py-0.5 rounded ${
+                                skill.category === 'languages' ? 'text-cyan-400 bg-cyan-500/10' :
+                                skill.category === 'frameworks' ? 'text-blue-400 bg-blue-500/10' :
+                                skill.category === 'styling' ? 'text-pink-400 bg-pink-500/10' :
+                                skill.category === 'database' ? 'text-green-400 bg-green-500/10' :
+                                skill.category === 'state' ? 'text-yellow-400 bg-yellow-500/10' :
+                                skill.category === 'auth' ? 'text-red-400 bg-red-500/10' :
+                                skill.category === 'ai' ? 'text-purple-400 bg-purple-500/10' :
+                                skill.category === 'devops' ? 'text-orange-400 bg-orange-500/10' :
+                                skill.category === 'design' ? 'text-pink-400 bg-pink-500/10' :
+                                skill.category === 'testing' ? 'text-teal-400 bg-teal-500/10' :
+                                skill.category === 'realtime' ? 'text-amber-400 bg-amber-500/10' :
+                                skill.category === 'dataviz' ? 'text-indigo-400 bg-indigo-500/10' :
+                                skill.category === 'integrations' ? 'text-cyan-400 bg-cyan-500/10' :
+                                skill.category === 'tools' ? 'text-gray-400 bg-gray-500/10' :
+                                'text-purple-400 bg-purple-500/10'
+                              }`}>{skill.name}</span>
+                            ) : null;
+                          })}
+                        </div>
+                      )}
                       {Array.isArray(project.tags) && project.tags.slice(0, 3).map((tag) => (
                         <span key={tag} className={`text-xs ${colors.cardBg} ${colors.textMuted} px-2 py-0.5 rounded`}>{tag}</span>
                       ))}

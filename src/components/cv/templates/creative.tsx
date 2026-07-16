@@ -63,7 +63,7 @@ export function CreativeCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
     objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
-    graduation: lang === "pt" ? "Graduação" : lang === "en" ? "Graduation" : "Graduación",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
@@ -120,38 +120,13 @@ export function CreativeCV({ data }: { data: CVData }) {
           {data.education.length > 0 && (
             <View style={styles.sidebarSection}>
               <Text style={styles.sidebarSectionTitle}>{t.education}</Text>
-              {(() => {
-                const graduations = data.education.filter(e => e.type === "graduation");
-                const courses = data.education.filter(e => e.type !== "graduation");
-                return (
-                  <>
-                    {graduations.length > 0 && (
-                      <View style={{ marginBottom: 8 }}>
-                        <Text style={{ fontSize: 7.5, fontWeight: 700, color: "#f59e0b", marginBottom: 4 }}>{t.graduation}</Text>
-                        {graduations.map((edu, i) => (
-                          <View key={i} style={{ marginBottom: 6 }}>
-                            <Text style={{ fontSize: 8.5, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{edu.degree}</Text>
-                            <Text style={styles.sidebarText}>{edu.school}</Text>
-                            <Text style={{ fontSize: 7.5, color: "#94a3b8" }}>{edu.period}</Text>
-                          </View>
-                        ))}
-                      </View>
-                    )}
-                    {courses.length > 0 && (
-                      <View>
-                        <Text style={{ fontSize: 7.5, fontWeight: 700, color: "#f59e0b", marginBottom: 4 }}>{t.complementaryCourses}</Text>
-                        {courses.map((edu, i) => (
-                          <View key={i} style={{ marginBottom: 6 }}>
-                            <Text style={{ fontSize: 8.5, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{edu.degree}</Text>
-                            <Text style={styles.sidebarText}>{edu.school}</Text>
-                            <Text style={{ fontSize: 7.5, color: "#94a3b8" }}>{edu.period}</Text>
-                          </View>
-                        ))}
-                      </View>
-                    )}
-                  </>
-                );
-              })()}
+              {data.education.map((edu, i) => (
+                <View key={i} style={{ marginBottom: 6 }}>
+                  <Text style={{ fontSize: 8.5, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{edu.degree}</Text>
+                  <Text style={styles.sidebarText}>{edu.school}</Text>
+                  <Text style={{ fontSize: 7.5, color: "#94a3b8" }}>{edu.period}</Text>
+                </View>
+              ))}
             </View>
           )}
 

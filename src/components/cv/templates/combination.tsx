@@ -59,7 +59,7 @@ export function CombinationCV({ data }: { data: CVData }) {
     professionalSummary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
     objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
     workExperience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
-    graduation: lang === "pt" ? "Educação (Graduação)" : lang === "en" ? "Education (Graduation)" : "Educación (Graduación)",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
     keyProjects: lang === "pt" ? "Projetos Principais" : lang === "en" ? "Key Projects" : "Proyectos Principales",
@@ -111,25 +111,10 @@ export function CombinationCV({ data }: { data: CVData }) {
           </View>
 
           <View style={styles.col}>
-            {data.education.filter(e => e.type === 'graduation').length > 0 && (
+            {data.education.length > 0 && (
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>{t.graduation}</Text>
-                {data.education.filter(e => e.type === 'graduation').map((edu, i) => (
-                  <View key={i} style={styles.entry}>
-                    <View style={styles.entryHeader}>
-                      <Text style={styles.entryRole}>{edu.degree}</Text>
-                      <Text style={styles.entryPeriod}>{edu.period}</Text>
-                    </View>
-                    <Text style={styles.entryCompany}>{edu.school}</Text>
-                    {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
-                  </View>
-                ))}
-              </View>
-            )}
-            {data.education.filter(e => e.type === 'course').length > 0 && (
-              <View style={styles.section}>
-                <Text style={styles.sectionTitle}>{t.complementaryCourses}</Text>
-                {data.education.filter(e => e.type === 'course').map((edu, i) => (
+                {data.education.map((edu, i) => (
                   <View key={i} style={styles.entry}>
                     <View style={styles.entryHeader}>
                       <Text style={styles.entryRole}>{edu.degree}</Text>

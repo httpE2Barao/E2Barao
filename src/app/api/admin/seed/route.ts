@@ -3,98 +3,13 @@ import fs from 'fs/promises';
 import path from 'path';
 import { rawProjectsData } from '@/data/projects-data';
 
+import { runMigrations } from '@/lib/db/migrate';
+
 const SCHEMA_PATH = path.join(process.cwd(), 'src', 'lib', 'db', 'schema.sql');
 
 async function runSchema() {
-  console.log('🔄 Running migrations...');
-  
-  try {
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS skills (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        category VARCHAR(50) NOT NULL,
-        level INTEGER DEFAULT 0,
-        color VARCHAR(50),
-        icon_src VARCHAR(255),
-        display_order INTEGER DEFAULT 0,
-        active BOOLEAN DEFAULT true,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      );
-    `);
-  } catch (e) { /* table exists */ }
-  
-  try {
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS experience_entries (
-        id SERIAL PRIMARY KEY,
-        period_start VARCHAR(50),
-        period_end VARCHAR(50),
-        role_pt TEXT, role_en TEXT, role_es TEXT, role_fr TEXT, role_zh TEXT,
-        company_pt TEXT, company_en TEXT, company_es TEXT, company_fr TEXT, company_zh TEXT,
-        description_pt TEXT, description_en TEXT, description_es TEXT, description_fr TEXT, description_zh TEXT,
-        highlight BOOLEAN DEFAULT false,
-        display_order INTEGER DEFAULT 0,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      );
-    `);
-  } catch (e) { /* table exists */ }
-
-  try {
-    await sql.query(`ALTER TABLE projects ADD COLUMN featured BOOLEAN DEFAULT false;`);
-  } catch (e) { /* column exists */ }
-  try {
-    await sql.query(`ALTER TABLE projects ADD COLUMN display_order INTEGER DEFAULT 0;`);
-  } catch (e) { /* column exists */ }
-
-  try {
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS portfolio_content (
-        id SERIAL PRIMARY KEY,
-        section VARCHAR(50) NOT NULL,
-        key VARCHAR(100) NOT NULL,
-        value_pt TEXT, value_en TEXT, value_es TEXT, value_fr TEXT, value_zh TEXT,
-        display_order INTEGER DEFAULT 0,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        UNIQUE(section, key)
-      );
-    `);
-  } catch (e) { /* table exists */ }
-
-  try {
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS contact_info (
-        id SERIAL PRIMARY KEY,
-        label VARCHAR(100),
-        value TEXT,
-        icon VARCHAR(50),
-        description_pt TEXT, description_en TEXT, description_es TEXT, description_fr TEXT, description_zh TEXT,
-        visible BOOLEAN DEFAULT true,
-        display_order INTEGER DEFAULT 0,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      );
-    `);
-  } catch (e) { /* table exists */ }
-
-  try {
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS cv_templates (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        format VARCHAR(50) NOT NULL,
-        config JSONB DEFAULT '{}',
-        is_default BOOLEAN DEFAULT false,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      );
-    `);
-  } catch (e) { /* table exists */ }
-  
-  console.log('✅ Schema ready');
+  const result = await runMigrations();
+  console.log('Migrations result:', result);
 }
 
 async function seedProjects() {

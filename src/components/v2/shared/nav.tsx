@@ -33,9 +33,9 @@ export function V2Nav() {
   const toggleBg = theme === "dark" ? "bg-white/10" : "bg-black/10"
   const toggleBorder = theme === "dark" ? "border-white/20" : "border-black/20"
   const toggleHover = theme === "dark" ? "hover:border-cyan-400" : "hover:border-blue-600"
-  const menuBg = theme === "dark" ? "bg-black/95" : "bg-white/95"
-  const menuBorder = theme === "dark" ? "border-white/10" : "border-black/10"
-  const menuText = theme === "dark" ? "text-white/80" : "text-black/80"
+  const menuBg = "bg-white/95"
+  const menuBorder = theme === "dark" ? "border-black/10" : "border-black/10"
+  const menuText = "text-black/80"
   const lineColor = theme === "dark" ? "bg-white" : "bg-black"
 
   return (

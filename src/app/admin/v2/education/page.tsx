@@ -156,9 +156,6 @@ export default function EducationPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <span className={`text-xs font-mono ${colors.accent}`}>{edu.period_start} — {edu.period_end}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded ${edu.education_type === 'graduation' ? 'bg-blue-500/10 text-blue-400' : edu.education_type === 'course' ? 'bg-green-500/10 text-green-400' : 'bg-gray-500/10 text-gray-400'}`}>
-                    {edu.education_type === 'graduation' ? 'Graduação' : edu.education_type === 'course' ? 'Curso' : 'Ensino Médio'}
-                  </span>
                 </div>
                 <h3 className={`text-lg font-semibold ${colors.text}`}>{lang === "pt" ? edu.degree_pt : edu.degree_en}</h3>
                 <p className={`text-sm ${colors.textMuted}`}>{lang === "pt" ? edu.school_pt : edu.school_en}</p>
@@ -171,6 +168,11 @@ export default function EducationPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <button onClick={() => setLang("pt")} className={`px-3 py-1 rounded text-xs font-medium transition-colors ${lang === "pt" ? colors.accentBg : ''} ${lang === "pt" ? colors.accent : colors.textMuted} ${lang !== "pt" ? `hover:${colors.text}` : ''}`}>PT</button>
+        <button onClick={() => setLang("en")} className={`px-3 py-1 rounded text-xs font-medium transition-colors ${lang === "en" ? colors.accentBg : ''} ${lang === "en" ? colors.accent : colors.textMuted} ${lang !== "en" ? `hover:${colors.text}` : ''}`}>EN</button>
       </div>
     </div>
   );

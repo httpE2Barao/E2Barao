@@ -8,7 +8,7 @@ import { FunctionalCV } from "@/components/cv/templates/functional";
 import { CombinationCV } from "@/components/cv/templates/combination";
 import { MinimalCV } from "@/components/cv/templates/minimal";
 import { CreativeCV } from "@/components/cv/templates/creative";
-import { SKILL_CATEGORIES, getSkillCategory } from "@/lib/skill-categories";
+import { SKILL_CATEGORIES, getSkillCategory, CATEGORY_ORDER } from "@/lib/skill-categories";
 import { ChronologicalPreview } from "@/components/cv/preview/chronological";
 import { FunctionalPreview } from "@/components/cv/preview/functional";
 import { CombinationPreview } from "@/components/cv/preview/combination";
@@ -234,13 +234,17 @@ const colors = {
 
   const [cvData, setCvData] = useState<CVData>({
     name: { pt: "Elias Edson Barão", en: "Elias Edson Barão", es: "Elias Edson Barão" },
-    title: { pt: "Desenvolvedor Full-Stack", en: "Full-Stack Developer", es: "Desarrollador Full-Stack", fr: "Développeur Full-Stack", zh: "全栈开发者" },
+    title: { pt: "Desenvolvedor Full-Stack / Front-End / Back-End | Analista de Dados | Engenheiro de Integrações e Automações | Arquiteto de Agentes de IA", en: "Full-Stack / Front-End / Back-End Developer | Data Analyst | Integration & Automation Engineer | AI Agent Architect", es: "Desarrollador Full-Stack / Front-End / Back-End | Analista de Datos | Ingeniero de Integraciones y Automatización | Arquitecto de Agentes de IA", fr: "Développeur Full-Stack / Front-End / Back-End | Analyste de Données | Ingénieur en Intégrations et Automatisation | Architecte d'Agents IA", zh: "全栈/前端/后端开发者 | 数据分析师 | 集成与自动化工程师 | AI智能体架构师" },
     email: "e2barao@hotmail.com",
     phone: "+55 41 99804-6755",
     location: { pt: "Curitiba, Paraná, Brasil", en: "Curitiba, Paraná, Brazil", es: "Curitiba, Paraná, Brasil" },
     linkedin: "https://linkedin.com/in/e2barao",
     github: "https://github.com/httpE2Barao",
-    summary: { pt: "", en: "", es: "" },
+    summary: {
+      pt: "Desde cedo, a tecnologia me fascinou — não apenas como ferramenta, mas como extensão da criatividade humana. Minha jornada começou com experimentos em HTML e CSS, evoluindo para sistemas complexos com React, Next.js e Node.js. Ao longo do caminho, mergulhei em bancos de dados, automação de processos e integrações de IA, construindo soluções como o Platera — um sistema operacional completo para restaurantes com chatbot IA, pagamentos e integrações omnichannel.\n\nHoje, meu foco está na arquitetura de agentes de IA, RAG, MCP e LLMs locais, combinando desenvolvimento full-stack com engenharia de automação para criar sistemas inteligentes e escaláveis. Cada projeto é uma oportunidade de unir código limpo, design centrado no usuário e performance.\n\nBusco oportunidades onde possa aplicar minha experiência em engenharia de software, automação e inteligência artificial para resolver problemas reais, sempre com impacto social e técnico.",
+      en: "Since an early age, technology fascinated me — not just as a tool, but as an extension of human creativity. My journey began with experiments in HTML and CSS, evolving into complex systems with React, Next.js, and Node.js. Along the way, I dove into databases, process automation, and AI integrations, building solutions like Platera — a complete restaurant operating system with AI chatbot, payments, and omnichannel integrations.\n\nToday, my focus is on AI agent architecture, RAG, MCP, and local LLMs, combining full-stack development with automation engineering to build intelligent, scalable systems. Every project is an opportunity to unite clean code, user-centered design, and performance.\n\nI seek opportunities where I can apply my experience in software engineering, automation, and artificial intelligence to solve real problems, always with social and technical impact.",
+      es: "Desde temprana edad, la tecnología me fascinó — no solo como herramienta, sino como extensión de la creatividad humana. Mi viaje comenzó con experimentos en HTML y CSS, evolucionando hacia sistemas complejos con React, Next.js y Node.js. En el camino, me sumergí en bases de datos, automatización de procesos e integraciones de IA, construyendo soluciones como Platera — un sistema operativo completo para restaurantes con chatbot IA, pagos e integraciones omnicanal.\n\nHoy, mi enfoque está en la arquitectura de agentes de IA, RAG, MCP y LLMs locales, combinando desarrollo full-stack con ingeniería de automatización para crear sistemas inteligentes y escalables. Cada proyecto es una oportunidad para unir código limpio, diseño centrado en el usuario y rendimiento.\n\nBusco oportunidades donde pueda aplicar mi experiencia en ingeniería de software, automatización e inteligencia artificial para resolver problemas reales, siempre con impacto social y técnico.",
+    },
     experience: [],
     education: [],
     skills: [],
@@ -382,9 +386,19 @@ const getLocalizedCVData = (lang: Language): any => {
     
     const selectedSkillEntries = cvData.selectedSkillIds.length > 0
       ? cvData.skills
-          .map((s, i) => ({ skill: s, order: rawSkills[i]?.display_order ?? i, rawId: rawSkills[i]?.id }))
+          .map((s, i) => ({
+            skill: s,
+            order: rawSkills[i]?.display_order ?? i,
+            category: rawSkills[i]?.category ?? "concepts",
+            rawId: rawSkills[i]?.id,
+          }))
           .filter((entry) => entry.rawId && cvData.selectedSkillIds.includes(entry.rawId))
-      : cvData.skills.map((s, i) => ({ skill: s, order: rawSkills[i]?.display_order ?? i, rawId: rawSkills[i]?.id }));
+      : cvData.skills.map((s, i) => ({
+          skill: s,
+          order: rawSkills[i]?.display_order ?? i,
+          category: rawSkills[i]?.category ?? "concepts",
+          rawId: rawSkills[i]?.id,
+        }));
     
     let sortedEntries = [...selectedSkillEntries];
     
@@ -394,7 +408,12 @@ const getLocalizedCVData = (lang: Language): any => {
     } else if (cvData.sortSkills === "reverse") {
       sortedEntries.sort((a, b) => getLocalizedValue(b.skill, lang).localeCompare(getLocalizedValue(a.skill, lang)));
     } else {
-      sortedEntries.sort((a, b) => a.order - b.order);
+      sortedEntries.sort((a, b) => {
+        const catA = CATEGORY_ORDER[a.category] ?? 99;
+        const catB = CATEGORY_ORDER[b.category] ?? 99;
+        if (catA !== catB) return catA - catB;
+        return a.order - b.order;
+      });
     }
     
     // Aplicar limite máximo

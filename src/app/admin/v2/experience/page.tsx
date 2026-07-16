@@ -170,6 +170,11 @@ export default function ExperiencePage() {
           </div>
         ))}
       </div>
+
+      <div className="flex items-center gap-2">
+        <button onClick={() => setLang("pt")} className={`px-3 py-1 rounded text-xs font-medium transition-colors ${lang === "pt" ? colors.accentBg : ''} ${lang === "pt" ? colors.accent : colors.textMuted} ${lang !== "pt" ? `hover:${colors.text}` : ''}`}>PT</button>
+        <button onClick={() => setLang("en")} className={`px-3 py-1 rounded text-xs font-medium transition-colors ${lang === "en" ? colors.accentBg : ''} ${lang === "en" ? colors.accent : colors.textMuted} ${lang !== "en" ? `hover:${colors.text}` : ''}`}>EN</button>
+      </div>
     </div>
   );
 }
