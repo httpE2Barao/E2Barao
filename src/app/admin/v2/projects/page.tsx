@@ -100,6 +100,37 @@ const [formData, setFormData] = useState({
     fetchProjectImages();
   }, []);
 
+  const linkTagToSkill = async (tag: string) => {
+    const lower = tag.toLowerCase();
+    const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const normalized = normalize(lower);
+
+    let skill = allSkills.find((s: any) => s.name.toLowerCase() === lower);
+    if (!skill) skill = allSkills.find((s: any) => normalize(s.name) === normalized);
+    if (!skill) skill = allSkills.find((s: any) => s.name.toLowerCase().includes(lower) || normalized.includes(normalize(s.name)));
+
+    if (skill) {
+      if (!formData.skill_ids.includes(skill.id)) {
+        setFormData((prev: any) => ({ ...prev, skill_ids: [...prev.skill_ids, skill.id] }));
+      }
+    } else {
+      try {
+        const { getSkillCategory } = await import("@/lib/skill-categories");
+        const category = getSkillCategory({ name: tag });
+        const res = await fetch("/api/admin/skills", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: tag, category, level: 0 }),
+        });
+        if (res.ok) {
+          const newSkill = await res.json();
+          setAllSkills((prev: any[]) => [...prev, newSkill]);
+          setFormData((prev: any) => ({ ...prev, skill_ids: [...prev.skill_ids, newSkill.id] }));
+        }
+      } catch { /* skip */ }
+    }
+  };
+
   const addTag = (tag: string) => {
     const trimmed = tag.trim();
     if (trimmed && !formData.tags.includes(trimmed)) {
@@ -107,12 +138,18 @@ const [formData, setFormData] = useState({
       if (!allTags.includes(trimmed)) {
         setAllTags([...allTags, trimmed].sort());
       }
+      linkTagToSkill(trimmed);
     }
     setTagInput("");
   };
 
   const removeTag = (tagToRemove: string) => {
     setFormData({ ...formData, tags: formData.tags.filter((t) => t !== tagToRemove) });
+    const lower = tagToRemove.toLowerCase();
+    const skill = allSkills.find((s: any) => s.name.toLowerCase() === lower);
+    if (skill) {
+      setFormData((prev: any) => ({ ...prev, skill_ids: prev.skill_ids.filter((id: number) => id !== skill.id) }));
+    }
   };
 
   const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
