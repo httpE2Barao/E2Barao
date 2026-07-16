@@ -13,20 +13,47 @@ function getText(row: any, field: string, lang: string): string {
   return row[`${field}_${langKey}`] || row[`${field}_en`] || row[`${field}_pt`] || '';
 }
 
+function matchTagsToSkills(
+  tags: string[],
+  skillByName: Record<string, { id: number; name: string; category: string }>
+): { id: number; name: string; category: string }[] {
+  const result: { id: number; name: string; category: string }[] = []
+  const seen = new Set<string>()
+  let fallbackId = 9999
+  for (const tag of tags) {
+    const key = tag.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    const skill = skillByName[key]
+    if (skill) {
+      result.push(skill)
+    } else {
+      result.push({ id: fallbackId++, name: tag, category: 'tools' })
+    }
+  }
+  return result
+}
+
 function mapProject(
   p: Project,
   skillMap: Record<number, { id: number; name: string; category: string }>,
+  skillByName: Record<string, { id: number; name: string; category: string }>,
   allLanguages: Record<string, Record<string, number>>,
   githubRepos: any[],
   lang: string
 ): ProjectDTO {
   const ids = parsePostgresIntArray(p.skill_ids);
+  const dbSkills = ids.map(id => skillMap[id]).filter(Boolean) as { id: number; name: string; category: string }[]
+  const tags = parsePostgresArray(p.tags)
+  const tagSkills = matchTagsToSkills(tags, skillByName)
+  const seen = new Set(dbSkills.map(s => s.id))
+  const allSkills = [...dbSkills, ...tagSkills.filter(s => !seen.has(s.id))]
   return {
     id: p.id,
     src: p.src,
     site: p.site_url,
     repo: p.repo_url,
-    tags: parsePostgresArray(p.tags),
+    tags,
     imageUrls: parsePostgresArray(p.image_urls),
     name: getText(p, 'name', lang),
     subtitle: getText(p, 'subtitle', lang),
@@ -36,7 +63,7 @@ function mapProject(
     display_order: p.display_order,
     hasLocalMedia: parsePostgresArray(p.image_urls).length > 0,
     githubLanguages: allLanguages[p.src] || {},
-    skills: ids.map(id => skillMap[id]).filter(Boolean),
+    skills: allSkills,
     stars: githubRepos.find((r: any) => r.name === p.src)?.stargazers_count || 0,
     forks: githubRepos.find((r: any) => r.name === p.src)?.forks_count || 0,
   };
@@ -76,7 +103,12 @@ export async function GET(request: Request) {
 
     const allLanguages = await getLanguagesForRepos(allRepoNames);
 
-    const mapWith = (p: Project) => mapProject(p, skillMap, allLanguages, githubRepos, lang);
+    const skillByName: Record<string, { id: number; name: string; category: string }> = {}
+    for (const skill of Object.values(skillMap)) {
+      skillByName[skill.name.toLowerCase()] = skill
+    }
+
+    const mapWith = (p: Project) => mapProject(p, skillMap, skillByName, allLanguages, githubRepos, lang);
 
     const mergedFeatured = featuredProjects.map(mapWith);
     const mergedVisible = dedupedVisible.map(mapWith);
@@ -84,26 +116,29 @@ export async function GET(request: Request) {
 
     const githubOnly = filterGithubOnly(
       githubRepos, allLocalSrcs, featuredSrcs, visibleSrcs, featuredRepoUrls, visibleRepoUrls
-    ).map((r: any) => ({
-      id: r.id,
-      src: r.name,
-      site: r.homepage || '',
-      repo: r.html_url,
-      tags: r.topics || [],
-      imageUrls: [] as string[],
-      name: r.name,
-      subtitle: r.description || '',
-      alt: '',
-      abt: '',
-      featured: false,
-      display_order: 999,
-      hasLocalMedia: false,
-      githubLanguages: allLanguages[r.name] || {},
-      skills: [] as { id: number; name: string; category: string }[],
-      stars: r.stargazers_count || 0,
-      forks: r.forks_count || 0,
-      isPrivate: r.private || false,
-    }));
+    ).map((r: any) => {
+      const tags: string[] = r.topics || []
+      return {
+        id: r.id,
+        src: r.name,
+        site: r.homepage || '',
+        repo: r.html_url,
+        tags,
+        imageUrls: [] as string[],
+        name: r.name,
+        subtitle: r.description || '',
+        alt: '',
+        abt: '',
+        featured: false,
+        display_order: 999,
+        hasLocalMedia: false,
+        githubLanguages: allLanguages[r.name] || {},
+        skills: matchTagsToSkills(tags, skillByName),
+        stars: r.stargazers_count || 0,
+        forks: r.forks_count || 0,
+        isPrivate: r.private || false,
+      }
+    });
 
     return NextResponse.json({
       featuredProjects: mergedFeatured,

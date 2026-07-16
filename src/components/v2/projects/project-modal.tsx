@@ -235,19 +235,6 @@ export function V2ProjectModal({ project, index, total, onClose }: V2ProjectModa
               {project.abt}
             </p>
 
-            {project.tags && project.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-8">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className={`px-3 py-1.5 rounded-full text-xs md:text-sm ${isDark ? "bg-white/10 text-white/80 border border-white/10" : "bg-black/5 text-black/80 border border-black/10"}`}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
             {project.skills && project.skills.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mb-8">
                 {project.skills.map((skill) => (
