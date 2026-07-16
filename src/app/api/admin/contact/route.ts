@@ -11,6 +11,27 @@ export async function GET() {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID is required' }, { status: 400 });
+    }
+
+    const { rowCount } = await sql`DELETE FROM contact_info WHERE id = ${parseInt(id)}`;
+    if (rowCount === 0) {
+      return NextResponse.json({ error: 'Contact not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: 'Contact deleted' });
+  } catch (error) {
+    console.error('Failed to delete contact:', error);
+    return NextResponse.json({ error: 'Failed to delete contact' }, { status: 500 });
+  }
+}
+
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
