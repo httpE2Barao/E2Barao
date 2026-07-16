@@ -29,11 +29,16 @@ const styles = StyleSheet.create({
   summary: { fontSize: 10, color: "#334155", lineHeight: 1.6, marginBottom: 14, wrap: false },
 });
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
@@ -102,6 +107,7 @@ export function CreativeCV({ data }: { data: CVData }) {
             <Text style={styles.sidebarSectionTitle}>{t.contact}</Text>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.email}</Text></Link>}
             {data.phone && <Link href={`tel:${data.phone}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.phone}</Text></Link>}
+            {data.whatsapp && <Link href={`https://wa.me/${cleanPhone(data.whatsapp)}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>WhatsApp</Text></Link>}
             {data.location && <Text style={styles.sidebarText}>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.sidebarLink}><Text style={styles.sidebarLink}>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.sidebarLink}><Text style={styles.sidebarLink}>GitHub</Text></Link>}

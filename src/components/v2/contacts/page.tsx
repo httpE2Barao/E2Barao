@@ -284,11 +284,30 @@ function ContactForm() {
   )
 }
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 export function V2ContactsPage() {
   const ref = useRef<HTMLDivElement>(null)
   const { theme, language } = useTheme()
   const isDark = theme === "dark"
   const cvLanguage = ["pt", "en", "es"].includes(language) ? language : "en"
+  const [whatsappNumber, setWhatsappNumber] = useState("5521987716477")
+
+  useEffect(() => {
+    fetch("/api/admin/contact")
+      .then((res) => res.json())
+      .then((data) => {
+        const whatsapp = Array.isArray(data) ? data.find((c: any) => c.label === "WhatsApp") : null
+        if (whatsapp?.value) setWhatsappNumber(cleanPhone(whatsapp.value))
+      })
+      .catch(() => {})
+  }, [])
+
+  const dynamicLinks = contactLinks.map((link) =>
+    link.label === "WhatsApp" ? { ...link, href: `https://wa.me/${whatsappNumber}` } : link
+  )
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -343,7 +362,7 @@ export function V2ContactsPage() {
               {connectLabel}<span className={accentColor}>.</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {contactLinks.map((link, i) => (
+              {dynamicLinks.map((link, i) => (
                 <ContactCard key={link.label} link={link} index={i} />
               ))}
             </div>

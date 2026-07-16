@@ -1,10 +1,15 @@
 "use client";
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
@@ -54,6 +59,7 @@ export function MinimalPreview({ data }: { data: CVData }) {
         <div className="flex flex-wrap gap-4 text-[9px] text-gray-700">
           {data.email && <a href={`mailto:${data.email}`} className="text-blue-700 hover:underline">{data.email}</a>}
           {data.phone && <a href={`tel:${data.phone}`} className="text-blue-700 hover:underline">{data.phone}</a>}
+          {data.whatsapp && <a href={`https://wa.me/${cleanPhone(data.whatsapp)}`} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">WhatsApp</a>}
           {data.location && <span>{data.location}</span>}
           {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{t.linkedinLabel}</a>}
           {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline">{t.githubLabel}</a>}
@@ -99,7 +105,7 @@ export function MinimalPreview({ data }: { data: CVData }) {
         <div className="mb-4">
           <h2 className="text-[11px] font-bold uppercase tracking-widest mb-4 pb-1 border-b border-gray-300">Projetos</h2>
           {data.projects.map((project, i) => (
-            <div key={i} className="mb-2">
+<div key={i} className="mb-4">
               <p className="text-[10px] font-bold">{project.name}</p>
               <p className="text-[9px] text-gray-800">{project.description}</p>
               {project.tags && project.tags.length > 0 && (

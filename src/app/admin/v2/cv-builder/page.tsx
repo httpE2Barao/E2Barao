@@ -93,6 +93,7 @@ interface CVData {
   title: LocalizedString;
   email: string;
   phone: string;
+  whatsapp: string;
   location: LocalizedString;
   linkedin: string;
   github: string;
@@ -192,6 +193,7 @@ const colors = {
           title: defaultData.config.title || prev.title,
           email: defaultData.config.email || prev.email,
           phone: defaultData.config.phone || prev.phone,
+          whatsapp: defaultData.config.whatsapp || prev.whatsapp,
           location: defaultData.config.location || prev.location,
           linkedin: defaultData.config.linkedin || prev.linkedin,
           github: defaultData.config.github || prev.github,
@@ -237,6 +239,7 @@ const colors = {
     title: { pt: "Desenvolvedor Full-Stack / Front-End / Back-End | Analista de Dados | Engenheiro de Integrações e Automações | Arquiteto de Agentes de IA", en: "Full-Stack / Front-End / Back-End Developer | Data Analyst | Integration & Automation Engineer | AI Agent Architect", es: "Desarrollador Full-Stack / Front-End / Back-End | Analista de Datos | Ingeniero de Integraciones y Automatización | Arquitecto de Agentes de IA", fr: "Développeur Full-Stack / Front-End / Back-End | Analyste de Données | Ingénieur en Intégrations et Automatisation | Architecte d'Agents IA", zh: "全栈/前端/后端开发者 | 数据分析师 | 集成与自动化工程师 | AI智能体架构师" },
     email: "e2barao@hotmail.com",
     phone: "+55 41 99804-6755",
+    whatsapp: "+55 41 99804-6755",
     location: { pt: "Curitiba, Paraná, Brasil", en: "Curitiba, Paraná, Brazil", es: "Curitiba, Paraná, Brasil" },
     linkedin: "https://linkedin.com/in/e2barao",
     github: "https://github.com/httpE2Barao",
@@ -302,6 +305,7 @@ const colors = {
           title: d.title,
           email: d.email,
           phone: d.phone,
+          whatsapp: d.whatsapp,
           location: d.location,
           linkedin: d.linkedin,
           github: d.github,
@@ -429,6 +433,7 @@ const getLocalizedCVData = (lang: Language): any => {
     title: getLocalizedValue(cvData.title, lang),
     email: cvData.email,
     phone: cvData.phone,
+    whatsapp: cvData.whatsapp,
     location: getLocalizedValue(cvData.location, lang),
     linkedin: cvData.linkedin,
     github: cvData.github,
@@ -501,12 +506,14 @@ const getLocalizedCVData = (lang: Language): any => {
       const contactName = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "Nome") : null;
       const contactEmail = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "Email") : null;
       const contactPhone = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "Telefone") : null;
+      const contactWhatsApp = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "WhatsApp") : null;
 
       setCvData((prev) => ({
         ...prev,
         name: contactName ? { pt: contactName.value, en: contactName.value, es: contactName.value } : prev.name,
         email: contactEmail?.value || prev.email,
-        phone: contactPhone?.value || prev.phone,
+          phone: contactPhone?.value || prev.phone,
+          whatsapp: contactWhatsApp?.value || prev.whatsapp,
         experience: Array.isArray(exp)
           ? exp.map((e: any) => ({
               id: e.id,
@@ -839,11 +846,20 @@ className={`w-full text-left p-3 rounded-lg border transition-colors ${
                 />
               </div>
               <div>
-                <label className={`block text-xs ${colors.textLabel} mb-1`}>Telefone</label>
+                <label className={`block text-xs ${colors.textLabel} mb-1`}>Telefone (ligação)</label>
                 <input
                   type="text"
                   value={cvData.phone}
                   onChange={(e) => setCvData({ ...cvData, phone: e.target.value })}
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
+                />
+              </div>
+              <div>
+                <label className={`block text-xs ${colors.textLabel} mb-1`}>WhatsApp</label>
+                <input
+                  type="text"
+                  value={cvData.whatsapp}
+                  onChange={(e) => setCvData({ ...cvData, whatsapp: e.target.value })}
                   className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>

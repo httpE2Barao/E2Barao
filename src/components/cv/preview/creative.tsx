@@ -1,10 +1,15 @@
 "use client";
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
@@ -75,6 +80,7 @@ export function CreativePreview({ data }: { data: CVData }) {
           <h3 className="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-2 pb-1 border-b border-amber-400">{t.contact}</h3>
           {data.email && <a href={`mailto:${data.email}`} className="text-[9px] text-amber-400 hover:underline block mb-1">{data.email}</a>}
           {data.phone && <a href={`tel:${data.phone}`} className="text-[9px] text-amber-400 hover:underline block mb-1">{data.phone}</a>}
+          {data.whatsapp && <a href={`https://wa.me/${cleanPhone(data.whatsapp)}`} target="_blank" rel="noopener noreferrer" className="text-[9px] text-amber-400 hover:underline block mb-1">WhatsApp</a>}
           {data.location && <p className="text-[9px] text-slate-300 mb-1">{data.location}</p>}
           {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-[9px] text-amber-400 hover:underline block mb-1">{t.linkedinLabel}</a>}
           {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-[9px] text-amber-400 hover:underline block mb-1">{t.githubLabel}</a>}
@@ -135,7 +141,7 @@ export function CreativePreview({ data }: { data: CVData }) {
           <div className="mb-4">
             <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b-2 border-amber-400">{t.keyProjects}</h2>
             {data.projects.slice(0, 4).map((project, i) => (
-              <div key={i} className="mb-2">
+              <div key={i} className="mb-4">
                 <p className="text-[10px] font-semibold text-gray-800">{project.name}</p>
                 <p className="text-[9px] text-gray-600 leading-relaxed">{project.description}</p>
                 {project.tags && project.tags.length > 0 && (

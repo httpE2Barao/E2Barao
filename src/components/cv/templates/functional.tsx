@@ -23,11 +23,16 @@ const styles = StyleSheet.create({
   summary: { fontSize: 10, color: "#334155", lineHeight: 1.6, marginBottom: 14, wrap: false },
 });
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
@@ -84,6 +89,7 @@ export function FunctionalCV({ data }: { data: CVData }) {
           <View style={styles.contactRow}>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.email}</Text></Link>}
             {data.phone && <Link href={`tel:${data.phone}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.phone}</Text></Link>}
+            {data.whatsapp && <Link href={`https://wa.me/${cleanPhone(data.whatsapp)}`} style={styles.contactLink}><Text style={styles.contactItem}>WhatsApp</Text></Link>}
             {data.location && <Text style={styles.contactItem}>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text style={styles.contactItem}>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.contactLink}><Text style={styles.contactItem}>GitHub</Text></Link>}

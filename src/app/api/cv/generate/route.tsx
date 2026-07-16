@@ -105,6 +105,7 @@ function buildLocalizedData(config: any, lang: string, experience: any[], educat
     title: getLocalizedValue(config.title, lang),
     email: config.email || '',
     phone: config.phone || '',
+    whatsapp: config.whatsapp || '',
     location: getLocalizedValue(config.location, lang),
     linkedin: config.linkedin || '',
     github: config.github || '',

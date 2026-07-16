@@ -498,6 +498,17 @@ async function seedContactInfo() {
       display_order: 3,
     },
     {
+      label: 'Telefone',
+      value: '+55 41 99804-6755',
+      icon: 'phone',
+      description_pt: 'Ligue para mim',
+      description_en: 'Call me',
+      description_es: 'Llámame',
+      description_fr: 'Appelez-moi',
+      description_zh: '打电话给我',
+      display_order: 4,
+    },
+    {
       label: 'WhatsApp',
       value: '+55 41 99804-6755',
       icon: 'whatsapp',
@@ -506,7 +517,7 @@ async function seedContactInfo() {
       description_es: 'Chatea conmigo',
       description_fr: 'Discutez avec moi',
       description_zh: '与我聊天',
-      display_order: 4,
+      display_order: 5,
     },
   ];
 
