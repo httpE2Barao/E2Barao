@@ -399,11 +399,11 @@ const total = projects.length
     const computeLayout = (width: number) => {
       // Larger sizes for bigger screens, smaller for tiny screens
       if (width <= 380) {
-        return { radius: 120, verticalGap: 150, cardW: 140, cardH: 100, cameraBottomPadding: 160 }
+        return { radius: 140, verticalGap: 150, cardW: 180, cardH: 130, cameraBottomPadding: 160 }
       } else if (width <= 480) {
-        return { radius: 160, verticalGap: 140, cardW: 180, cardH: 120, cameraBottomPadding: 180 }
+        return { radius: 180, verticalGap: 140, cardW: 220, cardH: 150, cameraBottomPadding: 180 }
       } else if (width <= 640) {
-        return { radius: 200, verticalGap: 130, cardW: 240, cardH: 150, cameraBottomPadding: 200 }
+        return { radius: 220, verticalGap: 130, cardW: 280, cardH: 180, cameraBottomPadding: 200 }
       } else if (width <= 1024) {
         return { radius: 320, verticalGap: 120, cardW: 400, cardH: 240, cameraBottomPadding: 160 }
       } else if (width <= 1440) {
