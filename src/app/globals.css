@@ -89,6 +89,25 @@ body {
   animation: fadeIn 0.5s ease-out, spin 1s linear infinite;
 }
 
+/* Marquee animations - GPU accelerated via CSS only (no JS runtime) */
+@keyframes marquee-right {
+  from { transform: translateX(0%); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-left {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0%); }
+}
+
+.animate-marquee-right {
+  animation: marquee-right linear infinite;
+}
+
+.animate-marquee-left {
+  animation: marquee-left linear infinite;
+}
+
 /* Design System consistente */
 .btn {
   @apply px-4 py-2 rounded-lg transition-all duration-200;
