@@ -21,8 +21,6 @@ export default function ProjectsPage() {
   const [projectImages, setProjectImages] = useState<ProjectImage[]>([]);
   const [imagesLoading, setImagesLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [allTags, setAllTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState("");
   const [showGithubImport, setShowGithubImport] = useState(false);
   const [allSkills, setAllSkills] = useState<any[]>([]);
 
@@ -84,12 +82,6 @@ const [formData, setFormData] = useState({
         setProjects(projectsList);
         setGithubRepos(availableGithub);
         setAllSkills(skillsList);
-        
-        const tags = new Set<string>();
-        projectsList.forEach((p: Project) => {
-          if (Array.isArray(p.tags)) p.tags.forEach((t: string) => tags.add(t));
-        });
-        setAllTags(Array.from(tags).sort());
       } catch { 
         setProjects([]); 
         setGithubRepos([]);
@@ -100,68 +92,7 @@ const [formData, setFormData] = useState({
     fetchProjectImages();
   }, []);
 
-  const linkTagToSkill = async (tag: string) => {
-    const lower = tag.toLowerCase();
-    const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
-    const normalized = normalize(lower);
 
-    let skill = allSkills.find((s: any) => s.name.toLowerCase() === lower);
-    if (!skill) skill = allSkills.find((s: any) => normalize(s.name) === normalized);
-    if (!skill) skill = allSkills.find((s: any) => s.name.toLowerCase().includes(lower) || normalized.includes(normalize(s.name)));
-
-    if (skill) {
-      if (!formData.skill_ids.includes(skill.id)) {
-        setFormData((prev: any) => ({ ...prev, skill_ids: [...prev.skill_ids, skill.id] }));
-      }
-    } else {
-      try {
-        const { getSkillCategory } = await import("@/lib/skill-categories");
-        const category = getSkillCategory({ name: tag });
-        const res = await fetch("/api/admin/skills", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: tag, category, level: 0 }),
-        });
-        if (res.ok) {
-          const newSkill = await res.json();
-          setAllSkills((prev: any[]) => [...prev, newSkill]);
-          setFormData((prev: any) => ({ ...prev, skill_ids: [...prev.skill_ids, newSkill.id] }));
-        }
-      } catch { /* skip */ }
-    }
-  };
-
-  const addTag = (tag: string) => {
-    const trimmed = tag.trim();
-    if (trimmed && !formData.tags.includes(trimmed)) {
-      setFormData({ ...formData, tags: [...formData.tags, trimmed] });
-      if (!allTags.includes(trimmed)) {
-        setAllTags([...allTags, trimmed].sort());
-      }
-      linkTagToSkill(trimmed);
-    }
-    setTagInput("");
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setFormData({ ...formData, tags: formData.tags.filter((t) => t !== tagToRemove) });
-    const lower = tagToRemove.toLowerCase();
-    const skill = allSkills.find((s: any) => s.name.toLowerCase() === lower);
-    if (skill) {
-      setFormData((prev: any) => ({ ...prev, skill_ids: prev.skill_ids.filter((id: number) => id !== skill.id) }));
-    }
-  };
-
-  const handleTagKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addTag(tagInput);
-    } else if (e.key === "Backspace" && !tagInput && formData.tags.length > 0) {
-      removeTag(formData.tags[formData.tags.length - 1]);
-    }
-  };
-
-const filteredTags = allTags.filter((t) => t.toLowerCase().includes(tagInput.toLowerCase()) && !formData.tags.includes(t));
 
   const [translatingName, setTranslatingName] = useState(false);
   const [translatingDesc, setTranslatingDesc] = useState(false);
@@ -255,7 +186,11 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
     e.preventDefault();
     setLoading(true);
     try {
-      const body = { ...formData };
+      const tags = formData.skill_ids.map((id) => {
+        const skill = allSkills.find((s) => s.id === id);
+        return skill ? skill.name : "";
+      }).filter(Boolean);
+      const body = { ...formData, tags };
       const res = await fetch("/api/admin/projects", {
         method: editing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
@@ -311,7 +246,6 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
       show_on_page: true, in_spiral: true, visible: true,
       skill_ids: [],
     });
-    setTagInput("");
   };
 
   const matchTopicsToSkills = async (topics: string[], language: string | null) => {
@@ -513,52 +447,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                 <input type="number" value={formData.display_order} onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} />
               </div>
             </div>
-            <div>
-<div>
-              <label className={`block text-sm ${colors.textMuted} mb-1`}>Tags</label>
-              <div className={`relative`}>
-                <div className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text} min-h-[42px] flex flex-wrap gap-1 items-center`}>
-                  {formData.tags.map((tag) => (
-                    <span key={tag} className={`flex items-center gap-1 ${colors.accentBg} ${colors.accent} px-2 py-0.5 rounded text-xs`}>
-                      {tag}
-                      <button type="button" onClick={() => removeTag(tag)} className="hover:opacity-70">×</button>
-                    </span>
-                  ))}
-                  <input
-                    type="text"
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={handleTagKeyDown}
-                    placeholder={formData.tags.length === 0 ? "Digite para buscar ou criar tags" : ""}
-                    className={`flex-1 min-w-[120px] bg-transparent outline-none ${colors.text} placeholder:${colors.textSubtle}`}
-                    list="tags-list"
-                  />
-                  <datalist id="tags-list">
-                    {filteredTags.map((t) => (
-                      <option key={t} value={t} />
-                    ))}
-                  </datalist>
-                </div>
-                {tagInput && filteredTags.length > 0 && (
-                  <div className={`absolute z-10 w-full mt-1 ${colors.card} border ${colors.border} rounded-lg shadow-lg max-h-40 overflow-auto`}>
-                    {filteredTags.map((t) => (
-                      <button key={t} type="button" onClick={() => addTag(t)} className={`w-full text-left px-3 py-2 text-sm ${colors.text} hover:${colors.cardBgAlt} transition-colors`}>
-                        {t}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {tagInput && !filteredTags.some(t => t.toLowerCase() === tagInput.toLowerCase()) && (
-                  <div className={`absolute z-10 w-full mt-1 ${colors.card} border ${colors.border} rounded-lg shadow-lg`}>
-                    <button type="button" onClick={() => addTag(tagInput)} className={`w-full text-left px-3 py-2 text-sm ${colors.text} hover:${colors.cardBgAlt} transition-colors flex items-center gap-2`}>
-                      <span className={`text-xs ${colors.accent}`}>+ Criar:</span> {tagInput}
-                    </button>
-                  </div>
-                )}
-              </div>
-              <p className={`text-xs ${colors.textSubtle} mt-1`}>Pressione Enter para adicionar ou clique em uma opção</p>
-            </div>
-            </div>
+
             <div>
               <label className={`block text-sm ${colors.textMuted} mb-2`}>Skills Vinculadas</label>
               <div className={`border ${colors.border} rounded-lg p-3 max-h-60 overflow-y-auto`}>
@@ -750,7 +639,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
               <tr>
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Src</th>
                 <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Nome (PT)</th>
-                <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Tags</th>
+                <th className={`text-left px-4 py-3 ${colors.textMuted} font-medium`}>Skills</th>
                 <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Página</th>
                 <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Spiral</th>
                 <th className={`text-center px-4 py-3 ${colors.textMuted} font-medium`}>Outros</th>
@@ -791,9 +680,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                           })}
                         </div>
                       )}
-                      {Array.isArray(project.tags) && project.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className={`text-xs ${colors.cardBg} ${colors.textMuted} px-2 py-0.5 rounded`}>{tag}</span>
-                      ))}
+
                     </div>
                   </td>
                   <td className="px-4 py-3 text-center">

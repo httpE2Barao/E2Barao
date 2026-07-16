@@ -1,6 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllProjects, createProject, updateProject, deleteProject } from '@/lib/db/queries/projects';
-import { formatPgArray } from '@/lib/db/parse';
+import { getSkillMap } from '@/lib/db/queries/skills';
+import { findOrCreateSkill } from '@/lib/db/queries/skills';
+
+async function migrateTagsToSkills(tags: string[], existingIds: number[]): Promise<number[]> {
+  const skillMap = await getSkillMap();
+  const allSkills = Object.values(skillMap);
+  const ids = new Set(existingIds);
+  const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  for (const tag of tags) {
+    const lower = tag.toLowerCase();
+    const normalized = normalize(lower);
+
+    let skill = allSkills.find(s => s.name.toLowerCase() === lower);
+    if (!skill) skill = allSkills.find(s => normalize(s.name) === normalized);
+    if (!skill) skill = allSkills.find(s => s.name.toLowerCase().includes(lower) || normalized.includes(normalize(s.name)));
+
+    if (skill) {
+      ids.add(skill.id);
+    } else {
+      const { getSkillCategory } = await import('@/lib/skill-categories');
+      const category = getSkillCategory({ name: tag });
+      try {
+        const newSkill = await findOrCreateSkill(tag, category);
+        ids.add(newSkill.id);
+      } catch { /* skip */ }
+    }
+  }
+
+  return [...ids];
+}
 
 export async function GET() {
   try {
@@ -15,13 +45,15 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const tags: string[] = Array.isArray(body.tags) ? body.tags : body.tags?.split(',') || [];
+    const skill_ids = await migrateTagsToSkills(tags, body.skill_ids || []);
     const project = await createProject({
       src: body.src,
       site_url: body.site_url,
       repo_url: body.repo_url,
-      image_urls: Array.isArray(body.tags) ? body.image_urls : body.image_urls?.split(',') || [],
-      tags: Array.isArray(body.tags) ? body.tags : body.tags?.split(',') || [],
-      skill_ids: body.skill_ids || [],
+      image_urls: Array.isArray(body.image_urls) ? body.image_urls : body.image_urls?.split(',') || [],
+      tags,
+      skill_ids,
       name_pt: body.name_pt,
       name_en: body.name_en,
       name_es: body.name_es,
@@ -64,13 +96,16 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
+    const tags: string[] = Array.isArray(body.tags) ? body.tags : body.tags?.split(',') || [];
+    const skill_ids = await migrateTagsToSkills(tags, body.skill_ids || []);
+
     const project = await updateProject(id, {
       src: body.src,
       site_url: body.site_url,
       repo_url: body.repo_url,
       image_urls: Array.isArray(body.image_urls) ? body.image_urls : body.image_urls?.split(',') || [],
-      tags: Array.isArray(body.tags) ? body.tags : body.tags?.split(',') || [],
-      skill_ids: body.skill_ids,
+      tags,
+      skill_ids,
       name_pt: body.name_pt,
       name_en: body.name_en,
       name_es: body.name_es,

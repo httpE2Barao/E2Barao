@@ -76,6 +76,15 @@ export async function updateSkill(id: number, fields: Partial<Skill>): Promise<S
   return rows.length > 0 ? mapRowToSkill(rows[0]) : null;
 }
 
+export async function findOrCreateSkill(name: string, category: string): Promise<{ id: number; name: string; category: string }> {
+  const { rows } = await sql`SELECT id, name, category FROM skills WHERE LOWER(name) = LOWER(${name}) LIMIT 1`;
+  if (rows.length > 0) {
+    return { id: rows[0].id, name: rows[0].name, category: rows[0].category };
+  }
+  const skill = await createSkill({ name, category, level: 0, active: true });
+  return { id: skill.id, name: skill.name, category: skill.category };
+}
+
 export async function deleteSkill(id: number): Promise<boolean> {
   const { rowCount } = await sql`DELETE FROM skills WHERE id = ${id}`;
   return (rowCount ?? 0) > 0;
