@@ -235,8 +235,8 @@ export function V2ExperiencesPage() {
     async function fetchData() {
       try {
         const [expRes, eduRes] = await Promise.all([
-          fetch("/api/admin/experience"),
-          fetch("/api/admin/education")
+          fetch(`/api/admin/experience?lang=${language}`),
+          fetch(`/api/admin/education?lang=${language}`)
         ])
         const expData = await expRes.json()
         const eduData = await eduRes.json()
