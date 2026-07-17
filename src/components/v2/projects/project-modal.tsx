@@ -19,12 +19,17 @@ export function setVideoTime(projectSrc: string, time: number) {
   videoTimeRef.current[projectSrc] = time
 }
 
-export function useProjectMedia(projectSrc: string) {
+export function useProjectMedia(projectSrc: string, imageUrls?: string[]) {
   const [mediaUrl, setMediaUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!projectSrc) return
+    if (imageUrls && imageUrls.length > 0) {
+      setMediaUrl(imageUrls[0])
+      setLoading(false)
+      return
+    }
     const checkMedia = async () => {
       const extensions = ['.mp4', '.png', '.webm', '.mov', '.gif', '.jpg']
       for (const ext of extensions) {
@@ -38,7 +43,7 @@ export function useProjectMedia(projectSrc: string) {
       setLoading(false)
     }
     checkMedia()
-  }, [projectSrc])
+  }, [projectSrc, imageUrls])
 
   return { mediaUrl, loading }
 }
@@ -122,7 +127,7 @@ interface V2ProjectModalProps {
 export function V2ProjectModal({ project, index, total, onClose }: V2ProjectModalProps) {
   const { theme } = useTheme()
   const isDark = theme === "dark"
-  const { mediaUrl, loading: mediaLoading } = useProjectMedia(project.src)
+  const { mediaUrl, loading: mediaLoading } = useProjectMedia(project.src, project.imageUrls)
   const videoRef = useRef<HTMLVideoElement>(null)
   const hasInitializedRef = useRef(false)
 

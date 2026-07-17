@@ -11,12 +11,17 @@ const videoTimeRef = { current: {} as Record<string, number>, currentProject: nu
 function getVideoTime(projectSrc: string) { return videoTimeRef.current[projectSrc] || 0 }
 function setVideoTime(projectSrc: string, time: number) { videoTimeRef.current[projectSrc] = time }
 
-function useProjectMedia(projectSrc: string) {
+function useProjectMedia(projectSrc: string, imageUrls?: string[]) {
   const [mediaUrl, setMediaUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!projectSrc) return
+    if (imageUrls && imageUrls.length > 0) {
+      setMediaUrl(imageUrls[0])
+      setLoading(false)
+      return
+    }
     const checkMedia = async () => {
       const extensions = ['.mp4', '.png', '.webm', '.mov', '.gif', '.jpg']
       for (const ext of extensions) {
@@ -34,7 +39,7 @@ function useProjectMedia(projectSrc: string) {
       setLoading(false)
     }
     checkMedia()
-  }, [projectSrc])
+  }, [projectSrc, imageUrls])
 
   return { mediaUrl, loading }
 }
@@ -181,7 +186,7 @@ function SpiralProjectCard({
 }) {
   const { theme } = useTheme()
   const isDark = theme === "dark"
-  const { mediaUrl, loading: mediaLoading } = useProjectMedia(project.src)
+  const { mediaUrl, loading: mediaLoading } = useProjectMedia(project.src, project.imageUrls)
 const videoRef = useRef<HTMLVideoElement>(null)
 
   useLayoutEffect(() => {

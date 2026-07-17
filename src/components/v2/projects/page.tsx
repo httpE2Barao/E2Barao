@@ -19,12 +19,17 @@ function setVideoTime(projectSrc: string, time: number) {
   videoTimeRef.current[projectSrc] = time
 }
 
-function useProjectMedia(projectSrc: string) {
+function useProjectMedia(projectSrc: string, imageUrls?: string[]) {
   const [mediaUrl, setMediaUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!projectSrc) return
+    if (imageUrls && imageUrls.length > 0) {
+      setMediaUrl(imageUrls[0])
+      setLoading(false)
+      return
+    }
     const checkMedia = async () => {
       const extensions = ['.mp4', '.png', '.webm', '.mov', '.gif', '.jpg']
       for (const ext of extensions) {
@@ -38,7 +43,7 @@ function useProjectMedia(projectSrc: string) {
       setLoading(false)
     }
     checkMedia()
-  }, [projectSrc])
+  }, [projectSrc, imageUrls])
 
   return { mediaUrl, loading }
 }
@@ -289,7 +294,7 @@ export function V2ProjectsPage() {
 }
 
 function ProjectMedia({ project, isDark, autoPlay = false }: { project: ProjectData; isDark: boolean; autoPlay?: boolean }) {
-  const { mediaUrl, loading } = useProjectMedia(project.src)
+  const { mediaUrl, loading } = useProjectMedia(project.src, project.imageUrls)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   
@@ -332,7 +337,7 @@ function ProjectMedia({ project, isDark, autoPlay = false }: { project: ProjectD
 }
 
 function FeaturedProjectCard({ project, index, onClick, isDark }: { project: ProjectData; index: number; onClick: () => void; isDark: boolean }) {
-  const { mediaUrl, loading } = useProjectMedia(project.src)
+  const { mediaUrl, loading } = useProjectMedia(project.src, project.imageUrls)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   
@@ -396,7 +401,7 @@ function FeaturedProjectCard({ project, index, onClick, isDark }: { project: Pro
 }
 
 function AdminProjectCard({ project, index, onClick, isDark }: { project: ProjectData; index: number; onClick: () => void; isDark: boolean }) {
-  const { mediaUrl, loading } = useProjectMedia(project.src)
+  const { mediaUrl, loading } = useProjectMedia(project.src, project.imageUrls)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
   

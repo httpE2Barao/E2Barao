@@ -173,11 +173,14 @@ const file = e.target.files?.[0];
 finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
   };
 
-  const handleDeleteImage = async (fileName: string) => {
-    if (!confirm(`Excluir imagem ${fileName}?`)) return;
+  const handleDeleteImage = async (name: string, url: string) => {
+    if (!confirm(`Excluir imagem ${name}?`)) return;
     try {
-      const res = await fetch(`/api/admin/projects/upload?fileName=${encodeURIComponent(fileName)}`, { method: 'DELETE' });
-      if (res.ok) setMessage({ type: "success", text: "Imagem excluída!" });
+      const res = await fetch(`/api/admin/projects/upload?url=${encodeURIComponent(url)}`, { method: 'DELETE' });
+      if (res.ok) {
+        setMessage({ type: "success", text: "Imagem excluída!" });
+        fetchProjectImages();
+      }
     } catch { setMessage({ type: "error", text: "Erro ao excluir imagem" }); }
     setTimeout(() => setMessage(null), 3000);
   };
@@ -724,7 +727,7 @@ finally { setUploading(false); setTimeout(() => setMessage(null), 3000); }
                   <img src={img.url} alt={img.name} className="w-full h-full object-cover" />
                 </div>
                 <p className={`text-xs ${colors.textMuted} mt-1 truncate`}>{img.name}</p>
-                <button onClick={() => handleDeleteImage(img.name)} className="absolute top-1 right-1 bg-red-500/80 hover:bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                <button onClick={() => handleDeleteImage(img.name, img.url)} className="absolute top-1 right-1 bg-red-500/80 hover:bg-red-500 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
