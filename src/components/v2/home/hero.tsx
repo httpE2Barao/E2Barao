@@ -263,7 +263,7 @@ export function V2HomeHero() {
   const scrollDot = isDark ? "bg-cyan-400" : "bg-blue-600"
 
   return (
-    <section className={`relative h-[calc(100vh-4.5rem)] flex flex-col lg:flex-row items-stretch overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section className={`relative h-[calc(100vh-4.5rem)] hero-mobile-v1 flex flex-col lg:flex-row items-stretch overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       {/* Noise overlay */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
@@ -517,7 +517,7 @@ export function V2HomeHero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
+        className="absolute bottom-3 bottom-safe-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
         <span className={`text-[8px] uppercase tracking-[0.3em] ${scrollText}`}>Scroll</span>
         <motion.div

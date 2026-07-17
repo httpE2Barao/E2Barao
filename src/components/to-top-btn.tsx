@@ -37,7 +37,7 @@ export const ToTheTopButton = () => {
           onClick={scrollToTop}
           aria-label="Voltar ao topo"
           className={`
-            fixed z-50 bottom-8 right-8
+             fixed z-50 bottom-8 bottom-safe-8 right-8
             p-6 rounded-full shadow-xl
             backdrop-blur-sm
             transition-colors duration-300

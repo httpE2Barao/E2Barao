@@ -43,6 +43,28 @@ html {
   :root {
     font-size: 80%;
   }
+
+  /* Mobile: use dvh to account for browser chrome (address bar) that cuts off bottom content */
+  .hero-mobile-v2 {
+    height: calc(100dvh - 6rem) !important;
+  }
+  .hero-mobile-v1 {
+    height: calc(100dvh - 4.5rem) !important;
+  }
+
+  /* Safe area pentru bottom elements in mobile browsers */
+  .pb-safe-bottom {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0.5rem)) !important;
+  }
+  .bottom-safe-3 {
+    bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .bottom-safe-2 {
+    bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .bottom-safe-8 {
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
 
 @media screen and (min-width: 1440px) {
