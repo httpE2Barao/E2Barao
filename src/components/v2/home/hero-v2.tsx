@@ -294,7 +294,7 @@ export function V2HomeHeroV2() {
       </div>
 
       {/* 3D Model Layer */}
-      <div ref={splineRef} className="relative z-10 flex-1 min-h-0">
+      <div ref={splineRef} className="relative z-10 flex-1 min-h-0 spline-stretch">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <div className={`w-6 h-6 border-2 border-t-transparent ${accentColor} rounded-full animate-spin`} />
@@ -507,14 +507,14 @@ export function V2HomeHeroV2() {
         transition={{ delay: 1.2, duration: 0.6 }}
         className="absolute bottom-2 bottom-safe-2 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
-        <span className={`text-[8px] uppercase tracking-[0.3em] ${isDark ? "text-white/30" : "text-black/30"}`}>Scroll</span>
+        <span className={`text-[8px] scroll-text-mobile uppercase tracking-[0.3em] ${isDark ? "text-white/30" : "text-black/30"}`}>Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className={`w-5 h-8 ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1`}
+          className={`w-5 h-8 scroll-mouse-mobile ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1`}
         >
           <motion.div
-            className={`w-1 h-1.5 ${isDark ? "bg-cyan-400" : "bg-blue-600"} rounded-full`}
+            className={`w-1 h-1.5 scroll-dot-mobile ${isDark ? "bg-cyan-400" : "bg-blue-600"} rounded-full`}
             animate={{ opacity: [1, 0.3, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />

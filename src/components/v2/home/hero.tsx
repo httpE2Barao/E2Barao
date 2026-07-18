@@ -519,14 +519,14 @@ export function V2HomeHero() {
         transition={{ delay: 1.2, duration: 0.6 }}
         className="absolute bottom-3 bottom-safe-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
-        <span className={`text-[8px] uppercase tracking-[0.3em] ${scrollText}`}>Scroll</span>
+        <span className={`text-[8px] scroll-text-mobile uppercase tracking-[0.3em] ${scrollText}`}>Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className={`w-5 h-8 ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1.5`}
+          className={`w-5 h-8 scroll-mouse-mobile ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1.5`}
         >
           <motion.div
-            className={`w-1 h-1.5 ${scrollDot} rounded-full`}
+            className={`w-1 h-1.5 scroll-dot-mobile ${scrollDot} rounded-full`}
             animate={{ opacity: [1, 0.3, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
