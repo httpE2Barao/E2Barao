@@ -1,17 +1,23 @@
 "use client";
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
@@ -32,6 +38,9 @@ interface CVData {
 export function CreativePreview({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     contact: lang === "pt" ? "Contato" : lang === "en" ? "Contact" : "Contacto",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
     languages: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
@@ -60,10 +69,18 @@ export function CreativePreview({ data }: { data: CVData }) {
           </div>
         )}
 
+        {data.objective && (
+          <div className="mb-5">
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-2 pb-1 border-b border-amber-400">{t.objective}</h3>
+            <p className="text-[8.5px] text-slate-300 leading-relaxed">{data.objective}</p>
+          </div>
+        )}
+
         <div className="mb-5">
           <h3 className="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-2 pb-1 border-b border-amber-400">{t.contact}</h3>
           {data.email && <a href={`mailto:${data.email}`} className="text-[9px] text-amber-400 hover:underline block mb-1">{data.email}</a>}
           {data.phone && <a href={`tel:${data.phone}`} className="text-[9px] text-amber-400 hover:underline block mb-1">{data.phone}</a>}
+          {data.whatsapp && <a href={`https://wa.me/${cleanPhone(data.whatsapp)}`} target="_blank" rel="noopener noreferrer" className="text-[9px] text-amber-400 hover:underline block mb-1">WhatsApp</a>}
           {data.location && <p className="text-[9px] text-slate-300 mb-1">{data.location}</p>}
           {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-[9px] text-amber-400 hover:underline block mb-1">{t.linkedinLabel}</a>}
           {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-[9px] text-amber-400 hover:underline block mb-1">{t.githubLabel}</a>}
@@ -79,16 +96,18 @@ export function CreativePreview({ data }: { data: CVData }) {
           </div>
         )}
 
-        <div className="mb-5">
-          <h3 className="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-2 pb-1 border-b border-amber-400">{t.education}</h3>
-          {data.education.map((edu, i) => (
-            <div key={i} className="mb-2">
-              <p className="text-[9px] font-semibold text-white">{edu.degree}</p>
-              <p className="text-[9px] text-slate-300">{edu.school}</p>
-              <p className="text-[8px] text-slate-400">{edu.period}</p>
-            </div>
-          ))}
-        </div>
+        {data.education.length > 0 && (
+          <div className="mb-5">
+            <h3 className="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-2 pb-1 border-b border-amber-400">{t.education}</h3>
+            {data.education.map((edu, i) => (
+              <div key={i} className="mb-2">
+                <p className="text-[9px] font-semibold text-white">{edu.degree}</p>
+                <p className="text-[9px] text-slate-300">{edu.school}</p>
+                <p className="text-[8px] text-slate-400">{edu.period}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {(data.additionalData?.willingnessToTravel || data.additionalData?.willingnessToRelocate || data.additionalData?.driverLicense || data.additionalData?.vehicleType) && (
           <div>
@@ -122,7 +141,7 @@ export function CreativePreview({ data }: { data: CVData }) {
           <div className="mb-4">
             <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b-2 border-amber-400">{t.keyProjects}</h2>
             {data.projects.slice(0, 4).map((project, i) => (
-              <div key={i} className="mb-2">
+              <div key={i} className="mb-4">
                 <p className="text-[10px] font-semibold text-gray-800">{project.name}</p>
                 <p className="text-[9px] text-gray-600 leading-relaxed">{project.description}</p>
                 {project.tags && project.tags.length > 0 && (

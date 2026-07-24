@@ -4,6 +4,24 @@ export interface SkillCategory {
   keywords: string[];
 }
 
+export const CATEGORY_ORDER: Record<string, number> = {
+  languages: 1,
+  frameworks: 2,
+  styling: 3,
+  database: 4,
+  state: 5,
+  auth: 6,
+  ai: 7,
+  devops: 8,
+  design: 9,
+  testing: 10,
+  realtime: 11,
+  dataviz: 12,
+  integrations: 13,
+  tools: 14,
+  concepts: 15,
+};
+
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     id: "languages",

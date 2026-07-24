@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useCallback, useEffect, useRef, useState, useMemo } from "react"
 import { useInView } from "react-intersection-observer"
 import { useWelcomeAudio, useSpeech } from "@/hooks/use-welcome-audio"
+import ReactMarkdown from "react-markdown"
 
 const Spline = dynamic(() => import("@splinetool/react-spline"), {
   ssr: false,
@@ -373,7 +374,7 @@ export function V2HomeHero() {
   const scrollDot = isDark ? "bg-cyan-400" : "bg-blue-600"
 
   return (
-    <section className={`relative h-[calc(100vh-4.5rem)] flex flex-col lg:flex-row items-stretch overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section className={`relative h-[calc(100vh-4.5rem)] hero-mobile-v1 flex flex-col lg:flex-row items-stretch overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       {/* Noise overlay */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
@@ -539,9 +540,9 @@ export function V2HomeHero() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-24 overflow-y-auto`}>
-                    {chatResponse}
-                  </p>
+                  <div className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent [&_strong]:text-cyan-400 [&_strong]:font-bold text-left`}>
+                    <ReactMarkdown>{chatResponse}</ReactMarkdown>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div
@@ -621,16 +622,16 @@ export function V2HomeHero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
+        className="absolute bottom-3 bottom-safe-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
-        <span className={`text-[8px] uppercase tracking-[0.3em] ${scrollText}`}>Scroll</span>
+        <span className={`text-[8px] scroll-text-mobile uppercase tracking-[0.3em] ${scrollText}`}>Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className={`w-5 h-8 ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1.5`}
+          className={`w-5 h-8 scroll-mouse-mobile ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1.5`}
         >
           <motion.div
-            className={`w-1 h-1.5 ${scrollDot} rounded-full`}
+            className={`w-1 h-1.5 scroll-dot-mobile ${scrollDot} rounded-full`}
             animate={{ opacity: [1, 0.3, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />

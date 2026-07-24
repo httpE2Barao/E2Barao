@@ -13,6 +13,7 @@ interface Education {
   school_en: string;
   description_pt: string;
   description_en: string;
+  education_type: string;
   display_order: number;
 }
 
@@ -38,7 +39,7 @@ export default function EducationPage() {
   };
 
   const [formData, setFormData] = useState({
-    period_start: "", period_end: "", degree_pt: "", degree_en: "", school_pt: "", school_en: "", description_pt: "", description_en: "", display_order: 0,
+    period_start: "", period_end: "", degree_pt: "", degree_en: "", school_pt: "", school_en: "", description_pt: "", description_en: "", education_type: "course", display_order: 0,
   });
 
   useEffect(() => {
@@ -79,11 +80,11 @@ export default function EducationPage() {
 
   const handleEdit = (edu: Education) => {
     setEditing(edu);
-    setFormData({ period_start: edu.period_start, period_end: edu.period_end, degree_pt: edu.degree_pt, degree_en: edu.degree_en, school_pt: edu.school_pt, school_en: edu.school_en, description_pt: edu.description_pt, description_en: edu.description_en, display_order: edu.display_order });
+    setFormData({ period_start: edu.period_start, period_end: edu.period_end, degree_pt: edu.degree_pt, degree_en: edu.degree_en, school_pt: edu.school_pt, school_en: edu.school_en, description_pt: edu.description_pt, description_en: edu.description_en, education_type: edu.education_type || 'course', display_order: edu.display_order });
     setShowForm(true);
   };
 
-  const resetForm = () => { setEditing(null); setShowForm(false); setFormData({ period_start: "", period_end: "", degree_pt: "", degree_en: "", school_pt: "", school_en: "", description_pt: "", description_en: "", display_order: 0 }); };
+  const resetForm = () => { setEditing(null); setShowForm(false); setFormData({ period_start: "", period_end: "", degree_pt: "", degree_en: "", school_pt: "", school_en: "", description_pt: "", description_en: "", education_type: "course", display_order: 0 }); };
 
   if (loading && education.length === 0) return <div className="flex items-center justify-center h-64"><div className={`w-8 h-8 border-2 ${colors.spinner} border-t-transparent rounded-full animate-spin`} /></div>;
 
@@ -126,6 +127,13 @@ export default function EducationPage() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Tipo</label>
+                <select value={formData.education_type} onChange={(e) => setFormData({ ...formData, education_type: e.target.value })} className={`${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`}>
+                  <option value="graduation">Graduação</option>
+                  <option value="course">Curso Complementar</option>
+                  <option value="high_school">Ensino Médio</option>
+                </select>
+              </div>
               <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Ordem</label><input type="number" value={formData.display_order} onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })} className={`w-20 ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} /></div>
             </div>
             <div className="flex items-center gap-3">
@@ -160,6 +168,11 @@ export default function EducationPage() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <button onClick={() => setLang("pt")} className={`px-3 py-1 rounded text-xs font-medium transition-colors ${lang === "pt" ? colors.accentBg : ''} ${lang === "pt" ? colors.accent : colors.textMuted} ${lang !== "pt" ? `hover:${colors.text}` : ''}`}>PT</button>
+        <button onClick={() => setLang("en")} className={`px-3 py-1 rounded text-xs font-medium transition-colors ${lang === "en" ? colors.accentBg : ''} ${lang === "en" ? colors.accent : colors.textMuted} ${lang !== "en" ? `hover:${colors.text}` : ''}`}>EN</button>
       </div>
     </div>
   );

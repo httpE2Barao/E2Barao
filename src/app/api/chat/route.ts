@@ -1,83 +1,47 @@
-import { rawProjectsData } from "@/data/projects-data"
 import { NextResponse } from "next/server"
+import { getProjectsContext, getExperienceContext, getEducationContext, getSkillsContext } from "./chat-data"
 
 const NVIDIA_API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
 const MODEL = "meta/llama-3.1-70b-instruct"
 
-function buildProjectsContext(lang: string): string {
-  const usePt = lang === "pt"
+type LangKey = "pt" | "en" | "es" | "fr" | "zh"
 
-  const projects = rawProjectsData.map((p) => {
-    const name = usePt ? p.name.ptBR : p.name.enUS
-    const desc = usePt ? p.abt.ptBR : p.abt.enUS
-    const tags = p.tags?.join(", ") || ""
-    const links = [p.site ? `Site: ${p.site}` : "", p.repo ? `Repo: ${p.repo}` : ""].filter(Boolean).join(", ")
-    return `- **${name}**: ${desc.substring(0, 200)}... [Tech: ${tags}] ${links ? `(${links})` : ""}`
-  }).join("\n")
+async function buildSystemPrompt(lang: LangKey): Promise<string> {
+  const projectsCtx = await getProjectsContext(lang)
+  const experienceCtx = await getExperienceContext(lang)
+  const educationCtx = await getEducationContext(lang)
+  const skillsCtx = await getSkillsContext()
 
-  if (usePt) {
-    return `## PROJETOS DE ELIAS BARÃO (use estas informações quando perguntarem sobre projetos)
-
-${projects}
-
-### Projeto Principal - a Platera
-A Platera é o projeto mais importante de Elias. É um Sistema Operacional completo para restaurantes modernos (SaaS).
-Funcionalidades: Chatbot IA (OpenAI/Gemini) para WhatsApp e Web, omnichannel (delivery próprio, QR Code mesa, totens, retirada, social commerce), integração Lalamove e iFood, fichas técnicas dinâmicas com CMV em tempo real, KDS (Kitchen Display System), POS (Frente de Caixa), emissão fiscal NFC-e via FocusNFe, pagamentos Mercado Pago (Pix, Cartão, OAuth), heatmaps de delivery, dashboard com AI Insights, gamificação e cashback, segurança enterprise.
-Tech: Next.js 16, React 19, TypeScript, Prisma 6, PostgreSQL, Tailwind 4, Shadcn UI, Radix UI, NextAuth, Pusher, Socket.io, Leaflet, Recharts, Zod, Framer Motion.
-
-### Projeto Museu Cristóforo Colombo
-Sistema WordPress + Tainacan para digitalização do acervo do Museu Municipal Cristóforo Colombo em Colombo, PR.
-
-### Outros Projetos Notáveis
-- Janine Mathias: Portfólio digital para cantora (TypeScript, Vite, Tailwind, Spotify API)
-- Thiago Battista: Portfólio fotográfico (TypeScript, React, Next.js, Tailwind)
-- Pátio Monitoramento: Sistema de cadastro residencial com autenticação (React, Next.js, Tailwind)
-- Space Tourism: App sobre missões espaciais (JavaScript, React, Tailwind)
-- MoniBank: Banco digital com validação CPF e webcam (JavaScript)
-- Typing Challenge: Teste de velocidade de digitação (jQuery, Tailwind, API)
-
-Quando perguntarem sobre projetos, use estas informações reais. Seja específico e mencione tecnologias.`
+  const stackLabel: Record<LangKey, string> = {
+    pt: "STACK PRINCIPAL",
+    en: "MAIN STACK",
+    es: "STACK PRINCIPAL",
+    fr: "STACK PRINCIPAL",
+    zh: "主要技术栈",
   }
 
-  // English (default)
-  return `## ELIAS BARÃO'S PROJECTS (use this information when asked about projects)
-
-${projects}
-
-### Main Project - Platera
-Platera is Elias' most important project. It's a complete Operating System for modern restaurants (SaaS).
-Features: AI Chatbot (OpenAI/Gemini) for WhatsApp and Web, omnichannel (own delivery, QR Code table, kiosks, pickup, social commerce), Lalamove and iFood integration, dynamic technical sheets with real-time CMV, KDS (Kitchen Display System), POS, NFC-e fiscal via FocusNFe, Mercado Pago payments (Pix, Card, OAuth), delivery heatmaps, dashboard with AI Insights, gamification and cashback, enterprise security.
-Tech: Next.js 16, React 19, TypeScript, Prisma 6, PostgreSQL, Tailwind 4, Shadcn UI, Radix UI, NextAuth, Pusher, Socket.io, Leaflet, Recharts, Zod, Framer Motion.
-
-When asked about projects, use this real information. Be specific and mention technologies.`
-}
-
-function getSystemPrompt(lang: string): string {
-  const projectsContext = buildProjectsContext(lang)
-
-  const prompts: Record<string, string> = {
+  const prompts: Record<LangKey, string> = {
     pt: `Você é o Cógnis, assistente de IA do portfólio digital de Elias Barão, um desenvolvedor web e engenheiro de software atualmente reside em Curitiba, Paraná, Brasil.
 
 SOBRE ELIAS:
 - Nome completo: Elias Edson Barão
-- Título: Software & Automation Engineer | Full-Stack Developer
+- Título: Software & Automation Engineer | Full-Stack Developer | Arquiteto de Agentes de IA
 - Localização: Curitiba, PR, Brasil
 - Idiomas: Português (nativo), Inglês, Espanhol
-- Formação: Engenharia de Software na Descomplica (2024-2028)
 - Contato: e2barao@hotmail.com | WhatsApp: +55 41 99804-6755
 - GitHub: github.com/httpE2Barao
 - LinkedIn: linkedin.com/in/e2barao
 
-STACK PRINCIPAL:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+FORMAÇÃO:
+${educationCtx}
+
+${stackLabel[lang]}:
+${skillsCtx}
 
 EXPERIÊNCIA:
-- CMS Developer na Prefeitura Municipal de Colombo (Mai 2025 - presente)
-- Freelance Web Developer (Jan 2024 - presente)
-- Auxiliar de logística na HELLAS AIR TEMP, INC nos EUA (Nov 2021 - Mai 2022)
-- Estagiário no TJPR (Fev 2019 - Jan 2020)
+${experienceCtx}
 
-${projectsContext}
+${projectsCtx}
 
 REGRAS:
 - Seja breve, amigável e útil
@@ -91,24 +55,23 @@ REGRAS:
 
 SOBRE ELIAS:
 - Nombre completo: Elias Edson Barão
-- Título: Software & Automation Engineer | Full-Stack Developer
+- Título: Software & Automation Engineer | Full-Stack Developer | Arquitecto de Agentes de IA
 - Ubicación: Curitiba, PR, Brasil
 - Idiomas: Portugués (nativo), Inglés, Español
-- Formación: Ingeniería de Software en Descomplica (2024-2028)
 - Contacto: e2barao@hotmail.com | WhatsApp: +55 41 99804-6755
 - GitHub: github.com/httpE2Barao
 - LinkedIn: linkedin.com/in/e2barao
 
-STACK PRINCIPAL:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+FORMACIÓN:
+${educationCtx}
+
+${stackLabel[lang]}:
+${skillsCtx}
 
 EXPERIENCIA:
-- CMS Developer en Prefeitura Municipal de Colombo (May 2025 - presente)
-- Freelance Web Developer (Ene 2024 - presente)
-- Auxiliar de logística en HELLAS AIR TEMP, INC en EE.UU. (Nov 2021 - May 2022)
-- Pasante en TJPR (Feb 2019 - Ene 2020)
+${experienceCtx}
 
-${projectsContext}
+${projectsCtx}
 
 REGLAS:
 - Sé breve, amigable y útil
@@ -122,24 +85,23 @@ REGLAS:
 
 À PROPOS D'ELIAS:
 - Nom complet: Elias Edson Barão
-- Titre: Software & Automation Engineer | Full-Stack Developer
+- Titre: Software & Automation Engineer | Full-Stack Developer | Architecte d'Agents IA
 - Localisation: Curitiba, PR, Brésil
 - Langues: Portugais (natif), Anglais, Espagnol
-- Formation: Ingénierie Logiciel à Descomplica (2024-2028)
 - Contact: e2barao@hotmail.com | WhatsApp: +55 41 99804-6755
 - GitHub: github.com/httpE2Barao
 - LinkedIn: linkedin.com/in/e2barao
 
-STACK PRINCIPAL:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+FORMATION:
+${educationCtx}
+
+${stackLabel[lang]}:
+${skillsCtx}
 
 EXPÉRIENCE:
-- CMS Developer à Prefeitura Municipal de Colombo (Mai 2025 - présent)
-- Freelance Web Developer (Jan 2024 - présent)
-- Assistant logistique chez HELLAS AIR TEMP, INC aux États-Unis (Nov 2021 - Mai 2022)
-- Stagiaire au TJPR (Fév 2019 - Jan 2020)
+${experienceCtx}
 
-${projectsContext}
+${projectsCtx}
 
 RÈGLES:
 - Soyez bref, amical et utile
@@ -153,24 +115,23 @@ RÈGLES:
 
 关于 ELIAS：
 - 全名：Elias Edson Barão
-- 职位：软件与自动化工程师 | 全栈开发者
+- 职位：软件与自动化工程师 | 全栈开发者 | AI 智能体架构师
 - 位置：巴西库里奇巴
 - 语言：葡萄牙语（母语）、英语、西班牙语
-- 教育：Descomplica 软件工程（2024-2028）
 - 联系方式：e2barao@hotmail.com | WhatsApp: +55 41 99804-6755
 - GitHub: github.com/httpE2Barao
 - LinkedIn: linkedin.com/in/e2barao
 
-主要技术栈：
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+教育背景：
+${educationCtx}
+
+${stackLabel[lang]}：
+${skillsCtx}
 
 工作经验：
-- CMS Developer，Colombo 市政府（2025年5月至今）
-- 自由网页开发者（2024年1月至今）
-- 物流助理，HELLAS AIR TEMP, INC 美国（2021年11月-2022年5月）
-- TJPR 实习生（2019年2月-2020年1月）
+${experienceCtx}
 
-${projectsContext}
+${projectsCtx}
 
 规则：
 - 简洁、友好、有帮助
@@ -184,24 +145,23 @@ ${projectsContext}
 
 ABOUT ELIAS:
 - Full name: Elias Edson Barão
-- Title: Software & Automation Engineer | Full-Stack Developer
+- Title: Software & Automation Engineer | Full-Stack Developer | AI Agent Architect
 - Location: Curitiba, PR, Brazil
 - Languages: Portuguese (native), English, Spanish
-- Education: Software Engineering at Descomplica (2024-2028)
 - Contact: e2barao@hotmail.com | WhatsApp: +55 41 99804-6755
 - GitHub: github.com/httpE2Barao
 - LinkedIn: linkedin.com/in/e2barao
 
-MAIN STACK:
-JavaScript, TypeScript, React, Next.js, Tailwind CSS, Node.js, PostgreSQL, Prisma ORM, WordPress, n8n, Python, PHP, Docker, Figma, Vercel, OpenAI, Google Gemini
+EDUCATION:
+${educationCtx}
+
+${stackLabel[lang]}:
+${skillsCtx}
 
 EXPERIENCE:
-- CMS Developer at Prefeitura Municipal de Colombo (May 2025 - present)
-- Freelance Web Developer (Jan 2024 - present)
-- Logistics Assistant at HELLAS AIR TEMP, INC in the US (Nov 2021 - May 2022)
-- Intern at TJPR (Feb 2019 - Jan 2020)
+${experienceCtx}
 
-${projectsContext}
+${projectsCtx}
 
 RULES:
 - Be brief, friendly and helpful
@@ -223,12 +183,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 })
     }
 
-    const systemPrompt = getSystemPrompt(language)
+    const systemPrompt = await buildSystemPrompt(language as LangKey)
 
     console.log(`[NVIDIA AI] Lang: ${language}, Message: "${message.substring(0, 50)}..."`)
 
     const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 25000)
+    const timeout = setTimeout(() => controller.abort(), 30000)
 
     const res = await fetch(NVIDIA_API_URL, {
       method: "POST",
@@ -242,7 +202,7 @@ export async function POST(req: Request) {
           { role: "system", content: systemPrompt },
           { role: "user", content: message },
         ],
-        max_tokens: 300,
+        max_tokens: 1000,
         temperature: 0.7,
         top_p: 0.9,
       }),

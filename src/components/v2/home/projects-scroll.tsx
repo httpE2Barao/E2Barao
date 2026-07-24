@@ -5,6 +5,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useRef, useState } from "react"
 
+interface ProjectSkill {
+  id: number;
+  name: string;
+  category: string;
+}
+
 interface ProjectFromAPI {
   id: number;
   src: string;
@@ -16,6 +22,7 @@ interface ProjectFromAPI {
   abt: string;
   featured: boolean;
   imageUrls: string[];
+  skills: ProjectSkill[];
 }
 
 async function fetchFeaturedProjects(lang: string): Promise<ProjectFromAPI[]> {
@@ -222,6 +229,30 @@ function ProjectModal({
                 </span>
               ))}
             </div>
+
+            {project.skills && project.skills.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mb-8">
+                {project.skills.map((skill) => (
+                  <span key={skill.id} className={`text-[10px] px-2 py-0.5 rounded ${
+                    skill.category === 'languages' ? 'text-cyan-400 bg-cyan-500/10' :
+                    skill.category === 'frameworks' ? 'text-blue-400 bg-blue-500/10' :
+                    skill.category === 'styling' ? 'text-pink-400 bg-pink-500/10' :
+                    skill.category === 'database' ? 'text-green-400 bg-green-500/10' :
+                    skill.category === 'state' ? 'text-yellow-400 bg-yellow-500/10' :
+                    skill.category === 'auth' ? 'text-red-400 bg-red-500/10' :
+                    skill.category === 'ai' ? 'text-purple-400 bg-purple-500/10' :
+                    skill.category === 'devops' ? 'text-orange-400 bg-orange-500/10' :
+                    skill.category === 'design' ? 'text-pink-400 bg-pink-500/10' :
+                    skill.category === 'testing' ? 'text-teal-400 bg-teal-500/10' :
+                    skill.category === 'realtime' ? 'text-amber-400 bg-amber-500/10' :
+                    skill.category === 'dataviz' ? 'text-indigo-400 bg-indigo-500/10' :
+                    skill.category === 'integrations' ? 'text-cyan-400 bg-cyan-500/10' :
+                    skill.category === 'tools' ? 'text-gray-400 bg-gray-500/10' :
+                    'text-purple-400 bg-purple-500/10'
+                  }`}>{skill.name}</span>
+                ))}
+              </div>
+            )}
 
             <div className="flex flex-wrap gap-4">
               {project.site && (

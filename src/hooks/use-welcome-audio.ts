@@ -3,6 +3,25 @@
 import { useRef, useCallback, useState, useEffect } from "react"
 import { trimAudioEnd } from "./use-audio-trimmer"
 
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    .replace(/_(.+?)_/g, "$1")
+    .replace(/`{1,3}.+?`{1,3}/g, "")
+    .replace(/~~(.+?)~~/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/>\s+/g, "")
+    .replace(/(?:^|\n)\s*[-*+]\s+/g, " ")
+    .replace(/(?:^|\n)\s*\d+\.\s+/g, " ")
+    .replace(/---+/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+}
+
 const WELCOME_CHUNKS: Record<string, string[]> = {
   pt: ["Olá! Sou o Cógnis.", "Posso te ajudar com projetos, skills e experiências do Elias.", "Vamos conversar?"],
   en: ["Hi! I'm Cógnis.", "I can help with projects, skills and Elias's experience.", "Let's talk?"],
@@ -35,10 +54,49 @@ const LANG_MAP: Record<string, string> = {
   zh: "zh-CN",
 }
 
-async function fetchTTSBlob(text: string, lang: string, useNative = false): Promise<{ url: string; cleanup: () => void; native?: boolean }> {
-  const voice = VOICE_MAP[lang] || VOICE_MAP["en"]
+const MAX_TTS_CHARS = 800
 
-  console.log(`[TTS] Gerando áudio: voice=${voice}, lang=${lang}`)
+function splitText(text: string): string[] {
+  const chunks: string[] = []
+  let remaining = text
+  while (remaining.length > MAX_TTS_CHARS) {
+    let splitAt = remaining.lastIndexOf(". ", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = remaining.lastIndexOf("! ", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = remaining.lastIndexOf("? ", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = remaining.lastIndexOf(":\n", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = remaining.lastIndexOf("\n\n", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = remaining.lastIndexOf("\n", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = remaining.lastIndexOf(", ", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = remaining.lastIndexOf(" ", MAX_TTS_CHARS)
+    if (splitAt === -1) splitAt = MAX_TTS_CHARS
+    chunks.push(remaining.slice(0, splitAt + 1).trim())
+    remaining = remaining.slice(splitAt + 1).trim()
+  }
+  if (remaining) chunks.push(remaining)
+  return chunks
+}
+
+async function fetchTTSBlob(text: string, lang: string): Promise<{ url: string; cleanup: () => void; ok: boolean }> {
+  if (text.length > MAX_TTS_CHARS) {
+    const chunks = splitText(text)
+    const audioBlobs: Blob[] = []
+    for (let i = 0; i < chunks.length; i++) {
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: chunks[i], voice: VOICE_MAP[lang] || VOICE_MAP["en"], rate: "+30%", pitch: "+0Hz" }),
+      })
+      if (!res.ok) return { url: "", cleanup: () => {}, ok: false }
+      const blob = await res.blob()
+      audioBlobs.push(blob)
+    }
+    const mergedBlob = new Blob(audioBlobs, { type: "audio/mpeg" })
+    const trimmedBlob = await trimAudioEnd(mergedBlob, 2.7)
+    const url = URL.createObjectURL(trimmedBlob)
+    return { url, cleanup: () => URL.revokeObjectURL(url), ok: true }
+  }
+
+  const voice = VOICE_MAP[lang] || VOICE_MAP["en"]
 
   const res = await fetch("/api/tts", {
     method: "POST",
@@ -46,16 +104,12 @@ async function fetchTTSBlob(text: string, lang: string, useNative = false): Prom
     body: JSON.stringify({ text, voice, rate: "+30%", pitch: "+0Hz" }),
   })
 
-  if (!res.ok) {
-    if (useNative) throw new Error(`TTS API failed: ${res.status}`)
-    console.warn(`[TTS] API falhou (${res.status}), usando fallback nativo`)
-    return { url: "", cleanup: () => {}, native: true }
-  }
+  if (!res.ok) return { url: "", cleanup: () => {}, ok: false }
 
   const blob = await res.blob()
   const trimmedBlob = await trimAudioEnd(blob, 2.7)
   const url = URL.createObjectURL(trimmedBlob)
-  return { url, cleanup: () => URL.revokeObjectURL(url) }
+  return { url, cleanup: () => URL.revokeObjectURL(url), ok: true }
 }
 
 function speakNative(text: string, lang: string) {
@@ -112,10 +166,10 @@ export function useWelcomeAudio(language = "pt", isReturning = false) {
       console.log("[TTS] Pré-carregando chunks...")
       try {
         const results = await Promise.all(
-          welcomeChunks.map((chunk) => fetchTTSBlob(chunk, language))
+          welcomeChunks.map((chunk) => fetchTTSBlob(stripMarkdown(chunk), language))
         )
-        const hasNative = results.some((r) => r.native)
-        if (hasNative) {
+        const hasFailure = results.some((r) => !r.ok)
+        if (hasFailure) {
           useNativeRef.current = true
           setIsPreloaded(true)
           console.log("[TTS] API indisponível, usando SpeechSynthesis nativo")
@@ -151,7 +205,7 @@ export function useWelcomeAudio(language = "pt", isReturning = false) {
     for (let i = 0; i < chunks.length; i++) {
       if (playbackCancelled.current) return
       console.log(`[TTS] Chunk ${i + 1}/${chunks.length}: "${chunks[i].substring(0, 40)}..."`)
-      speakNative(chunks[i], language)
+      speakNative(stripMarkdown(chunks[i]), language)
       await new Promise((resolve) => setTimeout(resolve, 600))
     }
   }, [language])
@@ -216,28 +270,21 @@ export function useSpeech() {
   const speak = useCallback(async (text: string, lang = "pt", onEnd?: () => void) => {
     if (isSpeaking.current) return
     isSpeaking.current = true
+    const cleanText = stripMarkdown(text)
 
-    try {
-      const ttsResult = await fetchTTSBlob(text, lang, true)
-      if (ttsResult.native) {
-        speakNative(text, lang)
-        isSpeaking.current = false
-        onEnd?.()
-        return
-      }
-      const { url, cleanup } = ttsResult
-      const audio = new Audio(url)
-      currentAudio.current = audio
-      currentCleanup.current = cleanup
-      await audio.play()
-      audio.onended = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null; onEnd?.() }
-      audio.onerror = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null; onEnd?.(); speakNative(text, lang) }
-    } catch (err) {
-      console.error("[TTS] FreeTTS falhou, ativando fallback nativo:", err)
-      speakNative(text, lang)
-      onEnd?.()
+    const { url, cleanup, ok } = await fetchTTSBlob(cleanText, lang)
+    if (!ok) {
+      speakNative(cleanText, lang)
       isSpeaking.current = false
+      onEnd?.()
+      return
     }
+    const audio = new Audio(url)
+    currentAudio.current = audio
+    currentCleanup.current = cleanup
+    await audio.play().catch(() => { speakNative(cleanText, lang); cleanup() })
+    audio.onended = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null; onEnd?.() }
+    audio.onerror = () => { cleanup(); isSpeaking.current = false; currentAudio.current = null; currentCleanup.current = null; onEnd?.(); speakNative(cleanText, lang) }
   }, [])
 
   return { speak, stopAudio }

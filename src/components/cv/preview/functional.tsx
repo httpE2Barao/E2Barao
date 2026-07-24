@@ -2,18 +2,24 @@
 
 import { categorizeSkills } from "@/lib/skill-categories";
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   skillOrders?: number[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
@@ -36,6 +42,9 @@ export function FunctionalPreview({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const skillCategories = categorizeSkills(data.skills, lang, data.skillOrders);
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     professionalSummary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
     professionalExperience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Professional Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
@@ -58,6 +67,7 @@ export function FunctionalPreview({ data }: { data: CVData }) {
         <div className="flex flex-wrap justify-center gap-3 text-[9px] text-gray-600">
           {data.email && <a href={`mailto:${data.email}`} className="text-blue-600 hover:underline">{data.email}</a>}
           {data.phone && <a href={`tel:${data.phone}`} className="text-blue-600 hover:underline">{data.phone}</a>}
+          {data.whatsapp && <a href={`https://wa.me/${cleanPhone(data.whatsapp)}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">WhatsApp</a>}
           {data.location && <span>{data.location}</span>}
           {data.linkedin && <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{t.linkedinLabel}</a>}
           {data.github && <a href={data.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">{t.githubLabel}</a>}
@@ -68,6 +78,33 @@ export function FunctionalPreview({ data }: { data: CVData }) {
       <div className="mb-4">
         <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.professionalSummary}</h2>
         <p className="text-[10px] text-gray-700 leading-relaxed mb-4">{data.summary}</p>
+
+        {data.objective && (
+          <div className="mb-4">
+            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.objective}</h2>
+            <p className="text-[10px] text-gray-700 leading-relaxed">{data.objective}</p>
+          </div>
+        )}
+
+        {data.includeProjects && data.projects.length > 0 && (
+          <>
+            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">Key Projects</h2>
+            {data.projects.map((project, i) => (
+              <div key={i} className="mb-4">
+                <p className="text-[10px] font-semibold text-gray-800">{project.name}</p>
+                <p className="text-[9px] text-gray-700 leading-relaxed">{project.description}</p>
+                {project.tags && project.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {project.tags.map((tag, j) => (
+                      <span key={j} className="text-[7px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
 
         {data.includeSkills && skillCategories.length > 0 && (
           <>
@@ -84,26 +121,6 @@ export function FunctionalPreview({ data }: { data: CVData }) {
             ))}
           </>
         )}
-
-        {data.includeProjects && data.projects.length > 0 && (
-          <>
-            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">Key Projects</h2>
-            {data.projects.map((project, i) => (
-              <div key={i} className="mb-2">
-                <p className="text-[10px] font-semibold text-gray-800">{project.name}</p>
-                <p className="text-[9px] text-gray-700 leading-relaxed">{project.description}</p>
-                {project.tags && project.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {project.tags.map((tag, j) => (
-                      <span key={j} className="text-[7px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">{tag}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </>
-        )}
-      </div>
 
       <div className="mb-4">
         {data.includeExperience && (
@@ -122,22 +139,20 @@ export function FunctionalPreview({ data }: { data: CVData }) {
         )}
       </div>
 
-      <div className="mb-4">
-        {data.includeEducation && (
-          <>
-            <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.education}</h2>
-            {data.education.map((edu, i) => (
-              <div key={i} className="mb-2">
-                <div className="flex justify-between items-baseline">
-                  <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
-                  <span className="text-[9px] text-gray-500">{edu.period}</span>
-                </div>
-                <p className="text-[9px] text-gray-600">{edu.school}</p>
+      {data.includeEducation && data.education.length > 0 && (
+        <div className="mb-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-wider text-gray-900 mb-3 pb-1 border-b border-gray-200">{t.graduation}</h2>
+          {data.education.map((edu, i) => (
+            <div key={i} className="mb-2">
+              <div className="flex justify-between items-baseline">
+                <span className="font-semibold text-[10px] text-gray-800">{edu.degree}</span>
+                <span className="text-[9px] text-gray-500">{edu.period}</span>
               </div>
-            ))}
-          </>
-        )}
-      </div>
+              <p className="text-[9px] text-gray-600">{edu.school}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {data.includeLanguages && data.languages.length > 0 && (
         <div>

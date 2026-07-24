@@ -69,7 +69,6 @@ function TimelineItem({ exp, index, isLast, language, stats }: { exp: Experience
   const x = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -60 : 60, 0])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
-  const borderColor = isDark ? "border-white/10" : "border-black/10"
   const lineBg = isDark ? "bg-white/10" : "bg-black/10"
   const lineActive = isDark ? "bg-cyan-400" : "bg-blue-600"
   const dotBorder = isDark ? "border-white/30" : "border-black/30"
@@ -217,14 +216,12 @@ export function V2ExperiencesPage() {
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -150])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
-  const textSubtle = isDark ? "text-white/20" : "text-black/20"
   const textMuted = isDark ? "text-white/30" : "text-black/30"
   const bgGlow = isDark ? "bg-cyan-400/5" : "bg-blue-600/5"
   const bgTab = isDark ? "bg-white/5" : "bg-black/5"
   const textTab = isDark ? "text-white/50" : "text-black/50"
   const hoverTab = isDark ? "hover:text-white hover:bg-white/10" : "hover:text-black hover:bg-black/10"
   const activeBg = isDark ? "bg-cyan-400 text-black" : "bg-blue-600 text-white"
-  const textPrimary = isDark ? "text-white" : "text-black"
 
   const handleTabChange = (tab: "experience" | "education") => {
     setActiveTab(tab)
@@ -241,8 +238,8 @@ export function V2ExperiencesPage() {
     async function fetchData() {
       try {
         const [expRes, eduRes] = await Promise.all([
-          fetch("/api/admin/experience"),
-          fetch("/api/admin/education")
+          fetch(`/api/admin/experience?lang=${language}`),
+          fetch(`/api/admin/education?lang=${language}`)
         ])
         const expData = await expRes.json()
         const eduData = await eduRes.json()
@@ -377,6 +374,33 @@ export function V2ExperiencesPage() {
           </AnimatePresence>
         )}
       </div>
+
+      {!loading && (experiences.length > 0 || education.length > 0) && (
+        <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mt-10">
+          <div className="flex gap-3">
+            <button
+              onClick={() => handleTabChange("experience")}
+              className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${
+                activeTab === "experience"
+                  ? activeBg
+                  : `${bgTab} ${textTab} ${hoverTab}`
+              }`}
+            >
+              {experienceTab}
+            </button>
+            <button
+              onClick={() => handleTabChange("education")}
+              className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${
+                activeTab === "education"
+                  ? activeBg
+                  : `${bgTab} ${textTab} ${hoverTab}`
+              }`}
+            >
+              {educationTab}
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

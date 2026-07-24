@@ -105,10 +105,12 @@ function buildLocalizedData(config: any, lang: string, experience: any[], educat
     title: getLocalizedValue(config.title, lang),
     email: config.email || '',
     phone: config.phone || '',
+    whatsapp: config.whatsapp || '',
     location: getLocalizedValue(config.location, lang),
     linkedin: config.linkedin || '',
     github: config.github || '',
     summary: getLocalizedValue(config.summary, lang),
+    objective: getLocalizedValue(config.objective, lang),
     language: lang,
     experience: selectedExp.map((e: any) => ({
       role: getLocalizedValue(localizeField(e.role_pt || e.role, e.role_en || e.role, e.role_es || e.role_en || e.role), lang),

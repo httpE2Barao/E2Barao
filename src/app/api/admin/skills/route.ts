@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@vercel/postgres';
 import { readArrayFromJson, saveArrayToJson } from '@/lib/json-storage';
 import { v1Data } from '@/data/v1-data';
+import { CATEGORY_ORDER } from '@/lib/skill-categories';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -12,7 +13,22 @@ export async function GET(request: NextRequest) {
   try {
     // Se all=true, retorna todas as skills sem filtrar por category
     if (all === 'true') {
-      const { rows } = await sql`SELECT * FROM skills ORDER BY display_order NULLS LAST, name`;
+      const { rows } = await sql`
+        SELECT * FROM skills
+        ORDER BY
+          CASE category
+            WHEN 'languages' THEN 1 WHEN 'frameworks' THEN 2
+            WHEN 'styling' THEN 3 WHEN 'database' THEN 4
+            WHEN 'state' THEN 5 WHEN 'auth' THEN 6
+            WHEN 'ai' THEN 7 WHEN 'devops' THEN 8
+            WHEN 'design' THEN 9 WHEN 'testing' THEN 10
+            WHEN 'realtime' THEN 11 WHEN 'dataviz' THEN 12
+            WHEN 'integrations' THEN 13 WHEN 'tools' THEN 14
+            WHEN 'concepts' THEN 15
+          END,
+          display_order NULLS LAST,
+          name
+      `;
       return NextResponse.json(rows);
     }
     
@@ -41,7 +57,21 @@ export async function GET(request: NextRequest) {
     if (conditions.length > 0) {
       query += ' WHERE ' + conditions.join(' AND ');
     }
-    query += ' ORDER BY display_order NULLS LAST, name';
+    query += `
+      ORDER BY
+        CASE category
+          WHEN 'languages' THEN 1 WHEN 'frameworks' THEN 2
+          WHEN 'styling' THEN 3 WHEN 'database' THEN 4
+          WHEN 'state' THEN 5 WHEN 'auth' THEN 6
+          WHEN 'ai' THEN 7 WHEN 'devops' THEN 8
+          WHEN 'design' THEN 9 WHEN 'testing' THEN 10
+          WHEN 'realtime' THEN 11 WHEN 'dataviz' THEN 12
+          WHEN 'integrations' THEN 13 WHEN 'tools' THEN 14
+          WHEN 'concepts' THEN 15
+        END,
+        display_order NULLS LAST,
+        name
+    `;
     
     const { rows } = await sql.query(query, values);
     return NextResponse.json(rows);
@@ -49,6 +79,12 @@ export async function GET(request: NextRequest) {
     console.log('Using fallback data for skills');
     try {
       const skills = await readArrayFromJson('skills.json', 'skills', v1Data.skills);
+      skills.sort((a: any, b: any) => {
+        const catA = CATEGORY_ORDER[a.category] ?? 99;
+        const catB = CATEGORY_ORDER[b.category] ?? 99;
+        if (catA !== catB) return catA - catB;
+        return (a.display_order ?? 999) - (b.display_order ?? 999) || a.name.localeCompare(b.name);
+      });
       if (all === 'true') {
         return NextResponse.json(skills);
       }
@@ -67,22 +103,23 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const clonedRequest = request.clone();
-  let body: any;
-  try {
-    body = await request.json();
-    console.log('Skills POST - attempting DB insert:', body.name, 'category:', body.category);
-    
-    // First try to drop the constraint if it exists
+    let body: any;
     try {
-      await sql`ALTER TABLE skills DROP CONSTRAINT IF EXISTS skills_category_check`;
-      console.log('Dropped constraint check');
-    } catch (e) {
-      console.log('Constraint drop attempt:', e);
+      body = await request.json();
+      console.log('Skills POST - attempting DB insert:', body.name, 'category:', body.category);
+
+      let order = body.display_order;
+    if (!order || order === 0) {
+      const maxResult = await sql`
+        SELECT COALESCE(MAX(display_order), 0) + 10 AS next_order
+        FROM skills WHERE category = ${body.category}
+      `;
+      order = maxResult.rows[0]?.next_order || 10;
     }
 
     const { rows } = await sql`
       INSERT INTO skills (name, category, level, color, icon_src, display_order, active)
-      VALUES (${body.name}, ${body.category}, ${body.level || 0}, ${body.color || ''}, ${body.icon_src || ''}, ${body.display_order || 0}, ${body.active ?? true})
+      VALUES (${body.name}, ${body.category}, ${body.level || 0}, ${body.color || ''}, ${body.icon_src || ''}, ${order}, ${body.active ?? true})
       RETURNING *;
     `;
     console.log('Skills POST - DB insert successful:', rows[0]);
@@ -92,6 +129,10 @@ export async function POST(request: NextRequest) {
     try {
       body = await clonedRequest.json();
       const existingSkills = await readArrayFromJson('skills.json', 'skills', v1Data.skills);
+      const maxOrder = existingSkills
+        .filter((s: any) => s.category === body.category)
+        .reduce((max: number, s: any) => Math.max(max, s.display_order || 0), 0);
+      const order = body.display_order || maxOrder + 10;
       const newSkill = {
         id: Date.now(),
         name: body.name,
@@ -99,7 +140,7 @@ export async function POST(request: NextRequest) {
         level: body.level || 0,
         color: body.color || '',
         icon_src: body.icon_src || '',
-        display_order: body.display_order || 0,
+        display_order: order,
         active: body.active ?? true,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()

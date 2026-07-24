@@ -8,7 +8,7 @@ import { FunctionalCV } from "@/components/cv/templates/functional";
 import { CombinationCV } from "@/components/cv/templates/combination";
 import { MinimalCV } from "@/components/cv/templates/minimal";
 import { CreativeCV } from "@/components/cv/templates/creative";
-import { SKILL_CATEGORIES, getSkillCategory } from "@/lib/skill-categories";
+import { SKILL_CATEGORIES, getSkillCategory, CATEGORY_ORDER } from "@/lib/skill-categories";
 import { ChronologicalPreview } from "@/components/cv/preview/chronological";
 import { FunctionalPreview } from "@/components/cv/preview/functional";
 import { CombinationPreview } from "@/components/cv/preview/combination";
@@ -78,6 +78,7 @@ interface Education {
   school: LocalizedString;
   period: string;
   description: LocalizedString;
+  type?: string;
 }
 
 interface AdditionalData {
@@ -92,6 +93,7 @@ interface CVData {
   title: LocalizedString;
   email: string;
   phone: string;
+  whatsapp: string;
   location: LocalizedString;
   linkedin: string;
   github: string;
@@ -101,6 +103,7 @@ interface CVData {
   skills: LocalizedString[];
   projects: Project[];
   languages: LocalizedString[];
+  objective: LocalizedString;
   additionalInfo: LocalizedString;
   additionalData: AdditionalData;
   includeExperience: boolean;
@@ -190,10 +193,12 @@ const colors = {
           title: defaultData.config.title || prev.title,
           email: defaultData.config.email || prev.email,
           phone: defaultData.config.phone || prev.phone,
+          whatsapp: defaultData.config.whatsapp || prev.whatsapp,
           location: defaultData.config.location || prev.location,
           linkedin: defaultData.config.linkedin || prev.linkedin,
           github: defaultData.config.github || prev.github,
           summary: defaultData.config.summary ?? prev.summary,
+          objective: defaultData.config.objective ?? prev.objective,
           languages: defaultData.config.languages || prev.languages,
           additionalInfo: defaultData.config.additionalInfo || prev.additionalInfo,
           selectedExperienceIds: defaultData.config.selectedExperienceIds || prev.selectedExperienceIds,
@@ -231,13 +236,18 @@ const colors = {
 
   const [cvData, setCvData] = useState<CVData>({
     name: { pt: "Elias Edson Barão", en: "Elias Edson Barão", es: "Elias Edson Barão" },
-    title: { pt: "Desenvolvedor Full-Stack", en: "Full-Stack Developer", es: "Desarrollador Full-Stack", fr: "Développeur Full-Stack", zh: "全栈开发者" },
+    title: { pt: "Desenvolvedor Full-Stack / Front-End / Back-End | Analista de Dados | Engenheiro de Integrações e Automações | Arquiteto de Agentes de IA", en: "Full-Stack / Front-End / Back-End Developer | Data Analyst | Integration & Automation Engineer | AI Agent Architect", es: "Desarrollador Full-Stack / Front-End / Back-End | Analista de Datos | Ingeniero de Integraciones y Automatización | Arquitecto de Agentes de IA", fr: "Développeur Full-Stack / Front-End / Back-End | Analyste de Données | Ingénieur en Intégrations et Automatisation | Architecte d'Agents IA", zh: "全栈/前端/后端开发者 | 数据分析师 | 集成与自动化工程师 | AI智能体架构师" },
     email: "e2barao@hotmail.com",
     phone: "+55 41 99804-6755",
+    whatsapp: "+55 41 99804-6755",
     location: { pt: "Curitiba, Paraná, Brasil", en: "Curitiba, Paraná, Brazil", es: "Curitiba, Paraná, Brasil" },
     linkedin: "https://linkedin.com/in/e2barao",
     github: "https://github.com/httpE2Barao",
-    summary: { pt: "", en: "", es: "" },
+    summary: {
+      pt: "Desde cedo, a tecnologia me fascinou — não apenas como ferramenta, mas como extensão da criatividade humana. Minha jornada começou com experimentos em HTML e CSS, evoluindo para sistemas complexos com React, Next.js e Node.js. Ao longo do caminho, mergulhei em bancos de dados, automação de processos e integrações de IA, construindo soluções como o Platera — um sistema operacional completo para restaurantes com chatbot IA, pagamentos e integrações omnichannel.\n\nHoje, meu foco está na arquitetura de agentes de IA, RAG, MCP e LLMs locais, combinando desenvolvimento full-stack com engenharia de automação para criar sistemas inteligentes e escaláveis. Cada projeto é uma oportunidade de unir código limpo, design centrado no usuário e performance.\n\nBusco oportunidades onde possa aplicar minha experiência em engenharia de software, automação e inteligência artificial para resolver problemas reais, sempre com impacto social e técnico.",
+      en: "Since an early age, technology fascinated me — not just as a tool, but as an extension of human creativity. My journey began with experiments in HTML and CSS, evolving into complex systems with React, Next.js, and Node.js. Along the way, I dove into databases, process automation, and AI integrations, building solutions like Platera — a complete restaurant operating system with AI chatbot, payments, and omnichannel integrations.\n\nToday, my focus is on AI agent architecture, RAG, MCP, and local LLMs, combining full-stack development with automation engineering to build intelligent, scalable systems. Every project is an opportunity to unite clean code, user-centered design, and performance.\n\nI seek opportunities where I can apply my experience in software engineering, automation, and artificial intelligence to solve real problems, always with social and technical impact.",
+      es: "Desde temprana edad, la tecnología me fascinó — no solo como herramienta, sino como extensión de la creatividad humana. Mi viaje comenzó con experimentos en HTML y CSS, evolucionando hacia sistemas complejos con React, Next.js y Node.js. En el camino, me sumergí en bases de datos, automatización de procesos e integraciones de IA, construyendo soluciones como Platera — un sistema operativo completo para restaurantes con chatbot IA, pagos e integraciones omnicanal.\n\nHoy, mi enfoque está en la arquitectura de agentes de IA, RAG, MCP y LLMs locales, combinando desarrollo full-stack con ingeniería de automatización para crear sistemas inteligentes y escalables. Cada proyecto es una oportunidad para unir código limpio, diseño centrado en el usuario y rendimiento.\n\nBusco oportunidades donde pueda aplicar mi experiencia en ingeniería de software, automatización e inteligencia artificial para resolver problemas reales, siempre con impacto social y técnico.",
+    },
     experience: [],
     education: [],
     skills: [],
@@ -247,6 +257,7 @@ const colors = {
       { pt: "Inglês (Avançado)", en: "English (Advanced)", es: "Inglés (Avanzado)" },
       { pt: "Espanhol (Básico)", en: "Spanish (Basic)", es: "Español (Básico)" },
     ],
+    objective: { pt: "", en: "", es: "" },
     additionalInfo: { pt: "", en: "", es: "" },
     additionalData: {
       willingnessToTravel: { pt: "Sim", en: "Yes", es: "Sí" },
@@ -294,10 +305,12 @@ const colors = {
           title: d.title,
           email: d.email,
           phone: d.phone,
+          whatsapp: d.whatsapp,
           location: d.location,
           linkedin: d.linkedin,
           github: d.github,
           summary: d.summary,
+          objective: d.objective,
           languages: d.languages,
           additionalInfo: d.additionalInfo,
           selectedExperienceIds: d.selectedExperienceIds,
@@ -377,9 +390,19 @@ const getLocalizedCVData = (lang: Language): any => {
     
     const selectedSkillEntries = cvData.selectedSkillIds.length > 0
       ? cvData.skills
-          .map((s, i) => ({ skill: s, order: rawSkills[i]?.display_order ?? i, rawId: rawSkills[i]?.id }))
+          .map((s, i) => ({
+            skill: s,
+            order: rawSkills[i]?.display_order ?? i,
+            category: rawSkills[i]?.category ?? "concepts",
+            rawId: rawSkills[i]?.id,
+          }))
           .filter((entry) => entry.rawId && cvData.selectedSkillIds.includes(entry.rawId))
-      : cvData.skills.map((s, i) => ({ skill: s, order: rawSkills[i]?.display_order ?? i, rawId: rawSkills[i]?.id }));
+      : cvData.skills.map((s, i) => ({
+          skill: s,
+          order: rawSkills[i]?.display_order ?? i,
+          category: rawSkills[i]?.category ?? "concepts",
+          rawId: rawSkills[i]?.id,
+        }));
     
     let sortedEntries = [...selectedSkillEntries];
     
@@ -389,7 +412,12 @@ const getLocalizedCVData = (lang: Language): any => {
     } else if (cvData.sortSkills === "reverse") {
       sortedEntries.sort((a, b) => getLocalizedValue(b.skill, lang).localeCompare(getLocalizedValue(a.skill, lang)));
     } else {
-      sortedEntries.sort((a, b) => a.order - b.order);
+      sortedEntries.sort((a, b) => {
+        const catA = CATEGORY_ORDER[a.category] ?? 99;
+        const catB = CATEGORY_ORDER[b.category] ?? 99;
+        if (catA !== catB) return catA - catB;
+        return a.order - b.order;
+      });
     }
     
     // Aplicar limite máximo
@@ -405,10 +433,12 @@ const getLocalizedCVData = (lang: Language): any => {
     title: getLocalizedValue(cvData.title, lang),
     email: cvData.email,
     phone: cvData.phone,
+    whatsapp: cvData.whatsapp,
     location: getLocalizedValue(cvData.location, lang),
     linkedin: cvData.linkedin,
     github: cvData.github,
     summary: getLocalizedValue(cvData.summary, lang),
+    objective: getLocalizedValue(cvData.objective, lang),
     experience: selectedExp.map((exp) => ({
       role: getLocalizedValue(exp.role, lang),
       company: getLocalizedValue(exp.company, lang),
@@ -420,6 +450,7 @@ const getLocalizedCVData = (lang: Language): any => {
       school: getLocalizedValue(edu.school, lang),
       period: edu.period,
       description: getLocalizedValue(edu.description, lang),
+      type: edu.type,
     })),
     skills: sortedSkills,
     skillOrders: skillOrders,
@@ -475,12 +506,14 @@ const getLocalizedCVData = (lang: Language): any => {
       const contactName = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "Nome") : null;
       const contactEmail = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "Email") : null;
       const contactPhone = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "Telefone") : null;
+      const contactWhatsApp = Array.isArray(contacts) ? contacts.find((c: any) => c.label === "WhatsApp") : null;
 
       setCvData((prev) => ({
         ...prev,
         name: contactName ? { pt: contactName.value, en: contactName.value, es: contactName.value } : prev.name,
         email: contactEmail?.value || prev.email,
-        phone: contactPhone?.value || prev.phone,
+          phone: contactPhone?.value || prev.phone,
+          whatsapp: contactWhatsApp?.value || prev.whatsapp,
         experience: Array.isArray(exp)
           ? exp.map((e: any) => ({
               id: e.id,
@@ -497,6 +530,7 @@ const getLocalizedCVData = (lang: Language): any => {
               school: localizeField(e.school_pt, e.school_en, e.school_es),
               period: `${e.period_start} - ${e.period_end || "Atual"}`,
               description: localizeField(e.description_pt, e.description_en, e.description_es),
+              type: e.education_type || "course",
             }))
           : prev.education,
         skills: Array.isArray(skills)
@@ -533,16 +567,8 @@ const getLocalizedCVData = (lang: Language): any => {
       };
 
       const Component = templateMap[selectedTemplate];
-      const localizedData = getLocalizedCVData(language);
-      const blob = await pdf(<Component data={localizedData} />).toBlob();
-
-const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-${language}.pdf`;
-       
-      const formData = new FormData();
-      formData.append('pdf', blob, fileName);
-      formData.append('templateId', selectedTemplate);
-      formData.append('language', language);
-      formData.append('config', JSON.stringify({
+      const langs: Language[] = ['pt', 'en', 'es'];
+      const config = JSON.stringify({
         selectedExperienceIds: cvData.selectedExperienceIds,
         selectedEducationIds: cvData.selectedEducationIds,
         selectedProjectIds: cvData.selectedProjectIds,
@@ -555,19 +581,29 @@ const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-
         maxSkills: cvData.maxSkills,
         sortSkills: cvData.sortSkills,
         selectedSkillIds: cvData.selectedSkillIds,
-      }));
-
-      await fetch('/api/admin/cv/save', {
-        method: 'POST',
-        body: formData,
       });
 
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      link.click();
-      URL.revokeObjectURL(url);
+      for (const lang of langs) {
+        const localizedData = getLocalizedCVData(lang);
+        if (!localizedData) continue;
+        const blob = await pdf(<Component data={localizedData} />).toBlob();
+        const fileName = `CV-${cvData.name.pt.replace(/\s+/g, "-")}-${selectedTemplate}-${lang}.pdf`;
+        const formData = new FormData();
+        formData.append('pdf', blob, fileName);
+        formData.append('templateId', selectedTemplate);
+        formData.append('language', lang);
+        formData.append('config', config);
+        await fetch('/api/admin/cv/save', { method: 'POST', body: formData });
+
+        if (lang === language) {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = fileName;
+          link.click();
+          URL.revokeObjectURL(url);
+        }
+      }
 
       setMessage({ type: "success", text: language === "pt" ? "PDF gerado e baixado com sucesso!" : language === "en" ? "PDF generated and downloaded successfully!" : "¡PDF generado y descargado con éxito!" });
     } catch (error) {
@@ -784,6 +820,16 @@ className={`w-full text-left p-3 rounded-lg border transition-colors ${
                 />
               </div>
               <div>
+                <label className={`block text-xs ${colors.textLabel} mb-1`}>Objetivo ({language.toUpperCase()})</label>
+                <textarea
+                  value={cvData.objective[language] || ""}
+                  onChange={(e) => handleFieldChange("objective", language, e.target.value)}
+                  rows={2}
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm resize-none ${colors.text}`}
+                  placeholder={language === "pt" ? "Descreva seu objetivo profissional..." : language === "en" ? "Describe your professional objective..." : "Describe tu objetivo profesional..."}
+                />
+              </div>
+              <div>
                 <label className={`block text-xs ${colors.textLabel} mb-1`}>Localização ({language.toUpperCase()})</label>
                 <input
                   type="text"
@@ -802,11 +848,20 @@ className={`w-full text-left p-3 rounded-lg border transition-colors ${
                 />
               </div>
               <div>
-                <label className={`block text-xs ${colors.textLabel} mb-1`}>Telefone</label>
+                <label className={`block text-xs ${colors.textLabel} mb-1`}>Telefone (ligação)</label>
                 <input
                   type="text"
                   value={cvData.phone}
                   onChange={(e) => setCvData({ ...cvData, phone: e.target.value })}
+                  className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
+                />
+              </div>
+              <div>
+                <label className={`block text-xs ${colors.textLabel} mb-1`}>WhatsApp</label>
+                <input
+                  type="text"
+                  value={cvData.whatsapp}
+                  onChange={(e) => setCvData({ ...cvData, whatsapp: e.target.value })}
                   className={`w-full ${inputBg} border ${colors.border} rounded-lg px-3 py-2 text-sm ${colors.text}`}
                 />
               </div>

@@ -14,26 +14,26 @@ export function V2IntroText() {
   })
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 50,
-    damping: 20,
+    stiffness: 30,
+    damping: 25,
     restDelta: 0.0001,
   })
 
-  const opacity = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0])
-  const y = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [60, 0, 0, -40])
-  const scale = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0.96, 1, 1, 0.98])
+  const opacity = useTransform(smoothProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0])
+  const y = useTransform(smoothProgress, [0, 0.25, 0.75, 1], [40, 0, 0, -30])
+  const scale = useTransform(smoothProgress, [0, 0.25, 0.75, 1], [0.97, 1, 1, 0.99])
 
-  const line1Opacity = useTransform(smoothProgress, [0, 0.15], [0, 1])
-  const line1Y = useTransform(smoothProgress, [0, 0.15], [30, 0])
+  const line1Opacity = useTransform(smoothProgress, [0, 0.2], [0, 1])
+  const line1Y = useTransform(smoothProgress, [0, 0.2], [20, 0])
 
-  const line2Opacity = useTransform(smoothProgress, [0.1, 0.3], [0, 1])
-  const line2Y = useTransform(smoothProgress, [0.1, 0.3], [30, 0])
+  const line2Opacity = useTransform(smoothProgress, [0.12, 0.35], [0, 1])
+  const line2Y = useTransform(smoothProgress, [0.12, 0.35], [20, 0])
 
-  const line3Opacity = useTransform(smoothProgress, [0.25, 0.45], [0, 1])
-  const line3Y = useTransform(smoothProgress, [0.25, 0.45], [30, 0])
+  const line3Opacity = useTransform(smoothProgress, [0.25, 0.5], [0, 1])
+  const line3Y = useTransform(smoothProgress, [0.25, 0.5], [20, 0])
 
-  const ctaOpacity = useTransform(smoothProgress, [0.5, 0.7], [0, 1])
-  const ctaY = useTransform(smoothProgress, [0.5, 0.7], [20, 0])
+  const ctaOpacity = useTransform(smoothProgress, [0.45, 0.7], [0, 1])
+  const ctaY = useTransform(smoothProgress, [0.45, 0.7], [15, 0])
 
   const accentColor = isDark ? "text-cyan-400" : "text-blue-600"
   const textMuted = isDark ? "text-white/60" : "text-black/60"
@@ -41,32 +41,32 @@ export function V2IntroText() {
   const lines = {
     pt: {
       tagline: "Construir & Escalar",
-      line1: "Você tem uma ideia.",
-      line2: "Eu construo o sistema que faz ela escalar.",
+      line1: "Sua visão define onde.",
+      line2: "Meu código define como.",
       cta: "Explore meu trabalho",
     },
     en: {
       tagline: "Build & Scale",
-      line1: "You have an idea.",
-      line2: "I build the system that makes it scale.",
+      line1: "Your vision defines where.",
+      line2: "My code defines how.",
       cta: "Explore my work",
     },
     es: {
       tagline: "Construir & Escalar",
-      line1: "Tienes una idea.",
-      line2: "Yo construyo el sistema que la hace escalar.",
+      line1: "Tu visión define dónde.",
+      line2: "Mi código define cómo.",
       cta: "Explora mi trabajo",
     },
     fr: {
       tagline: "Construire & Faire Évoluer",
-      line1: "Tu as une idée.",
-      line2: "Je construis le système qui la fait évoluer.",
+      line1: "Ta vision définit où.",
+      line2: "Mon code définit comment.",
       cta: "Explorez mon travail",
     },
     zh: {
       tagline: "构建 & 扩展",
-      line1: "你有一个想法。",
-      line2: "我构建让它扩展的系统。",
+      line1: "你的愿景定义方向。",
+      line2: "我的代码定义方式。",
       cta: "探索我的作品",
     },
   }

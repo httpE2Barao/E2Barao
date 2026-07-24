@@ -3,10 +3,31 @@ import { sql } from '@vercel/postgres';
 import { readArrayFromJson } from '@/lib/json-storage';
 import { v1Data } from '@/data/v1-data';
 
+function matchDateFormat(dateStr: string | null, lang: string): boolean {
+  if (!dateStr) return false
+  if (lang === "pt") return /^\d{2}\/\d{4}/.test(dateStr)
+  return /^[A-Z][a-z]/.test(dateStr)
+}
+
 export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url)
+  const lang = searchParams.get("lang") || "en"
+
   try {
     const { rows } = await sql`SELECT * FROM experience_entries ORDER BY display_order NULLS LAST, period_start DESC`;
-    return NextResponse.json(rows);
+    const deduped = Object.values(
+      rows.reduce((acc: Record<string, any>, row: any) => {
+        const key = `${row.role_pt}|${row.company_pt}`
+        if (!acc[key]) { acc[key] = row; return acc }
+        const existing = acc[key]
+        const existingMatch = matchDateFormat(existing.period_start, lang)
+        const currentMatch = matchDateFormat(row.period_start, lang)
+        if (!existingMatch && currentMatch) acc[key] = row
+        else if (existingMatch && currentMatch && row.display_order < existing.display_order) acc[key] = row
+        return acc
+      }, {})
+    )
+    return NextResponse.json(deduped);
   } catch (error) {
     console.log('Using fallback data for experience');
     try {

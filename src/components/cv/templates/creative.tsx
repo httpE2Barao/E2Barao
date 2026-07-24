@@ -29,18 +29,24 @@ const styles = StyleSheet.create({
   summary: { fontSize: 10, color: "#334155", lineHeight: 1.6, marginBottom: 14, wrap: false },
 });
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
@@ -61,6 +67,9 @@ interface CVData {
 export function CreativeCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
@@ -87,10 +96,18 @@ export function CreativeCV({ data }: { data: CVData }) {
             </View>
           )}
 
+          {data.objective && (
+            <View style={styles.sidebarSection}>
+              <Text style={styles.sidebarSectionTitle}>{t.objective}</Text>
+              <Text style={{ fontSize: 8.5, color: "#cbd5e1", lineHeight: 1.3 }}>{data.objective}</Text>
+            </View>
+          )}
+
           <View style={styles.sidebarSection}>
             <Text style={styles.sidebarSectionTitle}>{t.contact}</Text>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.email}</Text></Link>}
             {data.phone && <Link href={`tel:${data.phone}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>{data.phone}</Text></Link>}
+            {data.whatsapp && <Link href={`https://wa.me/${cleanPhone(data.whatsapp)}`} style={styles.sidebarLink}><Text style={styles.sidebarLink}>WhatsApp</Text></Link>}
             {data.location && <Text style={styles.sidebarText}>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.sidebarLink}><Text style={styles.sidebarLink}>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.sidebarLink}><Text style={styles.sidebarLink}>GitHub</Text></Link>}
@@ -110,7 +127,7 @@ export function CreativeCV({ data }: { data: CVData }) {
             <View style={styles.sidebarSection}>
               <Text style={styles.sidebarSectionTitle}>{t.education}</Text>
               {data.education.map((edu, i) => (
-                <View key={i} style={{ marginBottom: 8 }}>
+                <View key={i} style={{ marginBottom: 6 }}>
                   <Text style={{ fontSize: 8.5, fontWeight: 600, color: "#fff", marginBottom: 2 }}>{edu.degree}</Text>
                   <Text style={styles.sidebarText}>{edu.school}</Text>
                   <Text style={{ fontSize: 7.5, color: "#94a3b8" }}>{edu.period}</Text>
@@ -147,9 +164,24 @@ export function CreativeCV({ data }: { data: CVData }) {
 
           {data.projects.length > 0 && (
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>{t.projects}</Text>
-              {data.projects.slice(0, 4).map((project, i) => (
-                <View key={i} style={{ marginBottom: 10 }}>
+              <View wrap={false}>
+                <Text style={styles.sectionTitle}>{t.projects}</Text>
+                {data.projects.slice(0, 1).map((project, i) => (
+                  <View key={i} wrap={false} style={{ marginBottom: 18 }}>
+                    <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b", marginBottom: 2 }}>{project.name}</Text>
+                    <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.4 }}>{project.description}</Text>
+                    {project.tags && project.tags.length > 0 && (
+                      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                        {project.tags.map((tag, j) => (
+                          <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                ))}
+              </View>
+              {data.projects.slice(1, 4).map((project, i) => (
+                <View key={i} wrap={false} style={{ marginBottom: 18 }}>
                   <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b", marginBottom: 2 }}>{project.name}</Text>
                   <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.4 }}>{project.description}</Text>
                   {project.tags && project.tags.length > 0 && (

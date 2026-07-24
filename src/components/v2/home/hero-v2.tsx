@@ -379,7 +379,7 @@ export function V2HomeHeroV2() {
   const bubbleText = isDark ? "text-black" : "text-white"
 
   return (
-    <section className={`relative h-[calc(100vh-4.5rem)] flex flex-col overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
+    <section className={`relative h-[calc(100vh-6rem)] hero-mobile-v2 flex flex-col overflow-hidden ${isDark ? "bg-black text-white" : "bg-white text-black"}`}>
       <div
         className="absolute inset-0 z-[1] pointer-events-none opacity-[0.03]"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}
@@ -413,7 +413,7 @@ export function V2HomeHeroV2() {
       </div>
 
       {/* 3D Model Layer */}
-      <div ref={splineRef} className="relative z-10 flex-1 min-h-0">
+      <div ref={splineRef} className="relative z-10 flex-1 min-h-0 spline-stretch">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <div className={`w-6 h-6 border-2 border-t-transparent ${accentColor} rounded-full animate-spin`} />
@@ -499,7 +499,7 @@ export function V2HomeHeroV2() {
       </div>
 
       {/* Chat Widget - Bottom, acima do header */}
-      <div className="absolute bottom-16 sm:bottom-20 left-0 right-0 z-20 px-3 sm:px-6 pb-2">
+      <div className="absolute bottom-12 sm:bottom-16 left-0 right-0 z-20 px-3 sm:px-6 pb-2 pb-safe-bottom">
         <div className="max-w-md mx-auto">
           {/* Speech bubble */}
           <div className="mb-2">
@@ -620,16 +620,16 @@ export function V2HomeHeroV2() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
+        className="absolute bottom-2 bottom-safe-2 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1"
       >
-        <span className={`text-[8px] uppercase tracking-[0.3em] ${isDark ? "text-white/30" : "text-black/30"}`}>Scroll</span>
+        <span className={`text-[8px] scroll-text-mobile uppercase tracking-[0.3em] ${isDark ? "text-white/30" : "text-black/30"}`}>Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className={`w-5 h-8 ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1.5`}
+          className={`w-5 h-8 scroll-mouse-mobile ${isDark ? "border-white/20" : "border-black/20"} border rounded-full flex justify-center pt-1`}
         >
           <motion.div
-            className={`w-1 h-1.5 ${isDark ? "bg-cyan-400" : "bg-blue-600"} rounded-full`}
+            className={`w-1 h-1.5 scroll-dot-mobile ${isDark ? "bg-cyan-400" : "bg-blue-600"} rounded-full`}
             animate={{ opacity: [1, 0.3, 1] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />

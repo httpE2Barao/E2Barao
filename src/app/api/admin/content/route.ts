@@ -1,23 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readArrayFromJson, writeJsonFile } from '@/lib/json-storage';
-import { v1Data } from '@/data/v1-data';
+import { sql } from '@vercel/postgres';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const section = searchParams.get('section');
 
-    const content = await readArrayFromJson('content.json', 'content', v1Data.content);
-    
-    const contentWithIds = content.map((c: any, i: number) => ({ ...c, id: i + 1 }));
-
+    let query;
     if (section) {
-      return NextResponse.json(contentWithIds.filter((c: any) => c.section === section));
+      query = sql`SELECT * FROM portfolio_content WHERE section = ${section} ORDER BY display_order NULLS LAST, id`;
+    } else {
+      query = sql`SELECT * FROM portfolio_content ORDER BY display_order NULLS LAST, id`;
     }
-    
-    return NextResponse.json(contentWithIds);
+
+    const { rows } = await query;
+    return NextResponse.json(rows);
   } catch (error) {
-    return NextResponse.json(v1Data.content);
+    console.error('Failed to fetch content:', error);
+    return NextResponse.json({ error: 'Failed to fetch content' }, { status: 500 });
   }
 }
 
@@ -30,18 +30,37 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'section and key are required' }, { status: 400 });
     }
 
-    const content = await readArrayFromJson('content.json', 'content', v1Data.content);
-    const index = content.findIndex((c: any) => c.section === section && c.key === key);
+    const allowedFields = ['value_pt', 'value_en', 'value_es', 'value_fr', 'value_zh', 'display_order'];
 
-    if (index === -1) {
+    const setClauses: string[] = [];
+    const values: any[] = [];
+    let paramIndex = 1;
+
+    for (const field of allowedFields) {
+      if (field in fields) {
+        setClauses.push(`${field} = $${paramIndex}`);
+        values.push(fields[field]);
+        paramIndex++;
+      }
+    }
+
+    if (setClauses.length === 0) {
+      return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 });
+    }
+
+    setClauses.push('updated_at = NOW()');
+    values.push(section, key);
+
+    const query = `UPDATE portfolio_content SET ${setClauses.join(', ')} WHERE section = $${paramIndex} AND key = $${paramIndex + 1} RETURNING *`;
+    const { rows } = await sql.query(query, values);
+
+    if (rows.length === 0) {
       return NextResponse.json({ error: 'Content not found' }, { status: 404 });
     }
 
-    content[index] = { ...content[index], ...fields, updated_at: new Date().toISOString() };
-    await writeJsonFile('content.json', { content });
-
-    return NextResponse.json({ ...content[index], id: index + 1 });
+    return NextResponse.json(rows[0]);
   } catch (error) {
+    console.error('Failed to update content:', error);
     return NextResponse.json({ error: 'Failed to update content' }, { status: 500 });
   }
 }

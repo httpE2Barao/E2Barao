@@ -23,20 +23,26 @@ const styles = StyleSheet.create({
   summary: { fontSize: 10, color: "#334155", lineHeight: 1.6, marginBottom: 14, wrap: false },
 });
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type: string }>;
   skills: string[];
-  projects: Array<{ name: string; description: string }>;
+  projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
   additionalInfo: string;
   additionalData: {
@@ -56,8 +62,10 @@ export function CombinationCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
     professionalSummary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
     workExperience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
-    education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
     keyProjects: lang === "pt" ? "Projetos Principais" : lang === "en" ? "Key Projects" : "Proyectos Principales",
     languages: lang === "pt" ? "Idiomas" : lang === "en" ? "Languages" : "Idiomas",
@@ -71,6 +79,7 @@ export function CombinationCV({ data }: { data: CVData }) {
           <View style={styles.contactRow}>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.email}</Text></Link>}
             {data.phone && <Link href={`tel:${data.phone}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.phone}</Text></Link>}
+            {data.whatsapp && <Link href={`https://wa.me/${cleanPhone(data.whatsapp)}`} style={styles.contactLink}><Text style={styles.contactItem}>WhatsApp</Text></Link>}
             {data.location && <Text style={styles.contactItem}>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text style={styles.contactItem}>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.contactLink}><Text style={styles.contactItem}>GitHub</Text></Link>}
@@ -83,14 +92,12 @@ export function CombinationCV({ data }: { data: CVData }) {
           <Text style={styles.summary}>{data.summary}</Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t.skills}</Text>
-          <View style={styles.skillRow}>
-            {data.skills.map((skill, i) => (
-              <Text key={i} style={styles.skillTag}>{skill}</Text>
-            ))}
+        {data.objective && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.objective}</Text>
+            <Text style={{ fontSize: 10, color: "#334155", lineHeight: 1.6 }}>{data.objective}</Text>
           </View>
-        </View>
+        )}
 
         <View style={styles.twoCol}>
           <View style={styles.col}>
@@ -110,31 +117,64 @@ export function CombinationCV({ data }: { data: CVData }) {
           </View>
 
           <View style={styles.col}>
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>{t.education}</Text>
-              {data.education.map((edu, i) => (
-                <View key={i} style={styles.entry}>
-                  <View style={styles.entryHeader}>
-                    <Text style={styles.entryRole}>{edu.degree}</Text>
-                    <Text style={styles.entryPeriod}>{edu.period}</Text>
-                  </View>
-                  <Text style={styles.entryCompany}>{edu.school}</Text>
-                  {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
-                </View>
-              ))}
-            </View>
-
-            {data.projects.length > 0 && (
+            {data.education.length > 0 && (
               <View style={styles.section}>
-                <Text style={styles.sectionTitle}>{t.keyProjects}</Text>
-                {data.projects.slice(0, 3).map((project, i) => (
-                  <View key={i} style={{ marginBottom: 6 }}>
-                    <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b" }}>{project.name}</Text>
-                    <Text style={{ fontSize: 8, color: "#475569", lineHeight: 1.4 }}>{project.description}</Text>
+                <Text style={styles.sectionTitle}>{t.graduation}</Text>
+                {data.education.map((edu, i) => (
+                  <View key={i} style={styles.entry}>
+                    <View style={styles.entryHeader}>
+                      <Text style={styles.entryRole}>{edu.degree}</Text>
+                      <Text style={styles.entryPeriod}>{edu.period}</Text>
+                    </View>
+                    <Text style={styles.entryCompany}>{edu.school}</Text>
+                    {edu.description && <Text style={styles.entryDesc}>{edu.description}</Text>}
                   </View>
                 ))}
               </View>
             )}
+
+            {data.projects.length > 0 && (
+              <View style={styles.section}>
+                <View wrap={false}>
+                  <Text style={styles.sectionTitle}>{t.keyProjects}</Text>
+                  {data.projects.slice(0, 1).map((project, i) => (
+                    <View key={i} wrap={false} style={{ marginBottom: 14 }}>
+                      <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b" }}>{project.name}</Text>
+                      <Text style={{ fontSize: 8, color: "#475569", lineHeight: 1.4 }}>{project.description}</Text>
+                      {project.tags && project.tags.length > 0 && (
+                        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                          {project.tags.map((tag, j) => (
+                            <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                          ))}
+                        </View>
+                      )}
+                    </View>
+                  ))}
+                </View>
+                {data.projects.slice(1, 3).map((project, i) => (
+                  <View key={i} wrap={false} style={{ marginBottom: 14 }}>
+                    <Text style={{ fontSize: 10, fontWeight: 600, color: "#1e293b" }}>{project.name}</Text>
+                    <Text style={{ fontSize: 8, color: "#475569", lineHeight: 1.4 }}>{project.description}</Text>
+                    {project.tags && project.tags.length > 0 && (
+                      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                        {project.tags.map((tag, j) => (
+                          <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                        ))}
+                      </View>
+                    )}
+                  </View>
+                ))}
+              </View>
+            )}
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>{t.skills}</Text>
+              <View style={styles.skillRow}>
+                {data.skills.map((skill, i) => (
+                  <Text key={i} style={styles.skillTag}>{skill}</Text>
+                ))}
+              </View>
+            </View>
 
             {data.languages.length > 0 && (
               <View style={styles.section}>

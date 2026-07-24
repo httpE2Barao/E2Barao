@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   skillCategoryTitle: { fontSize: 11, fontWeight: 600, color: "#1e293b", marginBottom: 4, wrap: false },
   skillRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
   skillTag: { fontSize: 9, backgroundColor: "#f1f5f9", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4, color: "#334155", wrap: false },
-  entry: { marginBottom: 8, wrap: false },
+  entry: { marginBottom: 16, wrap: false },
   entryHeader: { flexDirection: "row", justifyContent: "space-between", marginBottom: 1, wrap: false },
   entryRole: { fontSize: 10, fontWeight: 600, color: "#1e293b", wrap: false },
   entryPeriod: { fontSize: 9, color: "#64748b", wrap: false },
@@ -23,18 +23,24 @@ const styles = StyleSheet.create({
   summary: { fontSize: 10, color: "#334155", lineHeight: 1.6, marginBottom: 14, wrap: false },
 });
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   skillOrders?: number[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
@@ -56,6 +62,9 @@ interface CVData {
 export function FunctionalCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     summary: lang === "pt" ? "Resumo Profissional" : lang === "en" ? "Professional Summary" : "Resumen Profesional",
@@ -80,6 +89,7 @@ export function FunctionalCV({ data }: { data: CVData }) {
           <View style={styles.contactRow}>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.email}</Text></Link>}
             {data.phone && <Link href={`tel:${data.phone}`} style={styles.contactLink}><Text style={styles.contactItem}>{data.phone}</Text></Link>}
+            {data.whatsapp && <Link href={`https://wa.me/${cleanPhone(data.whatsapp)}`} style={styles.contactLink}><Text style={styles.contactItem}>WhatsApp</Text></Link>}
             {data.location && <Text style={styles.contactItem}>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text style={styles.contactItem}>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.contactLink}><Text style={styles.contactItem}>GitHub</Text></Link>}
@@ -88,6 +98,47 @@ export function FunctionalCV({ data }: { data: CVData }) {
         </View>
 
         <Text style={styles.summary}>{data.summary}</Text>
+
+        {data.objective && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.objective}</Text>
+            <Text style={{ fontSize: 10, color: "#334155", lineHeight: 1.6 }}>{data.objective}</Text>
+          </View>
+        )}
+
+        {data.includeProjects && data.projects.length > 0 && (
+          <View style={styles.section}>
+            <View wrap={false}>
+              <Text style={styles.sectionTitle}>{t.projects}</Text>
+              {data.projects.slice(0, 1).map((project, i) => (
+                <View key={i} style={styles.entry}>
+                  <Text style={styles.entryRole}>{project.name}</Text>
+                  <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.5 }}>{project.description}</Text>
+                  {project.tags && project.tags.length > 0 && (
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                      {project.tags.map((tag, j) => (
+                        <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                      ))}
+                    </View>
+                  )}
+                </View>
+              ))}
+            </View>
+            {data.projects.slice(1).map((project, i) => (
+              <View key={i} style={styles.entry}>
+                <Text style={styles.entryRole}>{project.name}</Text>
+                <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.5 }}>{project.description}</Text>
+                {project.tags && project.tags.length > 0 && (
+                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                    {project.tags.map((tag, j) => (
+                      <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                    ))}
+                  </View>
+                )}
+              </View>
+            ))}
+          </View>
+        )}
 
         {data.includeSkills && skillCategories.length > 0 && (
           <View style={styles.section}>
@@ -100,25 +151,6 @@ export function FunctionalCV({ data }: { data: CVData }) {
                     <Text key={j} style={styles.skillTag}>{skill}</Text>
                   ))}
                 </View>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {data.includeProjects && data.projects.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t.projects}</Text>
-            {data.projects.map((project, i) => (
-              <View key={i} style={styles.entry}>
-                <Text style={styles.entryRole}>{project.name}</Text>
-                <Text style={{ fontSize: 9, color: "#475569", lineHeight: 1.5 }}>{project.description}</Text>
-                {project.tags && project.tags.length > 0 && (
-                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
-                    {project.tags.map((tag, j) => (
-                      <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
-                    ))}
-                  </View>
-                )}
               </View>
             ))}
           </View>
@@ -141,7 +173,7 @@ export function FunctionalCV({ data }: { data: CVData }) {
 
         {data.includeEducation && data.education.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t.education}</Text>
+            <Text style={styles.sectionTitle}>{t.graduation}</Text>
             {data.education.map((edu, i) => (
               <View key={i} style={styles.entry}>
                 <View style={styles.entryHeader}>

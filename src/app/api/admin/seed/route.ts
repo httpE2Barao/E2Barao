@@ -3,53 +3,13 @@ import fs from 'fs/promises';
 import path from 'path';
 import { rawProjectsData } from '@/data/projects-data';
 
+import { runMigrations } from '@/lib/db/migrate';
+
 const SCHEMA_PATH = path.join(process.cwd(), 'src', 'lib', 'db', 'schema.sql');
 
 async function runSchema() {
-  console.log('🔄 Running migrations...');
-  
-  try {
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS skills (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        category VARCHAR(50) NOT NULL,
-        level INTEGER DEFAULT 0,
-        color VARCHAR(50),
-        icon_src VARCHAR(255),
-        display_order INTEGER DEFAULT 0,
-        active BOOLEAN DEFAULT true,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      );
-    `);
-  } catch (e) { /* table exists */ }
-  
-  try {
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS experience_entries (
-        id SERIAL PRIMARY KEY,
-        period_start VARCHAR(50),
-        period_end VARCHAR(50),
-        role_pt TEXT, role_en TEXT, role_es TEXT, role_fr TEXT, role_zh TEXT,
-        company_pt TEXT, company_en TEXT, company_es TEXT, company_fr TEXT, company_zh TEXT,
-        description_pt TEXT, description_en TEXT, description_es TEXT, description_fr TEXT, description_zh TEXT,
-        highlight BOOLEAN DEFAULT false,
-        display_order INTEGER DEFAULT 0,
-        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-      );
-    `);
-  } catch (e) { /* table exists */ }
-
-  try {
-    await sql.query(`ALTER TABLE projects ADD COLUMN featured BOOLEAN DEFAULT false;`);
-  } catch (e) { /* column exists */ }
-  try {
-    await sql.query(`ALTER TABLE projects ADD COLUMN display_order INTEGER DEFAULT 0;`);
-  } catch (e) { /* column exists */ }
-  
-  console.log('✅ Schema ready');
+  const result = await runMigrations();
+  console.log('Migrations result:', result);
 }
 
 async function seedProjects() {
@@ -376,6 +336,7 @@ async function seedEducation() {
       description_es: 'Licenciatura en Ingeniería de Software con MEC 5/5. Cursos principales: Base de Datos, Algoritmos y Programación, Arquitectura de Computadoras, Redes, Inteligencia Artificial, Machine Learning.',
       description_fr: 'Licence en Ingénierie Logicielle avec note MEC 5/5. Cours principaux: Base de données, Algorithmes et Programmation, Architecture Informatique, Réseaux, Intelligence Artificielle, Machine Learning.',
       description_zh: '软件工程学士学位，MEC 评分 5/5。主要课程：数据库、算法与编程、计算机架构、计算机网络、人工智能、机器学习。',
+      education_type: 'graduation',
       display_order: 1,
     },
     {
@@ -396,6 +357,7 @@ async function seedEducation() {
       description_es: 'Enfoque en desarrollo de software. Tecnologías: JavaScript, TypeScript, React, Tailwind CSS, REST APIs, Git.',
       description_fr: 'Focus sur le développement logiciel. Technologies: JavaScript, TypeScript, React, Tailwind CSS, REST APIs, Git.',
       description_zh: '专注于软件开发。技术：JavaScript、TypeScript、React、Tailwind CSS、REST APIs、Git。',
+      education_type: 'course',
       display_order: 2,
     },
     {
@@ -416,6 +378,7 @@ async function seedEducation() {
       description_es: 'Conciencia corporal, dicción, creatividad, interacción pública, responsabilidad emocional. Participación en 3 producciones teatrales.',
       description_fr: 'Conscience corporelle, diction, créativité, interaction publique, responsabilité émotionnelle. Participation à 3 productions théâtrales.',
       description_zh: '身体意识、发音、创造力、公共互动、情感责任。参与3部戏剧制作。',
+      education_type: 'course',
       display_order: 3,
     },
     {
@@ -436,6 +399,7 @@ async function seedEducation() {
       description_es: 'Mención Honrosa en la Olimpíada Brasileña de Matemáticas.',
       description_fr: 'Mention Honorable à l\'Olympiade Brésilienne de Mathématiques.',
       description_zh: '巴西数学奥林匹克竞赛荣誉奖。',
+      education_type: 'high_school',
       display_order: 4,
     },
   ];
@@ -447,12 +411,14 @@ async function seedEducation() {
         degree_pt, degree_en, degree_es, degree_fr, degree_zh,
         school_pt, school_en, school_es, school_fr, school_zh,
         description_pt, description_en, description_es, description_fr, description_zh,
+        education_type,
         display_order
       ) VALUES (
         ${edu.period_start}, ${edu.period_end},
         ${edu.degree_pt}, ${edu.degree_en}, ${edu.degree_es}, ${edu.degree_fr}, ${edu.degree_zh},
         ${edu.school_pt}, ${edu.school_en}, ${edu.school_es}, ${edu.school_fr}, ${edu.school_zh},
         ${edu.description_pt}, ${edu.description_en}, ${edu.description_es}, ${edu.description_fr}, ${edu.description_zh},
+        ${edu.education_type},
         ${edu.display_order}
       )
       ON CONFLICT DO NOTHING;
@@ -532,6 +498,17 @@ async function seedContactInfo() {
       display_order: 3,
     },
     {
+      label: 'Telefone',
+      value: '+55 41 99804-6755',
+      icon: 'phone',
+      description_pt: 'Ligue para mim',
+      description_en: 'Call me',
+      description_es: 'Llámame',
+      description_fr: 'Appelez-moi',
+      description_zh: '打电话给我',
+      display_order: 4,
+    },
+    {
       label: 'WhatsApp',
       value: '+55 41 99804-6755',
       icon: 'whatsapp',
@@ -540,7 +517,7 @@ async function seedContactInfo() {
       description_es: 'Chatea conmigo',
       description_fr: 'Discutez avec moi',
       description_zh: '与我聊天',
-      display_order: 4,
+      display_order: 5,
     },
   ];
 

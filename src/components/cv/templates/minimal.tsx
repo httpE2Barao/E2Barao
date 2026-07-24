@@ -19,18 +19,24 @@ const styles = StyleSheet.create({
   summary: { fontSize: 9, color: "#333", lineHeight: 1.6, marginBottom: 16, wrap: false },
 });
 
+function cleanPhone(num: string) {
+  return num.replace(/[^0-9]/g, '');
+}
+
 interface CVData {
   name: string;
   title: string;
   email: string;
   phone: string;
+  whatsapp: string;
   location: string;
   linkedin: string;
   github: string;
   summary: string;
+  objective: string;
   language: string;
   experience: Array<{ role: string; company: string; period: string; description: string }>;
-  education: Array<{ degree: string; school: string; period: string; description: string }>;
+  education: Array<{ degree: string; school: string; period: string; description: string; type?: string }>;
   skills: string[];
   projects: Array<{ name: string; description: string; tags?: string[] }>;
   languages: string[];
@@ -51,6 +57,9 @@ interface CVData {
 export function MinimalCV({ data }: { data: CVData }) {
   const lang = data.language || "pt";
   const t = {
+    objective: lang === "pt" ? "Objetivo" : lang === "en" ? "Objective" : "Objetivo",
+    graduation: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
+    complementaryCourses: lang === "pt" ? "Cursos Complementares" : lang === "en" ? "Complementary Courses" : "Cursos Complementarios",
     experience: lang === "pt" ? "Experiência Profissional" : lang === "en" ? "Work Experience" : "Experiencia Laboral",
     education: lang === "pt" ? "Educação" : lang === "en" ? "Education" : "Educación",
     skills: lang === "pt" ? "Habilidades" : lang === "en" ? "Skills" : "Habilidades",
@@ -70,6 +79,7 @@ export function MinimalCV({ data }: { data: CVData }) {
           <View style={styles.contactRow}>
             {data.email && <Link href={`mailto:${data.email}`} style={styles.contactLink}><Text>{data.email}</Text></Link>}
             {data.phone && <Link href={`tel:${data.phone}`} style={styles.contactLink}><Text>{data.phone}</Text></Link>}
+            {data.whatsapp && <Link href={`https://wa.me/${cleanPhone(data.whatsapp)}`} style={styles.contactLink}><Text>WhatsApp</Text></Link>}
             {data.location && <Text>{data.location}</Text>}
             {data.linkedin && <Link href={data.linkedin} style={styles.contactLink}><Text>LinkedIn</Text></Link>}
             {data.github && <Link href={data.github} style={styles.contactLink}><Text>GitHub</Text></Link>}
@@ -80,6 +90,13 @@ export function MinimalCV({ data }: { data: CVData }) {
         {data.summary && (
           <View style={styles.section}>
             <Text style={styles.summary}>{data.summary}</Text>
+          </View>
+        )}
+
+        {data.objective && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.objective}</Text>
+            <Text style={styles.summary}>{data.objective}</Text>
           </View>
         )}
 
@@ -98,7 +115,7 @@ export function MinimalCV({ data }: { data: CVData }) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{t.education}</Text>
+          <Text style={styles.sectionTitle}>{t.graduation}</Text>
           {data.education.map((edu, i) => (
             <View key={i} style={styles.entry}>
               <View style={styles.entryHeader}>
@@ -111,22 +128,26 @@ export function MinimalCV({ data }: { data: CVData }) {
           ))}
         </View>
 
-        {data.includeSkills && data.skills.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{t.skills}</Text>
-            <View style={styles.skillList}>
-              {data.skills.map((skill, i) => (
-                <Text key={i} style={styles.skillItem}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
-              ))}
-            </View>
-          </View>
-        )}
-
         {data.includeProjects && data.projects.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Projetos</Text>
-            {data.projects.map((project, i) => (
-              <View key={i} style={{ marginBottom: 4 }}>
+            <View wrap={false}>
+              <Text style={styles.sectionTitle}>Projetos</Text>
+              {data.projects.slice(0, 1).map((project, i) => (
+                <View key={i} wrap={false} style={{ marginBottom: 12 }}>
+                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>{project.name}</Text>
+                  <Text style={{ fontSize: 9, color: "#333" }}>{project.description}</Text>
+                  {project.tags && project.tags.length > 0 && (
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 3, marginTop: 3 }}>
+                      {project.tags.map((tag, j) => (
+                        <Text key={j} style={{ fontSize: 7, backgroundColor: "#f1f5f9", paddingHorizontal: 4, paddingVertical: 1, borderRadius: 2, color: "#64748b" }}>{tag}</Text>
+                      ))}
+                    </View>
+                  )}
+                </View>
+              ))}
+            </View>
+            {data.projects.slice(1).map((project, i) => (
+              <View key={i} wrap={false} style={{ marginBottom: 12 }}>
                 <Text style={{ fontSize: 10, fontWeight: "bold" }}>{project.name}</Text>
                 <Text style={{ fontSize: 9, color: "#333" }}>{project.description}</Text>
                 {project.tags && project.tags.length > 0 && (
@@ -138,6 +159,17 @@ export function MinimalCV({ data }: { data: CVData }) {
                 )}
               </View>
             ))}
+          </View>
+        )}
+
+        {data.includeSkills && data.skills.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{t.skills}</Text>
+            <View style={styles.skillList}>
+              {data.skills.map((skill, i) => (
+                <Text key={i} style={styles.skillItem}>{skill}{i < data.skills.length - 1 ? " · " : ""}</Text>
+              ))}
+            </View>
           </View>
         )}
 
