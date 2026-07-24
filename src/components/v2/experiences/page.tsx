@@ -206,6 +206,7 @@ export function V2ExperiencesPage() {
   const [expStats, setExpStats] = useState<Record<number, ExperienceStats>>({})
   const [loading, setLoading] = useState(true)
   const ref = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
   const { theme, language } = useTheme()
   const isDark = theme === "dark"
   const { scrollYProgress } = useScroll({
@@ -224,6 +225,11 @@ export function V2ExperiencesPage() {
   const hoverTab = isDark ? "hover:text-white hover:bg-white/10" : "hover:text-black hover:bg-black/10"
   const activeBg = isDark ? "bg-cyan-400 text-black" : "bg-blue-600 text-white"
   const textPrimary = isDark ? "text-white" : "text-black"
+
+  const handleTabChange = (tab: "experience" | "education") => {
+    setActiveTab(tab)
+    headerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
 
   const journeyLabel = language === "pt" ? "Jornada" : language === "es" ? "Trayectoria" : language === "fr" ? "Parcours" : language === "zh" ? "旅程" : "Journey"
   const experiencesTitle = language === "pt" ? "Experiências" : language === "es" ? "Experiencias" : language === "fr" ? "Expériences" : language === "zh" ? "经验" : "Experiences"
@@ -282,7 +288,7 @@ export function V2ExperiencesPage() {
         className={`absolute top-0 right-0 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] ${bgGlow} rounded-full blur-3xl pointer-events-none -translate-y-20`}
       />
 
-      <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16 relative z-10">
+      <div ref={headerRef} className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-12 sm:mb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -305,7 +311,7 @@ export function V2ExperiencesPage() {
       <div className="px-6 sm:px-10 lg:px-16 xl:px-24 mb-10">
         <div className="flex gap-3">
           <button
-            onClick={() => setActiveTab("experience")}
+            onClick={() => handleTabChange("experience")}
             className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${
               activeTab === "experience"
                 ? activeBg
@@ -315,7 +321,7 @@ export function V2ExperiencesPage() {
             {experienceTab}
           </button>
           <button
-            onClick={() => setActiveTab("education")}
+            onClick={() => handleTabChange("education")}
             className={`px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 ${
               activeTab === "education"
                 ? activeBg

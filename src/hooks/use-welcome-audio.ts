@@ -3,20 +3,20 @@
 import { useRef, useCallback, useState, useEffect } from "react"
 import { trimAudioEnd } from "./use-audio-trimmer"
 
-const WELCOME_TEXTS: Record<string, string> = {
-  pt: "Olá! Sou o Cógnis. Posso te ajudar com projetos, skills e experiências do Elias. Vamos conversar?",
-  en: "Hi! I'm Cógnis. I can help with projects, skills and Elias's experience. Let's talk?",
-  es: "¡Hola! Soy Cógnis. Puedo ayudarte con proyectos, habilidades y experiencias. ¿Hablamos?",
-  fr: "Salut! Je suis Cógnis. Je peux aider avec projets, compétences et expériences. Parlons?",
-  zh: "你好！我是 Cógnis。我可以帮你了解项目、技能和经验。聊聊？",
+const WELCOME_CHUNKS: Record<string, string[]> = {
+  pt: ["Olá! Sou o Cógnis.", "Posso te ajudar com projetos, skills e experiências do Elias.", "Vamos conversar?"],
+  en: ["Hi! I'm Cógnis.", "I can help with projects, skills and Elias's experience.", "Let's talk?"],
+  es: ["¡Hola! Soy Cógnis.", "Puedo ayudarte con proyectos, habilidades y experiencias.", "¿Hablamos?"],
+  fr: ["Salut! Je suis Cógnis.", "Je peux aider avec projets, compétences et expériences.", "Parlons?"],
+  zh: ["你好！我是 Cógnis。", "我可以帮你了解项目、技能和经验。", "聊聊？"],
 }
 
-const RETURNING_TEXTS: Record<string, string> = {
-  pt: "Olá de volta! Posso te ajudar com projetos, skills ou experiências do Elias?",
-  en: "Welcome back! Can I help with projects, skills or Elias's experience?",
-  es: "¡Hola de nuevo! ¿Puedo ayudarte con proyectos o experiencias?",
-  fr: "Content de revoir! Puis-je aider avec projets ou expériences?",
-  zh: "欢迎回来！我可以帮你了解项目或经验吗？",
+const RETURNING_CHUNKS: Record<string, string[]> = {
+  pt: ["Olá de volta!", "Posso te ajudar com projetos, skills ou experiências do Elias?"],
+  en: ["Welcome back!", "Can I help with projects, skills or Elias's experience?"],
+  es: ["¡Hola de nuevo!", "¿Puedo ayudarte con proyectos o experiencias?"],
+  fr: ["Content de te revoir!", "Puis-je aider avec projets ou expériences?"],
+  zh: ["欢迎回来！", "我可以帮你了解项目或经验吗？"],
 }
 
 const VOICE_MAP: Record<string, string> = {
@@ -78,16 +78,16 @@ function speakNative(text: string, lang: string) {
 
 export function useWelcomeAudio(language = "pt", isReturning = false) {
   const hasSpoken = useRef(false)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const cleanupRef = useRef<(() => void) | null>(null)
+  const audioChunksRef = useRef<{ url: string; cleanup: () => void }[]>([])
   const [isPreloaded, setIsPreloaded] = useState(false)
   const preloadPromise = useRef<Promise<void> | null>(null)
   const [userInteracted, setUserInteracted] = useState(false)
   const useNativeRef = useRef(false)
+  const playbackCancelled = useRef(false)
 
-  const welcomeText = isReturning 
-    ? (RETURNING_TEXTS[language] || RETURNING_TEXTS["en"])
-    : (WELCOME_TEXTS[language] || WELCOME_TEXTS["en"])
+  const welcomeChunks = isReturning
+    ? (RETURNING_CHUNKS[language] || RETURNING_CHUNKS["en"])
+    : (WELCOME_CHUNKS[language] || WELCOME_CHUNKS["en"])
 
   useEffect(() => {
     const handleInteraction = () => {
@@ -109,65 +109,85 @@ export function useWelcomeAudio(language = "pt", isReturning = false) {
   const preload = useCallback(async () => {
     if (preloadPromise.current) return
     preloadPromise.current = (async () => {
-      console.log("[TTS] Pré-carregando audio...")
+      console.log("[TTS] Pré-carregando chunks...")
       try {
-        const result = await fetchTTSBlob(welcomeText, language)
-        if (result.native) {
+        const results = await Promise.all(
+          welcomeChunks.map((chunk) => fetchTTSBlob(chunk, language))
+        )
+        const hasNative = results.some((r) => r.native)
+        if (hasNative) {
           useNativeRef.current = true
           setIsPreloaded(true)
           console.log("[TTS] API indisponível, usando SpeechSynthesis nativo")
           return
         }
-        audioRef.current = new Audio(result.url)
-        cleanupRef.current = result.cleanup
+        audioChunksRef.current = results.map((r) => ({ url: r.url, cleanup: r.cleanup }))
         setIsPreloaded(true)
-        console.log("[TTS] Audio pré-carregado com sucesso")
+        console.log(`[TTS] ${results.length} chunks pré-carregados`)
       } catch (err) {
-        console.error("[TTS] Falha ao pré-carregar, usando nativo:", err)
+        console.error("[TTS] Falha ao pré-carregar chunks, usando nativo:", err)
         useNativeRef.current = true
         setIsPreloaded(true)
       }
     })()
     await preloadPromise.current
-  }, [welcomeText, language])
+  }, [welcomeChunks, language])
 
   const stopAudio = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause()
-      audioRef.current.currentTime = 0
-    }
+    playbackCancelled.current = true
+    audioChunksRef.current.forEach((chunk) => {
+      chunk.cleanup()
+    })
+    audioChunksRef.current = []
     if (typeof window !== "undefined" && window.speechSynthesis) {
       window.speechSynthesis.cancel()
     }
     hasSpoken.current = false
+    preloadPromise.current = null
     console.log("[TTS] Audio pausado")
   }, [])
+
+  const playChunksSequentially = useCallback(async (chunks: string[]) => {
+    for (let i = 0; i < chunks.length; i++) {
+      if (playbackCancelled.current) return
+      console.log(`[TTS] Chunk ${i + 1}/${chunks.length}: "${chunks[i].substring(0, 40)}..."`)
+      speakNative(chunks[i], language)
+      await new Promise((resolve) => setTimeout(resolve, 600))
+    }
+  }, [language])
 
   const playWelcome = useCallback(async () => {
     if (hasSpoken.current || !userInteracted) return
     hasSpoken.current = true
+    playbackCancelled.current = false
     console.log("[TTS] === Iniciando boas-vindas ===")
 
-    if (useNativeRef.current || !audioRef.current) {
+    if (useNativeRef.current || audioChunksRef.current.length === 0) {
       console.log("[TTS] Usando SpeechSynthesis nativo para boas-vindas")
-      speakNative(welcomeText, language)
+      await playChunksSequentially(welcomeChunks)
       return
     }
 
     try {
-      await audioRef.current.play()
-      audioRef.current.onended = () => {
-        cleanupRef.current?.()
-        audioRef.current = null
-        cleanupRef.current = null
-        console.log("[TTS] Boas-vindas finalizado")
+      for (let i = 0; i < audioChunksRef.current.length; i++) {
+        if (playbackCancelled.current) return
+        const { url } = audioChunksRef.current[i]
+        const audio = new Audio(url)
+        await new Promise<void>((resolve, reject) => {
+          audio.onended = () => resolve()
+          audio.onerror = () => reject(new Error("Audio playback failed"))
+          audio.play().catch(reject)
+        })
+        if (i < audioChunksRef.current.length - 1) {
+          await new Promise((resolve) => setTimeout(resolve, 600))
+        }
       }
-      return
+      console.log("[TTS] Boas-vindas finalizado")
     } catch (err) {
       console.error("[TTS] Playback do preloaded falhou, usando nativo:", err)
-      speakNative(welcomeText, language)
+      await playChunksSequentially(welcomeChunks)
     }
-  }, [welcomeText, language, userInteracted])
+  }, [welcomeChunks, language, userInteracted, playChunksSequentially])
 
   return { preload, playWelcome, isPreloaded, stopAudio }
 }

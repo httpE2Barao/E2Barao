@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { rows } = await sql`
-      INSERT INTO experience_entries (role_pt, role_en, role_es, company_pt, company_en, company_es, period_start, period_end, description_pt, description_en, description_es, display_order)
-      VALUES (${body.role_pt}, ${body.role_en}, ${body.role_es}, ${body.company_pt}, ${body.company_en}, ${body.company_es}, ${body.period_start}, ${body.period_end}, ${body.description_pt}, ${body.description_en}, ${body.description_es}, ${body.display_order || 0})
+      INSERT INTO experience_entries (role_pt, role_en, role_es, role_fr, role_zh, company_pt, company_en, company_es, company_fr, company_zh, period_start, period_end, description_pt, description_en, description_es, description_fr, description_zh, display_order)
+      VALUES (${body.role_pt}, ${body.role_en}, ${body.role_es || ''}, ${body.role_fr || ''}, ${body.role_zh || ''}, ${body.company_pt}, ${body.company_en}, ${body.company_es || ''}, ${body.company_fr || ''}, ${body.company_zh || ''}, ${body.period_start}, ${body.period_end}, ${body.description_pt}, ${body.description_en}, ${body.description_es || ''}, ${body.description_fr || ''}, ${body.description_zh || ''}, ${body.display_order || 0})
       RETURNING *;
     `;
     return NextResponse.json(rows[0], { status: 201 });

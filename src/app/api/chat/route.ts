@@ -20,8 +20,8 @@ function buildProjectsContext(lang: string): string {
 
 ${projects}
 
-### Projeto Principal - Platera
-Platera é o projeto mais importante de Elias. É um Sistema Operacional completo para restaurantes modernos (SaaS).
+### Projeto Principal - a Platera
+A Platera é o projeto mais importante de Elias. É um Sistema Operacional completo para restaurantes modernos (SaaS).
 Funcionalidades: Chatbot IA (OpenAI/Gemini) para WhatsApp e Web, omnichannel (delivery próprio, QR Code mesa, totens, retirada, social commerce), integração Lalamove e iFood, fichas técnicas dinâmicas com CMV em tempo real, KDS (Kitchen Display System), POS (Frente de Caixa), emissão fiscal NFC-e via FocusNFe, pagamentos Mercado Pago (Pix, Cartão, OAuth), heatmaps de delivery, dashboard com AI Insights, gamificação e cashback, segurança enterprise.
 Tech: Next.js 16, React 19, TypeScript, Prisma 6, PostgreSQL, Tailwind 4, Shadcn UI, Radix UI, NextAuth, Pusher, Socket.io, Leaflet, Recharts, Zod, Framer Motion.
 

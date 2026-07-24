@@ -2,7 +2,7 @@
 import { useTheme } from "@/components/switchers/switchers"
 import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState, useMemo } from "react"
 import { useInView } from "react-intersection-observer"
 import { useWelcomeAudio, useSpeech } from "@/hooks/use-welcome-audio"
 
@@ -14,6 +14,107 @@ const Spline = dynamic(() => import("@splinetool/react-spline"), {
 const MUTE_KEY = "e2barao-audio-muted"
 const PLAYED_KEY = "e2barao-audio-played"
 
+interface WelcomeMessage {
+  greeting: string
+  body: string
+  cta: string
+  followUp: string
+}
+
+const welcomePhrases = {
+  first: {
+    pt: [
+      { greeting: "Olá! Tudo bem?", body: "Quer entender como o Elias trabalha?", cta: "É só digitar sim.", followUp: "Elias é proativo, lidera projetos e aprende rápido. Ele já trabalhou em projetos públicos e privados, sempre buscando resolver problemas do começo ao fim. Quer saber mais sobre algum aspecto específico?" },
+      { greeting: "Bem-vindo! Sou o Cógnis.", body: "Curioso sobre o Elias? Pode perguntar.", cta: "É só digitar o que quer saber.", followUp: "O que te interessa? A experiência, os projetos, como ele lidera ou como ele aprende tão rápido?" },
+      { greeting: "Olá! Eu sou o Cógnis.", body: "Posso te contar sobre o trabalho do Elias. Topa?", cta: "Sim ou não, tanto faz.", followUp: "Elias é desenvolvedor full-stack com mais de 4 anos. Ele já liderou projetos de museus a sistemas completos. O que quer saber primeiro?" },
+      { greeting: "Bem-vindo ao portfólio!", body: "Quer saber quem é o Elias e como ele trabalha?", cta: "É só perguntar.", followUp: "Elias é comunicativo, trabalha bem em equipe e sabe liderar. Ele tem experiência internacional e já resolveu problemas reais com código. O que te chama atenção?" },
+      { greeting: "Olá! Tudo bem?", body: "Posso te explicar como o Elias atua nos projetos dele.", cta: "Quer que eu conte?", followUp: "Elias é proativo e aprende rápido. Ele já liderou projetos públicos e privados, sempre do planejamento à entrega. Quer saber mais sobre algum deles?" },
+      { greeting: "Bem-vindo! Sou o Cógnis.", body: "Se tem curiosidade sobre o Elias, é só perguntar.", cta: "O que quer saber?", followUp: "Posso te contar sobre experiência, projetos, habilidades ou como ele encara desafios. Por onde quer começar?" },
+    ] as WelcomeMessage[],
+    en: [
+      { greeting: "Hi! How are you?", body: "Want to know how Elias works?", cta: "Just type yes.", followUp: "Elias is proactive, leads projects and learns fast. He's worked on public and private projects, always solving problems from start to finish. Want to know more about any specific aspect?" },
+      { greeting: "Welcome! I'm Cógnis.", body: "Curious about Elias? Feel free to ask.", cta: "Just type what you want to know.", followUp: "What interests you? His experience, projects, how he leads, or how he learns so fast?" },
+      { greeting: "Hi! I'm Cógnis.", body: "I can tell you about Elias's work. Sound good?", cta: "Yes or no, up to you.", followUp: "Elias is a full-stack developer with over 4 years of experience. He's led projects from museums to complete systems. What would you like to know first?" },
+      { greeting: "Welcome to the portfolio!", body: "Want to know who Elias is and how he works?", cta: "Just ask.", followUp: "Elias is communicative, works well in teams and knows how to lead. He has international experience and has solved real problems with code. What catches your attention?" },
+      { greeting: "Hi! How are you?", body: "I can explain how Elias works on his projects.", cta: "Want me to tell you?", followUp: "Elias is proactive and learns fast. He's led public and private projects, from planning to delivery. Want to know more about any of them?" },
+      { greeting: "Welcome! I'm Cógnis.", body: "If you're curious about Elias, just ask.", cta: "What do you want to know?", followUp: "I can tell you about experience, projects, skills, or how he tackles challenges. Where would you like to start?" },
+    ] as WelcomeMessage[],
+    es: [
+      { greeting: "¡Hola! ¿Qué tal?", body: "¿Quieres saber cómo trabaja Elias?", cta: "Solo escribe sí.", followUp: "Elias es proactivo, lidera proyectos y aprende rápido. Ha trabajado en proyectos públicos y privados, siempre buscando resolver problemas de principio a fin. ¿Quieres saber más sobre algún aspecto específico?" },
+      { greeting: "¡Bienvenido! Soy Cógnis.", body: "¿Tienes curiosidad sobre Elias? Pregunta lo que quieras.", cta: "Solo escribe lo que quieres saber.", followUp: "¿Qué te interesa? La experiencia, los proyectos, cómo lidera o cómo aprende tan rápido?" },
+      { greeting: "¡Hola! Soy Cógnis.", body: "Puedo contarte sobre el trabajo de Elias. ¿Te parece bien?", cta: "Sí o no, como quieras.", followUp: "Elias es desarrollador full-stack con más de 4 años. Ya lideró proyectos de museos a sistemas completos. ¿Qué quieres saber primero?" },
+      { greeting: "¡Bienvenido al portafolio!", body: "¿Quieres saber quién es Elias y cómo trabaja?", cta: "Solo pregunta.", followUp: "Elias es comunicativo, trabaja bien en equipo y sabe liderar. Tiene experiencia internacional y ya resolvió problemas reales con código. ¿Qué te llama la atención?" },
+      { greeting: "¡Hola! ¿Qué tal?", body: "Puedo explicarte cómo Elias actúa en sus proyectos.", cta: "¿Quieres que te cuente?", followUp: "Elias es proactivo y aprende rápido. Ya lideró proyectos públicos y privados, siempre de la planificación a la entrega. ¿Quieres saber más sobre alguno?" },
+      { greeting: "¡Bienvenido! Soy Cógnis.", body: "Si tienes curiosidad sobre Elias, solo pregunta.", cta: "¿Qué quieres saber?", followUp: "Puedo contarte sobre experiencia, proyectos, habilidades o cómo enfrenta los desafíos. ¿Por dónde quieres empezar?" },
+    ] as WelcomeMessage[],
+    fr: [
+      { greeting: "Bonjour ! Comment allez-vous ?", body: "Vous voulez savoir comment Elias travaille ?", cta: "Tapez simplement oui.", followUp: "Elias est proactif, mène des projets et apprend vite. Il a travaillé sur des projets publics et privés, toujours en cherchant à résoudre les problèmes de bout en bout. Vous en voulez savoir plus sur un aspect spécifique ?" },
+      { greeting: "Bienvenue ! Je suis Cógnis.", body: "Curieux d'en savoir plus sur Elias ? N'hésitez pas à demander.", cta: "Tapez simplement ce que vous voulez savoir.", followUp: "Qu'est-ce qui vous intéresse ? Son expérience, ses projets, comment il lead ou comment il apprend si vite ?" },
+      { greeting: "Bonjour ! Je suis Cógnis.", body: "Je peux vous parler du travail d'Elias. Ça vous dit ?", cta: "Oui ou non, comme vous voulez.", followUp: "Elias est développeur full-stack avec plus de 4 ans d'expérience. Il a mené des projets allant des musées aux systèmes complets. Qu'est-ce que vous voulez savoir en premier ?" },
+      { greeting: "Bienvenue au portfolio !", body: "Vous voulez savoir qui est Elias et comment il travaille ?", cta: "Demandez simplement.", followUp: "Elias est communicatif, travaille bien en équipe et sait leader. Il a une expérience internationale et a résolu de vrais problèmes avec du code. Qu'est-ce qui vous attire ?" },
+      { greeting: "Bonjour ! Comment allez-vous ?", body: "Je peux vous expliquer comment Elias intervient dans ses projets.", cta: "Vous voulez que je vous raconte ?", followUp: "Elias est proactif et apprend vite. Il a mené des projets publics et privés, de la planification à la livraison. Vous en voulez savoir plus sur l'un d'eux ?" },
+      { greeting: "Bienvenue ! Je suis Cógnis.", body: "Si vous êtes curieux au sujet d'Elias, demandez simplement.", cta: "Que voulez-vous savoir ?", followUp: "Je peux vous parler de son expérience, de ses projets, de ses compétences ou de la façon dont il relève les défis. Par où voulez-vous commencer ?" },
+    ] as WelcomeMessage[],
+    zh: [
+      { greeting: "你好！最近怎么样？", body: "想了解Elias是怎么工作的吗？", cta: "只需要输入想。", followUp: "Elias积极主动，领导项目，学习很快。他在公共和私人项目中工作过，总是从头到尾解决问题。想了解某个具体方面吗？" },
+      { greeting: "欢迎！我是Cógnis。", body: "对Elias好奇吗？尽管问。", cta: "输入你想知道的就行。", followUp: "你对什么感兴趣？经验、项目、他如何领导，还是他学得这么快？" },
+      { greeting: "你好！我是Cógnis。", body: "我可以告诉你Elias的工作情况。好吗？", cta: "想或不想，都可以。", followUp: "Elias是全栈开发者，有4年多经验。他领导过从博物馆到完整系统的项目。你想先知道什么？" },
+      { greeting: "欢迎来到作品集！", body: "想了解Elias是谁，他是怎么工作的吗？", cta: "尽管问。", followUp: "Elias善于沟通，团队合作能力强，懂得领导。他有国际经验，用代码解决过真实问题。什么最吸引你？" },
+      { greeting: "你好！最近怎么样？", body: "我可以解释Elias在项目中是怎么做的。", cta: "想让我告诉你吗？", followUp: "Elias积极主动，学习很快。他领导过公共和私人项目，从规划到交付。想了解更多吗？" },
+      { greeting: "欢迎！我是Cógnis。", body: "如果对Elias好奇，尽管问。", cta: "你想知道什么？", followUp: "我可以告诉你经验、项目、技能，或者他如何面对挑战。你想从哪里开始？" },
+    ] as WelcomeMessage[],
+  },
+  returning: {
+    pt: [
+      { greeting: "Oi de novo! Tudo bem?", body: "Quer saber mais sobre o Elias, ou tem uma dúvida nova?", cta: "É só digitar.", followUp: "Posso te contar sobre os projetos dele, como ele lidera, ou qualquer coisa que ficou pendente." },
+      { greeting: "Fico feliz em te ver de volta!", body: "Alguma pergunta que ficou no ar?", cta: "É só perguntar.", followUp: "Quer que eu explique algo com mais detalhes, ou prefere uma pergunta nova?" },
+      { greeting: "Bem-vindo de volta! Sou o Cógnis.", body: "O que te interessa sobre o Elias hoje?", cta: "Pergunta à vontade.", followUp: "Experiência, projetos, habilidades — ou algo diferente? É só escolher." },
+      { greeting: "Oi! Que bom que voltou.", body: "Tô aqui se precisar. Alguma dúvida?", cta: "É só pedir.", followUp: "Posso te ajudar com qualquer coisa sobre o Elias — projetos, habilidades, experiência." },
+      { greeting: "Olá novamente! Tudo bem?", body: "Quer explorar mais alguma coisa do portfólio?", cta: "O que te interessa?", followUp: "Posso te contar sobre os projetos dele, como ele trabalha, ou algo que não ficou claro antes." },
+    ] as WelcomeMessage[],
+    en: [
+      { greeting: "Hi again! How are you?", body: "Want to know more about Elias, or got a new question?", cta: "Just type.", followUp: "I can tell you about his projects, how he leads, or anything that was left pending." },
+      { greeting: "Happy to see you back!", body: "Any question that was left hanging?", cta: "Just ask.", followUp: "Want me to explain something in more detail, or prefer a new question?" },
+      { greeting: "Welcome back! I'm Cógnis.", body: "What interests you about Elias today?", cta: "Ask away.", followUp: "Experience, projects, skills — or something different? Just choose." },
+      { greeting: "Hi! Glad you came back.", body: "I'm here if you need anything. Any questions?", cta: "Just let me know.", followUp: "I can help with anything about Elias — projects, skills, experience." },
+      { greeting: "Hello again! How are you?", body: "Want to explore more of the portfolio?", cta: "What interests you?", followUp: "I can tell you about his projects, how he works, or something that wasn't clear before." },
+    ] as WelcomeMessage[],
+    es: [
+      { greeting: "¡Hola de nuevo! ¿Qué tal?", body: "¿Quieres saber más sobre Elias, o tienes una nueva duda?", cta: "Solo escribe.", followUp: "Puedo contarte sobre sus proyectos, cómo lidera, o cualquier cosa que quedó pendiente." },
+      { greeting: "¡Me alegra verte de vuelta!", body: "¿Alguna pregunta que quedó en el aire?", cta: "Solo pregunta.", followUp: "¿Quieres que explique algo con más detalle, o prefieres una nueva pregunta?" },
+      { greeting: "¡Bienvenido de vuelta! Soy Cógnis.", body: "¿Qué te interesa de Elias hoy?", cta: "Pregunta sin compromiso.", followUp: "Experiencia, proyectos, habilidades — ¿o algo diferente? Solo elige." },
+      { greeting: "¡Hola! Qué bueno que volviste.", body: "Estoy aquí si necesitas algo. ¿Alguna duda?", cta: "Solo dime.", followUp: "Puedo ayudarte con cualquier cosa sobre Elias — proyectos, habilidades, experiencia." },
+      { greeting: "¡Hola de nuevo! ¿Qué tal?", body: "¿Quieres explorar más del portafolio?", cta: "¿Qué te interesa?", followUp: "Puedo contarte sobre sus proyectos, cómo trabaja, o algo que no quedó claro antes." },
+    ] as WelcomeMessage[],
+    fr: [
+      { greeting: "Salut encore ! Comment allez-vous ?", body: "Vous voulez en savoir plus sur Elias, ou vous avez une nouvelle question ?", cta: "Tapez simplement.", followUp: "Je peux vous parler de ses projets, de comment il lead, ou de tout ce qui est resté en suspens." },
+      { greeting: "Content de vous revoir !", body: "Une question qui est restée en suspens ?", cta: "Demandez simplement.", followUp: "Vous voulez que j'explique quelque chose plus en détail, ou préférez-vous une nouvelle question ?" },
+      { greeting: "Bienvenue de retour ! Je suis Cógnis.", body: "Qu'est-ce qui vous intéresse chez Elias aujourd'hui ?", cta: "N'hésitez pas à demander.", followUp: "Expérience, projets, compétences — ou autre chose ? Il suffit de choisir." },
+      { greeting: "Salut ! Content de vous revoir.", body: "Je suis là si vous avez besoin de quoi que ce soit. Des questions ?", cta: "Dites-le simplement.", followUp: "Je peux vous aider avec n'importe quoi sur Elias — projets, compétences, expérience." },
+      { greeting: "Bonjour encore ! Comment allez-vous ?", body: "Vous voulez explorer davantage le portfolio ?", cta: "Qu'est-ce qui vous intéresse ?", followUp: "Je peux vous parler de ses projets, de son travail, ou de quelque chose qui n'était pas clair avant." },
+    ] as WelcomeMessage[],
+    zh: [
+      { greeting: "又见面了！最近怎么样？", body: "想了解更多关于Elias的信息，还是有新问题？", cta: "输入就行。", followUp: "我可以告诉你他的项目、他如何领导，或者任何悬而未决的事情。" },
+      { greeting: "很高兴再次见到你！", body: "有什么问题悬而未决吗？", cta: "尽管问。", followUp: "想让我详细解释，还是换个新问题？" },
+      { greeting: "欢迎回来！我是Cógnis。", body: "今天对Elias的什么感兴趣？", cta: "尽管问。", followUp: "经验、项目、技能——还是别的？选择就行。" },
+      { greeting: "你好！很高兴你回来了。", body: "我在这里，需要什么都行。有什么问题吗？", cta: "说就行。", followUp: "我可以帮你了解Elias的任何事——项目、技能、经验。" },
+      { greeting: "又见面了！最近怎么样？", body: "想探索更多作品集吗？", cta: "对什么感兴趣？", followUp: "我可以告诉你他的项目、他如何工作，或者之前不清楚的事情。" },
+    ] as WelcomeMessage[],
+  },
+}
+
+const affirmations = ["sim", "quero", "claro", "pode", "pode ser", "conta", "bora", "manda", "topo", "isso", "true",
+  "yes", "sure", "ok", "go ahead", "tell me", "yep", "yeah", "yup", "right", "please",
+  "sí", "quiero", "claro", "cuéntame", "dale", "por favor",
+  "oui", "c'est", "raconte", "d'accord", "s'il vous plaît",
+  "想", "要", "好", "可以", "对", "请"]
+
+const negations = ["não", "nao", "nada", "depois", "tô bem", "to bem", "nah", "no thanks", "depois eu volto", "agora não",
+  "no", "nope", "nah", "not now", "later", "not really", "no thanks", "i'm good",
+  "no", "nada", "después", "no gracias", "ahora no",
+  "non", "pas maintenant", "non merci", "je suis bon",
+  "不", "不用", "算了", "没关系", "不用了", "不需要"]
+
 const loadingPhrases = {
   pt: ["Pensando", "Processando", "Analisando", "Buscando", "Calculando"],
   en: ["Thinking", "Processing", "Analyzing", "Searching", "Calculating"],
@@ -22,21 +123,12 @@ const loadingPhrases = {
   zh: ["思考中", "处理中", "分析中", "搜索中", "计算中"],
 }
 
-const welcomePhrases = {
-  first: {
-    pt: ["Olá! Eu sou o Cógnis.", "Assistente de IA do Elias Barão.", "Pergunte-me sobre projetos, skills ou experiências.", "Interaja comigo — estou aqui para ajudar."],
-    en: ["Hi! I'm Cógnis.", "Elias Barão's AI assistant.", "Ask me about projects, skills or experience.", "Interact with me — I'm here to help."],
-    es: ["¡Hola! Soy Cógnis.", "Asistente de IA de Elias Barão.", "Pregúntame sobre proyectos, habilidades o experiencia.", "Interactúa conmigo — estoy aquí para ayudar."],
-    fr: ["Salut ! Je suis Cógnis.", "Assistant IA d'Elias Barão.", "Demandez-moi des projets, compétences ou expériences.", "Interagissez avec moi — je suis là pour aider."],
-    zh: ["你好！我是 Cógnis。", "Elias Barão 的 AI 助手。", "问我关于项目、技能或经验的问题。", "与我互动——我在这里帮助您。"],
-  },
-returning: {
-    pt: ["Oi de novo!", "Fico feliz em te ver de volta!", "Sobrou alguma dúvida?", "Em que posso ajudar?"],
-    en: ["Hi again!", "Happy to see you back!", "Any questions?", "How can I help?"],
-    es: ["¡Hola de nuevo!", "¡Me alegra verte de vuelta!", "¿Tienes alguna duda?", "¿En qué puedo ayudar?"],
-    fr: ["Salut encore!", "Content de te revoir!", "Des questions?", "Comment puis-je aider?"],
-    zh: ["你好 again!", "很高兴见到你回来!", "有什么问题吗?", "我能帮你什么?"],
-  },
+const negativeReplies: Record<string, string> = {
+  pt: "Sem problemas! Se mudar de ideia, é só perguntar.",
+  en: "No problem! If you change your mind, just ask.",
+  es: "¡Sin problema! Si cambias de opinión, solo pregunta.",
+  fr: "Pas de problème ! Si vous changez d'avis, demandez simplement.",
+  zh: "没问题！如果改主意了，尽管问。",
 }
 
 export function V2HomeHero() {
@@ -44,7 +136,6 @@ export function V2HomeHero() {
   const [isLoading, setIsLoading] = useState(true)
   const [aiInput, setAiInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
-  const [currentPhrase, setCurrentPhrase] = useState(0)
   const [showInput, setShowInput] = useState(true)
   const [isMuted, setIsMuted] = useState(() => {
     if (typeof window !== "undefined") {
@@ -64,6 +155,7 @@ export function V2HomeHero() {
   const [chatResponse, setChatResponse] = useState("")
   const [showResponse, setShowResponse] = useState(false)
   const [isResponding, setIsResponding] = useState(false)
+  const [pendingFollowUp, setPendingFollowUp] = useState<string | null>(null)
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 })
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [hasUnmutedOnce, setHasUnmutedOnce] = useState(false)
@@ -119,7 +211,6 @@ export function V2HomeHero() {
     playWelcome()
   }, [isMuted, preload, playWelcome, stopAudio, stopWelcomeAudio, hasUnmutedOnce])
 
-  // Preload audio on mount
   useEffect(() => {
     preload()
   }, [preload])
@@ -131,31 +222,34 @@ export function V2HomeHero() {
     }
   }
 
-  // Play audio on first user interaction (click, keydown, etc.) - only if not muted
   const handleFirstInteraction = useCallback(() => {
     if (hasInteracted.current || isMuted) return
     hasInteracted.current = true
     playWelcome()
   }, [playWelcome, isMuted])
 
-  const phrases = hasPlayedBefore ? welcomePhrases.returning[language as keyof typeof welcomePhrases.returning] : welcomePhrases.first[language as keyof typeof welcomePhrases.first]
-  const currentPhrases = phrases || welcomePhrases.first.en
+  const selectedMessage = useMemo(() => {
+    const pool = hasPlayedBefore
+      ? welcomePhrases.returning[language as keyof typeof welcomePhrases.returning]
+      : welcomePhrases.first[language as keyof typeof welcomePhrases.first]
+    const fallback = hasPlayedBefore ? welcomePhrases.returning.en : welcomePhrases.first.en
+    const phrases = pool || fallback
+    const today = new Date()
+    const daySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
+    return phrases[daySeed % phrases.length]
+  }, [hasPlayedBefore, language])
 
-  // Auto-cycle robot phrases
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPhrase((prev) => (prev + 1) % currentPhrases.length)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [currentPhrases.length])
+    if (selectedMessage) {
+      setPendingFollowUp(selectedMessage.followUp)
+    }
+  }, [selectedMessage])
 
-  // Show input after phrases cycle once
   useEffect(() => {
     const timer = setTimeout(() => setShowInput(true), 5000)
     return () => clearTimeout(timer)
   }, [])
 
-  // Listen for first user interaction to play audio
   useEffect(() => {
     const handleInteraction = () => {
       handleFirstInteraction()
@@ -173,7 +267,6 @@ export function V2HomeHero() {
     }
   }, [handleFirstInteraction])
 
-  // Cycle loading phrases
   useEffect(() => {
     if (!isResponding) {
       setLoadingPhraseIndex(0)
@@ -185,7 +278,6 @@ export function V2HomeHero() {
     return () => clearInterval(interval)
   }, [isResponding, language])
 
-  // When user unmutes, preload and play audio
   useEffect(() => {
     if (!isMuted && !hasInteracted.current) {
       localStorage.setItem(PLAYED_KEY, "true")
@@ -199,8 +291,29 @@ export function V2HomeHero() {
 
   const handleSend = async () => {
     if (!aiInput.trim()) return
-    const userInput = aiInput.trim()
+    const userInput = aiInput.trim().toLowerCase()
     setAiInput("")
+
+    if (pendingFollowUp) {
+      if (affirmations.some(c => userInput.includes(c))) {
+        setChatResponse(pendingFollowUp)
+        setShowResponse(true)
+        speak(pendingFollowUp, language)
+        setPendingFollowUp(null)
+        return
+      }
+
+      if (negations.some(c => userInput.includes(c))) {
+        const reply = negativeReplies[language] || negativeReplies.en
+        setChatResponse(reply)
+        setShowResponse(true)
+        speak(reply, language)
+        setPendingFollowUp(null)
+        return
+      }
+    }
+
+    setPendingFollowUp(null)
     setIsTyping(true)
     setShowResponse(false)
     setIsResponding(true)
@@ -256,9 +369,7 @@ export function V2HomeHero() {
   const btnBg = isDark ? "bg-cyan-400 hover:bg-cyan-300 text-black" : "bg-blue-600 hover:bg-blue-500 text-white"
   const btnOutline = isDark ? "border-white/20 text-white hover:border-cyan-400 hover:text-cyan-400 bg-white/10 hover:bg-cyan-400/10" : "border-black/20 text-black hover:border-blue-600 hover:text-blue-600 bg-white/90 hover:bg-white"
   const bubbleBg = isDark ? "bg-white/5 border-white/10" : "bg-black/5 border-black/10"
-  const placeholderText = isDark ? "placeholder-white/20" : "placeholder-black/20"
   const scrollText = isDark ? "text-white/30" : "text-black/30"
-  const scrollBar = isDark ? "from-white/30" : "from-black/30"
   const scrollDot = isDark ? "bg-cyan-400" : "bg-blue-600"
 
   return (
@@ -390,10 +501,9 @@ export function V2HomeHero() {
           )}
         </div>
 
-        {/* Robot speech bubble - minimalist */}
+        {/* Robot speech bubble */}
         <div className="w-full px-4 sm:px-6 lg:px-4 flex-shrink-0 -mt-2 sm:-mt-4">
           <div className="max-w-md mx-auto">
-            {/* Speech bubble */}
             <AnimatePresence mode="wait">
               {isResponding ? (
                 <motion.div
@@ -429,13 +539,13 @@ export function V2HomeHero() {
                   className={`${bubbleBg} backdrop-blur-sm border rounded-xl px-3 py-2 text-center relative`}
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
-                  <p className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-24 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent`}>
+                  <p className={`${getResponseFontSize(chatResponse)} ${textPrimary} leading-relaxed max-h-24 overflow-y-auto`}>
                     {chatResponse}
                   </p>
                 </motion.div>
               ) : (
                 <motion.div
-                  key={currentPhrase}
+                  key={selectedMessage.greeting}
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
@@ -444,23 +554,18 @@ export function V2HomeHero() {
                 >
                   <div className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 ${isDark ? "bg-white/5" : "bg-black/5"} border-t ${isDark ? "border-white/10" : "border-black/10"} border-l rotate-45`} />
                   <p className={`text-sm sm:text-base ${textMuted} leading-relaxed`}>
-                    {currentPhrases[currentPhrase]}
+                    {selectedMessage.greeting}
                   </p>
-                  <div className="flex justify-center gap-1 mt-1.5">
-                    {currentPhrases.map((_, i) => (
-                      <div
-                        key={i}
-                        className={`w-1 h-1 rounded-full transition-colors ${
-                          i === currentPhrase ? accentColor.replace("text-", "bg-") : isDark ? "bg-white/20" : "bg-black/20"
-                        }`}
-                      />
-                    ))}
-                  </div>
+                  <p className={`text-xs ${textMuted} mt-1 leading-relaxed`}>
+                    {selectedMessage.body}
+                  </p>
+                  <p className={`text-[10px] ${accentColor} mt-1`}>
+                    {selectedMessage.cta}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Minimalist input - appears after phrases */}
             {showInput && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -488,7 +593,7 @@ export function V2HomeHero() {
                       }
                     }}
                     placeholder={language === "pt" ? "Interaja comigo..." : language === "es" ? "Interactúa conmigo..." : language === "fr" ? "Interagissez avec moi..." : language === "zh" ? "与我互动..." : "Interact with me..."}
-                    className={`flex-1 bg-transparent text-xs ${textPrimary} ${isDark ? "placeholder-cyan-400/40" : "placeholder-blue-600/40"} outline-none min-w-0 resize-none max-h-24 overflow-y-auto scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent leading-relaxed cursor-text`}
+                    className={`flex-1 bg-transparent text-xs ${textPrimary} ${isDark ? "placeholder-cyan-400/40" : "placeholder-blue-600/40"} outline-none min-w-0 resize-none max-h-24 overflow-y-auto leading-relaxed cursor-text`}
                     rows={1}
                   />
                   <button

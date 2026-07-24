@@ -9,10 +9,19 @@ interface Experience {
   period_end: string;
   role_pt: string;
   role_en: string;
+  role_es: string;
+  role_fr: string;
+  role_zh: string;
   company_pt: string;
   company_en: string;
+  company_es: string;
+  company_fr: string;
+  company_zh: string;
   description_pt: string;
   description_en: string;
+  description_es: string;
+  description_fr: string;
+  description_zh: string;
   highlight: boolean;
   display_order: number;
 }
@@ -39,7 +48,7 @@ export default function ExperiencePage() {
   };
 
   const [formData, setFormData] = useState({
-    period_start: "", period_end: "", role_pt: "", role_en: "", company_pt: "", company_en: "", description_pt: "", description_en: "", highlight: false, display_order: 0,
+    period_start: "", period_end: "", role_pt: "", role_en: "", role_es: "", role_fr: "", role_zh: "", company_pt: "", company_en: "", company_es: "", company_fr: "", company_zh: "", description_pt: "", description_en: "", description_es: "", description_fr: "", description_zh: "", highlight: false, display_order: 0,
   });
 
   useEffect(() => { fetchExperiences(); }, []);
@@ -80,11 +89,11 @@ export default function ExperiencePage() {
 
   const handleEdit = (exp: Experience) => {
     setEditing(exp);
-    setFormData({ period_start: exp.period_start, period_end: exp.period_end, role_pt: exp.role_pt, role_en: exp.role_en, company_pt: exp.company_pt, company_en: exp.company_en, description_pt: exp.description_pt, description_en: exp.description_en, highlight: exp.highlight, display_order: exp.display_order });
+    setFormData({ period_start: exp.period_start, period_end: exp.period_end, role_pt: exp.role_pt, role_en: exp.role_en, role_es: exp.role_es || "", role_fr: exp.role_fr || "", role_zh: exp.role_zh || "", company_pt: exp.company_pt, company_en: exp.company_en, company_es: exp.company_es || "", company_fr: exp.company_fr || "", company_zh: exp.company_zh || "", description_pt: exp.description_pt, description_en: exp.description_en, description_es: exp.description_es || "", description_fr: exp.description_fr || "", description_zh: exp.description_zh || "", highlight: exp.highlight, display_order: exp.display_order });
     setShowForm(true);
   };
 
-  const resetForm = () => { setEditing(null); setShowForm(false); setFormData({ period_start: "", period_end: "", role_pt: "", role_en: "", company_pt: "", company_en: "", description_pt: "", description_en: "", highlight: false, display_order: 0 }); };
+  const resetForm = () => { setEditing(null); setShowForm(false); setFormData({ period_start: "", period_end: "", role_pt: "", role_en: "", role_es: "", role_fr: "", role_zh: "", company_pt: "", company_en: "", company_es: "", company_fr: "", company_zh: "", description_pt: "", description_en: "", description_es: "", description_fr: "", description_zh: "", highlight: false, display_order: 0 }); };
 
   if (loading && experiences.length === 0) return <div className="flex items-center justify-center h-64"><div className={`w-8 h-8 border-2 ${colors.spinner} border-t-transparent rounded-full animate-spin`} /></div>;
 
@@ -121,8 +130,14 @@ export default function ExperiencePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Cargo (PT)*</label><input type="text" value={formData.role_pt} onChange={(e) => setFormData({ ...formData, role_pt: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required /></div>
                 <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Cargo (EN)*</label><input type="text" value={formData.role_en} onChange={(e) => setFormData({ ...formData, role_en: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Cargo (ES)</label><input type="text" value={formData.role_es} onChange={(e) => setFormData({ ...formData, role_es: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Cargo (FR)</label><input type="text" value={formData.role_fr} onChange={(e) => setFormData({ ...formData, role_fr: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Cargo (ZH)</label><input type="text" value={formData.role_zh} onChange={(e) => setFormData({ ...formData, role_zh: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} /></div>
                 <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Empresa (PT)*</label><input type="text" value={formData.company_pt} onChange={(e) => setFormData({ ...formData, company_pt: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required /></div>
                 <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Empresa (EN)*</label><input type="text" value={formData.company_en} onChange={(e) => setFormData({ ...formData, company_en: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} required /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Empresa (ES)</label><input type="text" value={formData.company_es} onChange={(e) => setFormData({ ...formData, company_es: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Empresa (FR)</label><input type="text" value={formData.company_fr} onChange={(e) => setFormData({ ...formData, company_fr: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Empresa (ZH)</label><input type="text" value={formData.company_zh} onChange={(e) => setFormData({ ...formData, company_zh: e.target.value })} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text}`} /></div>
               </div>
             </div>
             <div className={`border-t ${colors.border} pt-4`}>
@@ -130,6 +145,9 @@ export default function ExperiencePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Descrição (PT)*</label><textarea value={formData.description_pt} onChange={(e) => setFormData({ ...formData, description_pt: e.target.value })} rows={3} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text} resize-none`} required /></div>
                 <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Descrição (EN)*</label><textarea value={formData.description_en} onChange={(e) => setFormData({ ...formData, description_en: e.target.value })} rows={3} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text} resize-none`} required /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Descrição (ES)</label><textarea value={formData.description_es} onChange={(e) => setFormData({ ...formData, description_es: e.target.value })} rows={3} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text} resize-none`} /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Descrição (FR)</label><textarea value={formData.description_fr} onChange={(e) => setFormData({ ...formData, description_fr: e.target.value })} rows={3} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text} resize-none`} /></div>
+                <div><label className={`block text-xs ${colors.textMuted} mb-1`}>Descrição (ZH)</label><textarea value={formData.description_zh} onChange={(e) => setFormData({ ...formData, description_zh: e.target.value })} rows={3} className={`w-full ${colors.cardBg} border ${colors.borderInput} rounded-lg px-3 py-2 text-sm ${colors.text} resize-none`} /></div>
               </div>
             </div>
             <div className="flex items-center gap-4">
