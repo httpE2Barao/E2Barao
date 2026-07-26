@@ -405,7 +405,7 @@ export function V2HomeHeroV2() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className={`text-[0.7rem] sm:text-[0.8rem] md:text-[0.9rem] uppercase tracking-[0.25em] mt-2 ${textPrimary} select-none font-medium break-words max-w-[90%]`}
+            className={`text-[0.7rem] sm:text-[0.8rem] md:text-[0.9rem] uppercase tracking-[0.08em] sm:tracking-[0.12em] md:tracking-[0.18em] mt-2 ${textPrimary} select-none font-medium break-words max-w-full sm:max-w-full md:max-w-full`}
           >
             <span className="whitespace-pre-wrap">{title}</span>
           </motion.h2>
