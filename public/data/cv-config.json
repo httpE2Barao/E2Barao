@@ -1,0 +1,544 @@
+{
+  "configs": [
+    {
+      "id": 1783635867132,
+      "language": "pt",
+      "config": {
+        "name": {
+          "pt": "Elias Edson Barão",
+          "en": "Elias Edson Barão",
+          "es": "Elias Edson Barão"
+        },
+        "title": {
+          "pt": "Desenvolvedor Full-Stack",
+          "en": "Full-Stack Developer",
+          "es": "Desarrollador Full-Stack",
+          "fr": "Développeur Full-Stack",
+          "zh": "全栈开发者"
+        },
+        "email": "e2barao@hotmail.com",
+        "phone": "+55 41 984716477",
+        "location": {
+          "pt": "Curitiba, Paraná, Brasil",
+          "en": "Curitiba, Paraná, Brazil",
+          "es": "Curitiba, Paraná, Brasil"
+        },
+        "linkedin": "https://linkedin.com/in/e2barao",
+        "github": "https://github.com/httpE2Barao",
+        "summary": {
+          "pt": "Mais de 4 anos de experiência criando sistemas web de alto impacto. Especialista em soluções web modernas (React, Next.js, TypeScript, Tailwind) e integrações com IA (MCP, RAG). Na gestão de projetos de software, atuo com metodologias ágeis (Scrum e Kanban). Multilíngue (PT/EN/ES) com vivência internacional. Formando em Análise e Desenvolvimento de Sistemas pela PUCPR.",
+          "en": "More than 4 years of experience building high-impact web systems. Specialist in modern web solutions (React, Next.js, TypeScript, Tailwind) and AI integrations (MCP, RAG). In software project management, I work with agile methodologies (Scrum and Kanban). Multilingual (PT/EN/ES) with international experience. Degree in Systems Analysis and Development from PUCPR.",
+          "es": "Más de 4 años de experiencia creando sistemas web de alto impacto. Especialista en soluciones web modernas (React, Next.js, TypeScript, Tailwind) e integraciones con IA (MCP, RAG). En la gestión de proyectos de software, trabajo con metodologías ágiles (Scrum y Kanban). Multilingüe (PT/EN/ES) con experiencia internacional. Graduándose en Análisis y Desarrollo de Sistemas por la PUCPR."
+        },
+        "languages": [
+          {
+            "pt": "Português (Nativo)",
+            "en": "Portuguese (Native)",
+            "es": "Portugués (Nativo)"
+          },
+          {
+            "pt": "Inglês (Avançado)",
+            "en": "English (Advanced)",
+            "es": "Inglés (Avanzado)"
+          },
+          {
+            "pt": "Espanhol (Básico)",
+            "en": "Spanish (Basic)",
+            "es": "Español (Básico)"
+          }
+        ],
+        "additionalInfo": {
+          "pt": "",
+          "en": "",
+          "es": ""
+        },
+        "selectedExperienceIds": [
+          1,
+          2
+        ],
+        "selectedEducationIds": [
+          5,
+          1,
+          2
+        ],
+        "selectedProjectIds": [
+          14,
+          13
+        ],
+        "selectedSkillIds": [
+          1,
+          66,
+          2,
+          3,
+          4,
+          70,
+          7,
+          8,
+          10,
+          82,
+          12,
+          13,
+          14,
+          15,
+          17,
+          18,
+          21,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          31,
+          34,
+          35,
+          37,
+          38,
+          53,
+          62,
+          63,
+          68,
+          5,
+          6,
+          9,
+          11,
+          16,
+          19,
+          20,
+          22,
+          29,
+          30,
+          32,
+          33,
+          36,
+          40,
+          43,
+          51,
+          52,
+          54,
+          57,
+          58,
+          59,
+          60,
+          61,
+          67,
+          50,
+          65,
+          81,
+          113,
+          112,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102
+        ],
+        "additionalData": {
+          "vehicleType": {
+            "en": "Personal car",
+            "es": "Coche particular",
+            "pt": "Carro particular"
+          },
+          "driverLicense": {
+            "en": "B",
+            "es": "B",
+            "pt": "B"
+          },
+          "willingnessToTravel": {
+            "en": "Yes",
+            "es": "Sí",
+            "pt": "Sim"
+          },
+          "willingnessToRelocate": {
+            "en": "Yes",
+            "es": "Sí",
+            "pt": "Sim"
+          }
+        },
+        "includeExperience": true,
+        "includeEducation": true,
+        "includeSkills": true,
+        "includeProjects": true,
+        "includeLanguages": true,
+        "maxSkills": 104,
+        "sortSkills": "order"
+      },
+      "updated_at": "2026-07-09T22:26:46.529Z"
+    },
+    {
+      "id": 1783635867134,
+      "language": "en",
+      "config": {
+        "name": {
+          "pt": "Elias Edson Barão",
+          "en": "Elias Edson Barão",
+          "es": "Elias Edson Barão"
+        },
+        "title": {
+          "pt": "Desenvolvedor Full-Stack",
+          "en": "Full-Stack Developer",
+          "es": "Desarrollador Full-Stack",
+          "fr": "Développeur Full-Stack",
+          "zh": "全栈开发者"
+        },
+        "email": "e2barao@hotmail.com",
+        "phone": "+55 41 984716477",
+        "location": {
+          "pt": "Curitiba, Paraná, Brasil",
+          "en": "Curitiba, Paraná, Brazil",
+          "es": "Curitiba, Paraná, Brasil"
+        },
+        "linkedin": "https://linkedin.com/in/e2barao",
+        "github": "https://github.com/httpE2Barao",
+        "summary": {
+          "pt": "Mais de 4 anos de experiência criando sistemas web de alto impacto. Especialista em soluções web modernas (React, Next.js, TypeScript, Tailwind) e integrações com IA (MCP, RAG). Na gestão de projetos de software, atuo com metodologias ágeis (Scrum e Kanban). Multilíngue (PT/EN/ES) com vivência internacional. Formando em Análise e Desenvolvimento de Sistemas pela PUCPR.",
+          "en": "More than 4 years of experience building high-impact web systems. Specialist in modern web solutions (React, Next.js, TypeScript, Tailwind) and AI integrations (MCP, RAG). In software project management, I work with agile methodologies (Scrum and Kanban). Multilingual (PT/EN/ES) with international experience. Degree in Systems Analysis and Development from PUCPR.",
+          "es": "Más de 4 años de experiencia creando sistemas web de alto impacto. Especialista en soluciones web modernas (React, Next.js, TypeScript, Tailwind) e integraciones con IA (MCP, RAG). En la gestión de proyectos de software, trabajo con metodologías ágiles (Scrum y Kanban). Multilingüe (PT/EN/ES) con experiencia internacional. Graduándose en Análisis y Desarrollo de Sistemas por la PUCPR."
+        },
+        "languages": [
+          {
+            "pt": "Português (Nativo)",
+            "en": "Portuguese (Native)",
+            "es": "Portugués (Nativo)"
+          },
+          {
+            "pt": "Inglês (Avançado)",
+            "en": "English (Advanced)",
+            "es": "Inglés (Avanzado)"
+          },
+          {
+            "pt": "Espanhol (Básico)",
+            "en": "Spanish (Basic)",
+            "es": "Español (Básico)"
+          }
+        ],
+        "additionalInfo": {
+          "pt": "",
+          "en": "",
+          "es": ""
+        },
+        "selectedExperienceIds": [
+          1,
+          2
+        ],
+        "selectedEducationIds": [
+          5,
+          1,
+          2
+        ],
+        "selectedProjectIds": [
+          14,
+          13
+        ],
+        "selectedSkillIds": [
+          1,
+          66,
+          2,
+          3,
+          4,
+          70,
+          7,
+          8,
+          10,
+          82,
+          12,
+          13,
+          14,
+          15,
+          17,
+          18,
+          21,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          31,
+          34,
+          35,
+          37,
+          38,
+          53,
+          62,
+          63,
+          68,
+          5,
+          6,
+          9,
+          11,
+          16,
+          19,
+          20,
+          22,
+          29,
+          30,
+          32,
+          33,
+          36,
+          40,
+          43,
+          51,
+          52,
+          54,
+          57,
+          58,
+          59,
+          60,
+          61,
+          67,
+          50,
+          65,
+          81,
+          113,
+          112,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102
+        ],
+        "additionalData": {
+          "vehicleType": {
+            "en": "Personal car",
+            "es": "Coche particular",
+            "pt": "Carro particular"
+          },
+          "driverLicense": {
+            "en": "B",
+            "es": "B",
+            "pt": "B"
+          },
+          "willingnessToTravel": {
+            "en": "Yes",
+            "es": "Sí",
+            "pt": "Sim"
+          },
+          "willingnessToRelocate": {
+            "en": "Yes",
+            "es": "Sí",
+            "pt": "Sim"
+          }
+        },
+        "includeExperience": true,
+        "includeEducation": true,
+        "includeSkills": true,
+        "includeProjects": true,
+        "includeLanguages": true,
+        "maxSkills": 104,
+        "sortSkills": "order"
+      },
+      "updated_at": "2026-07-09T22:26:46.529Z"
+    },
+    {
+      "id": 1783635867135,
+      "language": "es",
+      "config": {
+        "name": {
+          "pt": "Elias Edson Barão",
+          "en": "Elias Edson Barão",
+          "es": "Elias Edson Barão"
+        },
+        "title": {
+          "pt": "Desenvolvedor Full-Stack",
+          "en": "Full-Stack Developer",
+          "es": "Desarrollador Full-Stack",
+          "fr": "Développeur Full-Stack",
+          "zh": "全栈开发者"
+        },
+        "email": "e2barao@hotmail.com",
+        "phone": "+55 41 984716477",
+        "location": {
+          "pt": "Curitiba, Paraná, Brasil",
+          "en": "Curitiba, Paraná, Brazil",
+          "es": "Curitiba, Paraná, Brasil"
+        },
+        "linkedin": "https://linkedin.com/in/e2barao",
+        "github": "https://github.com/httpE2Barao",
+        "summary": {
+          "pt": "Mais de 4 anos de experiência criando sistemas web de alto impacto. Especialista em soluções web modernas (React, Next.js, TypeScript, Tailwind) e integrações com IA (MCP, RAG). Na gestão de projetos de software, atuo com metodologias ágeis (Scrum e Kanban). Multilíngue (PT/EN/ES) com vivência internacional. Formando em Análise e Desenvolvimento de Sistemas pela PUCPR.",
+          "en": "More than 4 years of experience building high-impact web systems. Specialist in modern web solutions (React, Next.js, TypeScript, Tailwind) and AI integrations (MCP, RAG). In software project management, I work with agile methodologies (Scrum and Kanban). Multilingual (PT/EN/ES) with international experience. Degree in Systems Analysis and Development from PUCPR.",
+          "es": "Más de 4 años de experiencia creando sistemas web de alto impacto. Especialista en soluciones web modernas (React, Next.js, TypeScript, Tailwind) e integraciones con IA (MCP, RAG). En la gestión de proyectos de software, trabajo con metodologías ágiles (Scrum y Kanban). Multilingüe (PT/EN/ES) con experiencia internacional. Graduándose en Análisis y Desarrollo de Sistemas por la PUCPR."
+        },
+        "languages": [
+          {
+            "pt": "Português (Nativo)",
+            "en": "Portuguese (Native)",
+            "es": "Portugués (Nativo)"
+          },
+          {
+            "pt": "Inglês (Avançado)",
+            "en": "English (Advanced)",
+            "es": "Inglés (Avanzado)"
+          },
+          {
+            "pt": "Espanhol (Básico)",
+            "en": "Spanish (Basic)",
+            "es": "Español (Básico)"
+          }
+        ],
+        "additionalInfo": {
+          "pt": "",
+          "en": "",
+          "es": ""
+        },
+        "selectedExperienceIds": [
+          1,
+          2
+        ],
+        "selectedEducationIds": [
+          5,
+          1,
+          2
+        ],
+        "selectedProjectIds": [
+          14,
+          13
+        ],
+        "selectedSkillIds": [
+          1,
+          66,
+          2,
+          3,
+          4,
+          70,
+          7,
+          8,
+          10,
+          82,
+          12,
+          13,
+          14,
+          15,
+          17,
+          18,
+          21,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          31,
+          34,
+          35,
+          37,
+          38,
+          53,
+          62,
+          63,
+          68,
+          5,
+          6,
+          9,
+          11,
+          16,
+          19,
+          20,
+          22,
+          29,
+          30,
+          32,
+          33,
+          36,
+          40,
+          43,
+          51,
+          52,
+          54,
+          57,
+          58,
+          59,
+          60,
+          61,
+          67,
+          50,
+          65,
+          81,
+          113,
+          112,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102
+        ],
+        "additionalData": {
+          "vehicleType": {
+            "en": "Personal car",
+            "es": "Coche particular",
+            "pt": "Carro particular"
+          },
+          "driverLicense": {
+            "en": "B",
+            "es": "B",
+            "pt": "B"
+          },
+          "willingnessToTravel": {
+            "en": "Yes",
+            "es": "Sí",
+            "pt": "Sim"
+          },
+          "willingnessToRelocate": {
+            "en": "Yes",
+            "es": "Sí",
+            "pt": "Sim"
+          }
+        },
+        "includeExperience": true,
+        "includeEducation": true,
+        "includeSkills": true,
+        "includeProjects": true,
+        "includeLanguages": true,
+        "maxSkills": 104,
+        "sortSkills": "order"
+      },
+      "updated_at": "2026-07-09T22:26:46.529Z"
+    }
+  ]
+}
